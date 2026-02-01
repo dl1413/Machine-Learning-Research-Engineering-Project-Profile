@@ -1,5 +1,3 @@
-# Machine-Learning-Research-Engineering-Project-Profile
-Machine Learning Research Engoneering Projects- Final Materials
 # Derek Lankeaux, MS
 ## Machine Learning Research Engineer | LLM Evaluation Specialist | AI Safety Researcher
 
