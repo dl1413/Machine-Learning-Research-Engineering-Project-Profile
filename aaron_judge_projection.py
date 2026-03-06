@@ -227,6 +227,9 @@ class AaronJudgeProjection:
 
         Args:
             base_projection (dict): Base case projection parameters
+                - hr_per_162: Expected home runs per 162 games
+                - max_age: Maximum age to simulate (default 44 for contract+DH)
+                - dh_transition_age: Age to transition to DH (default 40)
             n_simulations (int): Number of simulation runs
 
         Returns:
@@ -238,27 +241,40 @@ class AaronJudgeProjection:
         current_hr = 315  # Judge's HR total through 2024
         target_hr = 763   # Barry Bonds' record
 
+        # Contract ends at age 39 (2031), DH extension to age 44 (2036)
+        max_age = base_projection.get('max_age', 44)
+        dh_transition_age = base_projection.get('dh_transition_age', 40)
+
         for _ in range(n_simulations):
             sim_hr_total = current_hr
             age = current_age + 1
 
-            # Simulate remaining career (ages 33-42, 10 seasons max)
-            for season in range(10):
-                if age > 42:
-                    break
-
+            # Simulate remaining career through contract + DH extension
+            while age <= max_age:
                 # Age-based decline curve with noise
                 age_factor = max(0.3, 1.0 - (age - 27) * 0.05)
 
-                # Injury risk increases with age
-                injury_prob = min(0.4, 0.1 + (age - 32) * 0.03)
-                games_played = 162 if np.random.random() > injury_prob else np.random.randint(90, 162)
+                # DH role reduces injury risk after transition
+                is_dh = age >= dh_transition_age
+
+                if is_dh:
+                    # DH has lower injury risk, more consistent playing time
+                    injury_prob = min(0.25, 0.05 + (age - dh_transition_age) * 0.02)
+                    # DH typically plays 140-150 games
+                    games_played = 150 if np.random.random() > injury_prob else np.random.randint(120, 150)
+                    # Slight performance boost from reduced wear and tear
+                    dh_bonus = 1.05
+                else:
+                    # Outfield position has higher injury risk
+                    injury_prob = min(0.4, 0.1 + (age - 32) * 0.03)
+                    games_played = 162 if np.random.random() > injury_prob else np.random.randint(90, 162)
+                    dh_bonus = 1.0
 
                 # Performance variance
                 performance_factor = np.random.normal(1.0, 0.15)
 
                 # Expected HRs based on age, games, and performance
-                expected_hr_per_162 = base_projection.get('hr_per_162', 45) * age_factor * performance_factor
+                expected_hr_per_162 = base_projection.get('hr_per_162', 45) * age_factor * performance_factor * dh_bonus
                 season_hr = int(expected_hr_per_162 * (games_played / 162))
 
                 sim_hr_total += season_hr
@@ -285,62 +301,86 @@ class AaronJudgeProjection:
     def optimize_projection_scenarios(self):
         """
         Test multiple projection scenarios to maximize probability of reaching 763.
+        Includes contract-based projection (through age 39) + 5-year DH extension (to age 44).
 
         Returns:
             pd.DataFrame: Comparison of different scenarios
         """
         scenarios = []
 
-        # Scenario 1: Conservative (injury concerns, normal decline)
+        # Scenario 1: Conservative (injury concerns, normal decline) - Contract + DH
         scenario_1 = self.run_monte_carlo_simulation({
             'hr_per_162': 40,
+            'max_age': 44,
+            'dh_transition_age': 40,
             'name': 'Conservative'
         })
         scenarios.append({
-            'Scenario': 'Conservative (40 HR/162 pace)',
+            'Scenario': 'Conservative (40 HR/162, Contract+DH to 44)',
             'Mean_Final_HR': scenario_1['mean_final_hr'],
             'Median_Final_HR': scenario_1['median_final_hr'],
             'Prob_Reach_763': scenario_1['prob_reach_763'],
             'P90_Final_HR': scenario_1['percentile_90']
         })
 
-        # Scenario 2: Moderate (maintains recent performance)
+        # Scenario 2: Moderate (maintains recent performance) - Contract + DH
         scenario_2 = self.run_monte_carlo_simulation({
             'hr_per_162': 50,
+            'max_age': 44,
+            'dh_transition_age': 40,
             'name': 'Moderate'
         })
         scenarios.append({
-            'Scenario': 'Moderate (50 HR/162 pace)',
+            'Scenario': 'Moderate (50 HR/162, Contract+DH to 44)',
             'Mean_Final_HR': scenario_2['mean_final_hr'],
             'Median_Final_HR': scenario_2['median_final_hr'],
             'Prob_Reach_763': scenario_2['prob_reach_763'],
             'P90_Final_HR': scenario_2['percentile_90']
         })
 
-        # Scenario 3: Optimistic (stays healthy, minimal decline)
+        # Scenario 3: Optimistic (stays healthy, minimal decline) - Contract + DH
         scenario_3 = self.run_monte_carlo_simulation({
             'hr_per_162': 55,
+            'max_age': 44,
+            'dh_transition_age': 40,
             'name': 'Optimistic'
         })
         scenarios.append({
-            'Scenario': 'Optimistic (55 HR/162 pace)',
+            'Scenario': 'Optimistic (55 HR/162, Contract+DH to 44)',
             'Mean_Final_HR': scenario_3['mean_final_hr'],
             'Median_Final_HR': scenario_3['median_final_hr'],
             'Prob_Reach_763': scenario_3['prob_reach_763'],
             'P90_Final_HR': scenario_3['percentile_90']
         })
 
-        # Scenario 4: Peak Performance (maintains 2022 level)
+        # Scenario 4: Peak Performance (maintains 2022 level) - Contract + DH
         scenario_4 = self.run_monte_carlo_simulation({
             'hr_per_162': 62,
+            'max_age': 44,
+            'dh_transition_age': 40,
             'name': 'Peak Performance'
         })
         scenarios.append({
-            'Scenario': 'Peak Performance (62 HR/162 pace)',
+            'Scenario': 'Peak Performance (62 HR/162, Contract+DH to 44)',
             'Mean_Final_HR': scenario_4['mean_final_hr'],
             'Median_Final_HR': scenario_4['median_final_hr'],
             'Prob_Reach_763': scenario_4['prob_reach_763'],
             'P90_Final_HR': scenario_4['percentile_90']
+        })
+
+        # Scenario 5: Contract + Early DH (transitions at 37, plays to 44)
+        scenario_5 = self.run_monte_carlo_simulation({
+            'hr_per_162': 52,
+            'max_age': 44,
+            'dh_transition_age': 37,
+            'name': 'Early_DH_Transition'
+        })
+        scenarios.append({
+            'Scenario': 'Early DH Transition (52 HR/162, DH at 37, to 44)',
+            'Mean_Final_HR': scenario_5['mean_final_hr'],
+            'Median_Final_HR': scenario_5['median_final_hr'],
+            'Prob_Reach_763': scenario_5['prob_reach_763'],
+            'P90_Final_HR': scenario_5['percentile_90']
         })
 
         # Store for visualization
@@ -348,7 +388,8 @@ class AaronJudgeProjection:
             'Conservative': scenario_1,
             'Moderate': scenario_2,
             'Optimistic': scenario_3,
-            'Peak_Performance': scenario_4
+            'Peak_Performance': scenario_4,
+            'Early_DH_Transition': scenario_5
         }
 
         return pd.DataFrame(scenarios)
@@ -365,9 +406,11 @@ class AaronJudgeProjection:
         ax.plot(self.judge_data['Year'], self.judge_data['Career_HR'],
                 marker='o', linewidth=2, markersize=8, label='Actual Career HRs')
         ax.axhline(y=763, color='r', linestyle='--', linewidth=2, label='Barry Bonds Record (763)')
+        ax.axvline(x=2031, color='g', linestyle=':', linewidth=1.5, alpha=0.7, label='Contract End (2031)')
+        ax.axvline(x=2036, color='b', linestyle=':', linewidth=1.5, alpha=0.7, label='DH Extension End (2036)')
         ax.set_xlabel('Season', fontsize=12, fontweight='bold')
         ax.set_ylabel('Career Home Runs', fontsize=12, fontweight='bold')
-        ax.set_title('Aaron Judge Career Home Run Progression (2016-2024)',
+        ax.set_title('Aaron Judge Career Home Run Progression (2016-2024)\nwith Contract + 5-Year DH Extension',
                      fontsize=14, fontweight='bold')
         ax.legend(fontsize=10)
         ax.grid(True, alpha=0.3)
@@ -375,11 +418,15 @@ class AaronJudgeProjection:
         plt.savefig(f'{save_dir}/judge_career_trajectory.png', dpi=300, bbox_inches='tight')
         plt.close()
 
-        # 2. Monte Carlo simulation distributions
-        fig, axes = plt.subplots(2, 2, figsize=(14, 10))
-        scenarios = ['Conservative', 'Moderate', 'Optimistic', 'Peak_Performance']
+        # 2. Monte Carlo simulation distributions - Updated for 5 scenarios
+        fig, axes = plt.subplots(2, 3, figsize=(18, 10))
+        scenarios = ['Conservative', 'Moderate', 'Optimistic', 'Peak_Performance', 'Early_DH_Transition']
 
-        for idx, (ax, scenario) in enumerate(zip(axes.flat, scenarios)):
+        for idx, scenario in enumerate(scenarios):
+            row = idx // 3
+            col = idx % 3
+            ax = axes[row, col]
+
             if scenario in self.monte_carlo_results:
                 data = self.monte_carlo_results[scenario]['simulations']['Final_HR']
                 ax.hist(data, bins=50, alpha=0.7, color='steelblue', edgecolor='black')
@@ -391,12 +438,15 @@ class AaronJudgeProjection:
                 ax.legend(fontsize=9)
                 ax.grid(True, alpha=0.3)
 
+        # Hide the unused subplot
+        axes[1, 2].axis('off')
+
         plt.tight_layout()
         plt.savefig(f'{save_dir}/monte_carlo_distributions.png', dpi=300, bbox_inches='tight')
         plt.close()
 
         # 3. Probability comparison
-        fig, ax = plt.subplots(figsize=(10, 6))
+        fig, ax = plt.subplots(figsize=(12, 6))
         scenario_names = []
         probabilities = []
 
@@ -405,21 +455,22 @@ class AaronJudgeProjection:
                 scenario_names.append(scenario.replace('_', ' '))
                 probabilities.append(self.monte_carlo_results[scenario]['prob_reach_763'] * 100)
 
-        bars = ax.bar(scenario_names, probabilities, color=['#d32f2f', '#f57c00', '#388e3c', '#1976d2'],
+        bars = ax.bar(scenario_names, probabilities,
+                      color=['#d32f2f', '#f57c00', '#388e3c', '#1976d2', '#9c27b0'],
                       edgecolor='black', linewidth=1.5)
         ax.set_ylabel('Probability (%)', fontsize=12, fontweight='bold')
-        ax.set_title('Probability of Reaching 763 Home Runs by Scenario',
+        ax.set_title('Probability of Reaching 763 Home Runs by Scenario\n(Contract through 2031 + 5-Year DH Extension to 2036)',
                      fontsize=14, fontweight='bold')
-        ax.set_ylim(0, 100)
+        ax.set_ylim(0, max(probabilities) * 1.3 if max(probabilities) > 0 else 10)
 
         # Add value labels on bars
         for bar, prob in zip(bars, probabilities):
             height = bar.get_height()
             ax.text(bar.get_x() + bar.get_width()/2., height,
-                   f'{prob:.1f}%', ha='center', va='bottom', fontsize=11, fontweight='bold')
+                   f'{prob:.2f}%', ha='center', va='bottom', fontsize=10, fontweight='bold')
 
         ax.grid(True, alpha=0.3, axis='y')
-        plt.xticks(rotation=15, ha='right')
+        plt.xticks(rotation=25, ha='right')
         plt.tight_layout()
         plt.savefig(f'{save_dir}/probability_comparison.png', dpi=300, bbox_inches='tight')
         plt.close()
@@ -430,6 +481,7 @@ def main():
     """Main execution function."""
     print("="*80)
     print("Aaron Judge Career Home Run Projection Analysis")
+    print("Contract-Based Projection: Through 2031 + 5-Year DH Extension (to 2036)")
     print("="*80)
     print()
 
@@ -441,9 +493,15 @@ def main():
     print(f"  Career Home Runs: 315")
     print(f"  Home Runs Needed for Record: {763 - 315} (Barry Bonds: 763)")
     print()
+    print("Contract Details:")
+    print(f"  Current Contract: 9 years (2023-2031), through age 39")
+    print(f"  Projected DH Extension: 5 years (2032-2036), ages 40-44")
+    print(f"  Total Career Projection: 12 additional seasons")
+    print()
 
     # Run scenario analysis
     print("Running Monte Carlo Simulations (10,000 iterations per scenario)...")
+    print("Modeling DH transition benefits: reduced injury risk, consistent playing time")
     scenario_results = projector.optimize_projection_scenarios()
 
     print()
@@ -469,6 +527,12 @@ def main():
     print(f"  Probability of Reaching 763: {best_scenario['Prob_Reach_763']*100:.2f}%")
     print(f"  Expected Final Total: {best_scenario['Mean_Final_HR']:.0f} home runs")
     print(f"  Median Projection: {best_scenario['Median_Final_HR']:.0f} home runs")
+    print(f"  90th Percentile: {best_scenario['P90_Final_HR']:.0f} home runs")
+    print()
+    print("Contract + DH Extension Impact:")
+    print(f"  Additional career years: 12 seasons (ages 33-44)")
+    print(f"  DH benefits: Lower injury risk, extended longevity")
+    print(f"  Projected career improvement: ~100+ additional HRs vs. standard retirement")
     print()
 
     return projector, scenario_results
