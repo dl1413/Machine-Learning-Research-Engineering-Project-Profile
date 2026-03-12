@@ -13,11 +13,34 @@
 
 > **Impact-Driven ML Research Engineer** specialized in building production-grade LLM evaluation frameworks, multi-model ensemble systems, and Bayesian inference pipelines. Proven track record delivering **96.8-99.12% accuracy** models with rigorous statistical validation. Experienced processing **80K+ LLM annotations** at production scale (850 samples/hr) while maintaining research-grade reliability (Krippendorff's α ≥ 0.81).
 
+### 🚀 Quick Navigation
+
+| Section | Description |
+|---------|-------------|
+| **[🔬 AI Safety Red-Team](#-part-1-ai-safety-red-team-evaluation)** | 340× cost reduction in automated harm detection (96.8% accuracy) |
+| **[📚 LLM Bias Detection](#-part-2-llm-ensemble-bias-detection)** | 67.5K ratings with Bayesian hierarchical modeling (α = 0.84) |
+| **[🏥 Clinical ML](#-part-3-breast-cancer-ml-classification)** | 99.12% accuracy exceeding human expert performance |
+| **[💼 Skills Matrix](#-integrated-skills-demonstrated-across-portfolio)** | LLM, Statistical ML, and Production MLOps capabilities |
+| **[📊 Impact Summary](#-portfolio-impact-summary)** | Cross-project achievements and innovations |
+
 ---
 
 ## 🚀 Integrated Research Portfolio: 3-Part ML Engineering Showcase
 
 This portfolio demonstrates comprehensive machine learning research engineering capabilities through three interconnected projects spanning **AI Safety**, **NLP/LLM Evaluation**, and **Clinical ML**—showcasing the full ML lifecycle from research to production deployment.
+
+### 📊 Project Comparison at a Glance
+
+| Aspect | 🔬 AI Safety | 📚 Bias Detection | 🏥 Clinical ML |
+|--------|--------------|-------------------|----------------|
+| **Domain** | LLM Safety Evaluation | Educational Content Analysis | Medical Diagnostics |
+| **Scale** | 12.5K samples | 67.5K ratings | 569 patients |
+| **Performance** | 96.8% accuracy | α = 0.84 reliability | 99.12% accuracy |
+| **Innovation** | 340× cost reduction | Bayesian hierarchical | Exceeds human experts |
+| **LLM Usage** | GPT-4o, Claude-3.5, Llama-3.2 | GPT-4o, Claude-3.5, Llama-3.2 | N/A |
+| **ML Methods** | Stacking, XGBoost, Feature Eng | PyMC, MCMC, Partial Pooling | AdaBoost, SMOTE, RFE |
+| **Key Metric** | ROC-AUC: 0.9923 | Friedman χ²: 42.73 (p<0.001) | Cohen's κ: 0.9823 |
+| **Deployment** | FastAPI, MLflow, SHAP | Circuit Breakers, Rate Limiting | MLflow, <100ms latency |
 
 <table>
 <tr>
@@ -332,12 +355,26 @@ Standards:        IEEE 2830-2025 • ISO/IEC 23894:2025 • EU AI Act
 
 ## 🏆 Portfolio Impact Summary
 
-| Domain | Scale | Accuracy | Innovation |
-|--------|-------|----------|------------|
-| **AI Safety** | 12.5K samples | 96.8% | 340× cost reduction |
-| **Bias Detection** | 67.5K ratings | α = 0.84 | Bayesian hierarchical modeling |
-| **Clinical ML** | 569 patients | 99.12% | Exceeds human performance |
-| **Aggregate** | **80K+ annotations** | **96.8-99.12%** | **Production-ready pipelines** |
+| Domain | Scale | Performance | Innovation | Business Impact |
+|--------|-------|-------------|------------|-----------------|
+| **AI Safety** | 12.5K samples | 96.8% accuracy | 340× cost reduction | $0.018/sample vs $6.12 human |
+| **Bias Detection** | 67.5K ratings | α = 0.84 reliability | Bayesian hierarchical modeling | Statistically credible findings (p<0.001) |
+| **Clinical ML** | 569 patients | 99.12% accuracy | Exceeds human (90-95%) | 100% precision, zero false positives |
+| **Aggregate** | **80K+ annotations** | **96.8-99.12%** | **Production pipelines** | **<100ms latency, 850 samples/hr** |
+
+### 💡 Why This Portfolio Matters
+
+This portfolio demonstrates the **complete ML lifecycle**—from research to production deployment—across three distinct domains:
+
+1. **AI Safety & Governance** → Scalable red-team evaluation meeting regulatory compliance (IEEE 2830-2025, EU AI Act)
+2. **NLP/LLM Evaluation** → Multi-model ensemble systems with validated reliability and Bayesian uncertainty quantification
+3. **Clinical ML** → Production-grade models exceeding human expert performance with full explainability
+
+**Key Differentiators:**
+- ✅ **Research Rigor:** Statistical validation (p < 0.001), Bayesian inference, excellent inter-rater reliability (α ≥ 0.81)
+- ✅ **Production Scale:** 80K+ annotations processed, <100ms latency, 850 samples/hr throughput
+- ✅ **Cost Efficiency:** 340× reduction in AI safety evaluation costs
+- ✅ **Compliance Ready:** IEEE 2830-2025, ISO/IEC 23894:2025, EU AI Act documentation
 
 ---
 
@@ -357,23 +394,37 @@ Standards:        IEEE 2830-2025 • ISO/IEC 23894:2025 • EU AI Act
 Rochester Institute of Technology | Expected 2026
 *Specialization: Bayesian Methods, Machine Learning, Experimental Design*
 
+**Relevant Coursework:**
+- Advanced Bayesian Inference & MCMC Methods
+- Deep Learning & Neural Network Architectures
+- Statistical Learning Theory & Applications
+- Experimental Design & Causal Inference
+- High-Dimensional Statistics & Regularization
+- Computational Statistics & Optimization
+
 ---
 
-## 📫 Let's Connect
+## 📫 Contact & Availability
 
 <div align="center">
 
 ### 🤝 Open to Research Engineer Opportunities | Available for Interviews
 
-**Preferred Contact:** [LinkedIn](https://linkedin.com/in/derek-lankeaux) • Email Available Upon Request
+**Immediate Availability for:**
+- Machine Learning Research Engineer roles
+- AI Safety & Red-Team positions
+- Applied Research Scientist positions
+- ML Systems Engineering roles
+
+**Preferred Contact:** [LinkedIn](https://linkedin.com/in/derek-lankeaux) | Email Available Upon Request
 
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-Derek_Lankeaux-0077B5?style=for-the-badge&logo=linkedin)](https://linkedin.com/in/derek-lankeaux)
 [![GitHub](https://img.shields.io/badge/GitHub-@dl1413-181717?style=for-the-badge&logo=github)](https://github.com/dl1413)
 [![Portfolio](https://img.shields.io/badge/Portfolio-Live_Site-00C7B7?style=for-the-badge)](https://dl1413.github.io/LLM-Portfolio/)
 
-**Location:** Available for remote/hybrid positions
-**Timeline:** Seeking positions starting 2026
-**Visa Status:** Authorized to work in the United States
+**📍 Location:** Available for remote/hybrid positions
+**📅 Timeline:** Seeking positions starting 2026
+**✅ Work Authorization:** Authorized to work in the United States
 
 </div>
 
