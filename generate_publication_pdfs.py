@@ -307,9 +307,10 @@ def strip_metadata_header(md_text: str) -> tuple[str, dict]:
 
 def remove_toc(md_text: str) -> str:
     """Remove the Table of Contents section."""
-    # Match from "## Table of Contents" to the next "---" or "## " heading
+    # Match from "## Table of Contents" to the next "---", any "## " heading,
+    # or the end of the document.
     cleaned = re.sub(
-        r'## Table of Contents\s*\n(?:.*?\n)*?(?=---|\n## [^T])',
+        r'## Table of Contents\s*\n(?:.*?\n)*?(?=---|\n## |\Z)',
         '', md_text
     )
     return cleaned
@@ -348,7 +349,6 @@ def clean_for_publication(md_text: str) -> tuple[str, dict]:
 def build_title_block(metadata: dict) -> str:
     """Build an HTML title block from extracted metadata."""
     title = metadata.get('title', 'Untitled')
-    # Clean up title - remove "Technical Analysis Report" suffix for cleaner look
     author = metadata.get('Author', metadata.get('author', 'Unknown'))
     institution = metadata.get('Institution', '')
     date = metadata.get('Date', '')
