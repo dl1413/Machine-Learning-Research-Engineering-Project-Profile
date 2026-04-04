@@ -932,6 +932,59 @@ async def predict(features: list[float]):
 
 ---
 
+## Code and Data Availability
+
+### Code Availability
+
+All code for this project is available in the author's public GitHub repository:
+
+**Repository:** [https://github.com/dl1413/Machine-Learning-Research-Engineering-Project-Profile](https://github.com/dl1413/Machine-Learning-Research-Engineering-Project-Profile)
+
+The repository includes:
+- Complete Jupyter notebook implementation (`Breast_Cancer_Classification.ipynb`)
+- Data preprocessing pipeline (VIF analysis, SMOTE balancing, RFE selection)
+- Eight ensemble classifier implementations (RF, XGBoost, LightGBM, AdaBoost, Stacking, Voting)
+- Hyperparameter optimization with GridSearchCV
+- SHAP explainability analysis for clinical interpretation
+- Cross-validation framework with stratified k-fold
+- MLflow model registry and versioning
+- FastAPI deployment scripts for production inference
+- Requirements files with pinned dependency versions
+
+**License:** MIT License - Free to use for research and commercial applications with attribution.
+
+**DOI/Archive:** Code will be archived on Zenodo upon publication with permanent DOI.
+
+### Data Availability
+
+**Primary Dataset:** Breast Cancer Wisconsin (Diagnostic) Dataset
+**Source:** UCI Machine Learning Repository
+**Access:** Publicly available at [archive.ics.uci.edu/ml/datasets/Breast+Cancer+Wisconsin+(Diagnostic)](https://archive.ics.uci.edu/ml/datasets/Breast+Cancer+Wisconsin+(Diagnostic))
+
+The dataset consists of:
+- 569 samples (357 benign, 212 malignant)
+- 30 clinical features derived from digitized breast mass images
+- Features computed from fine needle aspirate (FNA) biopsies
+- No personally identifiable information (PII)
+
+**Dataset Citation:**
+Wolberg, W. H., Street, W. N., & Mangasarian, O. L. (1995). Breast Cancer Wisconsin (Diagnostic) Data Set. UCI Machine Learning Repository. DOI: 10.24432/C5DW2B
+
+**Processed Data:** Preprocessed datasets with SMOTE balancing and feature selection are available in the GitHub repository in CSV format.
+
+**No IRB Required:** This project uses publicly available, de-identified data from the UCI repository. No new human subjects research was conducted.
+
+**Reproducibility:** All random seeds (42), data splits (70/15/15), preprocessing steps, and model configurations are documented in Appendix C (Reproducibility Checklist). Complete MLflow experiment tracking ensures full reproducibility.
+
+### Contact for Data/Code Issues
+
+For questions about code or data access, please contact:
+- **GitHub Issues:** [github.com/dl1413/Machine-Learning-Research-Engineering-Project-Profile/issues](https://github.com/dl1413/Machine-Learning-Research-Engineering-Project-Profile/issues)
+- **Email:** Available upon request
+- **LinkedIn:** [linkedin.com/in/derek-lankeaux](https://linkedin.com/in/derek-lankeaux)
+
+---
+
 ## References
 
 ### Core Machine Learning
