@@ -1,0 +1,21 @@
+# PDF Generation Requirements for 2026 Publication Pipeline
+#
+# Install with: pip install -r requirements-pdf.txt
+#
+# These dependencies are needed to regenerate publication-ready PDFs
+# from markdown technical reports using generate_publication_pdfs.py
+
+# Core PDF generation
+weasyprint>=60.0          # Modern HTML/CSS to PDF renderer with metadata support
+markdown>=3.5             # Markdown to HTML conversion with extensions
+
+# WeasyPrint dependencies (usually auto-installed, but listed for clarity)
+# cffi>=1.15.0            # C Foreign Function Interface
+# pycairo>=1.20.0         # Python bindings for cairo graphics library
+# pyphen>=0.14.0          # Hyphenation library for justified text
+# tinycss2>=1.2.0         # CSS parser
+# cssselect2>=0.7.0       # CSS selectors
+
+# Optional: PDF optimization and analysis (if needed)
+# pypdf>=3.17.0           # PDF manipulation and metadata editing
+# pillow>=10.0.0          # Image processing and optimization

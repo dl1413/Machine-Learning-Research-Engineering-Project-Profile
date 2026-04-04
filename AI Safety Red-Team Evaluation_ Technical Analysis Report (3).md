@@ -1253,6 +1253,58 @@ All code, data splits, and trained models are available with fixed random seeds 
 
 ---
 
+## Code and Data Availability
+
+### Code Availability
+
+All code for this project is available in the author's public GitHub repository:
+
+**Repository:** [https://github.com/dl1413/Machine-Learning-Research-Engineering-Project-Profile](https://github.com/dl1413/Machine-Learning-Research-Engineering-Project-Profile)
+
+The repository includes:
+- Complete Jupyter notebook implementation (`AI_Safety_RedTeam_Evaluation.ipynb`)
+- Feature engineering and preprocessing pipelines
+- LLM ensemble annotation framework with retry logic and circuit breakers
+- All eight ensemble classifiers with hyperparameter configurations
+- Bayesian hierarchical modeling code using PyMC
+- SHAP explainability analysis scripts
+- MLflow experiment tracking configuration
+- Requirements files with pinned dependency versions
+
+**License:** MIT License - Free to use for research and commercial applications with attribution.
+
+**DOI/Archive:** Code will be archived on Zenodo upon publication with permanent DOI.
+
+### Data Availability
+
+**Primary Dataset:** Anthropic/OpenAI Red-Teaming Dataset
+**Source:** Publicly available LLM red-teaming datasets
+**Access:** Available through HuggingFace Datasets or upon request
+
+The dataset consists of:
+- 12,500 prompt-response pairs across 6 harm categories
+- LLM ensemble annotations (GPT-4o, Claude-3.5-Sonnet, Llama-3.2-90B)
+- 47 engineered features per sample
+- Train/validation/test splits with fixed random seed (42)
+
+**Processed Data:** Annotated datasets and engineered features are available in the GitHub repository in CSV format.
+
+**API Access:** The project uses commercially available LLM APIs:
+- OpenAI GPT-4o API (api.openai.com)
+- Anthropic Claude-3.5 API (api.anthropic.com)
+- Meta Llama-3.2 via HuggingFace Inference API
+
+**Reproducibility:** All random seeds, data splits, and preprocessing steps are documented in Appendix D (Reproducibility Checklist). Complete experiment tracking via MLflow ensures full reproducibility.
+
+### Contact for Data/Code Issues
+
+For questions about code or data access, please contact:
+- **GitHub Issues:** [github.com/dl1413/Machine-Learning-Research-Engineering-Project-Profile/issues](https://github.com/dl1413/Machine-Learning-Research-Engineering-Project-Profile/issues)
+- **Email:** Available upon request
+- **LinkedIn:** [linkedin.com/in/derek-lankeaux](https://linkedin.com/in/derek-lankeaux)
+
+---
+
 ## References
 
 ### AI Safety

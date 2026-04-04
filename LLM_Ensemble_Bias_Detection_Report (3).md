@@ -839,11 +839,63 @@ async def robust_api_call(prompt: str, model: str) -> float:
 
 ---
 
+## Code and Data Availability
+
+### Code Availability
+
+All code for this project is available in the author's public GitHub repository:
+
+**Repository:** [https://github.com/dl1413/Machine-Learning-Research-Engineering-Project-Profile](https://github.com/dl1413/Machine-Learning-Research-Engineering-Project-Profile)
+
+The repository includes:
+- Complete Jupyter notebook implementation (`LLM_Ensemble_Bias_Detection.ipynb`)
+- Multi-LLM annotation framework (GPT-4o, Claude-3.5, Llama-3.2)
+- Bayesian hierarchical modeling code with PyMC
+- Inter-rater reliability analysis (Krippendorff's α calculations)
+- Statistical testing framework (Friedman test, Nemenyi post-hoc)
+- ArviZ visualization and convergence diagnostics
+- MLflow experiment tracking and model versioning
+- Requirements files with pinned dependency versions
+
+**License:** MIT License - Free to use for research and commercial applications with attribution.
+
+**DOI/Archive:** Code will be archived on Zenodo upon publication with permanent DOI.
+
+### Data Availability
+
+**Primary Dataset:** Textbook passages from 5 major publishers
+**Source:** Publicly available educational materials
+**Access:** Publisher-specific access via institutional libraries or public samples
+
+The dataset consists of:
+- 4,500 textbook passages from social studies curricula
+- 67,500 bias ratings (3 LLMs × 5 bias dimensions × 4,500 passages)
+- 15 statistical features per passage
+- Publisher and grade-level metadata
+
+**Processed Data:** Anonymized bias ratings and statistical summaries are available in the GitHub repository in CSV format. Original textbook passages are not included due to copyright restrictions but can be obtained through institutional access.
+
+**API Access:** The project uses commercially available LLM APIs:
+- OpenAI GPT-4o API (api.openai.com)
+- Anthropic Claude-3.5 API (api.anthropic.com)
+- Meta Llama-3.2 via HuggingFace Inference API
+
+**Reproducibility:** All random seeds, MCMC chains, and statistical test results are documented in Appendix E (Reproducibility Checklist). Complete Bayesian traces are stored in NetCDF format for full reproducibility.
+
+### Contact for Data/Code Issues
+
+For questions about code or data access, please contact:
+- **GitHub Issues:** [github.com/dl1413/Machine-Learning-Research-Engineering-Project-Profile/issues](https://github.com/dl1413/Machine-Learning-Research-Engineering-Project-Profile/issues)
+- **Email:** Available upon request
+- **LinkedIn:** [linkedin.com/in/derek-lankeaux](https://linkedin.com/in/derek-lankeaux)
+
+---
+
 ## References
 
 ### Large Language Models
 
-1. OpenAI. (2025). GPT-4o Technical Report. *arXiv preprint arXiv:2503.xxxxx*.
+1. OpenAI. (2024). GPT-4o System Card. *arXiv preprint arXiv:2410.21276*.
 
 2. Anthropic. (2025). Claude 3.5 Model Card and Evaluations. *Anthropic Technical Documentation*.
 
