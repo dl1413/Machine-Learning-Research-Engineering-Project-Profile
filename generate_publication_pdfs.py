@@ -335,12 +335,54 @@ def remove_trailing_footers(md_text: str) -> str:
     return '\n'.join(lines) + '\n'
 
 
+def fix_tables_for_markdown_lib(md_text: str) -> str:
+    """Fix markdown tables that the Python markdown library can't parse.
+
+    The tables extension requires a blank line before the first pipe row.
+    Also fixes pipe characters inside cell text (e.g. 'Mean |SHAP|') that
+    break column-count detection.
+    """
+    # Fix specific known broken header: "Mean |SHAP|" -> "Mean SHAP"
+    md_text = md_text.replace('Mean |SHAP|', 'Mean SHAP')
+
+    lines = md_text.split('\n')
+    result = []
+    in_code = False
+
+    for line in lines:
+        stripped = line.strip()
+
+        # Track code fences
+        if stripped.startswith('```'):
+            in_code = not in_code
+            result.append(line)
+            continue
+
+        if in_code:
+            result.append(line)
+            continue
+
+        # Detect table rows (starts with |)
+        is_table_row = stripped.startswith('|')
+
+        if is_table_row:
+            # Ensure blank line before the first row of a table
+            prev = result[-1].strip() if result else ''
+            if prev != '' and not prev.startswith('|'):
+                result.append('')
+
+        result.append(line)
+
+    return '\n'.join(result)
+
+
 def clean_for_publication(md_text: str) -> tuple[str, dict]:
     """Apply all publication transformations to markdown text."""
     body, metadata = strip_metadata_header(md_text)
     body = remove_toc(body)
     body = remove_about_author(body)
     body = remove_trailing_footers(body)
+    body = fix_tables_for_markdown_lib(body)
     return body, metadata
 
 
