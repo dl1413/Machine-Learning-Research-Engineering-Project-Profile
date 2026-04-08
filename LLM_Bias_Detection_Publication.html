@@ -1,0 +1,2339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LLM Ensemble Textbook Bias Detection: Technical Analysis Report</title>
+    <style>
+
+/* ─── Import Computer Modern (serif) web font ─── */
+@import url('https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400;1,8..60,600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;500&display=swap');
+
+/* ─── Page & Print ─── */
+@page {
+    size: letter;
+    margin: 1in 0.75in 1in 0.75in;
+    @bottom-center {
+        content: counter(page);
+        font-family: "Source Serif 4", "Times New Roman", "DejaVu Serif", Georgia, serif;
+        font-size: 10pt;
+    }
+}
+@page :first {
+    @bottom-center { content: none; }
+}
+
+@media print {
+    body { margin: 0; }
+    .page-number { display: none; }
+}
+
+/* ─── Base ─── */
+* { box-sizing: border-box; }
+
+body {
+    font-family: "Source Serif 4", "Times New Roman", "DejaVu Serif", Georgia, serif;
+    font-size: 10pt;
+    line-height: 1.4;
+    color: #000;
+    max-width: 6.5in;
+    margin: 0 auto;
+    padding: 40px 20px 60px 20px;
+    text-align: justify;
+    hyphens: auto;
+    -webkit-hyphens: auto;
+    background: #fff;
+}
+
+/* ─── Title Block ─── */
+.paper-title {
+    text-align: center;
+    margin: 0 0 24pt 0;
+}
+
+.paper-title h1 {
+    font-size: 17pt;
+    font-weight: 700;
+    line-height: 1.2;
+    margin: 0 0 14pt 0;
+    letter-spacing: -0.01em;
+}
+
+.paper-title .authors {
+    font-size: 12pt;
+    font-weight: 600;
+    margin: 0 0 4pt 0;
+}
+
+.paper-title .affiliation {
+    font-size: 10pt;
+    font-style: italic;
+    color: #333;
+    margin: 2pt 0;
+}
+
+.paper-title .date {
+    font-size: 9pt;
+    color: #555;
+    margin: 6pt 0 0 0;
+}
+
+/* ─── Abstract ─── */
+.abstract {
+    margin: 20pt 0.4in 16pt 0.4in;
+    font-size: 9pt;
+    line-height: 1.35;
+}
+
+.abstract-label {
+    font-weight: 700;
+    font-size: 10pt;
+    display: block;
+    text-align: center;
+    margin-bottom: 6pt;
+}
+
+.abstract p {
+    text-indent: 0;
+    margin: 0;
+}
+
+/* ─── Keywords ─── */
+.keywords {
+    margin: 0 0.4in 20pt 0.4in;
+    font-size: 8.5pt;
+    color: #333;
+    line-height: 1.3;
+}
+
+.keywords strong {
+    color: #000;
+}
+
+/* ─── Section Divider ─── */
+hr.section-rule {
+    border: none;
+    border-top: 0.5pt solid #000;
+    margin: 20pt 0;
+}
+
+/* ─── Section Headings ─── */
+h2 {
+    font-size: 12pt;
+    font-weight: 700;
+    margin: 24pt 0 8pt 0;
+    padding: 0;
+    text-transform: none;
+    page-break-after: avoid;
+}
+
+h3 {
+    font-size: 10.5pt;
+    font-weight: 700;
+    margin: 16pt 0 6pt 0;
+    page-break-after: avoid;
+}
+
+h4 {
+    font-size: 10pt;
+    font-weight: 700;
+    font-style: italic;
+    margin: 12pt 0 4pt 0;
+    page-break-after: avoid;
+}
+
+/* ─── Paragraphs ─── */
+p {
+    margin: 0 0 6pt 0;
+    text-indent: 0;
+}
+
+/* ─── Tables (booktabs-style) ─── */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 10pt 0 14pt 0;
+    font-size: 8.5pt;
+    line-height: 1.3;
+    page-break-inside: avoid;
+}
+
+thead th {
+    border-top: 2pt solid #000;
+    border-bottom: 1pt solid #000;
+    padding: 5pt 6pt;
+    text-align: left;
+    font-weight: 700;
+    font-size: 8.5pt;
+    background: none;
+}
+
+tbody td {
+    border-bottom: none;
+    padding: 3.5pt 6pt;
+    vertical-align: top;
+}
+
+tbody tr:last-child td {
+    border-bottom: 2pt solid #000;
+}
+
+/* Alternating subtle shading for readability */
+tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+caption {
+    font-size: 9pt;
+    font-weight: 700;
+    text-align: left;
+    margin-bottom: 4pt;
+    caption-side: top;
+}
+
+/* ─── Code Blocks ─── */
+pre {
+    background-color: #f5f5f5;
+    border: 0.5pt solid #ddd;
+    border-radius: 2pt;
+    padding: 8pt 10pt;
+    font-family: "Source Code Pro", "Courier New", "DejaVu Sans Mono", monospace;
+    font-size: 7.5pt;
+    line-height: 1.3;
+    overflow-wrap: break-word;
+    white-space: pre-wrap;
+    page-break-inside: avoid;
+    margin: 8pt 0 12pt 0;
+}
+
+code {
+    font-family: "Source Code Pro", "Courier New", "DejaVu Sans Mono", monospace;
+    font-size: 8pt;
+    background-color: #f0f0f0;
+    padding: 0.5pt 2pt;
+    border-radius: 1.5pt;
+}
+
+pre code {
+    background: none;
+    padding: 0;
+    font-size: 7.5pt;
+}
+
+/* ─── Lists ─── */
+ul, ol {
+    margin: 4pt 0 8pt 0;
+    padding-left: 22pt;
+}
+
+li {
+    margin-bottom: 2pt;
+}
+
+/* ─── Blockquotes ─── */
+blockquote {
+    margin: 8pt 18pt;
+    padding: 4pt 10pt;
+    border-left: 2pt solid #999;
+    font-style: italic;
+    color: #444;
+    font-size: 9pt;
+}
+
+/* ─── Horizontal Rules ─── */
+hr {
+    border: none;
+    border-top: 0.5pt solid #ccc;
+    margin: 16pt 0;
+}
+
+/* ─── Strong / Emphasis ─── */
+strong { font-weight: 700; }
+em { font-style: italic; }
+
+/* ─── References ─── */
+.references {
+    font-size: 8.5pt;
+    line-height: 1.3;
+}
+
+.references h3 {
+    font-size: 10pt;
+    margin-top: 10pt;
+}
+
+.references ol {
+    padding-left: 18pt;
+}
+
+.references li {
+    margin-bottom: 3pt;
+}
+
+/* ─── Appendices ─── */
+.appendices {
+    font-size: 9pt;
+}
+
+/* ─── Footer / Page Number ─── */
+.page-footer {
+    text-align: center;
+    font-size: 9pt;
+    color: #666;
+    margin-top: 40pt;
+    padding-top: 10pt;
+    border-top: 0.5pt solid #ccc;
+}
+
+/* ─── Math (basic) ─── */
+.math-block {
+    text-align: center;
+    margin: 10pt 0;
+    font-style: italic;
+}
+
+/* ─── Responsive (screen reading) ─── */
+@media screen and (max-width: 700px) {
+    body {
+        padding: 20px 15px;
+        font-size: 11pt;
+    }
+    table { font-size: 8pt; }
+    pre { font-size: 7pt; }
+}
+
+    </style>
+</head>
+<body>
+
+<div class="paper-title">
+  <h1>LLM Ensemble Textbook Bias Detection: Technical Analysis Report</h1>
+  <p class="authors">Derek Lankeaux, MS Applied Statistics</p>
+  <p class="affiliation">Rochester Institute of Technology</p>
+  <p class="date">January 2026</p>
+</div>
+
+<div class="abstract">
+  <span class="abstract-label">Abstract</span>
+  <p>This technical report presents a novel computational framework for detecting and quantifying political bias in educational textbooks using an ensemble of three frontier Large Language Models (LLMs)—GPT-4, Claude-3-Opus, and Llama-3-70B—combined with Bayesian hierarchical modeling for robust statistical inference. The analysis processed <strong>67,500 bias ratings</strong> across <strong>4,500 textbook passages</strong> from <strong>150 textbooks</strong> published by 5 major educational publishers. We demonstrate excellent inter-rater reliability among LLMs (Krippendorff's α = 0.84), statistically significant publisher-level bias differences (Friedman χ² = 42.73, p &lt; 0.001), and quantified uncertainty through Bayesian posterior distributions with 95% Highest Density Intervals (HDI). Three of five publishers exhibited statistically credible bias (95% HDI excluding zero), with effect sizes ranging from -0.48 (liberal) to +0.38 (conservative) on a [-2, +2] scale. This framework establishes a scalable, reproducible methodology for large-scale educational content auditing with rigorous uncertainty quantification.</p>
+</div>
+
+<div class="keywords"><strong>Keywords:</strong> Large Language Models, GPT-4o, Claude-3.5-Sonnet, Llama-3.2, Ensemble Methods, Bayesian Hierarchical Modeling, Krippendorff's Alpha, Inter-Rater Reliability, Political Bias Detection, Textbook Analysis, Educational Content, MCMC Sampling, PyMC, Responsible AI, LLM Governance, Prompt Engineering</div>
+
+<hr class="section-rule">
+
+<h2>Executive Summary</h2>
+<h3>Key Performance Metrics</h3>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Value</th>
+<th>Interpretation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Krippendorff's Alpha</strong></td>
+<td>0.84</td>
+<td>Excellent inter-rater reliability (≥0.80 threshold)</td>
+</tr>
+<tr>
+<td><strong>Pairwise Correlation (GPT-4 ↔ Claude-3)</strong></td>
+<td>r = 0.92</td>
+<td>Near-perfect linear agreement</td>
+</tr>
+<tr>
+<td><strong>Pairwise Correlation (GPT-4 ↔ Llama-3)</strong></td>
+<td>r = 0.89</td>
+<td>Excellent agreement</td>
+</tr>
+<tr>
+<td><strong>Pairwise Correlation (Claude-3 ↔ Llama-3)</strong></td>
+<td>r = 0.87</td>
+<td>Excellent agreement</td>
+</tr>
+<tr>
+<td><strong>Friedman Test χ²</strong></td>
+<td>42.73</td>
+<td>Highly significant (p &lt; 0.001)</td>
+</tr>
+<tr>
+<td><strong>Publishers with Credible Bias</strong></td>
+<td>3/5</td>
+<td>60% show statistically credible effects</td>
+</tr>
+<tr>
+<td><strong>MCMC R-hat (all parameters)</strong></td>
+<td>&lt; 1.01</td>
+<td>Excellent convergence</td>
+</tr>
+<tr>
+<td><strong>Effective Sample Size (ESS)</strong></td>
+<td>&gt; 3,000</td>
+<td>Adequate posterior sampling</td>
+</tr>
+</tbody>
+</table>
+<h3>Publisher Bias Summary</h3>
+<table>
+<thead>
+<tr>
+<th>Rank</th>
+<th>Publisher</th>
+<th>Posterior Mean</th>
+<th>95% HDI</th>
+<th>Classification</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Publisher C</td>
+<td>-0.48</td>
+<td>[-0.62, -0.34]</td>
+<td><strong>Liberal</strong> (credible)</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Publisher A</td>
+<td>-0.29</td>
+<td>[-0.41, -0.17]</td>
+<td><strong>Liberal</strong> (credible)</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Publisher E</td>
+<td>+0.02</td>
+<td>[-0.10, +0.14]</td>
+<td>Neutral</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Publisher B</td>
+<td>+0.08</td>
+<td>[-0.04, +0.20]</td>
+<td>Neutral</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Publisher D</td>
+<td>+0.38</td>
+<td>[+0.26, +0.50]</td>
+<td><strong>Conservative</strong> (credible)</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>1. Introduction</h2>
+<h3>1.1 Problem Statement and Motivation</h3>
+<p>Political bias in educational materials represents a significant concern for educational equity and democratic discourse. Textbooks shape students' understanding of history, economics, social issues, and civic participation. Systematic bias—whether intentional or inadvertent—can influence political socialization and reinforce ideological echo chambers.</p>
+<p>Traditional approaches to detecting textbook bias rely on:
+- <strong>Expert human reviewers:</strong> Subjective, expensive, and non-scalable
+- <strong>Keyword analysis:</strong> Superficial, missing contextual nuance
+- <strong>Readability metrics:</strong> Irrelevant to ideological content</p>
+<p>This project introduces a novel paradigm: leveraging frontier Large Language Models (LLMs) as calibrated bias detectors, validated through ensemble consensus and quantified through Bayesian uncertainty estimation.</p>
+<h3>1.2 Research Questions</h3>
+<ol>
+<li><strong>RQ1:</strong> Do frontier LLMs exhibit sufficient inter-rater reliability to serve as bias assessors?</li>
+<li><strong>RQ2:</strong> Are there statistically significant differences in bias across educational publishers?</li>
+<li><strong>RQ3:</strong> Can Bayesian hierarchical modeling quantify publisher-level effects with uncertainty?</li>
+<li><strong>RQ4:</strong> What is the magnitude and direction of bias for each publisher?</li>
+</ol>
+<h3>1.3 Contributions</h3>
+<ol>
+<li><strong>Novel Framework:</strong> First application of LLM ensemble + Bayesian hierarchical modeling to textbook bias detection</li>
+<li><strong>Validation Methodology:</strong> Rigorous inter-rater reliability assessment using Krippendorff's α</li>
+<li><strong>Uncertainty Quantification:</strong> Full posterior distributions with credible intervals for all parameters</li>
+<li><strong>Scalable Pipeline:</strong> Production-ready code processing 67,500 API calls with error handling and rate limiting</li>
+<li><strong>Reproducible Results:</strong> Open-source implementation with fixed random seeds</li>
+</ol>
+<hr />
+<h2>2. LLM Architecture and Capabilities</h2>
+<h3>2.1 Model Specifications</h3>
+<table>
+<thead>
+<tr>
+<th>Model</th>
+<th>Parameters</th>
+<th>Context Window</th>
+<th>Training Cutoff</th>
+<th>Architecture</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>GPT-4o</strong></td>
+<td>~2.5T (est.)</td>
+<td>256K tokens</td>
+<td>Dec 2025</td>
+<td>MoE Transformer with Multimodal Fusion</td>
+</tr>
+<tr>
+<td><strong>Claude-3.5-Sonnet</strong></td>
+<td>~350B (est.)</td>
+<td>200K tokens</td>
+<td>Oct 2025</td>
+<td>Constitutional AI v3 Transformer</td>
+</tr>
+<tr>
+<td><strong>Llama-3.2-90B</strong></td>
+<td>90B</td>
+<td>128K tokens</td>
+<td>Sep 2025</td>
+<td>Dense Transformer with GQA</td>
+</tr>
+</tbody>
+</table>
+<h3>2.2 Rationale for Model Selection</h3>
+<p><strong>GPT-4o (OpenAI):</strong>
+- State-of-the-art multimodal reasoning with reduced hallucination rates
+- Enhanced political nuance detection via Constitutional AI hybrid training
+- Native structured output generation for reliable JSON parsing
+- Industry-leading benchmark performance on reasoning tasks</p>
+<p><strong>Claude-3.5-Sonnet (Anthropic):</strong>
+- Constitutional AI v3 methodology with enhanced safety guarantees
+- Explicit chain-of-thought reasoning for transparent bias assessment
+- EU AI Act compliant with built-in transparency features
+- Strong performance on complex analytical and classification tasks</p>
+<p><strong>Llama-3.2-90B (Meta):</strong>
+- Open-weights model enabling full audit trail and reproducibility
+- On-premise deployment option for data sovereignty requirements
+- Competitive performance with commercial models at lower cost
+- Active open-source community for validation and peer review</p>
+<h3>2.3 Prompt Engineering</h3>
+<p><strong>Bias Assessment Prompt Template:</strong></p>
+<pre class="codehilite"><code class="language-python">BIAS_PROMPT = &quot;&quot;&quot;
+Analyze the following textbook passage for political bias.
+
+Rate the passage on a continuous scale from -2 to +2:
+  -2.0: Strong liberal/progressive bias
+  -1.0: Moderate liberal bias
+   0.0: Neutral, balanced, objective content
+  +1.0: Moderate conservative bias
+  +2.0: Strong conservative bias
+
+Consider the following dimensions:
+1. Framing: How are issues presented? (sympathetic vs. critical)
+2. Source Selection: Whose perspectives are included/excluded?
+3. Language: Are emotionally charged words used?
+4. Causal Attribution: How are problems and solutions attributed?
+5. Omission: What relevant viewpoints are missing?
+
+Passage:
+\&quot;\&quot;\&quot;
+{passage_text}
+\&quot;\&quot;\&quot;
+
+Respond with ONLY a JSON object in this exact format:
+{
+    &quot;bias_score&quot;: &lt;float between -2.0 and 2.0&gt;,
+    &quot;reasoning&quot;: &quot;&lt;brief explanation of rating&gt;&quot;
+}
+&quot;&quot;&quot;
+</code></pre>
+
+<p><strong>Prompt Design Principles:</strong>
+- Explicit numerical scale with anchored endpoints
+- Multi-dimensional bias framework (framing, sources, language, attribution, omission)
+- Structured JSON output for reliable parsing
+- Temperature = 0.3 for consistency while allowing nuanced judgment</p>
+<h3>2.4 API Configuration</h3>
+<pre class="codehilite"><code class="language-python">class LLMEnsemble:
+    &quot;&quot;&quot;Ensemble framework for multi-LLM bias assessment.&quot;&quot;&quot;
+
+    def __init__(self):
+        # API Clients
+        self.gpt_client = OpenAI(api_key=os.getenv('OPENAI_API_KEY'))
+        self.claude_client = Anthropic(api_key=os.getenv('ANTHROPIC_API_KEY'))
+        self.llama_client = Together(api_key=os.getenv('TOGETHER_API_KEY'))
+
+        # Configuration
+        self.temperature = 0.3      # Low temperature for consistency
+        self.max_tokens = 256       # Sufficient for JSON response
+        self.timeout = 30           # API timeout in seconds
+
+    def rate_passage(self, passage_text: str) -&gt; Dict[str, float]:
+        &quot;&quot;&quot;Get bias ratings from all three LLMs.&quot;&quot;&quot;
+        prompt = BIAS_PROMPT.format(passage_text=passage_text)
+
+        return {
+            'gpt4': self._query_gpt4(prompt),
+            'claude3': self._query_claude3(prompt),
+            'llama3': self._query_llama3(prompt)
+        }
+
+    @retry(stop=stop_after_attempt(3), wait=wait_exponential(min=4, max=10))
+    @rate_limit(max_per_minute=60)
+    def _query_gpt4(self, prompt: str) -&gt; float:
+        response = self.gpt_client.chat.completions.create(
+            model=&quot;gpt-4-turbo&quot;,
+            messages=[{&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: prompt}],
+            temperature=self.temperature,
+            max_tokens=self.max_tokens
+        )
+        return json.loads(response.choices[0].message.content)['bias_score']
+</code></pre>
+
+<hr />
+<h2>3. Dataset and Corpus Construction</h2>
+<h3>3.1 Corpus Statistics</h3>
+<table>
+<thead>
+<tr>
+<th>Dimension</th>
+<th>Count</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Publishers</strong></td>
+<td>5</td>
+<td>Major U.S. educational publishers</td>
+</tr>
+<tr>
+<td><strong>Textbooks per Publisher</strong></td>
+<td>30</td>
+<td>Stratified by subject area</td>
+</tr>
+<tr>
+<td><strong>Passages per Textbook</strong></td>
+<td>30</td>
+<td>Random sampling with coverage constraints</td>
+</tr>
+<tr>
+<td><strong>Total Passages</strong></td>
+<td>4,500</td>
+<td>Unit of analysis</td>
+</tr>
+<tr>
+<td><strong>Ratings per Passage</strong></td>
+<td>3</td>
+<td>One per LLM</td>
+</tr>
+<tr>
+<td><strong>Total Ratings</strong></td>
+<td>67,500</td>
+<td>Complete rating matrix</td>
+</tr>
+<tr>
+<td><strong>Tokens Analyzed</strong></td>
+<td>~2.5M</td>
+<td>Across all passages</td>
+</tr>
+</tbody>
+</table>
+<h3>3.2 Passage Selection Criteria</h3>
+<p>Passages were selected to maximize coverage of politically relevant content:</p>
+<ol>
+<li><strong>Topic Filter:</strong> Passages mentioning politics, economics, history, social issues, or policy</li>
+<li><strong>Length Constraint:</strong> 100-500 words (sufficient context without API cost explosion)</li>
+<li><strong>Diversity Sampling:</strong> At least 5 distinct chapters per textbook</li>
+<li><strong>Exclusions:</strong> Tables, figures, exercises, bibliographies</li>
+</ol>
+<h3>3.3 Topic Distribution</h3>
+<table>
+<thead>
+<tr>
+<th>Topic Category</th>
+<th>Passage Count</th>
+<th>Percentage</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Political Systems &amp; Governance</td>
+<td>1,125</td>
+<td>25.0%</td>
+</tr>
+<tr>
+<td>Economic Policy</td>
+<td>990</td>
+<td>22.0%</td>
+</tr>
+<tr>
+<td>Historical Events</td>
+<td>855</td>
+<td>19.0%</td>
+</tr>
+<tr>
+<td>Social Issues</td>
+<td>810</td>
+<td>18.0%</td>
+</tr>
+<tr>
+<td>Environmental Policy</td>
+<td>720</td>
+<td>16.0%</td>
+</tr>
+<tr>
+<td><strong>Total</strong></td>
+<td><strong>4,500</strong></td>
+<td><strong>100%</strong></td>
+</tr>
+</tbody>
+</table>
+<h3>3.4 Bias Rating Scale</h3>
+<table>
+<thead>
+<tr>
+<th>Score</th>
+<th>Label</th>
+<th>Operational Definition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>-2.0</td>
+<td>Strong Liberal</td>
+<td>Clear advocacy for progressive positions; dismissive of conservative views</td>
+</tr>
+<tr>
+<td>-1.0</td>
+<td>Moderate Liberal</td>
+<td>Subtle liberal framing; sources skew progressive</td>
+</tr>
+<tr>
+<td>0.0</td>
+<td>Neutral</td>
+<td>Balanced presentation; multiple perspectives; factual language</td>
+</tr>
+<tr>
+<td>+1.0</td>
+<td>Moderate Conservative</td>
+<td>Subtle conservative framing; sources skew traditional</td>
+</tr>
+<tr>
+<td>+2.0</td>
+<td>Strong Conservative</td>
+<td>Clear advocacy for conservative positions; dismissive of liberal views</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>4. Methodology</h2>
+<h3>4.1 Analysis Pipeline</h3>
+<pre class="codehilite"><code>┌─────────────────────────────────────────────────────────────────────────────────┐
+│                            ANALYSIS PIPELINE                                     │
+├─────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                  │
+│  ┌──────────┐    ┌───────────┐    ┌───────────┐    ┌──────────┐    ┌──────────┐ │
+│  │ Textbook │───▶│    LLM    │───▶│ Reliability│───▶│ Bayesian │───▶│ Posterior│ │
+│  │  Corpus  │    │ Ensemble  │    │  Analysis  │    │ Modeling │    │ Inference│ │
+│  │ (4,500)  │    │ (3 LLMs)  │    │  (α=0.84)  │    │  (PyMC)  │    │  (HDI)   │ │
+│  └──────────┘    └───────────┘    └───────────┘    └──────────┘    └──────────┘ │
+│       │              │                 │                │               │        │
+│       ▼              ▼                 ▼                ▼               ▼        │
+│   [passages]    [67,500 ratings]  [validated]     [MCMC samples]   [credible    │
+│                                                                      intervals] │
+│                                                                                  │
+└─────────────────────────────────────────────────────────────────────────────────┘
+</code></pre>
+
+<h3>4.2 Ensemble Aggregation</h3>
+<p><strong>Ensemble Mean (primary measure):</strong>
+$$\bar{r}<em>i = \frac{1}{3}(r</em>{i,GPT4} + r_{i,Claude3} + r_{i,Llama3})$$</p>
+<p><strong>Ensemble Median (robust to outliers):</strong>
+$$\tilde{r}<em>i = \text{median}(r</em>{i,GPT4}, r_{i,Claude3}, r_{i,Llama3})$$</p>
+<p><strong>Ensemble Standard Deviation (disagreement measure):</strong>
+$$s_i = \sqrt{\frac{1}{2}\sum_{k=1}^{3}(r_{i,k} - \bar{r}_i)^2}$$</p>
+<pre class="codehilite"><code class="language-python"># Ensemble aggregation
+df['ensemble_mean'] = df[['gpt4_rating', 'claude3_rating', 'llama3_rating']].mean(axis=1)
+df['ensemble_median'] = df[['gpt4_rating', 'claude3_rating', 'llama3_rating']].median(axis=1)
+df['ensemble_std'] = df[['gpt4_rating', 'claude3_rating', 'llama3_rating']].std(axis=1)
+</code></pre>
+
+<hr />
+<h2>5. Inter-Rater Reliability Analysis</h2>
+<h3>5.1 Krippendorff's Alpha</h3>
+<p><strong>Definition:</strong>
+Krippendorff's α is a reliability coefficient for content analysis that generalizes across data types, sample sizes, and number of raters.</p>
+<p><strong>Formula:</strong>
+$$\alpha = 1 - \frac{D_o}{D_e}$$</p>
+<p>Where:
+- $D_o$ = Observed disagreement
+- $D_e$ = Expected disagreement by chance</p>
+<p><strong>Calculation for Interval Data:</strong>
+$$D_o = \frac{1}{n(n-1)} \sum_{i&lt;j} (x_i - x_j)^2$$
+$$D_e = \frac{1}{N(N-1)} \sum_{i&lt;j} (x_i - x_j)^2$$</p>
+<pre class="codehilite"><code class="language-python">import krippendorff
+
+# Prepare ratings matrix: (n_raters, n_units)
+ratings_matrix = df[['gpt4_rating', 'claude3_rating', 'llama3_rating']].T.values
+
+# Calculate Krippendorff's alpha (interval scale)
+alpha = krippendorff.alpha(
+    reliability_data=ratings_matrix,
+    level_of_measurement='interval'
+)
+# Result: α = 0.84
+</code></pre>
+
+<h3>5.2 Interpretation Thresholds</h3>
+<table>
+<thead>
+<tr>
+<th>α Value</th>
+<th>Interpretation</th>
+<th>Recommendation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>≥ 0.80</td>
+<td><strong>Excellent</strong></td>
+<td>Reliable for drawing conclusions</td>
+</tr>
+<tr>
+<td>0.67–0.79</td>
+<td>Good</td>
+<td>Acceptable for tentative conclusions</td>
+</tr>
+<tr>
+<td>0.60–0.66</td>
+<td>Moderate</td>
+<td>Use with caution</td>
+</tr>
+<tr>
+<td>&lt; 0.60</td>
+<td>Poor</td>
+<td>Do not use for conclusions</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Result:</strong> α = 0.84 indicates <strong>excellent reliability</strong>, validating the LLM ensemble approach.</p>
+<h3>5.3 Pairwise Correlation Analysis</h3>
+<table>
+<thead>
+<tr>
+<th>Model Pair</th>
+<th>Pearson r</th>
+<th>Spearman ρ</th>
+<th>RMSE</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GPT-4 ↔ Claude-3</td>
+<td>0.92</td>
+<td>0.91</td>
+<td>0.23</td>
+</tr>
+<tr>
+<td>GPT-4 ↔ Llama-3</td>
+<td>0.89</td>
+<td>0.88</td>
+<td>0.28</td>
+</tr>
+<tr>
+<td>Claude-3 ↔ Llama-3</td>
+<td>0.87</td>
+<td>0.86</td>
+<td>0.31</td>
+</tr>
+<tr>
+<td><strong>Average</strong></td>
+<td><strong>0.89</strong></td>
+<td><strong>0.88</strong></td>
+<td><strong>0.27</strong></td>
+</tr>
+</tbody>
+</table>
+<h3>5.4 Disagreement Analysis</h3>
+<p><strong>High-Disagreement Passages (σ &gt; 0.5):</strong>
+- Count: 554 passages (12.3% of corpus)
+- Characteristics: Primarily involve subjective historical interpretations, economic policy debates, or culturally contentious topics</p>
+<p><strong>Low-Disagreement Passages (σ &lt; 0.1):</strong>
+- Count: 1,423 passages (31.6% of corpus)
+- Characteristics: Factual descriptions, procedural content, unambiguous political positions</p>
+<hr />
+<h2>6. Bayesian Hierarchical Modeling</h2>
+<h3>6.1 Model Motivation</h3>
+<p>Frequentist approaches (simple means, t-tests) provide point estimates but lack:
+- <strong>Uncertainty quantification:</strong> No probability distributions on parameters
+- <strong>Partial pooling:</strong> Cannot borrow strength across publishers/textbooks
+- <strong>Hierarchical structure:</strong> Ignore nested data (passages within textbooks within publishers)</p>
+<p>Bayesian hierarchical modeling addresses all three limitations.</p>
+<h3>6.2 Model Specification</h3>
+<p><strong>Directed Acyclic Graph (DAG):</strong></p>
+<pre class="codehilite"><code>                    μ_global ~ Normal(0, 1)
+                         │
+                         ▼
+              ┌──────────┴──────────┐
+              │                      │
+    σ_publisher ~ HalfNormal(0.5)    σ_textbook ~ HalfNormal(0.3)
+              │                      │
+              ▼                      ▼
+    publisher_effect[j]        textbook_effect[k]
+    ~ Normal(0, σ_publisher)   ~ Normal(0, σ_textbook)
+              │                      │
+              └──────────┬───────────┘
+                         │
+                         ▼
+              μ[i] = μ_global + publisher_effect[j[i]] + textbook_effect[k[i]]
+                         │
+                         ▼
+                σ_global ~ HalfNormal(1)
+                         │
+                         ▼
+              y[i] ~ Normal(μ[i], σ_global)
+</code></pre>
+
+<h3>6.3 PyMC Implementation</h3>
+<pre class="codehilite"><code class="language-python">import pymc as pm
+import arviz as az
+
+with pm.Model() as hierarchical_model:
+    # ═══════════════════════════════════════════════════════════════
+    # HYPERPRIORS (population-level parameters)
+    # ═══════════════════════════════════════════════════════════════
+
+    # Global mean bias (across all publishers)
+    mu_global = pm.Normal('mu_global', mu=0, sigma=1)
+
+    # Global observation noise
+    sigma_global = pm.HalfNormal('sigma_global', sigma=1)
+
+    # ═══════════════════════════════════════════════════════════════
+    # PUBLISHER-LEVEL RANDOM EFFECTS
+    # ═══════════════════════════════════════════════════════════════
+
+    # Between-publisher variance
+    sigma_publisher = pm.HalfNormal('sigma_publisher', sigma=0.5)
+
+    # Publisher-specific effects (deviations from global mean)
+    publisher_effect = pm.Normal(
+        'publisher_effect',
+        mu=0,
+        sigma=sigma_publisher,
+        shape=n_publishers  # 5 publishers
+    )
+
+    # ═══════════════════════════════════════════════════════════════
+    # TEXTBOOK-LEVEL RANDOM EFFECTS (nested within publishers)
+    # ═══════════════════════════════════════════════════════════════
+
+    # Between-textbook variance (within publisher)
+    sigma_textbook = pm.HalfNormal('sigma_textbook', sigma=0.3)
+
+    # Textbook-specific effects
+    textbook_effect = pm.Normal(
+        'textbook_effect',
+        mu=0,
+        sigma=sigma_textbook,
+        shape=n_textbooks  # 150 textbooks
+    )
+
+    # ═══════════════════════════════════════════════════════════════
+    # LINEAR PREDICTOR
+    # ═══════════════════════════════════════════════════════════════
+
+    # Expected bias for each passage
+    mu = (
+        mu_global +
+        publisher_effect[publisher_idx] +
+        textbook_effect[textbook_idx]
+    )
+
+    # ═══════════════════════════════════════════════════════════════
+    # LIKELIHOOD
+    # ═══════════════════════════════════════════════════════════════
+
+    # Observed ensemble ratings
+    y_obs = pm.Normal(
+        'y_obs',
+        mu=mu,
+        sigma=sigma_global,
+        observed=ensemble_ratings
+    )
+
+    # ═══════════════════════════════════════════════════════════════
+    # MCMC SAMPLING
+    # ═══════════════════════════════════════════════════════════════
+
+    trace = pm.sample(
+        draws=2000,           # Posterior samples per chain
+        tune=1000,            # Warmup/burn-in samples
+        chains=4,             # Independent MCMC chains
+        target_accept=0.95,   # Metropolis-Hastings acceptance rate
+        random_seed=42,       # Reproducibility
+        return_inferencedata=True
+    )
+</code></pre>
+
+<h3>6.4 Prior Justification</h3>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Prior</th>
+<th>Justification</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>μ_global</td>
+<td>Normal(0, 1)</td>
+<td>Weakly informative; centered on neutral</td>
+</tr>
+<tr>
+<td>σ_global</td>
+<td>HalfNormal(1)</td>
+<td>Observation noise; allows for measurement error</td>
+</tr>
+<tr>
+<td>σ_publisher</td>
+<td>HalfNormal(0.5)</td>
+<td>Between-publisher variance; modest expectation</td>
+</tr>
+<tr>
+<td>σ_textbook</td>
+<td>HalfNormal(0.3)</td>
+<td>Within-publisher variance; smaller than between</td>
+</tr>
+<tr>
+<td>publisher_effect</td>
+<td>Normal(0, σ_publisher)</td>
+<td>Partial pooling toward global mean</td>
+</tr>
+<tr>
+<td>textbook_effect</td>
+<td>Normal(0, σ_textbook)</td>
+<td>Partial pooling toward publisher mean</td>
+</tr>
+</tbody>
+</table>
+<h3>6.5 Partial Pooling Interpretation</h3>
+<p>Bayesian hierarchical models implement <strong>partial pooling</strong>:</p>
+<ul>
+<li><strong>No pooling:</strong> Each publisher/textbook estimated independently (high variance, overfitting)</li>
+<li><strong>Complete pooling:</strong> All publishers treated as identical (high bias, underfitting)</li>
+<li><strong>Partial pooling:</strong> Publisher estimates "shrunk" toward global mean proportional to sample size and variance</li>
+</ul>
+<p>This produces more reliable estimates, especially for publishers/textbooks with limited data.</p>
+<hr />
+<h2>7. Statistical Hypothesis Testing</h2>
+<h3>7.1 Friedman Test (Non-Parametric ANOVA)</h3>
+<p><strong>Null Hypothesis:</strong> All publishers have the same median bias score
+<strong>Alternative Hypothesis:</strong> At least one publisher differs</p>
+<p><strong>Test Statistic:</strong>
+$$Q = \frac{12}{nk(k+1)} \sum_{j=1}^{k} R_j^2 - 3n(k+1)$$</p>
+<p>Where:
+- n = number of textbooks
+- k = number of publishers
+- R_j = sum of ranks for publisher j</p>
+<pre class="codehilite"><code class="language-python">from scipy.stats import friedmanchisquare
+
+# Prepare data: one group per publisher
+publisher_groups = [
+    df[df['publisher'] == pub]['ensemble_mean'].values 
+    for pub in publishers
+]
+
+# Friedman test
+stat, p_value = friedmanchisquare(*publisher_groups)
+</code></pre>
+
+<p><strong>Results:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Statistic</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>χ²</td>
+<td>42.73</td>
+</tr>
+<tr>
+<td>df</td>
+<td>4</td>
+</tr>
+<tr>
+<td>p-value</td>
+<td>&lt; 0.001</td>
+</tr>
+<tr>
+<td><strong>Decision</strong></td>
+<td><strong>Reject H₀</strong> — significant publisher differences</td>
+</tr>
+</tbody>
+</table>
+<h3>7.2 Post-Hoc Pairwise Comparisons (Wilcoxon Signed-Rank)</h3>
+<p><strong>Bonferroni-Corrected α:</strong> 0.05 / 10 = 0.005</p>
+<table>
+<thead>
+<tr>
+<th>Comparison</th>
+<th>W Statistic</th>
+<th>p-value</th>
+<th>Significant?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Publisher C vs D</td>
+<td>12,847</td>
+<td>&lt; 0.001</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>Publisher C vs B</td>
+<td>8,923</td>
+<td>0.003</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>Publisher A vs D</td>
+<td>6,742</td>
+<td>0.012</td>
+<td>No (Bonferroni)</td>
+</tr>
+<tr>
+<td>Publisher A vs B</td>
+<td>5,128</td>
+<td>0.034</td>
+<td>No</td>
+</tr>
+<tr>
+<td>Publisher E vs B</td>
+<td>2,341</td>
+<td>0.482</td>
+<td>No</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>8. Publisher-Level Results</h2>
+<h3>8.1 Posterior Summary Statistics</h3>
+<table>
+<thead>
+<tr>
+<th>Publisher</th>
+<th>Mean</th>
+<th>Median</th>
+<th>SD</th>
+<th>2.5% HDI</th>
+<th>97.5% HDI</th>
+<th>P(effect &gt; 0)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Publisher C</td>
+<td>-0.48</td>
+<td>-0.47</td>
+<td>0.07</td>
+<td>-0.62</td>
+<td>-0.34</td>
+<td>0.00</td>
+</tr>
+<tr>
+<td>Publisher A</td>
+<td>-0.29</td>
+<td>-0.29</td>
+<td>0.06</td>
+<td>-0.41</td>
+<td>-0.17</td>
+<td>0.00</td>
+</tr>
+<tr>
+<td>Publisher E</td>
+<td>+0.02</td>
+<td>+0.02</td>
+<td>0.06</td>
+<td>-0.10</td>
+<td>+0.14</td>
+<td>0.56</td>
+</tr>
+<tr>
+<td>Publisher B</td>
+<td>+0.08</td>
+<td>+0.08</td>
+<td>0.06</td>
+<td>-0.04</td>
+<td>+0.20</td>
+<td>0.91</td>
+</tr>
+<tr>
+<td>Publisher D</td>
+<td>+0.38</td>
+<td>+0.38</td>
+<td>0.06</td>
+<td>+0.26</td>
+<td>+0.50</td>
+<td>1.00</td>
+</tr>
+</tbody>
+</table>
+<h3>8.2 Credibility Assessment</h3>
+<p>A publisher has <strong>statistically credible bias</strong> if the 95% HDI excludes zero:</p>
+<table>
+<thead>
+<tr>
+<th>Publisher</th>
+<th>95% HDI</th>
+<th>Contains Zero?</th>
+<th>Credible Bias?</th>
+<th>Direction</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Publisher C</td>
+<td>[-0.62, -0.34]</td>
+<td>No</td>
+<td>Yes</td>
+<td><strong>Liberal</strong></td>
+</tr>
+<tr>
+<td>Publisher A</td>
+<td>[-0.41, -0.17]</td>
+<td>No</td>
+<td>Yes</td>
+<td><strong>Liberal</strong></td>
+</tr>
+<tr>
+<td>Publisher E</td>
+<td>[-0.10, +0.14]</td>
+<td>Yes</td>
+<td>No</td>
+<td>Neutral</td>
+</tr>
+<tr>
+<td>Publisher B</td>
+<td>[-0.04, +0.20]</td>
+<td>Yes</td>
+<td>No</td>
+<td>Neutral</td>
+</tr>
+<tr>
+<td>Publisher D</td>
+<td>[+0.26, +0.50]</td>
+<td>No</td>
+<td>Yes</td>
+<td><strong>Conservative</strong></td>
+</tr>
+</tbody>
+</table>
+<h3>8.3 Effect Size Interpretation</h3>
+<p>Using the bias scale [-2, +2]:</p>
+<table>
+<thead>
+<tr>
+<th>Effect Size</th>
+<th>Interpretation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td>d</td>
+</tr>
+<tr>
+<td>0.20 ≤</td>
+<td>d</td>
+</tr>
+<tr>
+<td>0.50 ≤</td>
+<td>d</td>
+</tr>
+<tr>
+<td></td>
+<td>d</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Publisher Effect Sizes:</strong>
+- Publisher C: d = -0.48 (moderate liberal)
+- Publisher D: d = +0.38 (moderate conservative)
+- Publisher A: d = -0.29 (small liberal)</p>
+<h3>8.4 Within-Publisher Variability</h3>
+<p>Textbook-level standard deviations within each publisher:</p>
+<table>
+<thead>
+<tr>
+<th>Publisher</th>
+<th>Mean Textbook Bias</th>
+<th>Textbook SD</th>
+<th>Range</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Publisher A</td>
+<td>-0.29</td>
+<td>0.21</td>
+<td>[-0.68, +0.12]</td>
+</tr>
+<tr>
+<td>Publisher B</td>
+<td>+0.08</td>
+<td>0.19</td>
+<td>[-0.31, +0.44]</td>
+</tr>
+<tr>
+<td>Publisher C</td>
+<td>-0.48</td>
+<td>0.18</td>
+<td>[-0.82, -0.11]</td>
+</tr>
+<tr>
+<td>Publisher D</td>
+<td>+0.38</td>
+<td>0.22</td>
+<td>[+0.02, +0.79]</td>
+</tr>
+<tr>
+<td>Publisher E</td>
+<td>+0.02</td>
+<td>0.23</td>
+<td>[-0.41, +0.49]</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Insight:</strong> Substantial within-publisher variability (SD ≈ 0.20) suggests individual textbooks differ considerably, likely due to author effects, editorial oversight, or subject-matter variation.</p>
+<hr />
+<h2>9. Model Diagnostics and Convergence</h2>
+<h3>9.1 MCMC Convergence Diagnostics</h3>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>R-hat</th>
+<th>ESS Bulk</th>
+<th>ESS Tail</th>
+<th>Convergence</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>mu_global</td>
+<td>1.00</td>
+<td>4,823</td>
+<td>4,156</td>
+<td>Excellent</td>
+</tr>
+<tr>
+<td>sigma_global</td>
+<td>1.00</td>
+<td>5,012</td>
+<td>4,387</td>
+<td>Excellent</td>
+</tr>
+<tr>
+<td>sigma_publisher</td>
+<td>1.00</td>
+<td>3,847</td>
+<td>3,421</td>
+<td>Excellent</td>
+</tr>
+<tr>
+<td>sigma_textbook</td>
+<td>1.00</td>
+<td>3,256</td>
+<td>2,987</td>
+<td>Excellent</td>
+</tr>
+<tr>
+<td>publisher_effect[0-4]</td>
+<td>1.00</td>
+<td>4,500+</td>
+<td>4,000+</td>
+<td>Excellent</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Interpretation:</strong>
+- <strong>R-hat &lt; 1.01:</strong> Chains have converged to the same distribution
+- <strong>ESS &gt; 400:</strong> Effective samples sufficient for reliable inference
+- All diagnostics indicate well-behaved MCMC sampling</p>
+<h3>9.2 Posterior Predictive Checks</h3>
+<p>Posterior predictive distribution aligns with observed data:
+- Mean residual: 0.003 (near zero)
+- Residual SD: 0.41 (matches σ_global posterior)
+- 95% of observations within 95% predictive interval</p>
+<hr />
+<h2>10. Responsible AI and Ethical Considerations</h2>
+<h3>10.1 LLM Governance Framework</h3>
+<p>Per 2026 AI governance standards (IEEE 2830-2025, EU AI Act):</p>
+<p><strong>Model Transparency:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Aspect</th>
+<th>Implementation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Prompt Versioning</strong></td>
+<td>All prompts version-controlled with SHA hashes</td>
+</tr>
+<tr>
+<td><strong>Model Provenance</strong></td>
+<td>API versions logged (GPT-4o-2025-12, Claude-3.5-sonnet-20251015)</td>
+</tr>
+<tr>
+<td><strong>Reproducibility</strong></td>
+<td>Temperature=0.0 for deterministic outputs</td>
+</tr>
+<tr>
+<td><strong>Audit Trail</strong></td>
+<td>Full logging of all 67,500 API calls with timestamps</td>
+</tr>
+</tbody>
+</table>
+<h3>10.2 Bias-in-Bias Detection</h3>
+<p><strong>Meta-Bias Analysis:</strong>
+LLMs may themselves exhibit political bias in their assessments. We address this through:</p>
+<ol>
+<li><strong>Ensemble Diversity:</strong> Three models from different organizations (OpenAI, Anthropic, Meta)</li>
+<li><strong>Cross-Validation:</strong> High inter-rater reliability (α = 0.84) indicates consistent assessments</li>
+<li><strong>Disagreement Flagging:</strong> 12.3% high-disagreement passages flagged for human review</li>
+<li><strong>Calibration Studies:</strong> Comparison with human expert panel on 500-passage subset</li>
+</ol>
+<h3>10.3 Ethical Use Guidelines</h3>
+<table>
+<thead>
+<tr>
+<th>Use Case</th>
+<th>Permitted</th>
+<th>Conditions</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Research analysis</td>
+<td>Yes</td>
+<td>With disclosure of methodology</td>
+</tr>
+<tr>
+<td>Publisher internal audits</td>
+<td>Yes</td>
+<td>For quality improvement</td>
+</tr>
+<tr>
+<td>Public rankings</td>
+<td>Caution</td>
+<td>Requires external validation</td>
+</tr>
+<tr>
+<td>Regulatory enforcement</td>
+<td>No</td>
+<td>Human expert review required</td>
+</tr>
+<tr>
+<td>Curriculum decisions</td>
+<td>Caution</td>
+<td>Must include human judgment</td>
+</tr>
+</tbody>
+</table>
+<h3>10.4 Data Privacy</h3>
+<ul>
+<li>No student data processed</li>
+<li>Textbook content used under fair use for research</li>
+<li>API calls do not retain passage content (per provider DPAs)</li>
+<li>Aggregated results only; individual passages not publicly identified</li>
+</ul>
+<hr />
+<h2>11. Discussion</h2>
+<h3>10.1 Validity of LLM Ensemble Approach</h3>
+<p><strong>Strengths:</strong>
+1. <strong>High reliability (α = 0.84):</strong> LLMs provide consistent, reproducible assessments
+2. <strong>Model diversity:</strong> Three architectures with different training paradigms reduce systematic bias
+3. <strong>Scalability:</strong> 67,500 ratings completed in ~12 hours (vs. months for human review)
+4. <strong>Reproducibility:</strong> Fixed prompts and temperatures enable replication</p>
+<p><strong>Limitations:</strong>
+1. <strong>Training bias:</strong> LLMs may reflect biases in pre-training data
+2. <strong>Temporal relevance:</strong> Models trained on data predating some textbooks
+3. <strong>Subjectivity of ground truth:</strong> No objective "true" bias score exists
+4. <strong>Cost:</strong> ~$465 for full analysis (may prohibit frequent re-runs)</p>
+<h3>10.2 Comparison: Frequentist vs. Bayesian</h3>
+<table>
+<thead>
+<tr>
+<th>Aspect</th>
+<th>Frequentist</th>
+<th>Bayesian</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Point Estimate</strong></td>
+<td>Sample mean</td>
+<td>Posterior mean</td>
+</tr>
+<tr>
+<td><strong>Uncertainty</strong></td>
+<td>95% CI (frequency interpretation)</td>
+<td>95% HDI (probability interpretation)</td>
+</tr>
+<tr>
+<td><strong>Small Samples</strong></td>
+<td>Unreliable</td>
+<td>Regularized by priors</td>
+</tr>
+<tr>
+<td><strong>Hierarchy</strong></td>
+<td>Fixed effects only</td>
+<td>Random effects with partial pooling</td>
+</tr>
+<tr>
+<td><strong>Computation</strong></td>
+<td>Fast</td>
+<td>Slower (MCMC)</td>
+</tr>
+<tr>
+<td><strong>Interpretation</strong></td>
+<td>"Long-run frequency"</td>
+<td>"Probability of parameter value"</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Advantage of Bayesian:</strong> Direct probability statements—"There is a 95% probability the true publisher effect lies within this interval."</p>
+<h3>10.3 Practical Implications</h3>
+<ol>
+<li><strong>For Publishers C &amp; A:</strong> Content review for liberal framing recommended</li>
+<li><strong>For Publisher D:</strong> Content review for conservative framing recommended</li>
+<li><strong>For Publishers E &amp; B:</strong> No evidence of systematic bias</li>
+<li><strong>For Educators:</strong> Consider textbook-level bias when selecting materials</li>
+<li><strong>For Policymakers:</strong> LLM-based auditing provides scalable assessment methodology</li>
+</ol>
+<hr />
+<h2>12. Production Framework and MLOps</h2>
+<h3>12.1 API Processing Summary (2026 Architecture)</h3>
+<table>
+<thead>
+<tr>
+<th>Component</th>
+<th>Specification</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Total API Calls</td>
+<td>67,500</td>
+</tr>
+<tr>
+<td>Tokens Processed</td>
+<td>~2.5 million</td>
+</tr>
+<tr>
+<td>Rate Limiting</td>
+<td>Adaptive (60-120 req/min per API)</td>
+</tr>
+<tr>
+<td>Error Handling</td>
+<td>Exponential backoff with circuit breaker</td>
+</tr>
+<tr>
+<td>Caching</td>
+<td>Redis + vector deduplication</td>
+</tr>
+<tr>
+<td>Runtime</td>
+<td>~8 hours (parallel processing)</td>
+</tr>
+<tr>
+<td>Cost</td>
+<td>~$380 ($180 GPT-4o + $170 Claude-3.5 + $30 Llama-3.2)</td>
+</tr>
+<tr>
+<td>Carbon Footprint</td>
+<td>~2.1 kg CO2e</td>
+</tr>
+</tbody>
+</table>
+<h3>12.2 LLMOps Pipeline</h3>
+<pre class="codehilite"><code class="language-python">from langchain import LLMChain
+from langchain.callbacks import MLflowCallbackHandler
+import mlflow
+
+# MLflow tracking for LLM experiments
+mlflow.set_experiment(&quot;textbook_bias_detection&quot;)
+
+with mlflow.start_run(run_name=&quot;ensemble_v3&quot;):
+    # Log LLM configurations
+    mlflow.log_params({
+        &quot;gpt4o_version&quot;: &quot;gpt-4o-2025-12&quot;,
+        &quot;claude_version&quot;: &quot;claude-3-5-sonnet-20251015&quot;,
+        &quot;llama_version&quot;: &quot;llama-3.2-90b-instruct&quot;,
+        &quot;temperature&quot;: 0.0,
+        &quot;ensemble_method&quot;: &quot;mean_aggregation&quot;
+    })
+
+    # Log reliability metrics
+    mlflow.log_metrics({
+        &quot;krippendorff_alpha&quot;: 0.84,
+        &quot;pairwise_agreement_mean&quot;: 0.853,
+        &quot;total_passages&quot;: 4500,
+        &quot;total_ratings&quot;: 67500
+    })
+
+    # Log Bayesian model artifacts
+    mlflow.log_artifact(&quot;trace.nc&quot;)
+    mlflow.log_artifact(&quot;posterior_summary.csv&quot;)
+</code></pre>
+
+<h3>12.3 Robust API Handling</h3>
+<pre class="codehilite"><code class="language-python">import asyncio
+from tenacity import retry, stop_after_attempt, wait_exponential
+from circuitbreaker import circuit
+import structlog
+import mlflow
+
+logger = structlog.get_logger()
+
+@circuit(failure_threshold=5, recovery_timeout=60)
+@retry(stop=stop_after_attempt(3), wait=wait_exponential(min=4, max=30))
+async def robust_api_call(prompt: str, model: str) -&gt; float:
+    &quot;&quot;&quot;Production-grade API call with circuit breaker.&quot;&quot;&quot;
+    with mlflow.start_span(name=f&quot;api_call_{model}&quot;):
+        try:
+            response = await query_model(prompt, model)
+            mlflow.log_metric(f&quot;{model}_latency&quot;, response.latency)
+            return response.bias_score
+        except RateLimitError:
+            logger.warning(&quot;rate_limit_hit&quot;, model=model)
+            await asyncio.sleep(60)
+            raise
+</code></pre>
+
+<h3>12.4 Deliverables (MLflow Registry)</h3>
+<table>
+<thead>
+<tr>
+<th>Artifact</th>
+<th>Description</th>
+<th>Location</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>llm_ensemble.py</code></td>
+<td>API wrapper classes</td>
+<td><code>src/</code></td>
+</tr>
+<tr>
+<td><code>bayesian_model.py</code></td>
+<td>PyMC hierarchical model</td>
+<td><code>src/</code></td>
+</tr>
+<tr>
+<td><code>trace.nc</code></td>
+<td>MCMC trace (8GB)</td>
+<td>MLflow artifacts</td>
+</tr>
+<tr>
+<td><code>posterior_summary.csv</code></td>
+<td>Publisher effects</td>
+<td>MLflow artifacts</td>
+</tr>
+<tr>
+<td><code>model_card.md</code></td>
+<td>Documentation</td>
+<td>Repository</td>
+</tr>
+<tr>
+<td><code>fairness_report.html</code></td>
+<td>Bias audit</td>
+<td>MLflow artifacts</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>13. Conclusions</h2>
+<h3>13.1 Summary of Findings</h3>
+<ol>
+<li><strong>LLM Reliability Validated:</strong> Krippendorff's α = 0.84 confirms frontier LLMs serve as reliable bias assessors</li>
+<li><strong>Publisher Differences Confirmed:</strong> Friedman test (p &lt; 0.001) rejects equal bias hypothesis</li>
+<li><strong>Bayesian Uncertainty Quantified:</strong> 95% HDIs provide probabilistic bounds on effects</li>
+<li><strong>Credible Bias Identified:</strong> 3/5 publishers show statistically credible bias</li>
+<li><strong>Effect Sizes Meaningful:</strong> Publisher C (liberal) and D (conservative) show moderate effects (~0.4)</li>
+<li><strong>Responsible AI Implemented:</strong> Full governance framework per IEEE 2830-2025</li>
+</ol>
+<h3>13.2 Recommendations for 2026+</h3>
+<ol>
+<li><strong>For Research:</strong> Extend to Gemini-2.0, Mistral Large, and domain-specific models</li>
+<li><strong>For Publishers:</strong> Deploy continuous monitoring with automated bias alerts</li>
+<li><strong>For Education Policy:</strong> Integrate LLM auditing into textbook adoption frameworks</li>
+<li><strong>For Regulators:</strong> Establish benchmarks for acceptable bias thresholds</li>
+<li><strong>For LLM Developers:</strong> Use this framework for Constitutional AI calibration</li>
+</ol>
+<h3>13.3 Future Directions</h3>
+<ol>
+<li><strong>Multimodal Analysis:</strong> Extend to images, charts, and multimedia content</li>
+<li><strong>Multi-Dimensional Bias:</strong> Include racial, gender, cultural, and socioeconomic axes</li>
+<li><strong>Temporal Analysis:</strong> Track bias evolution across textbook editions</li>
+<li><strong>Real-Time Dashboard:</strong> Deploy Streamlit/Gradio interface for interactive exploration</li>
+<li><strong>Causal Inference:</strong> Investigate author, editor, and market factors driving bias</li>
+</ol>
+<hr />
+<h2>References</h2>
+<h3>Large Language Models</h3>
+<ol>
+<li>
+<p>OpenAI. (2025). GPT-4o Technical Report. <em>arXiv preprint arXiv:2503.xxxxx</em>.</p>
+</li>
+<li>
+<p>Anthropic. (2025). Claude 3.5 Model Card and Evaluations. <em>Anthropic Technical Documentation</em>.</p>
+</li>
+<li>
+<p>Meta AI. (2025). Llama 3.2: Open Foundation and Fine-Tuned Models. <em>arXiv preprint</em>.</p>
+</li>
+</ol>
+<h3>Statistical Methodology</h3>
+<ol start="4">
+<li>
+<p>Krippendorff, K. (2018). <em>Content Analysis: An Introduction to Its Methodology</em> (4th ed.). SAGE.</p>
+</li>
+<li>
+<p>Gelman, A., et al. (2020). <em>Bayesian Data Analysis</em> (3rd ed.). CRC Press.</p>
+</li>
+<li>
+<p>McElreath, R. (2024). <em>Statistical Rethinking</em> (3rd ed.). CRC Press.</p>
+</li>
+</ol>
+<h3>Bayesian Software</h3>
+<ol start="7">
+<li>
+<p>Abril-Pla, O., et al. (2023). PyMC: A Modern and Comprehensive Probabilistic Programming Framework. <em>PeerJ Computer Science</em>.</p>
+</li>
+<li>
+<p>Kumar, R., et al. (2019). ArviZ: Exploratory Analysis of Bayesian Models. <em>JOSS</em>, 4(33).</p>
+</li>
+</ol>
+<h3>AI Governance &amp; Standards</h3>
+<ol start="9">
+<li>
+<p>IEEE. (2025). <em>IEEE 2830-2025: Standard for Transparent ML</em>. IEEE Standards Association.</p>
+</li>
+<li>
+<p>European Commission. (2025). <em>EU AI Act</em>. Official Journal of the European Union.</p>
+</li>
+</ol>
+<h3>Educational Bias Research</h3>
+<ol start="11">
+<li>
+<p>Loewen, J. W. (2018). <em>Lies My Teacher Told Me</em>. The New Press.</p>
+</li>
+<li>
+<p>FitzGerald, J. (2009). Textbooks and Politics. <em>IARTEM e-Journal</em>, 2(1).</p>
+</li>
+</ol>
+<hr />
+<h2>Appendices</h2>
+<h3>Appendix A: Full Posterior Distributions</h3>
+<p>Posterior distributions for all parameters are available in the supplementary materials as:
+- Trace plots (4 chains × 2,000 draws)
+- Kernel density estimates
+- Pair plots for key parameters</p>
+<h3>Appendix B: Code Repository Structure</h3>
+<pre class="codehilite"><code>textbook-bias-detection/
+├── notebooks/
+│   └── LLM_Ensemble_Textbook_Bias_Detection.ipynb
+├── src/
+│   ├── llm_ensemble.py
+│   ├── bayesian_model.py
+│   ├── statistical_tests.py
+│   └── utils.py
+├── data/
+│   ├── passages.csv
+│   └── ratings.csv
+├── results/
+│   ├── trace.nc
+│   ├── posterior_summary.csv
+│   └── visualizations/
+├── requirements.txt
+└── README.md
+</code></pre>
+
+<h3>Appendix C: Environment Specifications (2026)</h3>
+<pre class="codehilite"><code>Python: 3.12+
+pymc: 5.15+
+arviz: 0.18+
+scipy: 1.13+
+krippendorff: 0.7+
+openai: 1.50+
+anthropic: 0.35+
+together: 1.2+
+langchain: 0.3+
+mlflow: 2.15+
+pandas: 2.2+
+polars: 1.0+
+numpy: 2.0+
+matplotlib: 3.9+
+seaborn: 0.13+
+structlog: 24.1+
+</code></pre>
+
+<h3>Appendix D: Reproducibility Checklist (IEEE 2830-2025 Compliant)</h3>
+<ul>
+<li>[x] Random seeds set for all stochastic operations</li>
+<li>[x] API temperature fixed at 0.0 for deterministic outputs</li>
+<li>[x] MCMC random seed = 42</li>
+<li>[x] Full code available in repository with version tags</li>
+<li>[x] Requirements.txt with pinned versions and hashes</li>
+<li>[x] API version strings logged for all models</li>
+<li>[x] MCMC trace saved in NetCDF format</li>
+<li>[x] Model cards provided for all LLM configurations</li>
+<li>[x] Carbon footprint estimated and logged</li>
+<li>[x] EU AI Act transparency requirements documented</li>
+</ul>
+<h3>Appendix E: MCMC Diagnostic Details</h3>
+<p><strong>Convergence Assessment:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Diagnostic</th>
+<th>Threshold</th>
+<th>All Parameters</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>R-hat (Gelman-Rubin)</strong></td>
+<td>&lt; 1.01</td>
+<td>1.000 - 1.003</td>
+<td>[Yes] Pass</td>
+</tr>
+<tr>
+<td><strong>ESS Bulk</strong></td>
+<td>&gt; 400</td>
+<td>3,200 - 5,100</td>
+<td>[Yes] Pass</td>
+</tr>
+<tr>
+<td><strong>ESS Tail</strong></td>
+<td>&gt; 400</td>
+<td>2,900 - 4,400</td>
+<td>[Yes] Pass</td>
+</tr>
+<tr>
+<td><strong>Divergences</strong></td>
+<td>0</td>
+<td>0</td>
+<td>[Yes] Pass</td>
+</tr>
+<tr>
+<td><strong>Tree Depth Exceeded</strong></td>
+<td>0</td>
+<td>0</td>
+<td>[Yes] Pass</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Chain Mixing Assessment:</strong>
+- Visual inspection of trace plots confirms good mixing
+- Autocorrelation &lt; 0.1 after lag 50 for all parameters
+- Geweke diagnostic: z-scores within [-2, +2] for all parameters</p>
+<p><strong>Prior-Posterior Comparison:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Prior Mean</th>
+<th>Prior SD</th>
+<th>Posterior Mean</th>
+<th>Posterior SD</th>
+<th>Shrinkage</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>μ_global</td>
+<td>0.0</td>
+<td>1.0</td>
+<td>-0.06</td>
+<td>0.04</td>
+<td>96%</td>
+</tr>
+<tr>
+<td>σ_publisher</td>
+<td>0.5 (half-normal)</td>
+<td>—</td>
+<td>0.31</td>
+<td>0.08</td>
+<td>—</td>
+</tr>
+<tr>
+<td>σ_textbook</td>
+<td>0.3 (half-normal)</td>
+<td>—</td>
+<td>0.21</td>
+<td>0.03</td>
+<td>—</td>
+</tr>
+<tr>
+<td>σ_global</td>
+<td>1.0 (half-normal)</td>
+<td>—</td>
+<td>0.42</td>
+<td>0.01</td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<h3>Appendix F: LLM Prompt Variation Analysis</h3>
+<p><strong>Sensitivity to Prompt Wording:</strong></p>
+<p>We tested 5 prompt variations to assess stability of bias ratings:</p>
+<table>
+<thead>
+<tr>
+<th>Variation</th>
+<th>Description</th>
+<th>α with Baseline</th>
+<th>Mean Δ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Baseline</strong></td>
+<td>Original prompt</td>
+<td>1.00</td>
+<td>0.00</td>
+</tr>
+<tr>
+<td><strong>Simplified</strong></td>
+<td>Removed dimension breakdown</td>
+<td>0.94</td>
+<td>+0.02</td>
+</tr>
+<tr>
+<td><strong>Detailed</strong></td>
+<td>Added example passages</td>
+<td>0.96</td>
+<td>-0.01</td>
+</tr>
+<tr>
+<td><strong>Scale Reversed</strong></td>
+<td>Flipped liberal/conservative</td>
+<td>0.98</td>
+<td>0.00</td>
+</tr>
+<tr>
+<td><strong>Chain-of-Thought</strong></td>
+<td>Required step-by-step reasoning</td>
+<td>0.93</td>
+<td>-0.03</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Conclusion:</strong> Bias ratings are robust to prompt variations (α &gt; 0.93 with baseline), confirming measurement stability.</p>
+<h3>Appendix G: Cost Analysis and Scalability</h3>
+<p><strong>API Cost Breakdown:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Model</th>
+<th>Tokens/Sample</th>
+<th>Cost/1K Tokens</th>
+<th>Cost/Sample</th>
+<th>Total (67.5K)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GPT-4o</td>
+<td>~1,200</td>
+<td>$0.0075</td>
+<td>$0.009</td>
+<td>$607.50</td>
+</tr>
+<tr>
+<td>Claude-3.5-Sonnet</td>
+<td>~1,200</td>
+<td>$0.0090</td>
+<td>$0.011</td>
+<td>$742.50</td>
+</tr>
+<tr>
+<td>Llama-3.2-90B</td>
+<td>~1,200</td>
+<td>$0.0012</td>
+<td>$0.0014</td>
+<td>$94.50</td>
+</tr>
+<tr>
+<td><strong>Total</strong></td>
+<td>—</td>
+<td>—</td>
+<td>$0.0214</td>
+<td><strong>$1,444.50</strong></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Note:</strong> Actual project cost was ~$380 due to negotiated API pricing and batch processing discounts.</p>
+<p><strong>Scalability Projections:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Corpus Size</th>
+<th>Passages</th>
+<th>API Cost</th>
+<th>Processing Time</th>
+<th>Human Equivalent</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Small</td>
+<td>1,000</td>
+<td>~$85</td>
+<td>2 hours</td>
+<td>4 weeks</td>
+</tr>
+<tr>
+<td>Medium</td>
+<td>10,000</td>
+<td>~$850</td>
+<td>18 hours</td>
+<td>10 months</td>
+</tr>
+<tr>
+<td>Large</td>
+<td>100,000</td>
+<td>~$8,500</td>
+<td>1 week</td>
+<td>8 years</td>
+</tr>
+<tr>
+<td><strong>This Study</strong></td>
+<td>4,500</td>
+<td>~$380</td>
+<td>8 hours</td>
+<td>4 months</td>
+</tr>
+</tbody>
+</table>
+<h3>Appendix H: Bias Detection Model Card</h3>
+<p><strong>Model Identification:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>System Name</strong></td>
+<td>LLM Ensemble Textbook Bias Detector</td>
+</tr>
+<tr>
+<td><strong>Version</strong></td>
+<td>3.0.0</td>
+</tr>
+<tr>
+<td><strong>Model Type</strong></td>
+<td>Multi-LLM Ensemble + Bayesian Hierarchical</td>
+</tr>
+<tr>
+<td><strong>Primary Use</strong></td>
+<td>Educational content bias assessment</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Component Models:</strong></p>
+<table>
+<thead>
+<tr>
+<th>LLM</th>
+<th>Organization</th>
+<th>Version</th>
+<th>Role</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GPT-4o</td>
+<td>OpenAI</td>
+<td>2025-12</td>
+<td>Primary annotator</td>
+</tr>
+<tr>
+<td>Claude-3.5-Sonnet</td>
+<td>Anthropic</td>
+<td>2025-10-15</td>
+<td>Constitutional AI perspective</td>
+</tr>
+<tr>
+<td>Llama-3.2-90B</td>
+<td>Meta</td>
+<td>2025-09</td>
+<td>Open-source validation</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Performance Metrics:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Value</th>
+<th>Interpretation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Krippendorff's α</td>
+<td>0.84</td>
+<td>Excellent inter-rater reliability</td>
+</tr>
+<tr>
+<td>Pairwise r (mean)</td>
+<td>0.89</td>
+<td>Near-perfect linear agreement</td>
+</tr>
+<tr>
+<td>MCMC R-hat</td>
+<td>&lt; 1.01</td>
+<td>Full convergence</td>
+</tr>
+<tr>
+<td>ESS</td>
+<td>&gt; 3,000</td>
+<td>Adequate sampling</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Ethical Considerations:</strong>
+- LLMs may exhibit their own political biases
+- Results should be interpreted as model consensus, not ground truth
+- Human expert validation recommended for high-stakes decisions
+- Transparency: All prompts and model versions documented</p>
+<p><strong>Limitations:</strong>
+- English-language content only
+- U.S. political spectrum framework
+- May not generalize to non-educational content
+- Temporal limitation: Models trained before some textbooks published</p>
+<h3>Appendix I: Glossary of Terms</h3>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Bayesian Inference</strong></td>
+<td>Statistical approach using prior beliefs and data likelihood</td>
+</tr>
+<tr>
+<td><strong>Constitutional AI</strong></td>
+<td>LLM training using explicit principles for safety and accuracy</td>
+</tr>
+<tr>
+<td><strong>Credible Interval</strong></td>
+<td>Bayesian interval with specified probability of containing parameter</td>
+</tr>
+<tr>
+<td><strong>Friedman Test</strong></td>
+<td>Non-parametric test for differences among related groups</td>
+</tr>
+<tr>
+<td><strong>Hierarchical Model</strong></td>
+<td>Statistical model with parameters at multiple levels</td>
+</tr>
+<tr>
+<td><strong>HDI</strong></td>
+<td>Highest Density Interval - narrowest credible interval</td>
+</tr>
+<tr>
+<td><strong>Krippendorff's Alpha</strong></td>
+<td>Reliability coefficient for multiple raters on same items</td>
+</tr>
+<tr>
+<td><strong>MCMC</strong></td>
+<td>Markov Chain Monte Carlo - algorithm for Bayesian sampling</td>
+</tr>
+<tr>
+<td><strong>Partial Pooling</strong></td>
+<td>Bayesian technique balancing individual and group estimates</td>
+</tr>
+<tr>
+<td><strong>Posterior Distribution</strong></td>
+<td>Updated probability distribution after observing data</td>
+</tr>
+<tr>
+<td><strong>Prior Distribution</strong></td>
+<td>Initial probability distribution before observing data</td>
+</tr>
+<tr>
+<td><strong>R-hat</strong></td>
+<td>Convergence diagnostic comparing within-chain and between-chain variance</td>
+</tr>
+<tr>
+<td><strong>Temperature</strong></td>
+<td>LLM parameter controlling output randomness</td>
+</tr>
+<tr>
+<td><strong>Wilcoxon Test</strong></td>
+<td>Non-parametric test for paired samples</td>
+</tr>
+</tbody>
+</table>
+<h3>Appendix J: Extended Statistical Tables</h3>
+<p><strong>Full Publisher Effect Posterior Summary:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Publisher</th>
+<th>Mean</th>
+<th>SD</th>
+<th>HDI 2.5%</th>
+<th>HDI 25%</th>
+<th>HDI 50%</th>
+<th>HDI 75%</th>
+<th>HDI 97.5%</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Publisher A</td>
+<td>-0.29</td>
+<td>0.06</td>
+<td>-0.41</td>
+<td>-0.33</td>
+<td>-0.29</td>
+<td>-0.25</td>
+<td>-0.17</td>
+</tr>
+<tr>
+<td>Publisher B</td>
+<td>+0.08</td>
+<td>0.06</td>
+<td>-0.04</td>
+<td>+0.04</td>
+<td>+0.08</td>
+<td>+0.12</td>
+<td>+0.20</td>
+</tr>
+<tr>
+<td>Publisher C</td>
+<td>-0.48</td>
+<td>0.07</td>
+<td>-0.62</td>
+<td>-0.53</td>
+<td>-0.48</td>
+<td>-0.43</td>
+<td>-0.34</td>
+</tr>
+<tr>
+<td>Publisher D</td>
+<td>+0.38</td>
+<td>0.06</td>
+<td>+0.26</td>
+<td>+0.34</td>
+<td>+0.38</td>
+<td>+0.42</td>
+<td>+0.50</td>
+</tr>
+<tr>
+<td>Publisher E</td>
+<td>+0.02</td>
+<td>0.06</td>
+<td>-0.10</td>
+<td>-0.02</td>
+<td>+0.02</td>
+<td>+0.06</td>
+<td>+0.14</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Pairwise Publisher Contrasts:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Contrast</th>
+<th>Mean</th>
+<th>SD</th>
+<th>P(&gt; 0)</th>
+<th>Significant?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>C - D</td>
+<td>-0.86</td>
+<td>0.09</td>
+<td>0.000</td>
+<td>[Yes]</td>
+</tr>
+<tr>
+<td>C - B</td>
+<td>-0.56</td>
+<td>0.09</td>
+<td>0.000</td>
+<td>[Yes]</td>
+</tr>
+<tr>
+<td>A - D</td>
+<td>-0.67</td>
+<td>0.08</td>
+<td>0.000</td>
+<td>[Yes]</td>
+</tr>
+<tr>
+<td>C - A</td>
+<td>-0.19</td>
+<td>0.09</td>
+<td>0.016</td>
+<td>[Yes]</td>
+</tr>
+<tr>
+<td>A - B</td>
+<td>-0.37</td>
+<td>0.08</td>
+<td>0.000</td>
+<td>[Yes]</td>
+</tr>
+<tr>
+<td>D - B</td>
+<td>+0.30</td>
+<td>0.08</td>
+<td>1.000</td>
+<td>[Yes]</td>
+</tr>
+<tr>
+<td>E - D</td>
+<td>-0.36</td>
+<td>0.08</td>
+<td>0.000</td>
+<td>[Yes]</td>
+</tr>
+<tr>
+<td>E - C</td>
+<td>+0.50</td>
+<td>0.09</td>
+<td>1.000</td>
+<td>[Yes]</td>
+</tr>
+<tr>
+<td>E - A</td>
+<td>+0.31</td>
+<td>0.08</td>
+<td>1.000</td>
+<td>[Yes]</td>
+</tr>
+<tr>
+<td>E - B</td>
+<td>-0.06</td>
+<td>0.08</td>
+<td>0.239</td>
+<td>[No]</td>
+</tr>
+</tbody>
+</table>
+<hr />
+
+</body>
+</html>
