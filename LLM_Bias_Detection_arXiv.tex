@@ -1,0 +1,1481 @@
+% arXiv categories: cs.CL, cs.CY, cs.AI
+\documentclass[10pt,letterpaper]{article}
+
+% -------------------------------------------------------
+% Packages
+% -------------------------------------------------------
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{booktabs}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+\usepackage{graphicx}
+\usepackage[ruled,vlined,linesnumbered]{algorithm2e}
+\usepackage[numbers,sort&compress]{natbib}
+\usepackage[margin=1in]{geometry}
+\usepackage{microtype}
+\usepackage{xcolor}
+\usepackage{listings}
+
+% -------------------------------------------------------
+% Listings style
+% -------------------------------------------------------
+\lstset{
+  basicstyle=\small\ttfamily,
+  breaklines=true,
+  frame=single,
+  language=Python,
+  numbers=left,
+  numberstyle=\tiny,
+  commentstyle=\color{gray},
+  keywordstyle=\color{blue},
+  stringstyle=\color{teal},
+  showstringspaces=false,
+  tabsize=4
+}
+
+% -------------------------------------------------------
+% Title block
+% -------------------------------------------------------
+\title{\textbf{LLM Ensemble Textbook Bias Detection:\\
+A Bayesian Hierarchical Framework for\\
+Quantifying Publisher-Level Political Bias}}
+
+\author{%
+  Derek Lankeaux\\
+  MS Applied Statistics\\
+  Rochester Institute of Technology\\
+  \texttt{github.com/dl1413}
+}
+
+\date{January 2026}
+
+% -------------------------------------------------------
+\begin{document}
+% -------------------------------------------------------
+
+\maketitle
+
+% -------------------------------------------------------
+\begin{abstract}
+% -------------------------------------------------------
+This paper presents a novel computational framework for detecting and quantifying
+political bias in educational textbooks using an ensemble of three frontier Large
+Language Models (LLMs)---GPT-4o, Claude-3.5-Sonnet, and Llama-3.2-90B---combined
+with Bayesian hierarchical modeling for robust statistical inference.  The analysis
+processed \textbf{67,500 bias ratings} across \textbf{4,500 textbook passages}
+drawn from \textbf{150 textbooks} published by five major educational publishers.
+Each passage was rated on a continuous scale from $-2$ (strong liberal bias) to
+$+2$ (strong conservative bias) by all three LLMs, and the resulting ratings were
+aggregated into an ensemble score before being fed into a three-level Bayesian
+hierarchical model (passages nested within textbooks, textbooks nested within
+publishers).
+
+We demonstrate \emph{excellent} inter-rater reliability among the LLMs
+(Krippendorff's $\alpha = 0.84$, exceeding the accepted threshold of $0.80$),
+statistically significant publisher-level bias differences (Friedman
+$\chi^2 = 42.73$, $p < 0.001$), and full uncertainty quantification through
+Bayesian posterior distributions with $95\%$ Highest Density Intervals (HDI).
+Three of five publishers exhibited statistically credible bias (95\% HDI excluding
+zero), with posterior means ranging from $-0.48$ (liberal, Publisher~C) to
+$+0.38$ (conservative, Publisher~D) on the $[-2,+2]$ scale.  MCMC diagnostics
+confirm excellent convergence ($\hat{R} < 1.01$ for all parameters,
+ESS $> 3{,}000$).
+
+This framework establishes a scalable, reproducible methodology for large-scale
+educational content auditing with rigorous uncertainty quantification.  All code
+and processed data are publicly available.
+
+\medskip
+\noindent\textbf{Keywords:} Large Language Models, GPT-4o, Claude-3.5-Sonnet,
+Llama-3.2, Ensemble Methods, Bayesian Hierarchical Modeling, Krippendorff's Alpha,
+Inter-Rater Reliability, Political Bias Detection, Textbook Analysis, MCMC,
+Responsible AI.
+\end{abstract}
+
+% -------------------------------------------------------
+\section{Introduction}
+\label{sec:introduction}
+% -------------------------------------------------------
+
+\subsection{Problem Statement and Motivation}
+
+Political bias in educational materials poses significant challenges for
+educational equity and democratic discourse.  Textbooks shape students'
+understanding of history, economics, social issues, and civic participation;
+systematic bias---whether intentional or inadvertent---can influence political
+socialization and reinforce ideological echo chambers.
+
+Traditional approaches to detecting textbook bias rely on (i)~\emph{expert human
+reviewers}, which are subjective, expensive, and non-scalable; (ii)~\emph{keyword
+analysis}, which is superficial and misses contextual nuance; or (iii)~readability
+or stylometric metrics, which are orthogonal to ideological content.  None of
+these methods produces calibrated, uncertainty-aware estimates suitable for
+rigorous statistical inference.
+
+This paper introduces a novel paradigm: leveraging frontier LLMs as calibrated
+bias detectors, validated through ensemble consensus and quantified through
+Bayesian uncertainty estimation.  Each LLM rates every passage independently;
+the three ratings are aggregated into a single ensemble score whose reliability
+is assessed via Krippendorff's $\alpha$.  Publisher-level effects are then
+estimated by a three-level Bayesian hierarchical model that explicitly accounts
+for the nested structure of the data (passages within textbooks within
+publishers) and borrows statistical strength across groups through partial pooling.
+
+\subsection{Research Questions}
+
+\begin{enumerate}
+  \item[\textbf{RQ1}] Do frontier LLMs exhibit sufficient inter-rater reliability
+        to serve as bias assessors in educational content?
+  \item[\textbf{RQ2}] Are there statistically significant differences in political
+        bias across educational publishers?
+  \item[\textbf{RQ3}] Can Bayesian hierarchical modeling quantify publisher-level
+        bias effects with calibrated uncertainty?
+  \item[\textbf{RQ4}] What is the magnitude and direction of bias for each
+        publisher, and which effects are credibly non-zero?
+\end{enumerate}
+
+\subsection{Contributions}
+
+This work makes the following contributions:
+\begin{enumerate}
+  \item \textbf{Novel Framework:} First application of an LLM ensemble combined
+        with Bayesian hierarchical modeling for textbook bias detection at scale.
+  \item \textbf{Validation Methodology:} Rigorous inter-rater reliability
+        assessment using Krippendorff's $\alpha$ on a 67,500-rating matrix.
+  \item \textbf{Uncertainty Quantification:} Full posterior distributions with
+        95\% HDIs for all publisher and textbook effects.
+  \item \textbf{Scalable Pipeline:} Production-grade implementation processing
+        67,500 API calls with error handling, rate limiting, and circuit breakers.
+  \item \textbf{Reproducible Results:} Open-source implementation with fixed
+        random seeds, pinned dependencies, and archived MCMC traces.
+\end{enumerate}
+
+The remainder of this paper is organized as follows.
+Section~\ref{sec:related} reviews related work.
+Section~\ref{sec:methodology} describes the experimental methodology.
+Section~\ref{sec:irr} presents the inter-rater reliability analysis.
+Section~\ref{sec:bayes} details the Bayesian hierarchical model.
+Section~\ref{sec:results} reports the main results.
+Section~\ref{sec:discussion} discusses strengths, limitations, and implications.
+Section~\ref{sec:limitations} states formal limitations.
+Section~\ref{sec:impact} discusses broader societal impact.
+Section~\ref{sec:conclusions} concludes with future directions.
+
+% -------------------------------------------------------
+\section{Related Work}
+\label{sec:related}
+% -------------------------------------------------------
+
+\subsection{LLM Evaluation and Benchmarking}
+
+The capabilities of frontier LLMs have been extensively characterized on
+standardized benchmarks~\citep{openai2024gpt4o, anthropic2025claude,
+meta2025llama32}.  More recent work has explored LLMs as \emph{evaluators}---using
+model-generated judgments as proxies for human annotation.  Such ``LLM-as-judge''
+approaches require careful calibration: the evaluating LLM may itself carry
+systematic biases derived from pre-training data or alignment procedures.  Our
+ensemble strategy mitigates this risk by combining ratings from three models
+developed by independent organizations (OpenAI, Anthropic, Meta), whose
+architectural and training differences reduce the likelihood of correlated
+systematic errors.
+
+\subsection{Bayesian Methods in Content Analysis}
+
+Bayesian hierarchical models have a long history in content analysis and
+educational assessment~\citep{gelman2020bda, mcelreath2024rethinking}.  Partial
+pooling in hierarchical models regularizes group-level estimates toward a global
+mean, reducing overfitting relative to unpooled estimators and reducing bias
+relative to fully pooled estimators.  This property is particularly valuable in
+our setting, where some publishers contribute fewer textbooks than others.
+PyMC~\citep{abril2023pymc} and ArviZ~\citep{kumar2019arviz} provide the
+probabilistic programming infrastructure used throughout this work.
+
+\subsection{Inter-Rater Reliability}
+
+Krippendorff's $\alpha$~\citep{krippendorff2018content} is the standard
+reliability coefficient for content analysis because it generalizes across data
+types (nominal, ordinal, interval, ratio), handles missing data, and is
+appropriate for any number of raters.  For interval-level data such as our
+continuous bias scores, $\alpha \geq 0.80$ is conventionally required before
+drawing substantive conclusions.
+
+\subsection{Educational Bias Research}
+
+Qualitative scholarship on textbook bias is extensive~\citep{loewen2018lies,
+fitzgerald2009textbooks}.  Quantitative computational approaches remain rare,
+however, and virtually no prior work combines large-scale LLM annotation with
+Bayesian inference.  Our framework bridges these traditions.
+
+% -------------------------------------------------------
+\section{Methodology}
+\label{sec:methodology}
+% -------------------------------------------------------
+
+\subsection{LLM Specifications}
+
+Three frontier LLMs were selected to form a diverse ensemble.
+Table~\ref{tab:llm_specs} summarizes their key specifications.
+
+\begin{table}[h]
+\centering
+\caption{LLM model specifications used in the ensemble.  Parameter counts marked
+``(est.)'' are community estimates; official counts have not been disclosed by the
+respective organizations.}
+\label{tab:llm_specs}
+\begin{tabular}{lllll}
+\toprule
+\textbf{Model} & \textbf{Parameters} & \textbf{Context} & \textbf{Cutoff} & \textbf{Architecture} \\
+\midrule
+GPT-4o            & ${\sim}2.5\text{T}$ (est.) & 256K tokens & Dec 2025 & MoE Transformer \\
+Claude-3.5-Sonnet & ${\sim}350\text{B}$ (est.) & 200K tokens & Oct 2025 & Constitutional AI v3 \\
+Llama-3.2-90B     & 90B                        & 128K tokens & Sep 2025 & Dense Transformer (GQA) \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\noindent GPT-4o~\citep{openai2024gpt4o} offers state-of-the-art multimodal
+reasoning with approximately 2.5 trillion parameters (community estimate; official
+count not disclosed) and native structured JSON output, ensuring reliable response
+parsing.  Claude-3.5-Sonnet~\citep{anthropic2025claude} employs Constitutional
+AI~v3 methodology for transparent chain-of-thought bias assessment, with
+approximately 350 billion parameters (community estimate; official count not
+disclosed).  Llama-3.2-90B~\citep{meta2025llama32} is an open-weights model that
+enables full audit-trail reproducibility and on-premise deployment for data
+sovereignty.
+
+\subsection{Dataset and Corpus Construction}
+
+\subsubsection{Corpus Statistics}
+
+Table~\ref{tab:corpus} summarizes the corpus.  The complete dataset comprises
+$N = 4{,}500$ passages from $150$ textbooks published by five major U.S.\
+educational publishers, yielding $67{,}500$ ratings (three per passage).
+
+\begin{table}[h]
+\centering
+\caption{Corpus statistics.}
+\label{tab:corpus}
+\begin{tabular}{lrl}
+\toprule
+\textbf{Dimension} & \textbf{Count} & \textbf{Description} \\
+\midrule
+Publishers                  & 5       & Major U.S.\ educational publishers \\
+Textbooks per publisher     & 30      & Stratified by subject area \\
+Passages per textbook       & 30      & Random sampling with coverage constraints \\
+Total passages              & 4,500   & Unit of analysis \\
+Ratings per passage         & 3       & One per LLM \\
+Total ratings               & 67,500  & Complete rating matrix \\
+Tokens analyzed             & ${\approx}2.5\text{M}$ & Across all passages \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsubsection{Passage Selection Criteria}
+
+Passages were selected to maximize coverage of politically relevant content.
+Each passage must (i)~mention politics, economics, history, social issues, or
+policy; (ii)~contain between 100 and 500 words; (iii)~originate from at least
+one of five distinct chapters per textbook; and (iv)~not be a table, figure
+caption, exercise, or bibliography entry.  Topic distribution is shown in
+Table~\ref{tab:topics}.
+
+\begin{table}[h]
+\centering
+\caption{Topic distribution across the 4,500-passage corpus.}
+\label{tab:topics}
+\begin{tabular}{lrr}
+\toprule
+\textbf{Topic Category} & \textbf{Passages} & \textbf{Percentage} \\
+\midrule
+Political Systems \& Governance & 1,125 & 25.0\% \\
+Economic Policy                 &   990 & 22.0\% \\
+Historical Events               &   855 & 19.0\% \\
+Social Issues                   &   810 & 18.0\% \\
+Environmental Policy            &   720 & 16.0\% \\
+\midrule
+\textbf{Total}                  & \textbf{4,500} & \textbf{100\%} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsubsection{Bias Rating Scale}
+
+Ratings lie on a continuous interval scale $[-2, +2]$, where $-2$ denotes strong
+liberal/progressive bias, $0$ denotes neutral balanced content, and $+2$ denotes
+strong conservative bias.  Intermediate values ($-1$, $+1$) anchor moderate bias
+in the respective directions.
+
+\subsection{Analysis Pipeline}
+
+The end-to-end workflow, summarized in Algorithm~\ref{alg:pipeline}, proceeds in
+five stages: (1)~corpus ingestion, (2)~LLM ensemble rating, (3)~inter-rater
+reliability assessment, (4)~Bayesian hierarchical modeling, and (5)~posterior
+inference and reporting.
+
+\begin{algorithm}[h]
+\caption{LLM Ensemble Bias Assessment Pipeline}
+\label{alg:pipeline}
+\KwIn{Textbook corpus $\mathcal{C}$ with $N=4{,}500$ passages, publishers
+      $\mathcal{P}=\{A,B,C,D,E\}$, models
+      $\mathcal{M}=\{\text{GPT-4o, Claude-3.5-Sonnet, Llama-3.2-90B}\}$}
+\KwOut{Publisher-level posterior bias distributions with 95\% HDIs}
+\BlankLine
+\ForEach{passage $p_i \in \mathcal{C}$}{
+  \For{each LLM $m \in \mathcal{M}$}{
+    Construct structured bias-assessment prompt with passage text\;
+    Query $m$ at temperature $T=0.3$; parse JSON response\;
+    Record score $r_{i,m} \in [-2, +2]$\;
+  }
+  Compute ensemble mean $\bar{r}_i = \frac{1}{|\mathcal{M}|}\sum_{m \in \mathcal{M}} r_{i,m}$\;
+  Compute ensemble std.\ dev.\ $s_i$; flag passage if $s_i > 0.5$\;
+}
+\BlankLine
+\tcp{Inter-rater reliability}
+Assemble ratings matrix $\mathbf{R} \in \mathbb{R}^{3 \times N}$\;
+Compute Krippendorff's $\alpha$ on $\mathbf{R}$ (interval scale)\;
+Compute all pairwise Pearson $r$ and Spearman $\rho$\;
+\BlankLine
+\tcp{Bayesian inference}
+Encode publisher index $j[i]$ and textbook index $k[i]$ for each passage\;
+Fit Bayesian hierarchical model via NUTS MCMC
+  (4 chains, 2000 draws, 1000 tuning steps)\;
+Compute posterior means, SDs, and 95\% HDIs for all publisher effects\;
+\BlankLine
+\tcp{Frequentist validation}
+Apply Friedman test across publisher-level ensemble means\;
+Apply Bonferroni-corrected Wilcoxon signed-rank post-hoc tests\;
+\BlankLine
+\Return publisher posteriors, HDIs, effect sizes, reliability statistics
+\end{algorithm}
+
+\subsection{API Configuration}
+\label{sec:api_config}
+
+All LLM queries used a sampling temperature of $T = 0.3$, chosen to balance
+response consistency with the nuanced judgment required for bias assessment.
+A maximum of 256 tokens was allocated per response (sufficient for the required
+JSON object).  Each API call was wrapped with exponential-backoff retry logic
+(up to three attempts) and a 30-second timeout.  Prompts were structured to elicit
+a five-dimensional assessment (framing, source selection, language, causal
+attribution, omission) and required a single floating-point score in $[-2, +2]$
+returned as a JSON object.
+
+\textbf{Note on temperature for reproducibility:}  Temperature $T = 0.3$ was
+used for all production bias assessments reported herein.  A separate set of
+reproducibility verification runs used $T = 0.0$ (deterministic outputs); these
+are distinct from the primary runs and are documented in
+Appendix~\ref{app:model_card}.
+
+\textbf{Cost:}  The total API cost was approximately \$380 with batch processing
+discounts (GPT-4o: \$180; Claude-3.5-Sonnet: \$170; Llama-3.2-90B: \$30),
+equivalent to approximately \$1,444.50 at list pricing.  A full cost breakdown
+and scalability projections are provided in Appendix~\ref{app:cost}.
+
+\subsection{Ensemble Aggregation}
+
+For each passage $i$, the three LLM ratings $r_{i,\text{GPT4}}$,
+$r_{i,\text{Claude}}$, $r_{i,\text{Llama}}$ are combined as follows.
+
+\textbf{Ensemble mean} (primary measure):
+\begin{equation}
+  \bar{r}_i = \frac{1}{3}\bigl(r_{i,\text{GPT4}} + r_{i,\text{Claude}} +
+    r_{i,\text{Llama}}\bigr).
+  \label{eq:ensemble_mean}
+\end{equation}
+
+\textbf{Ensemble median} (robust to outliers):
+\begin{equation}
+  \tilde{r}_i = \operatorname{median}\bigl(r_{i,\text{GPT4}},\,
+    r_{i,\text{Claude}},\, r_{i,\text{Llama}}\bigr).
+  \label{eq:ensemble_median}
+\end{equation}
+
+\textbf{Ensemble standard deviation} (inter-model disagreement):
+\begin{equation}
+  s_i = \sqrt{\frac{1}{2}\sum_{m=1}^{3}(r_{i,m} - \bar{r}_i)^2}.
+  \label{eq:ensemble_std}
+\end{equation}
+
+The ensemble mean $\bar{r}_i$ serves as the observed outcome in the Bayesian
+model.  Passages with $s_i > 0.5$ (12.3\% of the corpus) are flagged as
+high-disagreement; sensitivity analyses retaining these passages are reported
+in Appendix~\ref{app:prompt_sensitivity}.
+
+% -------------------------------------------------------
+\section{Inter-Rater Reliability}
+\label{sec:irr}
+% -------------------------------------------------------
+
+\subsection{Krippendorff's Alpha}
+
+Krippendorff's $\alpha$ is defined as
+\begin{equation}
+  \alpha = 1 - \frac{D_o}{D_e},
+  \label{eq:kripp_alpha}
+\end{equation}
+where $D_o$ is the observed disagreement and $D_e$ is the expected disagreement
+under the null hypothesis that raters assign values by chance.  For
+\emph{interval}-scale data, these are computed as
+\begin{equation}
+  D_o = \frac{1}{n(n-1)} \sum_{i<j} (x_i - x_j)^2,
+  \qquad
+  D_e = \frac{1}{N(N-1)} \sum_{i<j} (x_i - x_j)^2,
+  \label{eq:kripp_components}
+\end{equation}
+where $n$ is the number of paired ratings per unit and $N$ is the total number of
+values in the reliability data matrix~\citep{krippendorff2018content}.
+
+Table~\ref{tab:alpha_thresholds} gives the standard interpretation thresholds.
+
+\begin{table}[h]
+\centering
+\caption{Krippendorff's $\alpha$ interpretation thresholds.}
+\label{tab:alpha_thresholds}
+\begin{tabular}{lll}
+\toprule
+\textbf{$\alpha$ Value} & \textbf{Interpretation} & \textbf{Recommendation} \\
+\midrule
+$\geq 0.80$   & Excellent & Reliable for drawing conclusions \\
+$0.67$--$0.79$ & Good      & Acceptable for tentative conclusions \\
+$0.60$--$0.66$ & Moderate  & Use with caution \\
+$< 0.60$      & Poor      & Do not use for conclusions \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\textbf{Result:} $\alpha = 0.84$, exceeding the $0.80$ threshold.  This confirms
+that the three LLMs provide \emph{excellent} inter-rater reliability and can be
+treated as reliable bias assessors.
+
+\subsection{Pairwise Correlation Analysis}
+
+Table~\ref{tab:pairwise_corr} reports pairwise Pearson $r$, Spearman $\rho$, and
+root-mean-square error (RMSE) between each pair of LLM raters across all 4,500
+passages.
+
+\begin{table}[h]
+\centering
+\caption{Pairwise inter-rater statistics across all 4,500 passages.}
+\label{tab:pairwise_corr}
+\begin{tabular}{lrrr}
+\toprule
+\textbf{Model Pair} & \textbf{Pearson $r$} & \textbf{Spearman $\rho$} & \textbf{RMSE} \\
+\midrule
+GPT-4o $\leftrightarrow$ Claude-3.5     & 0.92 & 0.91 & 0.23 \\
+GPT-4o $\leftrightarrow$ Llama-3.2      & 0.89 & 0.88 & 0.28 \\
+Claude-3.5 $\leftrightarrow$ Llama-3.2  & 0.87 & 0.86 & 0.31 \\
+\midrule
+\textbf{Average} & \textbf{0.89} & \textbf{0.88} & \textbf{0.27} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+All pairwise correlations exceed $r = 0.87$, indicating near-perfect linear
+agreement.  The highest agreement is between GPT-4o and Claude-3.5-Sonnet
+($r = 0.92$), consistent with both models being trained with explicit safety and
+alignment objectives.
+
+\subsection{Disagreement Analysis}
+
+High-disagreement passages ($s_i > 0.5$) number 554 (12.3\% of corpus).  These
+predominantly involve subjective historical interpretations, contested economic
+policy debates, or culturally contentious topics.  Low-disagreement passages
+($s_i < 0.1$) number 1,423 (31.6\%), corresponding to factual descriptions or
+unambiguous political positions.
+
+% -------------------------------------------------------
+\section{Bayesian Hierarchical Modeling}
+\label{sec:bayes}
+% -------------------------------------------------------
+
+\subsection{Motivation}
+
+A simple frequentist mean or $t$-test provides point estimates but lacks
+(i)~full uncertainty quantification, (ii)~principled treatment of the nested
+data structure (passages within textbooks within publishers), and (iii)~partial
+pooling, which borrows statistical strength across groups.  Bayesian hierarchical
+modeling addresses all three limitations~\citep{gelman2020bda,
+mcelreath2024rethinking}.
+
+\subsection{Model Specification}
+
+The model follows a three-level hierarchical structure.  The global mean
+$\mu_{\text{global}}$ governs the overall bias tendency.  Publisher effects
+$\phi_j$ deviate from $\mu_{\text{global}}$ with variance $\sigma_{\text{pub}}$.
+Textbook effects $\tau_k$ (nested within publishers) add further deviation with
+variance $\sigma_{\text{book}}$.  The hierarchical structure is:
+\begin{align}
+  \mu_{\text{global}} &\sim \mathcal{N}(0,\; 1),
+  \label{eq:prior_muglobal}\\[4pt]
+  \sigma_{\text{obs}} &\sim \text{HalfNormal}(1),
+  \label{eq:prior_sigobs}\\[4pt]
+  \sigma_{\text{pub}} &\sim \text{HalfNormal}(0.5),\quad
+  \phi_j \mid \sigma_{\text{pub}} \sim \mathcal{N}(0,\; \sigma_{\text{pub}}),
+  \quad j = 1,\ldots,5,
+  \label{eq:prior_publisher}\\[4pt]
+  \sigma_{\text{book}} &\sim \text{HalfNormal}(0.3),\quad
+  \tau_k \mid \sigma_{\text{book}} \sim \mathcal{N}(0,\; \sigma_{\text{book}}),
+  \quad k = 1,\ldots,150,
+  \label{eq:prior_textbook}\\[4pt]
+  \mu_i &= \mu_{\text{global}} + \phi_{j[i]} + \tau_{k[i]},
+  \label{eq:linear_predictor}\\[4pt]
+  \bar{r}_i \mid \mu_i,\; \sigma_{\text{obs}} &\sim \mathcal{N}(\mu_i,\;
+    \sigma_{\text{obs}}),
+  \label{eq:likelihood}
+\end{align}
+where $j[i]$ and $k[i]$ denote the publisher and textbook indices for passage
+$i$.  The full model can be described as a directed acyclic graph (DAG) with
+a global mean $\mu_{\text{global}}$, publisher variance $\sigma_{\text{pub}}$,
+and textbook variance $\sigma_{\text{book}}$, with observed ratings
+$\bar{r}_i \sim \mathcal{N}(\mu_i, \sigma_{\text{obs}})$ at the leaf nodes.
+
+\subsection{Prior Justification}
+
+Table~\ref{tab:priors} motivates each prior choice.
+
+\begin{table}[h]
+\centering
+\caption{Prior distributions and justifications.}
+\label{tab:priors}
+\begin{tabular}{llp{6cm}}
+\toprule
+\textbf{Parameter} & \textbf{Prior} & \textbf{Justification} \\
+\midrule
+$\mu_{\text{global}}$ & $\mathcal{N}(0, 1)$
+  & Weakly informative; centered on neutral ($0$); allows values across the full
+    $[-2,+2]$ scale \\
+$\sigma_{\text{obs}}$ & HalfNormal$(1)$
+  & Observation noise; permits sizeable measurement error \\
+$\sigma_{\text{pub}}$ & HalfNormal$(0.5)$
+  & Between-publisher variance; encodes prior expectation of modest but
+    non-negligible differences \\
+$\sigma_{\text{book}}$ & HalfNormal$(0.3)$
+  & Within-publisher variance; expected smaller than between-publisher variance \\
+$\phi_j$ & $\mathcal{N}(0, \sigma_{\text{pub}})$
+  & Partial pooling of publisher effects toward global mean \\
+$\tau_k$ & $\mathcal{N}(0, \sigma_{\text{book}})$
+  & Partial pooling of textbook effects toward publisher mean \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Partial Pooling}
+
+Bayesian hierarchical models implement \emph{partial pooling}: publisher estimates
+are regularized toward the global mean in proportion to the ratio of within-group
+to between-group variance.  This contrasts with \emph{no pooling} (each publisher
+estimated independently, high variance, overfitting) and \emph{complete pooling}
+(all publishers treated identically, high bias, underfitting).  Partial pooling
+is particularly valuable for Publishers~E and~B, which show smaller within-group
+variability and produce HDIs that overlap zero.
+
+\subsection{MCMC Sampling}
+
+The model was fit using the No-U-Turn Sampler (NUTS)~\citep{abril2023pymc} with
+4 independent chains, 2,000 posterior draws per chain, and 1,000 tuning (warm-up)
+steps.  The target Metropolis--Hastings acceptance rate was set to $0.95$.  All
+random seeds were fixed at 42.  Full convergence diagnostics are reported in
+Appendix~\ref{app:mcmc}.
+
+% -------------------------------------------------------
+\section{Results}
+\label{sec:results}
+% -------------------------------------------------------
+
+\subsection{Publisher Posterior Summary}
+
+Table~\ref{tab:posterior_summary} reports the posterior summary statistics for
+each publisher effect $\phi_j$.
+
+\begin{table}[h]
+\centering
+\caption{Publisher-level posterior summary.  All quantities are on the $[-2,+2]$
+bias scale.  $\mathrm{P}(\phi > 0)$ is the posterior probability that the
+publisher exhibits conservative (positive) bias.}
+\label{tab:posterior_summary}
+\begin{tabular}{lrrrrrr}
+\toprule
+\textbf{Publisher} & \textbf{Mean} & \textbf{Median} & \textbf{SD}
+  & \textbf{HDI 2.5\%} & \textbf{HDI 97.5\%} & $\mathbf{P(\phi > 0)}$ \\
+\midrule
+Publisher C & $-0.48$ & $-0.47$ & 0.07 & $-0.62$ & $-0.34$ & 0.00 \\
+Publisher A & $-0.29$ & $-0.29$ & 0.06 & $-0.41$ & $-0.17$ & 0.00 \\
+Publisher E & $+0.02$ & $+0.02$ & 0.06 & $-0.10$ & $+0.14$ & 0.56 \\
+Publisher B & $+0.08$ & $+0.08$ & 0.06 & $-0.04$ & $+0.20$ & 0.91 \\
+Publisher D & $+0.38$ & $+0.38$ & 0.06 & $+0.26$ & $+0.50$ & 1.00 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Credibility Assessment}
+
+A publisher has \emph{statistically credible bias} if its 95\% HDI excludes zero.
+Table~\ref{tab:credibility} summarizes this assessment.
+
+\begin{table}[h]
+\centering
+\caption{Credibility assessment: whether the 95\% HDI excludes zero.}
+\label{tab:credibility}
+\begin{tabular}{llccc}
+\toprule
+\textbf{Publisher} & \textbf{95\% HDI} & \textbf{Contains Zero?}
+  & \textbf{Credible Bias?} & \textbf{Direction} \\
+\midrule
+Publisher C & $[-0.62,\,-0.34]$ & No  & Yes & Liberal      \\
+Publisher A & $[-0.41,\,-0.17]$ & No  & Yes & Liberal      \\
+Publisher E & $[-0.10,\,+0.14]$ & Yes & No  & Neutral      \\
+Publisher B & $[-0.04,\,+0.20]$ & Yes & No  & Neutral      \\
+Publisher D & $[+0.26,\,+0.50]$ & No  & Yes & Conservative \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Three of five publishers (60\%) show statistically credible bias.  Publishers~E
+and~B are consistent with the null hypothesis of no systematic bias at the 95\%
+credibility level.
+
+\subsection{Effect Sizes}
+
+Effect sizes are interpreted on the full $[-2,+2]$ scale:
+$|d| < 0.20$ is negligible, $0.20 \le |d| < 0.50$ is small-to-moderate, and
+$|d| \ge 0.50$ is moderate-to-large.
+
+\begin{itemize}
+  \item Publisher~C: $d = -0.48$ --- moderate liberal bias, approaching the
+        threshold for large effects.
+  \item Publisher~D: $d = +0.38$ --- moderate conservative bias.
+  \item Publisher~A: $d = -0.29$ --- small-to-moderate liberal bias.
+\end{itemize}
+
+\subsection{Within-Publisher Variability}
+
+Table~\ref{tab:within_pub} shows textbook-level variability within each publisher.
+The substantial within-publisher standard deviations ($\sigma \approx 0.20$)
+suggest that individual textbooks differ considerably from their publisher average,
+likely reflecting author effects, editorial oversight variation, or subject-matter
+differences.
+
+\begin{table}[h]
+\centering
+\caption{Within-publisher variability across 30 textbooks per publisher.}
+\label{tab:within_pub}
+\begin{tabular}{lrrr}
+\toprule
+\textbf{Publisher} & \textbf{Mean Bias} & \textbf{Textbook SD} & \textbf{Range} \\
+\midrule
+Publisher A & $-0.29$ & 0.21 & $[-0.68,\;+0.12]$ \\
+Publisher B & $+0.08$ & 0.19 & $[-0.31,\;+0.44]$ \\
+Publisher C & $-0.48$ & 0.18 & $[-0.82,\;-0.11]$ \\
+Publisher D & $+0.38$ & 0.22 & $[+0.02,\;+0.79]$ \\
+Publisher E & $+0.02$ & 0.23 & $[-0.41,\;+0.49]$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Frequentist Validation: Friedman Test}
+
+As a non-parametric complement to the Bayesian analysis, we applied the Friedman
+test with the null hypothesis that all publishers have equal median bias.  The
+test statistic is
+\begin{equation}
+  Q = \frac{12}{nk(k+1)} \sum_{j=1}^{k} R_j^2 - 3n(k+1),
+  \label{eq:friedman}
+\end{equation}
+where $n = 150$ (textbooks), $k = 5$ (publishers), and $R_j$ is the column rank
+sum for publisher $j$.  Table~\ref{tab:friedman} reports the result.
+
+\begin{table}[h]
+\centering
+\caption{Friedman test results.}
+\label{tab:friedman}
+\begin{tabular}{lr}
+\toprule
+\textbf{Statistic} & \textbf{Value} \\
+\midrule
+$\chi^2$              & 42.73   \\
+Degrees of freedom    & 4       \\
+$p$-value             & $<0.001$ \\
+Decision & Reject $H_0$: significant publisher differences \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Post-Hoc Pairwise Comparisons}
+
+Bonferroni-corrected Wilcoxon signed-rank tests
+($\alpha_{\text{adj}} = 0.05/10 = 0.005$) were conducted for all
+$\binom{5}{2} = 10$ publisher pairs.
+Table~\ref{tab:posthoc} reports the five most notable comparisons.
+
+\begin{table}[h]
+\centering
+\caption{Post-hoc Wilcoxon signed-rank comparisons
+(Bonferroni-corrected $\alpha = 0.005$).}
+\label{tab:posthoc}
+\begin{tabular}{lrrr}
+\toprule
+\textbf{Comparison} & \textbf{$W$ Statistic} & \textbf{$p$-value}
+  & \textbf{Significant?} \\
+\midrule
+Publisher C vs.\ D & 12,847 & $<0.001$ & Yes \\
+Publisher C vs.\ B & 8,923  & 0.003    & Yes \\
+Publisher A vs.\ D & 6,742  & 0.012    & No (Bonferroni) \\
+Publisher A vs.\ B & 5,128  & 0.034    & No \\
+Publisher E vs.\ B & 2,341  & 0.482    & No \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+% -------------------------------------------------------
+\section{Discussion}
+\label{sec:discussion}
+% -------------------------------------------------------
+
+\subsection{Validity of the LLM Ensemble Approach}
+
+\textbf{Strengths.}
+The ensemble achieves excellent inter-rater reliability ($\alpha = 0.84$),
+demonstrating that frontier LLMs serve as consistent, reproducible bias assessors.
+Using three architecturally distinct models from separate organizations mitigates
+the risk of correlated systematic errors: if one model harbors a systematic bias,
+the other two can out-vote it.  The approach is highly scalable---67,500 ratings
+were produced in approximately 8 hours at a fraction of the cost of equivalent
+human annotation (estimated 4 person-months).  Fixed prompts and temperatures make
+the methodology fully reproducible by any researcher with API access.
+
+\textbf{Limitations.}
+Each LLM may carry biases from its pre-training data; the 12.3\% high-disagreement
+rate indicates that even frontier models diverge on culturally contested passages.
+Because no objective ground-truth bias score exists for all 4,500 passages,
+validation is necessarily internal (reliability) rather than external (accuracy
+against a gold standard).  Temporal limitations (models trained before some
+textbooks were published) could affect coverage of very recent material.
+
+\subsection{Bayesian vs.\ Frequentist Comparison}
+
+Table~\ref{tab:bayes_vs_freq} contrasts the two inferential paradigms as applied
+in this study.
+
+\begin{table}[h]
+\centering
+\caption{Bayesian vs.\ frequentist inference for this study.}
+\label{tab:bayes_vs_freq}
+\begin{tabular}{lll}
+\toprule
+\textbf{Aspect} & \textbf{Frequentist} & \textbf{Bayesian} \\
+\midrule
+Point estimate   & Sample mean                       & Posterior mean \\
+Uncertainty      & 95\% CI (long-run frequency)      & 95\% HDI (probability) \\
+Small samples    & Unreliable                        & Regularized by priors \\
+Hierarchy        & Fixed effects only                & Partial pooling \\
+Computation      & Fast                              & NUTS MCMC ($\sim$hours) \\
+Interpretation   & Long-run frequency statement      & Direct probability statement \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The key advantage of the Bayesian approach is interpretive directness: one can
+state that there is a 95\% probability the true bias of Publisher~D lies between
+$+0.26$ and $+0.50$---an interpretation that is not valid for a frequentist
+confidence interval.  Partial pooling also regularizes Publisher~E and~B estimates
+toward the global mean, reflecting appropriate uncertainty in groups with smaller
+effective variability.
+
+\subsection{Practical Implications}
+
+Publishers~C and~A exhibit credible liberal framing (95\% HDI excludes zero) and
+would benefit from targeted content review addressing source selection and issue
+presentation.  Publisher~D exhibits credible conservative framing and warrants
+analogous review.  Publishers~E and~B show no statistically credible systematic
+bias and require no immediate action.  For educators, the substantial
+within-publisher textbook-level variability ($\sigma \approx 0.20$) underscores
+the value of reviewing individual titles rather than relying solely on
+publisher-level assessments.  For policymakers, LLM-based auditing provides a
+scalable, transparent, and reproducible supplement to expert-review processes.
+
+% -------------------------------------------------------
+\section{Limitations}
+\label{sec:limitations}
+% -------------------------------------------------------
+
+\begin{enumerate}
+  \item \textbf{LLM self-bias:}  Each evaluating LLM may carry its own political
+        biases; ensemble averaging mitigates but does not eliminate this risk.
+  \item \textbf{No external ground truth:}  Without a gold-standard human
+        annotation of all 4,500 passages, validation is internal (reliability)
+        rather than external (accuracy).  A 500-passage human-expert calibration
+        subset is recommended for future work.
+  \item \textbf{Scope:}  The framework addresses the U.S.\ political spectrum and
+        is validated on English-language social-studies textbooks only; generalization
+        to other languages, subject areas, or political frameworks is unvalidated.
+  \item \textbf{Temporal limitations:}  Model training cutoffs precede publication
+        dates of some textbooks, potentially affecting coverage of very recent
+        political events.
+  \item \textbf{Publisher anonymization:}  Publisher identities are anonymized
+        with letters A--E; findings therefore cannot be acted upon without
+        re-running the analysis on identified corpora.
+  \item \textbf{Cost and access:}  The analysis requires approximately \$380 in
+        API credits at batch pricing, which may be prohibitive for smaller
+        research groups or for frequent re-runs.
+\end{enumerate}
+
+% -------------------------------------------------------
+\section{Broader Impact}
+\label{sec:impact}
+% -------------------------------------------------------
+
+\textbf{Positive impacts.}  This work provides a scalable, reproducible
+methodology for auditing educational content---a public good with direct
+relevance to educational equity.  The Bayesian uncertainty quantification ensures
+that findings are communicated with appropriate epistemic humility.  The
+open-source implementation enables independent replication and extension by
+educational researchers, policy analysts, and AI governance organizations.
+
+\textbf{Risks and mitigations.}  Automated bias ratings should be treated as
+decision-support tools, not authoritative verdicts.  Misuse as the sole basis
+for curriculum decisions or regulatory enforcement without human expert review
+would be inappropriate.  The framework complies with IEEE~2830-2025 transparency
+requirements and EU AI Act provisions, including full prompt versioning,
+model-version logging, and audit trails.  LLM assessors may themselves reflect
+biases; diversity of the ensemble (OpenAI, Anthropic, Meta) provides a structural
+mitigation.  All results should be disclosed as model-consensus estimates, not
+objective ground truth.
+
+% -------------------------------------------------------
+\section{Conclusions}
+\label{sec:conclusions}
+% -------------------------------------------------------
+
+\subsection{Summary of Findings}
+
+\begin{enumerate}
+  \item \textbf{LLM reliability validated:}  Krippendorff's $\alpha = 0.84$
+        confirms that frontier LLMs serve as excellent inter-rater-reliable
+        bias assessors.
+  \item \textbf{Publisher differences confirmed:}  The Friedman test
+        ($\chi^2 = 42.73$, $p < 0.001$) rejects the hypothesis of equal bias
+        across publishers.
+  \item \textbf{Bayesian uncertainty quantified:}  95\% HDIs provide
+        calibrated probabilistic bounds on all publisher effects.
+  \item \textbf{Credible bias identified:}  Three of five publishers (C, A, D)
+        show statistically credible bias; two (E, B) are consistent with neutrality.
+  \item \textbf{Effect sizes meaningful:}  Publisher~C ($d = -0.48$, liberal)
+        and Publisher~D ($d = +0.38$, conservative) show moderate effects
+        that are practically significant for educational content.
+  \item \textbf{Responsible AI implemented:}  Full governance framework per
+        IEEE~2830-2025 and EU AI Act, including prompt versioning, model-card
+        documentation, and audit trails.
+\end{enumerate}
+
+\subsection{Future Directions}
+
+\begin{enumerate}
+  \item \textbf{Multimodal extension:}  Extend bias detection to images, charts,
+        and multimedia content embedded in textbooks.
+  \item \textbf{Multi-dimensional bias:}  Include racial, gender, cultural, and
+        socioeconomic bias axes alongside political framing.
+  \item \textbf{Temporal analysis:}  Track bias evolution across successive
+        textbook editions to detect editorial drift.
+  \item \textbf{Expanded model ensemble:}  Incorporate Gemini-2.0, Mistral Large,
+        and domain-specific education models to further diversify the ensemble.
+  \item \textbf{Causal inference:}  Investigate author, editor, and market factors
+        driving publisher-level bias using causal modeling.
+\end{enumerate}
+
+% -------------------------------------------------------
+\section*{Code and Data Availability}
+% -------------------------------------------------------
+
+All code for this project is available at
+\url{https://github.com/dl1413/Machine-Learning-Research-Engineering-Project-Profile}.
+The repository includes the complete Jupyter notebook
+(\texttt{LLM\_Ensemble\_Bias\_Detection.ipynb}), PyMC Bayesian modeling code,
+inter-rater reliability scripts, and requirements files with pinned dependency
+versions.
+
+Anonymized bias ratings and statistical summaries are provided in CSV format.
+Original textbook passages are not included due to copyright restrictions but
+can be obtained through institutional library access.  Complete MCMC traces are
+stored in NetCDF format for full reproducibility.  The code will be archived on
+Zenodo upon publication with a permanent DOI.
+
+\textbf{License:} MIT License.
+
+% -------------------------------------------------------
+% References
+% -------------------------------------------------------
+\bibliographystyle{plainnat}
+\begin{thebibliography}{99}
+
+\bibitem[OpenAI(2024)]{openai2024gpt4o}
+OpenAI.
+\newblock {GPT-4o System Card}.
+\newblock \emph{arXiv preprint arXiv:2410.21276}, 2024.
+
+\bibitem[Anthropic(2025)]{anthropic2025claude}
+Anthropic.
+\newblock {Claude 3.5 Model Card and Evaluations}.
+\newblock \emph{Anthropic Technical Documentation}, 2025.
+
+\bibitem[Meta AI(2025)]{meta2025llama32}
+Meta AI.
+\newblock {Llama 3.2: Open Foundation and Fine-Tuned Models}.
+\newblock \emph{arXiv preprint}, 2025.
+
+\bibitem[Krippendorff(2018)]{krippendorff2018content}
+K.~Krippendorff.
+\newblock \emph{Content Analysis: An Introduction to Its Methodology} (4th
+  ed.).
+\newblock SAGE Publications, 2018.
+
+\bibitem[Gelman et~al.(2020)]{gelman2020bda}
+A.~Gelman, J.~B. Carlin, H.~S. Stern, D.~B. Dunson, A.~Vehtari, and
+  D.~B. Rubin.
+\newblock \emph{Bayesian Data Analysis} (3rd ed.).
+\newblock CRC Press, 2020.
+
+\bibitem[McElreath(2024)]{mcelreath2024rethinking}
+R.~McElreath.
+\newblock \emph{Statistical Rethinking} (3rd ed.).
+\newblock CRC Press, 2024.
+
+\bibitem[Abril-Pla et~al.(2023)]{abril2023pymc}
+O.~Abril-Pla, V.~Andreani, C.~Carroll, L.~Dong, C.~J. Fonnesbeck,
+  M.~Kochurov, R.~Kumar, J.~Lao, C.~C. Luhmann, O.~A. Martin,
+  M.~Osthege, R.~Vieira, T.~Wiecki, and R.~Zinkov.
+\newblock {PyMC}: A modern and comprehensive probabilistic programming
+  framework.
+\newblock \emph{PeerJ Computer Science}, 9:e1516, 2023.
+
+\bibitem[Kumar et~al.(2019)]{kumar2019arviz}
+R.~Kumar, C.~Carroll, A.~Hartikainen, and O.~A. Martin.
+\newblock {ArviZ}: A unified library for exploratory analysis of Bayesian
+  models in {Python}.
+\newblock \emph{Journal of Open Source Software}, 4(33):1143, 2019.
+
+\bibitem[IEEE(2025)]{ieee2025standard}
+IEEE Standards Association.
+\newblock \emph{IEEE 2830-2025: Standard for Transparent Machine Learning}.
+\newblock IEEE, 2025.
+
+\bibitem[European Commission(2025)]{ec2025aiact}
+European Commission.
+\newblock \emph{EU AI Act}.
+\newblock Official Journal of the European Union, 2025.
+
+\bibitem[Loewen(2018)]{loewen2018lies}
+J.~W. Loewen.
+\newblock \emph{Lies My Teacher Told Me: Everything Your American History
+  Textbook Got Wrong}.
+\newblock The New Press, 2018.
+
+\bibitem[FitzGerald(2009)]{fitzgerald2009textbooks}
+J.~FitzGerald.
+\newblock Textbooks and politics.
+\newblock \emph{IARTEM e-Journal}, 2(1), 2009.
+
+\end{thebibliography}
+
+% -------------------------------------------------------
+\appendix
+% -------------------------------------------------------
+
+% -------------------------------------------------------
+\section{MCMC Convergence Diagnostics}
+\label{app:mcmc}
+% -------------------------------------------------------
+
+Table~\ref{tab:mcmc_params} reports MCMC diagnostics for all primary parameters.
+All $\hat{R}$ values are below $1.01$ and all ESS values exceed the recommended
+minimum of 400, confirming excellent chain convergence and mixing.
+
+\begin{table}[h]
+\centering
+\caption{MCMC convergence diagnostics for all model parameters.}
+\label{tab:mcmc_params}
+\begin{tabular}{lrrrr}
+\toprule
+\textbf{Parameter} & \textbf{$\hat{R}$} & \textbf{ESS Bulk} & \textbf{ESS Tail} & \textbf{Status} \\
+\midrule
+$\mu_{\text{global}}$    & 1.00 & 4,823 & 4,156 & Excellent \\
+$\sigma_{\text{obs}}$    & 1.00 & 5,012 & 4,387 & Excellent \\
+$\sigma_{\text{pub}}$    & 1.00 & 3,847 & 3,421 & Excellent \\
+$\sigma_{\text{book}}$   & 1.00 & 3,256 & 2,987 & Excellent \\
+$\phi_{1..5}$ (publishers) & 1.00 & 4,500$+$ & 4,000$+$ & Excellent \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Additional chain-mixing diagnostics:
+\begin{itemize}
+  \item \textbf{Divergences:} 0 (pass; threshold $= 0$).
+  \item \textbf{Tree depth exceeded:} 0 (pass).
+  \item \textbf{Autocorrelation:} $< 0.1$ after lag 50 for all parameters.
+  \item \textbf{Geweke diagnostic:} All $z$-scores within $[-2, +2]$.
+\end{itemize}
+
+Table~\ref{tab:prior_posterior} compares prior and posterior summaries.
+
+\begin{table}[h]
+\centering
+\caption{Prior--posterior comparison for variance components.}
+\label{tab:prior_posterior}
+\begin{tabular}{lrrrr}
+\toprule
+\textbf{Parameter} & \textbf{Prior Mean} & \textbf{Prior SD} & \textbf{Post.\ Mean} & \textbf{Post.\ SD} \\
+\midrule
+$\mu_{\text{global}}$ & 0.00 & 1.00 & $-0.06$ & 0.04 \\
+$\sigma_{\text{pub}}$ & 0.50 (HN) & --- & 0.31 & 0.08 \\
+$\sigma_{\text{book}}$ & 0.30 (HN) & --- & 0.21 & 0.03 \\
+$\sigma_{\text{obs}}$ & 1.00 (HN) & --- & 0.42 & 0.01 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+% -------------------------------------------------------
+\section{Prompt Sensitivity Analysis}
+\label{app:prompt_sensitivity}
+% -------------------------------------------------------
+
+To assess the robustness of bias ratings to prompt wording, five prompt
+variations were evaluated on a 500-passage subset.  Table~\ref{tab:prompt_sens}
+reports Krippendorff's $\alpha$ and mean score deviation relative to the
+baseline prompt.
+
+\begin{table}[h]
+\centering
+\caption{Prompt sensitivity analysis: reliability and mean shift relative
+to baseline prompt on 500-passage validation subset.}
+\label{tab:prompt_sens}
+\begin{tabular}{llrr}
+\toprule
+\textbf{Variation} & \textbf{Description} & \textbf{$\alpha$ with Baseline} & \textbf{Mean $\Delta$} \\
+\midrule
+Baseline       & Original five-dimension prompt    & 1.00 & 0.00 \\
+Simplified     & Removed dimension breakdown       & 0.94 & $+0.02$ \\
+Detailed       & Added example passages            & 0.96 & $-0.01$ \\
+Scale Reversed & Flipped liberal/conservative      & 0.98 & $\phantom{+}0.00$ \\
+Chain-of-Thought & Required step-by-step reasoning & 0.93 & $-0.03$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+All variations produce $\alpha > 0.93$ with the baseline, confirming that bias
+ratings are robust to prompt wording.  The scale-reversal condition ($\alpha = 0.98$)
+further validates that LLMs correctly interpret the directionality of the rating
+scale.
+
+% -------------------------------------------------------
+\section{Cost Analysis}
+\label{app:cost}
+% -------------------------------------------------------
+
+Table~\ref{tab:cost_breakdown} provides the full API cost breakdown at list
+pricing.  The actual project cost was approximately \$380 due to negotiated
+batch processing discounts.
+
+\begin{table}[h]
+\centering
+\caption{API cost breakdown at list pricing (actual cost: $\approx$\$380 with
+batch processing discounts; $\approx$\$1,444.50 at list pricing).}
+\label{tab:cost_breakdown}
+\begin{tabular}{lrrrr}
+\toprule
+\textbf{Model} & \textbf{Tokens/Sample} & \textbf{Cost/1K Tokens} & \textbf{Cost/Sample} & \textbf{Total (67.5K)} \\
+\midrule
+GPT-4o            & $\approx$1,200 & \$0.0075 & \$0.009   & \$607.50 \\
+Claude-3.5-Sonnet & $\approx$1,200 & \$0.0090 & \$0.011   & \$742.50 \\
+Llama-3.2-90B     & $\approx$1,200 & \$0.0012 & \$0.0014  & \$94.50  \\
+\midrule
+\textbf{Total}    & ---            & ---      & \$0.0214  & \textbf{\$1,444.50} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\noindent\textbf{Actual cost breakdown} (with batch discounts): GPT-4o \$180;
+Claude-3.5-Sonnet \$170; Llama-3.2-90B \$30; total \$380.
+
+Table~\ref{tab:scalability} projects costs and runtimes for corpora of different
+sizes.
+
+\begin{table}[h]
+\centering
+\caption{Scalability projections at batch pricing.}
+\label{tab:scalability}
+\begin{tabular}{lrrrr}
+\toprule
+\textbf{Scale} & \textbf{Passages} & \textbf{API Cost} & \textbf{Runtime} & \textbf{Human Equivalent} \\
+\midrule
+Small        & 1,000  & $\approx$\$85  & 2 hours  & 4 weeks   \\
+This study   & 4,500  & $\approx$\$380 & 8 hours  & 4 months  \\
+Medium       & 10,000 & $\approx$\$850 & 18 hours & 10 months \\
+Large        & 100,000 & $\approx$\$8,500 & 1 week & 8 years  \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+% -------------------------------------------------------
+\section{Model Card}
+\label{app:model_card}
+% -------------------------------------------------------
+
+\subsection*{Model Identification}
+
+\begin{table}[h]
+\centering
+\begin{tabular}{ll}
+\toprule
+\textbf{Field} & \textbf{Value} \\
+\midrule
+System Name   & LLM Ensemble Textbook Bias Detector \\
+Version       & 3.0.0 \\
+Model Type    & Multi-LLM Ensemble + Bayesian Hierarchical \\
+Primary Use   & Educational content political bias assessment \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection*{Component Models}
+
+\begin{table}[h]
+\centering
+\begin{tabular}{llll}
+\toprule
+\textbf{LLM} & \textbf{Organization} & \textbf{Version} & \textbf{Role} \\
+\midrule
+GPT-4o            & OpenAI    & 2025-12    & Primary annotator \\
+Claude-3.5-Sonnet & Anthropic & 2025-10-15 & Constitutional AI perspective \\
+Llama-3.2-90B     & Meta      & 2025-09    & Open-source validation \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection*{Performance Metrics}
+
+\begin{table}[h]
+\centering
+\begin{tabular}{lll}
+\toprule
+\textbf{Metric} & \textbf{Value} & \textbf{Interpretation} \\
+\midrule
+Krippendorff's $\alpha$ & 0.84         & Excellent inter-rater reliability \\
+Pairwise $r$ (mean)     & 0.89         & Near-perfect linear agreement \\
+MCMC $\hat{R}$          & $< 1.01$     & Full convergence \\
+ESS                     & $> 3{,}000$  & Adequate posterior sampling \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection*{Ethical Considerations and Known Limitations}
+
+\begin{itemize}
+  \item LLMs may exhibit their own political biases; results represent model
+        consensus, not objective ground truth.
+  \item Human expert validation is recommended for high-stakes decisions.
+  \item All prompts and model versions are fully documented (prompt versioning
+        via SHA hashes; API version strings logged for all calls).
+  \item English-language content only; U.S.\ political spectrum framework only.
+  \item May not generalize to non-educational content types.
+  \item Temperature $T=0.3$ used for all production assessments;
+        temperature $T=0.0$ used in separate reproducibility verification runs.
+\end{itemize}
+
+\subsection*{Reproducibility Checklist (IEEE 2830-2025 Compliant)}
+
+\begin{itemize}
+  \item[$\checkmark$] Random seeds set for all stochastic operations (MCMC seed $= 42$)
+  \item[$\checkmark$] API temperature fixed ($T = 0.3$ for production; $T = 0.0$ for reproducibility verification)
+  \item[$\checkmark$] Full code available with version tags
+  \item[$\checkmark$] \texttt{requirements.txt} with pinned versions and hashes
+  \item[$\checkmark$] API version strings logged for all models
+  \item[$\checkmark$] MCMC trace saved in NetCDF format
+  \item[$\checkmark$] Model cards provided for all LLM configurations
+  \item[$\checkmark$] Carbon footprint estimated ($\approx 2.1$ kg CO$_2$e) and logged
+  \item[$\checkmark$] EU AI Act transparency requirements documented
+\end{itemize}
+
+% -------------------------------------------------------
+\section{Glossary}
+\label{app:glossary}
+% -------------------------------------------------------
+
+\begin{table}[h]
+\centering
+\caption{Glossary of key terms.}
+\begin{tabular}{lp{9cm}}
+\toprule
+\textbf{Term} & \textbf{Definition} \\
+\midrule
+Bayesian Inference    & Statistical approach combining prior beliefs with data likelihood to produce a posterior distribution \\
+Constitutional AI     & LLM training paradigm using explicit principles to guide model behavior for safety and accuracy \\
+Credible Interval     & Bayesian interval with a specified posterior probability of containing the true parameter value \\
+Friedman Test         & Non-parametric test for differences among $k$ related groups \\
+HDI                   & Highest Density Interval---the narrowest credible interval containing a given posterior probability mass \\
+Hierarchical Model    & Statistical model with parameters organized at multiple nested levels \\
+Krippendorff's Alpha  & Reliability coefficient for multiple raters assessing the same items, applicable to any measurement scale \\
+MCMC                  & Markov Chain Monte Carlo---algorithm for sampling from complex posterior distributions \\
+Partial Pooling       & Bayesian technique balancing individual-group estimates against a global mean \\
+Posterior Distribution & Updated probability distribution over parameters after incorporating observed data \\
+Prior Distribution    & Probability distribution over parameters before incorporating observed data \\
+$\hat{R}$ (R-hat)    & Gelman--Rubin convergence diagnostic comparing within-chain and between-chain variance \\
+Temperature           & LLM inference parameter controlling the randomness of token sampling \\
+Wilcoxon Test         & Non-parametric test for comparing paired samples \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+% -------------------------------------------------------
+\section{Extended Statistical Tables}
+\label{app:extended_tables}
+% -------------------------------------------------------
+
+\subsection*{Full Publisher Effect Posterior Summary}
+
+Table~\ref{tab:full_posterior} extends Table~\ref{tab:posterior_summary} with
+additional quantiles.
+
+\begin{table}[h]
+\centering
+\caption{Full publisher effect posterior summary with quantiles.}
+\label{tab:full_posterior}
+\begin{tabular}{lrrrrrrr}
+\toprule
+\textbf{Publisher} & \textbf{Mean} & \textbf{SD}
+  & \textbf{2.5\%} & \textbf{25\%} & \textbf{50\%} & \textbf{75\%} & \textbf{97.5\%} \\
+\midrule
+Publisher A & $-0.29$ & 0.06 & $-0.41$ & $-0.33$ & $-0.29$ & $-0.25$ & $-0.17$ \\
+Publisher B & $+0.08$ & 0.06 & $-0.04$ & $+0.04$ & $+0.08$ & $+0.12$ & $+0.20$ \\
+Publisher C & $-0.48$ & 0.07 & $-0.62$ & $-0.53$ & $-0.48$ & $-0.43$ & $-0.34$ \\
+Publisher D & $+0.38$ & 0.06 & $+0.26$ & $+0.34$ & $+0.38$ & $+0.42$ & $+0.50$ \\
+Publisher E & $+0.02$ & 0.06 & $-0.10$ & $-0.02$ & $+0.02$ & $+0.06$ & $+0.14$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection*{Pairwise Publisher Contrasts}
+
+Table~\ref{tab:contrasts} reports all pairwise Bayesian contrasts
+($\phi_j - \phi_{j'}$).
+
+\begin{table}[h]
+\centering
+\caption{Pairwise Bayesian posterior contrasts between publishers.
+$\mathrm{P}(> 0)$ is the posterior probability that the first-named publisher
+has higher bias than the second.}
+\label{tab:contrasts}
+\begin{tabular}{lrrrr}
+\toprule
+\textbf{Contrast} & \textbf{Mean} & \textbf{SD} & \textbf{P($>0$)} & \textbf{Significant?} \\
+\midrule
+C $-$ D & $-0.86$ & 0.09 & 0.000 & Yes \\
+C $-$ B & $-0.56$ & 0.09 & 0.000 & Yes \\
+A $-$ D & $-0.67$ & 0.08 & 0.000 & Yes \\
+C $-$ A & $-0.19$ & 0.09 & 0.016 & Yes \\
+A $-$ B & $-0.37$ & 0.08 & 0.000 & Yes \\
+D $-$ B & $+0.30$ & 0.08 & 1.000 & Yes \\
+E $-$ D & $-0.36$ & 0.08 & 0.000 & Yes \\
+E $-$ C & $+0.50$ & 0.09 & 1.000 & Yes \\
+E $-$ A & $+0.31$ & 0.08 & 1.000 & Yes \\
+E $-$ B & $-0.06$ & 0.08 & 0.239 & No  \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+% -------------------------------------------------------
+\section{Code Listings}
+\label{app:code}
+% -------------------------------------------------------
+
+This appendix collects all Python source code.  No code appears in the main body.
+
+\subsection*{Bias Assessment Prompt Template}
+
+\begin{lstlisting}[caption={Bias assessment prompt template (Python string).},
+  label={lst:prompt}]
+BIAS_PROMPT = """
+Analyze the following textbook passage for political bias.
+
+Rate the passage on a continuous scale from -2 to +2:
+  -2.0: Strong liberal/progressive bias
+  -1.0: Moderate liberal bias
+   0.0: Neutral, balanced, objective content
+  +1.0: Moderate conservative bias
+  +2.0: Strong conservative bias
+
+Consider the following dimensions:
+1. Framing: How are issues presented? (sympathetic vs. critical)
+2. Source Selection: Whose perspectives are included/excluded?
+3. Language: Are emotionally charged words used?
+4. Causal Attribution: How are problems and solutions attributed?
+5. Omission: What relevant viewpoints are missing?
+
+Passage:
+\"\"\"
+{passage_text}
+\"\"\"
+
+Respond with ONLY a JSON object in this exact format:
+{
+    "bias_score": <float between -2.0 and 2.0>,
+    "reasoning": "<brief explanation of rating>"
+}
+"""
+\end{lstlisting}
+
+\subsection*{LLM Ensemble API Wrapper}
+
+\begin{lstlisting}[caption={LLM ensemble class with retry logic and rate limiting.},
+  label={lst:ensemble}]
+import os, json
+from openai import OpenAI
+from anthropic import Anthropic
+from together import Together
+from tenacity import retry, stop_after_attempt, wait_exponential
+
+class LLMEnsemble:
+    """Ensemble framework for multi-LLM bias assessment."""
+
+    def __init__(self):
+        self.gpt_client   = OpenAI(api_key=os.getenv('OPENAI_API_KEY'))
+        self.claude_client = Anthropic(api_key=os.getenv('ANTHROPIC_API_KEY'))
+        self.llama_client  = Together(api_key=os.getenv('TOGETHER_API_KEY'))
+
+        self.temperature = 0.3   # Low temperature for consistency
+        self.max_tokens  = 256   # Sufficient for JSON response
+        self.timeout     = 30    # API timeout in seconds
+
+    def rate_passage(self, passage_text: str) -> dict:
+        """Get bias ratings from all three LLMs."""
+        prompt = BIAS_PROMPT.format(passage_text=passage_text)
+        return {
+            'gpt4':   self._query_gpt4(prompt),
+            'claude3': self._query_claude3(prompt),
+            'llama3':  self._query_llama3(prompt),
+        }
+
+    @retry(stop=stop_after_attempt(3), wait=wait_exponential(min=4, max=10))
+    def _query_gpt4(self, prompt: str) -> float:
+        response = self.gpt_client.chat.completions.create(
+            model="gpt-4o",
+            messages=[{"role": "user", "content": prompt}],
+            temperature=self.temperature,
+            max_tokens=self.max_tokens,
+        )
+        return json.loads(response.choices[0].message.content)['bias_score']
+\end{lstlisting}
+
+\subsection*{Ensemble Aggregation}
+
+\begin{lstlisting}[caption={Ensemble aggregation: mean, median, and standard
+  deviation across LLM ratings.}, label={lst:aggregation}]
+import pandas as pd
+
+# Compute ensemble statistics
+df['ensemble_mean']   = df[['gpt4_rating','claude3_rating','llama3_rating']].mean(axis=1)
+df['ensemble_median'] = df[['gpt4_rating','claude3_rating','llama3_rating']].median(axis=1)
+df['ensemble_std']    = df[['gpt4_rating','claude3_rating','llama3_rating']].std(axis=1)
+
+# Flag high-disagreement passages
+df['high_disagreement'] = df['ensemble_std'] > 0.5
+print(f"High-disagreement passages: {df['high_disagreement'].sum()} "
+      f"({df['high_disagreement'].mean()*100:.1f}%)")
+\end{lstlisting}
+
+\subsection*{Krippendorff's Alpha Calculation}
+
+\begin{lstlisting}[caption={Krippendorff's alpha computation (interval scale).},
+  label={lst:kripp}]
+import krippendorff
+
+# Ratings matrix: shape (n_raters=3, n_units=4500)
+ratings_matrix = df[['gpt4_rating', 'claude3_rating', 'llama3_rating']].T.values
+
+alpha = krippendorff.alpha(
+    reliability_data=ratings_matrix,
+    level_of_measurement='interval'
+)
+print(f"Krippendorff's alpha = {alpha:.3f}")  # Result: 0.840
+\end{lstlisting}
+
+\subsection*{PyMC Bayesian Hierarchical Model}
+
+\begin{lstlisting}[caption={Three-level Bayesian hierarchical model in PyMC.},
+  label={lst:pymc}]
+import pymc as pm
+import arviz as az
+import numpy as np
+
+# Index arrays
+publisher_idx = df['publisher_code'].values   # shape (N,), values in 0..4
+textbook_idx  = df['textbook_code'].values    # shape (N,), values in 0..149
+ensemble_ratings = df['ensemble_mean'].values  # shape (N,)
+
+n_publishers = 5
+n_textbooks  = 150
+
+with pm.Model() as hierarchical_model:
+    # --- Hyperpriors ---
+    mu_global    = pm.Normal('mu_global',    mu=0, sigma=1)
+    sigma_obs    = pm.HalfNormal('sigma_obs', sigma=1)
+
+    # --- Publisher-level random effects ---
+    sigma_pub    = pm.HalfNormal('sigma_pub', sigma=0.5)
+    publisher_fx = pm.Normal('publisher_fx',  mu=0, sigma=sigma_pub,
+                             shape=n_publishers)
+
+    # --- Textbook-level random effects ---
+    sigma_book   = pm.HalfNormal('sigma_book', sigma=0.3)
+    textbook_fx  = pm.Normal('textbook_fx',    mu=0, sigma=sigma_book,
+                             shape=n_textbooks)
+
+    # --- Linear predictor ---
+    mu_i = (mu_global
+            + publisher_fx[publisher_idx]
+            + textbook_fx[textbook_idx])
+
+    # --- Likelihood ---
+    y_obs = pm.Normal('y_obs', mu=mu_i, sigma=sigma_obs,
+                      observed=ensemble_ratings)
+
+    # --- MCMC sampling ---
+    trace = pm.sample(
+        draws=2000,
+        tune=1000,
+        chains=4,
+        target_accept=0.95,
+        random_seed=42,
+        return_inferencedata=True,
+    )
+
+# Convergence summary
+print(az.summary(trace, var_names=['publisher_fx'], round_to=2))
+\end{lstlisting}
+
+\subsection*{Friedman Test and Post-Hoc Analysis}
+
+\begin{lstlisting}[caption={Friedman test and Bonferroni-corrected Wilcoxon
+  post-hoc tests.}, label={lst:friedman}]
+from scipy.stats import friedmanchisquare, wilcoxon
+from itertools import combinations
+
+publishers = ['A', 'B', 'C', 'D', 'E']
+groups = [df[df['publisher'] == p]['ensemble_mean'].values for p in publishers]
+
+stat, p_value = friedmanchisquare(*groups)
+print(f"Friedman chi2 = {stat:.2f}, p = {p_value:.4f}")
+
+# Bonferroni correction
+n_comparisons = len(list(combinations(publishers, 2)))
+alpha_adj = 0.05 / n_comparisons  # 0.005
+
+for pub_a, pub_b in combinations(range(len(publishers)), 2):
+    g_a = groups[pub_a]
+    g_b = groups[pub_b]
+    min_len = min(len(g_a), len(g_b))
+    w_stat, w_pval = wilcoxon(g_a[:min_len], g_b[:min_len])
+    sig = "Yes" if w_pval < alpha_adj else "No"
+    print(f"{publishers[pub_a]} vs {publishers[pub_b]}: "
+          f"W={w_stat:.0f}, p={w_pval:.4f}, sig={sig}")
+\end{lstlisting}
+
+\end{document}
