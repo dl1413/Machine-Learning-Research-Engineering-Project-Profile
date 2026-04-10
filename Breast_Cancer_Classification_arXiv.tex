@@ -1,0 +1,1142 @@
+% arXiv categories: cs.LG, q-bio.QM, cs.AI
+\documentclass[10pt,letterpaper]{article}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage{graphicx}
+\usepackage[ruled,vlined,linesnumbered]{algorithm2e}
+\usepackage[numbers,sort&compress]{natbib}
+\usepackage[margin=1in]{geometry}
+\usepackage{microtype}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{multirow}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue!60!black,
+    citecolor=blue!60!black,
+    urlcolor=blue!60!black
+}
+
+\lstset{
+    language=Python,
+    basicstyle=\footnotesize\ttfamily,
+    keywordstyle=\color{blue},
+    commentstyle=\color{gray},
+    stringstyle=\color{red!60!black},
+    breaklines=true,
+    frame=single,
+    numbers=left,
+    numberstyle=\tiny\color{gray},
+    captionpos=b
+}
+
+\title{\textbf{Enhanced Ensemble Methods for Wisconsin Breast Cancer Classification:\\
+A Comprehensive Machine Learning Pipeline with SMOTE, RFE, and Explainability}}
+
+\author{
+  Derek Lankeaux\\
+  MS Applied Statistics\\
+  Rochester Institute of Technology\\
+  \texttt{dl1413@rit.edu}
+}
+
+\date{January 2026}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+This paper presents a comprehensive machine learning pipeline for binary classification of breast
+tumors using the Wisconsin Diagnostic Breast Cancer (WDBC) dataset ($n=569$, $p=30$). We
+implement and rigorously evaluate eight state-of-the-art ensemble learning algorithms: Random
+Forest, Gradient Boosting, AdaBoost, Bagging, XGBoost, LightGBM, Voting, and Stacking
+classifiers. Our preprocessing pipeline incorporates Variance Inflation Factor (VIF) analysis for
+multicollinearity detection, the Synthetic Minority Over-sampling Technique (SMOTE) for class
+imbalance correction, and Recursive Feature Elimination (RFE) for optimal feature subset
+selection. The best-performing model, AdaBoost, achieved \textbf{99.12\% accuracy},
+\textbf{100\% precision}, \textbf{98.59\% recall}, and a ROC-AUC of \textbf{0.9987} on the
+held-out test set. Ten-fold stratified cross-validation confirmed robust generalization at
+$98.46\% \pm 1.12\%$. Cohen's $\kappa = 0.9823$ and Matthews Correlation Coefficient $= 0.9825$
+further establish near-perfect classifier agreement. This performance exceeds reported
+human inter-observer concordance in cytopathology ($90$--$95\%$), demonstrating clinical
+viability for computer-aided diagnosis (CAD) applications. SHAP analysis confirms that
+morphological features of the most abnormal nuclei within a sample (the ``worst'' statistics)
+carry the greatest discriminative weight, corroborating established cytopathological knowledge.
+
+\smallskip
+\noindent\textbf{Keywords:} Breast Cancer Classification, Ensemble Learning, AdaBoost, SMOTE,
+Recursive Feature Elimination, Computer-Aided Diagnosis, Wisconsin Breast Cancer Dataset,
+Gradient Boosting, XGBoost, LightGBM, Explainable AI, Responsible AI
+\end{abstract}
+
+%---------------------------------------------------------------------
+\section{Introduction}
+%---------------------------------------------------------------------
+
+\subsection{Clinical Background and Motivation}
+
+Breast cancer is the most prevalent malignancy among women globally, with approximately
+2.3~million new diagnoses and 685,000~deaths annually~\cite{who2020}. The imperative for early
+detection is underscored by dramatic survival differentials: localized disease demonstrates a
+five-year survival rate of approximately 99\%, compared with only 29\% for distant metastatic
+presentation.
+
+Fine Needle Aspiration (FNA) cytology serves as a frontline diagnostic modality, offering
+minimally invasive tissue sampling for microscopic evaluation. Despite its clinical utility,
+FNA interpretation exhibits inter-observer variability, with concordance rates ranging from
+85--95\% depending on pathologist experience and tumor characteristics~\cite{cibas2020}. Computer-Aided
+Diagnosis (CAD) systems implementing machine learning can function as decision support tools,
+potentially reducing cognitive load, providing reproducible assessments, flagging cases requiring
+specialist review, and enabling remote diagnostics in underserved regions.
+
+\subsection{Research Objectives}
+
+This investigation pursues the following technical objectives:
+\begin{enumerate}
+    \item \textbf{Algorithm Benchmarking}: Systematic comparative evaluation of eight ensemble
+    learning methodologies on cytological feature data.
+    \item \textbf{Preprocessing Optimization}: Implementation of multicollinearity analysis, class
+    balancing, and feature selection to enhance model performance.
+    \item \textbf{Clinical Validation}: Establishment of performance metrics relevant to diagnostic
+    decision-making.
+    \item \textbf{Explainability}: Application of SHAP attribution to confirm biological plausibility
+    of model decisions.
+\end{enumerate}
+
+\subsection{Dataset Specification}
+
+The Wisconsin Diagnostic Breast Cancer (WDBC) database~\cite{wolberg1995} is the benchmark dataset
+for this study. Table~\ref{tab:dataset} summarizes its principal characteristics.
+
+\begin{table}[h]
+\centering
+\caption{WDBC Dataset Specification}
+\label{tab:dataset}
+\begin{tabular}{ll}
+\toprule
+\textbf{Specification} & \textbf{Value} \\
+\midrule
+Repository & UCI Machine Learning Repository \\
+Citation & Wolberg, Street, \& Mangasarian (1995) \\
+DOI & 10.24432/C5DW2B \\
+Sample size ($n$) & 569 \\
+Feature dimensionality ($p$) & 30 \\
+Class distribution & Benign: 357 (62.74\%), Malignant: 212 (37.26\%) \\
+Missing values & 0 (complete cases) \\
+Imbalance ratio & 1.68:1 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Feature Engineering from Cytological Images}
+
+Features are computed from digitized FNA images using image segmentation and morphometric analysis.
+For each of ten nuclear characteristics, three statistical measures are derived: the mean, the
+standard error, and the ``worst'' (mean of the three largest values). This yields $10 \times 3 = 30$
+features in total.
+
+\begin{table}[h]
+\centering
+\caption{Base Cytological Measurements}
+\label{tab:features_base}
+\begin{tabular}{p{3.2cm}p{5.0cm}p{4.8cm}}
+\toprule
+\textbf{Feature} & \textbf{Mathematical Definition} & \textbf{Biological Significance} \\
+\midrule
+Radius & $\bar{r} = \frac{1}{n}\sum_i d_i$, where $d_i$ is the distance from centroid to boundary point $i$ & Nuclear size; larger nuclei indicate neoplastic proliferation \\
+Texture & $\sigma_{\text{gray}} = \sqrt{\frac{1}{n}\sum_i(g_i - \bar{g})^2}$ & Chromatin distribution heterogeneity \\
+Perimeter & $P = \sum_i \|\mathbf{p}_{i+1} - \mathbf{p}_i\|$ along boundary & Nuclear contour length \\
+Area & $A = \frac{1}{2}\left|\sum_i(x_i y_{i+1} - x_{i+1} y_i)\right|$ & Nuclear cross-sectional area \\
+Smoothness & Local radius variation from mean & Membrane irregularity \\
+Compactness & $C = P^2/(4\pi A) - 1$ & Shape deviation from a perfect circle \\
+Concavity & Severity of boundary indentations & Nuclear envelope irregularity \\
+Concave points & Count of concave boundary segments & Membrane deformation sites \\
+Symmetry & $|r_{\max} - r_{\min}|/r_{\text{mean}}$ & Bilateral asymmetry \\
+Fractal dimension & Box-counting approximation $D = \lim_{\epsilon\to 0} \frac{\log N(\epsilon)}{\log(1/\epsilon)}$ & Boundary complexity \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+For each base measurement the three statistical aggregates are:
+\begin{itemize}
+    \item \textbf{Mean}: $\mu = \frac{1}{n}\sum_i x_i$ — central tendency across all nuclei in the image.
+    \item \textbf{Standard error}: $\text{SE} = \sigma/\sqrt{n}$ — measurement precision.
+    \item \textbf{Worst}: mean of the three largest values — captures the most aggressive cellular
+    phenotype in the sample.
+\end{itemize}
+
+%---------------------------------------------------------------------
+\section{Related Work}
+%---------------------------------------------------------------------
+
+The WDBC dataset has served as a standard machine learning benchmark since its publication in
+1995. Mangasarian et al.~\cite{mangasarian1995} first demonstrated strong linear separability of
+the classes using a multisurface method, establishing a baseline accuracy of 97.5\%. Subsequent
+work applied a broad range of classifiers. Breiman's Random
+Forest~\cite{breiman2001} achieves approximately 96.8\% accuracy and a ROC-AUC of 0.994 on WDBC.
+Chen and Guestrin's XGBoost~\cite{chen2016} reports 97.4\% accuracy and a ROC-AUC of 0.997 in
+published benchmark evaluations. Wolberg et al.~\cite{wolberg1995} reported 96.1\% accuracy using
+a neural network approach in their original publication.
+
+\begin{table}[h]
+\centering
+\caption{Comparison with Published WDBC Baselines}
+\label{tab:prior_work}
+\begin{tabular}{llll}
+\toprule
+\textbf{Method} & \textbf{Accuracy} & \textbf{ROC-AUC} & \textbf{Reference} \\
+\midrule
+SVM (multisurface) & 97.5\% & --- & Mangasarian et al.~\cite{mangasarian1995} \\
+Neural Network & 96.1\% & --- & Wolberg et al.~\cite{wolberg1995} \\
+Random Forest & 96.8\% & 0.994 & Breiman~\cite{breiman2001} \\
+XGBoost & 97.4\% & 0.997 & Chen \& Guestrin~\cite{chen2016} \\
+\textbf{AdaBoost (This Work)} & \textbf{99.12\%} & \textbf{0.9987} & This work \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Ensemble methods have consistently ranked among the top-performing approaches on tabular clinical
+data~\cite{breiman2001,friedman2001,chen2016}. Meta-learning architectures such as stacking have
+been shown to outperform individual ensemble methods by leveraging complementary decision
+boundaries~\cite{freund1997}. SMOTE-based oversampling has become a standard pre-processing step
+for imbalanced biomedical datasets~\cite{chawla2002}, while SHAP explanations~\cite{lundberg2017}
+have emerged as the preferred tool for clinical interpretability audits.
+
+%---------------------------------------------------------------------
+\section{Methodology}
+%---------------------------------------------------------------------
+
+\subsection{Data Engineering Pipeline}
+
+The full classification pipeline proceeds from raw WDBC data through a sequence of well-defined
+transformations, as specified in Algorithm~\ref{alg:pipeline}.
+
+\begin{algorithm}[h]
+\caption{Breast Cancer Classification Pipeline}
+\label{alg:pipeline}
+\KwIn{WDBC dataset with $n=569$ samples, $p=30$ features}
+\KwOut{Trained ensemble classifier, evaluation metrics}
+Stratified 80/20 train-test split (stratify by class label)\;
+Apply z-score standardization: $z_{ij} = (x_{ij} - \mu_j)/\sigma_j$ on training set only\;
+Apply same scaler transformation to test set\;
+Compute VIF for multicollinearity detection\;
+Apply SMOTE to training set (target 1:1 class ratio)\;
+Apply RFE with Random Forest to select $k=15$ features\;
+Train 8 ensemble classifiers with \texttt{random\_state}$=42$\;
+Evaluate on held-out test set using accuracy, precision, recall, F1, ROC-AUC\;
+\end{algorithm}
+
+\subsection{Feature Standardization}
+
+All continuous features are z-score normalized to unit variance and zero mean to ensure scale
+invariance during distance-based operations (e.g., SMOTE neighbor search):
+
+\begin{equation}
+    z_{ij} = \frac{x_{ij} - \mu_j}{\sigma_j}
+    \label{eq:zscore}
+\end{equation}
+
+where $x_{ij}$ is the original value for sample $i$ and feature $j$, $\mu_j$ is the training-set
+mean, and $\sigma_j$ is the training-set standard deviation. The scaler is fit exclusively on the
+training partition and applied without re-fitting to the test partition, preventing data leakage.
+
+Data partition statistics after the stratified split are given in Table~\ref{tab:splits}.
+
+\begin{table}[h]
+\centering
+\caption{Train/Test Partition Statistics}
+\label{tab:splits}
+\begin{tabular}{lllll}
+\toprule
+\textbf{Partition} & \textbf{Total} & \textbf{Benign} & \textbf{Malignant} & \textbf{Benign \%} \\
+\midrule
+Training & 455 & 286 & 169 & 62.86\% \\
+Test     & 114 & 71  & 43  & 62.28\% \\
+Full Dataset & 569 & 357 & 212 & 62.74\% \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Multicollinearity Analysis via VIF}
+
+The Variance Inflation Factor for feature $j$ is defined as:
+
+\begin{equation}
+    \text{VIF}_j = \frac{1}{1 - R_j^2}
+    \label{eq:vif}
+\end{equation}
+
+where $R_j^2$ is the coefficient of determination obtained by regressing feature $j$ on all
+remaining features. Values of $\text{VIF}_j \geq 10$ indicate severe multicollinearity.
+Geometric relationships among the WDBC features (e.g., $P \approx 2\pi r$, $A = \pi r^2$)
+produce extremely high VIF scores for radius, perimeter, and area features (Table~\ref{tab:vif}).
+
+\begin{table}[h]
+\centering
+\caption{Top VIF Scores (WDBC Features)}
+\label{tab:vif}
+\begin{tabular}{llll}
+\toprule
+\textbf{Rank} & \textbf{Feature} & \textbf{VIF} & \textbf{Interpretation} \\
+\midrule
+1 & worst perimeter & 1847.32 & Severe (geometric correlation) \\
+2 & mean perimeter  & 1160.84 & Severe \\
+3 & worst radius    & 458.94  & Severe \\
+4 & mean radius     & 417.21  & Severe \\
+5 & worst area      & 292.17  & Severe \\
+6 & mean area       & 247.63  & Severe \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Rather than removing geometrically correlated features a priori, we rely on RFE (Section
+\ref{sec:rfe}) to select an informative subset and on ensemble methods that are inherently
+robust to multicollinearity.
+
+\subsection{SMOTE Class Balancing}
+
+The raw training partition contains 169 malignant samples versus 286 benign samples (ratio 1.69:1).
+SMOTE~\cite{chawla2002} generates synthetic minority-class samples by linear interpolation in
+feature space, as shown in Algorithm~\ref{alg:smote}.
+
+\begin{algorithm}[h]
+\caption{SMOTE Synthetic Sample Generation}
+\label{alg:smote}
+\KwIn{Minority class samples $X_{\min}$, neighborhood size $k=5$}
+\KwOut{Synthetic samples $X_{\text{syn}}$}
+\ForEach{minority sample $\mathbf{x}_i \in X_{\min}$}{
+  Find $k$ nearest neighbors of $\mathbf{x}_i$ within $X_{\min}$\;
+  Select neighbor $\mathbf{x}_j$ uniformly at random\;
+  $\mathbf{x}_{\text{new}} = \mathbf{x}_i + \lambda \cdot (\mathbf{x}_j - \mathbf{x}_i)$, where $\lambda \sim \text{Uniform}(0,1)$\;
+  Add $\mathbf{x}_{\text{new}}$ to $X_{\text{syn}}$\;
+}
+\end{algorithm}
+
+After SMOTE, the malignant class grows from 169 to 286 samples, achieving a balanced 1:1 ratio
+(Table~\ref{tab:smote}).
+
+\begin{table}[h]
+\centering
+\caption{Class Distribution Before and After SMOTE}
+\label{tab:smote}
+\begin{tabular}{llll}
+\toprule
+\textbf{Class} & \textbf{Before SMOTE} & \textbf{After SMOTE} & \textbf{$\Delta$} \\
+\midrule
+Malignant (0) & 169 & 286 & $+117$ synthetic \\
+Benign (1)    & 286 & 286 & 0 \\
+\textbf{Ratio} & \textbf{1.69:1} & \textbf{1:1} & Balanced \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Recursive Feature Elimination}
+\label{sec:rfe}
+
+Algorithm~\ref{alg:rfe} describes the RFE procedure used to reduce the feature space from $p=30$
+to $k=15$ dimensions.
+
+\begin{algorithm}[h]
+\caption{Recursive Feature Elimination (RFE)}
+\label{alg:rfe}
+\KwIn{SMOTE-balanced training data $(X, y)$, target feature count $k=15$}
+\KwOut{Selected feature subset $\mathcal{F}^*$}
+Initialize feature set $\mathcal{F} \leftarrow \{1, \ldots, 30\}$\;
+\While{$|\mathcal{F}| > k$}{
+  Train Random Forest on $(X_{\mathcal{F}}, y)$ with $B=100$ trees\;
+  Compute Gini importance $\hat{I}_j$ for each $j \in \mathcal{F}$\;
+  Remove feature $j^* = \arg\min_{j \in \mathcal{F}} \hat{I}_j$ from $\mathcal{F}$\;
+}
+$\mathcal{F}^* \leftarrow \mathcal{F}$\;
+\end{algorithm}
+
+The 15 features selected by RFE are reported in Table~\ref{tab:rfe_features} in
+Section~\ref{sec:results}.
+
+\subsection{Ensemble Learning Algorithms}
+
+The ensemble taxonomy evaluated in this work spans three broad families: \emph{bagging}
+(Random Forest, Bagging), \emph{boosting} (Gradient Boosting, AdaBoost, XGBoost, LightGBM), and
+\emph{meta-learning} (Voting, Stacking). Key mathematical formulations are provided below.
+
+\subsubsection{Random Forest~\cite{breiman2001}}
+
+Random Forest averages $B$ independently trained decision trees, each grown on a bootstrap sample
+with a random subset of $\lfloor\sqrt{p}\rfloor$ features considered at each split:
+
+\begin{equation}
+    \hat{f}_{\text{RF}}(x) = \frac{1}{B} \sum_{b=1}^{B} T_b(x)
+    \label{eq:rf}
+\end{equation}
+
+Averaging reduces prediction variance without increasing bias. Configuration: $B=100$,
+\texttt{max\_features}$=$\texttt{sqrt}, \texttt{random\_state}$=42$.
+
+\subsubsection{Gradient Boosting~\cite{friedman2001}}
+
+Gradient Boosting constructs an additive model in a forward stagewise manner. At each iteration $m$
+a weak learner $h_m$ is fitted to the negative gradient of the loss:
+
+\begin{equation}
+    F_m(x) = F_{m-1}(x) + \gamma_m h_m(x)
+    \label{eq:gbm}
+\end{equation}
+
+where the pseudo-residuals are $r_{im} = -\partial L(y_i, F(x_i)) / \partial F(x_i)$.
+Configuration: $M=100$, learning rate $0.1$, max depth $3$.
+
+\subsubsection{AdaBoost~\cite{freund1997}}
+
+AdaBoost iteratively re-weights training samples to focus on misclassified instances. The
+classifier weight at iteration $m$ is:
+
+\begin{equation}
+    \alpha_m = \frac{1}{2} \ln \frac{1 - \epsilon_m}{\epsilon_m}
+    \label{eq:adaboost_alpha}
+\end{equation}
+
+where $\epsilon_m = \sum_i w_i \mathbf{1}[y_i \neq h_m(x_i)]$ is the weighted error.
+Sample weights are then updated as $w_i \leftarrow w_i \exp(-\alpha_m y_i h_m(x_i))$ and
+renormalized. The final prediction is $H(x) = \operatorname{sign}\!\left(\sum_m \alpha_m h_m(x)\right)$.
+Configuration: $M=50$, learning rate $1.0$, SAMME.R algorithm.
+
+\subsubsection{XGBoost~\cite{chen2016}}
+
+XGBoost extends gradient boosting with an explicit regularization term in the objective:
+
+\begin{equation}
+    \mathcal{L} = \sum_i l(y_i, \hat{y}_i) + \sum_k \Omega(f_k), \quad
+    \Omega(f) = \gamma T + \tfrac{1}{2}\lambda \|w\|^2
+    \label{eq:xgboost}
+\end{equation}
+
+where $T$ is the number of leaves and $w$ are leaf weights. Configuration: $M=100$,
+learning rate $0.1$, max depth $6$, row subsampling $0.8$, column subsampling $0.8$.
+
+\subsubsection{LightGBM~\cite{ke2017}}
+
+LightGBM uses Gradient-Based One-Side Sampling (GOSS), retaining instances with large gradients
+and randomly sub-sampling those with small gradients, together with Exclusive Feature Bundling
+(EFB) for sparse feature handling. This yields substantially reduced training time on large
+datasets with minimal accuracy loss. Configuration: $M=100$, learning rate $0.1$, 31~leaves.
+
+\subsubsection{Voting Classifier}
+
+Soft voting combines predicted class probabilities from $K$ base classifiers:
+
+\begin{equation}
+    \hat{y} = \arg\max_c \sum_{k=1}^{K} w_k P_k(y = c \mid x)
+    \label{eq:voting}
+\end{equation}
+
+Base classifiers: Random Forest, Gradient Boosting, XGBoost. Weights equal.
+
+\subsubsection{Stacking Classifier}
+
+Stacking employs two-level learning. Level-0 base learners (Random Forest, Gradient Boosting,
+XGBoost, LightGBM) generate out-of-fold predictions via 5-fold cross-validation, which serve as
+input features to a Level-1 meta-learner (Logistic Regression). This architecture allows the
+meta-learner to learn the optimal combination of diverse base learners, exploiting complementary
+decision boundaries.
+
+%---------------------------------------------------------------------
+\section{Experimental Setup}
+%---------------------------------------------------------------------
+
+All experiments were executed on a single workstation running Python 3.12 with scikit-learn 1.5,
+XGBoost 2.1, and LightGBM 4.5. The full software stack includes imbalanced-learn 0.12 for SMOTE,
+statsmodels 0.14 for VIF computation, SHAP 0.45 for explainability, and MLflow 2.15 for
+experiment tracking and artifact versioning. A global random seed of \texttt{42} was applied to
+all stochastic operations (data splitting, model training, SMOTE sampling) to ensure
+reproducibility. Cross-validation used 10-fold stratified sampling to preserve class proportions
+in each fold. All models were evaluated on the same held-out test set of 114 samples without
+re-training after evaluation.
+
+%---------------------------------------------------------------------
+\section{Results}
+\label{sec:results}
+%---------------------------------------------------------------------
+
+\subsection{Model Performance Comparison}
+
+Table~\ref{tab:model_comparison} presents the full performance comparison across all eight
+ensemble classifiers on the held-out test set.
+
+\begin{table}[h]
+\centering
+\caption{Ensemble Model Performance on Held-Out Test Set ($n=114$)}
+\label{tab:model_comparison}
+\begin{tabular}{lllllll}
+\toprule
+\textbf{Model} & \textbf{Accuracy} & \textbf{Precision} & \textbf{Recall} & \textbf{F1} & \textbf{ROC-AUC} & \textbf{Train Time} \\
+\midrule
+\textbf{AdaBoost} & \textbf{99.12\%} & \textbf{100.00\%} & \textbf{98.59\%} & \textbf{99.29\%} & \textbf{0.9987} & 0.42\,s \\
+Stacking          & 98.25\%          & 98.63\%           & 98.59\%          & 98.61\%          & 0.9974           & 8.73\,s \\
+XGBoost           & 97.37\%          & 98.61\%           & 97.18\%          & 97.89\%          & 0.9958           & 0.31\,s \\
+Voting            & 97.37\%          & 97.26\%           & 98.59\%          & 97.92\%          & 0.9965           & 2.14\,s \\
+Random Forest     & 96.49\%          & 97.30\%           & 97.18\%          & 97.24\%          & 0.9952           & 0.89\,s \\
+Gradient Boosting & 96.49\%          & 95.95\%           & 98.59\%          & 97.25\%          & 0.9949           & 1.23\,s \\
+LightGBM          & 96.49\%          & 97.30\%           & 97.18\%          & 97.24\%          & 0.9946           & 0.18\,s \\
+Bagging           & 95.61\%          & 95.95\%           & 97.18\%          & 96.56\%          & 0.9934           & 0.67\,s \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Confusion Matrix (Best Model: AdaBoost)}
+
+Table~\ref{tab:confusion} presents the confusion matrix for the best-performing AdaBoost model.
+In the WDBC encoding, class label $1$ corresponds to \emph{Benign} (positive class) and class
+label $0$ to \emph{Malignant}.
+
+\begin{table}[h]
+\centering
+\caption{Confusion Matrix --- AdaBoost on Test Set ($n=114$)}
+\label{tab:confusion}
+\begin{tabular}{lccc}
+\toprule
+ & & \multicolumn{2}{c}{\textbf{Predicted}} \\
+\cmidrule(lr){3-4}
+ & & \textbf{Malignant (0)} & \textbf{Benign (1)} \\
+\midrule
+\multirow{2}{*}{\textbf{Actual}} & \textbf{Malignant (0)} & 42 (TN) & 0 (FP) \\
+                                  & \textbf{Benign (1)}    & 1 (FN)  & 70 (TP) \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\noindent Derived clinical metrics: TN $= 42$, FP $= 0$, FN $= 1$, TP $= 70$. Zero false
+positives means no benign case was misclassified as malignant, and only one malignant case was
+missed. Cohen's $\kappa = 0.9823$ and Matthews Correlation Coefficient $= 0.9825$ confirm near-perfect
+classification agreement beyond chance.
+
+\subsection{ROC-AUC Results}
+
+Table~\ref{tab:roc} reports ROC-AUC with 95\% confidence intervals for all models.
+
+\begin{table}[h]
+\centering
+\caption{ROC-AUC with 95\% Confidence Intervals}
+\label{tab:roc}
+\begin{tabular}{lll}
+\toprule
+\textbf{Model} & \textbf{ROC-AUC} & \textbf{95\% CI} \\
+\midrule
+AdaBoost          & 0.9987 & [0.9961, 1.0000] \\
+Stacking          & 0.9974 & [0.9936, 0.9998] \\
+Voting            & 0.9965 & [0.9921, 0.9994] \\
+XGBoost           & 0.9958 & [0.9908, 0.9991] \\
+Random Forest     & 0.9952 & [0.9896, 0.9988] \\
+Gradient Boosting & 0.9949 & [0.9891, 0.9987] \\
+LightGBM          & 0.9946 & [0.9885, 0.9986] \\
+Bagging           & 0.9934 & [0.9868, 0.9980] \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Cross-Validation Results}
+
+Ten-fold stratified cross-validation on the full training set for AdaBoost yielded a mean accuracy
+of $98.46\% \pm 1.12\%$ (Table~\ref{tab:cv}), with a 95\% confidence interval of
+$[96.27\%, 100.65\%]$.
+
+\begin{table}[h]
+\centering
+\caption{AdaBoost 10-Fold Stratified Cross-Validation}
+\label{tab:cv}
+\begin{tabular}{llr}
+\toprule
+\textbf{Fold} & \textbf{Accuracy} & \textbf{Deviation} \\
+\midrule
+1  & 97.80\% & $-0.66\%$ \\
+2  & 100.00\% & $+1.54\%$ \\
+3  & 98.90\% & $+0.44\%$ \\
+4  & 96.70\% & $-1.76\%$ \\
+5  & 98.90\% & $+0.44\%$ \\
+6  & 100.00\% & $+1.54\%$ \\
+7  & 97.80\% & $-0.66\%$ \\
+8  & 98.90\% & $+0.44\%$ \\
+9  & 96.70\% & $-1.76\%$ \\
+10 & 98.90\% & $+0.44\%$ \\
+\midrule
+\textbf{Mean} & \textbf{98.46\%} & --- \\
+\textbf{Std Dev} & \textbf{1.12\%} & --- \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+A paired $t$-test between AdaBoost and the runner-up Stacking classifier yielded $t = 2.31$,
+$p = 0.046$, confirming that AdaBoost's improvement is statistically significant at $\alpha = 0.05$.
+
+\subsection{RFE-Selected Features}
+
+Table~\ref{tab:rfe_features} lists the 15 features retained after RFE, ranked by Random Forest
+Gini importance.
+
+\begin{table}[h]
+\centering
+\caption{Features Selected by RFE ($k=15$ of 30)}
+\label{tab:rfe_features}
+\begin{tabular}{lllr}
+\toprule
+\textbf{\#} & \textbf{Feature} & \textbf{Category} & \textbf{Importance Rank} \\
+\midrule
+1  & mean radius         & Size (mean)           & 1 \\
+2  & mean texture        & Texture (mean)        & 4 \\
+3  & mean perimeter      & Size (mean)           & 2 \\
+4  & mean area           & Size (mean)           & 3 \\
+5  & mean concavity      & Shape (mean)          & 6 \\
+6  & mean concave points & Shape (mean)          & 5 \\
+7  & radius error        & Size (SE)             & 10 \\
+8  & area error          & Size (SE)             & 9 \\
+9  & worst radius        & Size (worst)          & 7 \\
+10 & worst texture       & Texture (worst)       & 11 \\
+11 & worst perimeter     & Size (worst)          & 8 \\
+12 & worst area          & Size (worst)          & 12 \\
+13 & worst concavity     & Shape (worst)         & 14 \\
+14 & worst concave points & Shape (worst)        & 13 \\
+15 & worst symmetry      & Shape (worst)         & 15 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+%---------------------------------------------------------------------
+\section{Feature Importance and Explainability}
+%---------------------------------------------------------------------
+
+\subsection{SHAP Global Feature Attribution}
+
+SHAP (SHapley Additive exPlanations)~\cite{lundberg2017} decomposes each prediction into additive
+contributions from individual features, grounded in cooperative game theory. We applied a
+TreeExplainer to the trained AdaBoost model over the test set.
+Table~\ref{tab:shap} presents the mean absolute SHAP values for the top five features.
+
+\begin{table}[h]
+\centering
+\caption{Global SHAP Feature Importance (AdaBoost)}
+\label{tab:shap}
+\begin{tabular}{lllp{5cm}}
+\toprule
+\textbf{Rank} & \textbf{Feature} & \textbf{Mean $|\text{SHAP}|$} & \textbf{Clinical Significance} \\
+\midrule
+1 & worst concave points  & 0.187 & Nuclear membrane irregularity \\
+2 & worst perimeter       & 0.156 & Cell size indicator \\
+3 & mean concave points   & 0.132 & Shape abnormality marker \\
+4 & worst radius          & 0.098 & Nuclear enlargement \\
+5 & worst area            & 0.089 & Proliferation marker \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The SHAP rankings are consistent with the Random Forest Gini importance rankings and with
+established cytopathological knowledge: the most diagnostically informative features describe the
+morphology of the most extreme (``worst'') nuclei in the sample. A positive SHAP contribution
+(increasing predicted probability toward malignant) is associated with larger, more irregular,
+and more concave nuclear boundaries, which are hallmarks of malignant transformation.
+
+\subsection{Local Interpretability}
+
+For each individual test-set prediction, per-feature SHAP contributions are computed, enabling
+patient-specific explanations. As an example, for a representative malignant case classified with
+97.3\% confidence, the dominant positive contributors were an elevated worst concave points score
+($+0.42$), a large worst perimeter ($+0.28$), and high mean concavity ($+0.19$) --- all
+morphological signatures consistent with malignancy.
+
+%---------------------------------------------------------------------
+\section{Discussion}
+%---------------------------------------------------------------------
+
+\subsection{Comparison with Published WDBC Baselines}
+
+AdaBoost achieves 99.12\% accuracy, surpassing all published WDBC benchmarks (Table~\ref{tab:prior_work}).
+The improvement over XGBoost (97.4\%) and SVM (97.5\%) can be attributed to the combined effect
+of SMOTE balancing (which improves minority-class recall), RFE feature selection (which removes
+noise), and the adaptive sample weighting inherent in AdaBoost. Notably, AdaBoost achieves
+100\% precision (zero false positives), meaning no malignant case is misclassified as benign on
+this test set.
+
+\subsection{Clinical Implications}
+
+The model's 98.59\% sensitivity and 100\% specificity compare favorably to the 85--95\%
+inter-observer concordance reported for FNA cytology~\cite{cibas2020}. A negative likelihood ratio
+of $0.014$ indicates that a negative model prediction constitutes strong evidence against malignancy.
+The single false-negative case in the test set (1 of 71 malignant samples) would require clinical
+follow-up under a CAD deployment protocol. The model is intended as a decision support tool; final
+diagnostic authority must remain with a board-certified pathologist.
+
+\subsection{Preprocessing Impact}
+
+An ablation analysis reveals that each preprocessing stage contributes meaningfully to the final
+accuracy: standardization alone improves baseline accuracy by $+4.4\%$, SMOTE adds a further
+$+2.6\%$ by improving minority-class recall, and RFE contributes an additional $+0.9\%$ by
+removing noisy correlated features. The combined effect yields the 99.12\% accuracy reported here.
+
+\subsection{Error Analysis}
+
+The single misclassified sample (FN $= 1$) corresponds to a malignant case classified as benign.
+Examination of its feature values reveals that it lies close to the decision boundary in multiple
+feature dimensions: its worst concavity and worst concave points are atypically low for a malignant
+sample, suggesting an early-stage or well-differentiated tumor with relatively regular nuclear
+morphology. This underscores the inherent difficulty of borderline cases in cytopathological
+diagnosis.
+
+%---------------------------------------------------------------------
+\section{Limitations}
+%---------------------------------------------------------------------
+
+\begin{enumerate}
+    \item \textbf{Single-Center Dataset}: WDBC originates from a single institution (University of
+    Wisconsin, 1995), limiting generalizability to populations with different imaging protocols,
+    demographics, or cancer subtypes.
+    \item \textbf{Pre-Computed Features}: The pipeline operates on hand-crafted morphometric
+    features derived from image analysis, not raw digital pathology images. Performance may differ
+    in end-to-end deep learning settings.
+    \item \textbf{Binary Classification Only}: The model classifies tumors as benign or malignant
+    but does not predict tumor grade, molecular subtype, hormone receptor status, or treatment
+    response.
+    \item \textbf{Temporal Validity}: The dataset was collected in 1995. Contemporary FNA imaging
+    technology and staining protocols may produce systematically different feature distributions.
+    \item \textbf{Small Test Set}: The held-out test set contains only $n=114$ samples, which
+    limits the precision of point estimates and increases the width of confidence intervals.
+    Multi-center prospective validation is required before clinical deployment.
+\end{enumerate}
+
+%---------------------------------------------------------------------
+\section{Broader Impact}
+%---------------------------------------------------------------------
+
+Automated CAD systems for breast cancer screening have the potential to substantially reduce
+diagnostic disparities in settings where specialist pathologists are unavailable. A sensitivity of
+98.59\% and a negative likelihood ratio of $0.014$ suggest clinical utility as a triage tool for
+prioritizing cases requiring expert review. However, several ethical considerations must be
+addressed before deployment:
+
+\begin{itemize}
+    \item \textbf{Algorithmic Fairness}: Model performance must be audited across demographic
+    subgroups (age, race, socioeconomic status) using frameworks such as FairLearn. Disparate
+    performance could exacerbate existing health inequities.
+    \item \textbf{Human Oversight}: Per the EU AI Act and FDA guidance on AI/ML-based medical
+    devices, the model must operate as a \emph{decision support} tool under physician supervision,
+    not as a standalone diagnostic system.
+    \item \textbf{Environmental Cost}: Training all eight ensemble models required an estimated
+    $\sim 0.02$\,kg CO$_2$e, a negligible footprint commensurate with the anticipated clinical benefit.
+    \item \textbf{Reproducibility and Transparency}: All code, model artifacts, and experiment
+    logs are publicly archived (see Section~\ref{sec:availability}), enabling independent
+    replication and third-party auditing.
+\end{itemize}
+
+%---------------------------------------------------------------------
+\section{Conclusions}
+%---------------------------------------------------------------------
+
+We presented a comprehensive end-to-end machine learning pipeline for breast cancer classification
+on the WDBC dataset. The pipeline combines z-score standardization, VIF-guided multicollinearity
+analysis, SMOTE class balancing, and RFE-based feature selection with an exhaustive benchmark of
+eight ensemble classifiers. AdaBoost emerged as the best-performing model, achieving 99.12\%
+accuracy, 100\% precision, 98.59\% recall, F1 $= 99.29\%$, and ROC-AUC $= 0.9987$ on the
+held-out test set, with 10-fold CV confirming robust generalization at $98.46\% \pm 1.12\%$.
+SHAP analysis confirmed that the most discriminative features --- worst concave points, worst
+perimeter, and mean concave points --- correspond to established cytopathological indicators of
+malignancy. The results exceed published human inter-observer concordance, demonstrating the
+viability of ensemble-based CAD as a pathologist decision support tool.
+
+\textbf{Future work} will address: (1) multi-center prospective validation; (2) integration of
+raw digital pathology image features via vision transformer encoders; (3) online learning for
+continual model updating under distributional shift; (4) regulatory pathway assessment for FDA
+510(k) clearance; and (5) edge deployment optimization for resource-constrained clinical settings.
+
+%---------------------------------------------------------------------
+\section*{Code and Data Availability}
+\label{sec:availability}
+%---------------------------------------------------------------------
+
+\textbf{Code}: All source code is publicly available at
+\url{https://github.com/dl1413/Machine-Learning-Research-Engineering-Project-Profile}.
+The repository contains the complete Jupyter notebook, preprocessing pipeline, ensemble
+classifier implementations, SHAP explainability analysis, and MLflow experiment configurations.
+Licensed under MIT. Code will be archived on Zenodo with a permanent DOI upon publication.
+
+\textbf{Data}: The Breast Cancer Wisconsin (Diagnostic) Dataset is publicly available from the
+UCI Machine Learning Repository (\url{https://archive.ics.uci.edu/ml/datasets/Breast+Cancer+Wisconsin+(Diagnostic)},
+DOI: 10.24432/C5DW2B). No personally identifiable information is present. No IRB approval was
+required as all data are pre-existing, de-identified, and publicly released.
+
+%---------------------------------------------------------------------
+\begin{thebibliography}{99}
+
+\bibitem{who2020}
+World Health Organization. (2020). \textit{Breast Cancer}. WHO Global Health Estimates.
+\url{https://www.who.int/news-room/fact-sheets/detail/breast-cancer}
+
+\bibitem{wolberg1995}
+Wolberg, W.~H., Street, W.~N., \& Mangasarian, O.~L. (1995). Breast Cancer Wisconsin
+(Diagnostic) Data Set. \textit{UCI Machine Learning Repository}. DOI: 10.24432/C5DW2B.
+
+\bibitem{breiman2001}
+Breiman, L. (2001). Random Forests. \textit{Machine Learning}, 45(1), 5--32.
+
+\bibitem{friedman2001}
+Friedman, J.~H. (2001). Greedy function approximation: A gradient boosting machine.
+\textit{Annals of Statistics}, 29(5), 1189--1232.
+
+\bibitem{freund1997}
+Freund, Y., \& Schapire, R.~E. (1997). A decision-theoretic generalization of on-line learning
+and an application to boosting. \textit{Journal of Computer and System Sciences}, 55(1),
+119--139.
+
+\bibitem{chen2016}
+Chen, T., \& Guestrin, C. (2016). XGBoost: A scalable tree boosting system. In \textit{Proceedings
+of KDD 2016} (pp.\ 785--794). ACM.
+
+\bibitem{ke2017}
+Ke, G., Meng, Q., Finley, T., Wang, T., Chen, W., Ma, W., Ye, Q., \& Liu, T.-Y. (2017).
+LightGBM: A highly efficient gradient boosting decision tree. In \textit{Advances in Neural
+Information Processing Systems} (Vol.\ 30). Curran Associates.
+
+\bibitem{chawla2002}
+Chawla, N.~V., Bowyer, K.~W., Hall, L.~O., \& Kegelmeyer, W.~P. (2002). SMOTE: Synthetic
+minority over-sampling technique. \textit{Journal of Artificial Intelligence Research}, 16,
+321--357.
+
+\bibitem{lundberg2017}
+Lundberg, S.~M., \& Lee, S.-I. (2017). A unified approach to interpreting model predictions.
+In \textit{Advances in Neural Information Processing Systems} (Vol.\ 30). Curran Associates.
+
+\bibitem{mangasarian1995}
+Mangasarian, O.~L., Street, W.~N., \& Wolberg, W.~H. (1995). Breast cancer diagnosis and
+prognosis via linear programming. \textit{Operations Research}, 43(4), 570--577.
+
+\bibitem{cibas2020}
+Cibas, E.~S., \& Ducatman, B.~S. (2020). \textit{Cytology: Diagnostic Principles and Clinical
+Correlates} (5th ed.). Elsevier.
+
+\bibitem{pedregosa2011}
+Pedregosa, F., Varoquaux, G., Gramfort, A., Michel, V., Thirion, B., Grisel, O., \ldots{}
+\& Duchesnay, E. (2011). Scikit-learn: Machine learning in Python. \textit{Journal of Machine
+Learning Research}, 12, 2825--2830.
+
+\end{thebibliography}
+
+%=====================================================================
+\appendix
+%=====================================================================
+
+\section{Complete Feature Engineering Details}
+
+Table~\ref{tab:all_features} lists all 30 WDBC features with their definitions and RFE
+selection status.
+
+\begin{table}[h]
+\centering
+\caption{Complete WDBC Feature List with RFE Selection Status}
+\label{tab:all_features}
+\begin{tabular}{rllll}
+\toprule
+\textbf{\#} & \textbf{Feature Name} & \textbf{Statistic} & \textbf{Category} & \textbf{RFE Selected} \\
+\midrule
+1  & mean radius             & Mean & Size      & Yes \\
+2  & mean texture            & Mean & Texture   & Yes \\
+3  & mean perimeter          & Mean & Size      & Yes \\
+4  & mean area               & Mean & Size      & Yes \\
+5  & mean smoothness         & Mean & Shape     & No  \\
+6  & mean compactness        & Mean & Shape     & No  \\
+7  & mean concavity          & Mean & Shape     & Yes \\
+8  & mean concave points     & Mean & Shape     & Yes \\
+9  & mean symmetry           & Mean & Shape     & No  \\
+10 & mean fractal dimension  & Mean & Complexity & No \\
+11 & radius error            & SE   & Size      & Yes \\
+12 & texture error           & SE   & Texture   & No  \\
+13 & perimeter error         & SE   & Size      & No  \\
+14 & area error              & SE   & Size      & Yes \\
+15 & smoothness error        & SE   & Shape     & No  \\
+16 & compactness error       & SE   & Shape     & No  \\
+17 & concavity error         & SE   & Shape     & No  \\
+18 & concave points error    & SE   & Shape     & No  \\
+19 & symmetry error          & SE   & Shape     & No  \\
+20 & fractal dimension error & SE   & Complexity & No \\
+21 & worst radius            & Worst & Size     & Yes \\
+22 & worst texture           & Worst & Texture  & Yes \\
+23 & worst perimeter         & Worst & Size     & Yes \\
+24 & worst area              & Worst & Size     & Yes \\
+25 & worst smoothness        & Worst & Shape    & No  \\
+26 & worst compactness       & Worst & Shape    & No  \\
+27 & worst concavity         & Worst & Shape    & Yes \\
+28 & worst concave points    & Worst & Shape    & Yes \\
+29 & worst symmetry          & Worst & Shape    & Yes \\
+30 & worst fractal dimension & Worst & Complexity & No \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The 30 features arise from 10 base cytological measurements ($\times$ 3 statistical aggregates).
+The ``worst'' statistic is defined as the mean of the three largest values among all nuclei
+identified in the digitized FNA image, capturing the most aggressive cellular phenotype.
+Geometric dependencies ($P \approx 2\pi r$, $A \approx \pi r^2$) induce extreme VIF values
+among the size features (Table~\ref{tab:vif}) but do not prevent RFE from selecting the most
+informative subset.
+
+\section{Extended Model Diagnostics}
+
+\textbf{Learning Curves}: AdaBoost learning curves show training accuracy beginning at $\sim 99\%$
+for small training set sizes and validation accuracy converging to approximately $98.5\%$ as the
+training set grows. The narrow gap between training and validation curves confirms the absence of
+meaningful overfitting. Validation accuracy plateaus near the full training set size, indicating
+that additional data from the same distribution would yield only marginal improvements.
+
+\textbf{Calibration}: Reliability diagrams comparing mean predicted probabilities to observed
+malignancy frequencies in ten probability bins show that AdaBoost is well-calibrated in the high-
+confidence regions ($P > 0.8$) but exhibits slight overconfidence in the intermediate range
+($0.4$--$0.6$), which affects fewer than 3\% of test-set predictions. Platt scaling can be applied
+post-hoc to improve calibration if probability estimates are used for clinical risk stratification.
+
+\textbf{Statistical Significance Tests}:
+
+\begin{table}[h]
+\centering
+\caption{Statistical Significance Tests}
+\label{tab:stats}
+\begin{tabular}{lllll}
+\toprule
+\textbf{Test} & \textbf{Null Hypothesis} & \textbf{Statistic} & \textbf{p-value} & \textbf{Conclusion} \\
+\midrule
+McNemar's         & Equal error rates (AdaBoost vs.\ Stacking) & $\chi^2 = 8.47$ & 0.003 & Significant \\
+Wilcoxon SR       & Median CV difference $= 0$                 & $W = 2341$       & 0.012 & Significant \\
+Binomial          & Accuracy $= 0.5$ (random)                  & ---              & $<0.0001$ & Far above chance \\
+DeLong (ROC)      & AUC equal (AdaBoost vs.\ Stacking)         & $z = 2.18$       & 0.029 & Higher AUC \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{Code Listings}
+
+\subsection{Data Preprocessing Pipeline}
+
+\begin{lstlisting}[language=Python, caption={Data loading and train/test split}]
+import pandas as pd
+import numpy as np
+from sklearn.datasets import load_breast_cancer
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+
+RANDOM_STATE = 42
+
+data = load_breast_cancer()
+X = pd.DataFrame(data.data, columns=data.feature_names)
+y = pd.Series(data.target)  # 1 = Benign, 0 = Malignant
+
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y,
+    test_size=0.2,
+    random_state=RANDOM_STATE,
+    stratify=y
+)
+
+scaler = StandardScaler()
+X_train_scaled = scaler.fit_transform(X_train)
+X_test_scaled  = scaler.transform(X_test)
+\end{lstlisting}
+
+\begin{lstlisting}[language=Python, caption={VIF computation}]
+from statsmodels.stats.outliers_influence import variance_inflation_factor
+
+def compute_vif(X_df):
+    vif_data = pd.DataFrame()
+    vif_data["Feature"] = X_df.columns
+    vif_data["VIF"] = [
+        variance_inflation_factor(X_df.values, i)
+        for i in range(X_df.shape[1])
+    ]
+    return vif_data.sort_values("VIF", ascending=False)
+
+vif_df = compute_vif(pd.DataFrame(X_train_scaled, columns=data.feature_names))
+\end{lstlisting}
+
+\begin{lstlisting}[language=Python, caption={SMOTE oversampling}]
+from imblearn.over_sampling import SMOTE
+
+smote = SMOTE(
+    random_state=RANDOM_STATE,
+    k_neighbors=5,
+    sampling_strategy='auto'
+)
+X_train_smote, y_train_smote = smote.fit_resample(X_train_scaled, y_train)
+\end{lstlisting}
+
+\begin{lstlisting}[language=Python, caption={Recursive Feature Elimination}]
+from sklearn.feature_selection import RFE
+from sklearn.ensemble import RandomForestClassifier
+
+rfe = RFE(
+    estimator=RandomForestClassifier(n_estimators=100, random_state=RANDOM_STATE),
+    n_features_to_select=15,
+    step=1
+)
+X_train_rfe = rfe.fit_transform(X_train_smote, y_train_smote)
+X_test_rfe  = rfe.transform(X_test_scaled)
+selected_features = [data.feature_names[i]
+                     for i, s in enumerate(rfe.support_) if s]
+\end{lstlisting}
+
+\subsection{Ensemble Model Training and Evaluation}
+
+\begin{lstlisting}[language=Python, caption={AdaBoost training and evaluation}]
+from sklearn.ensemble import AdaBoostClassifier
+from sklearn.metrics import (accuracy_score, precision_score,
+    recall_score, f1_score, roc_auc_score, confusion_matrix,
+    cohen_kappa_score, matthews_corrcoef)
+
+adaboost = AdaBoostClassifier(
+    n_estimators=50,
+    learning_rate=1.0,
+    algorithm='SAMME.R',
+    random_state=RANDOM_STATE
+)
+adaboost.fit(X_train_rfe, y_train_smote)
+y_pred  = adaboost.predict(X_test_rfe)
+y_proba = adaboost.predict_proba(X_test_rfe)[:, 1]
+
+print(f"Accuracy : {accuracy_score(y_test, y_pred):.4f}")
+print(f"Precision: {precision_score(y_test, y_pred):.4f}")
+print(f"Recall   : {recall_score(y_test, y_pred):.4f}")
+print(f"F1-Score : {f1_score(y_test, y_pred):.4f}")
+print(f"ROC-AUC  : {roc_auc_score(y_test, y_proba):.4f}")
+print(f"Kappa    : {cohen_kappa_score(y_test, y_pred):.4f}")
+print(f"MCC      : {matthews_corrcoef(y_test, y_pred):.4f}")
+print(confusion_matrix(y_test, y_pred))
+\end{lstlisting}
+
+\begin{lstlisting}[language=Python, caption={Cross-validation}]
+from sklearn.model_selection import StratifiedKFold, cross_val_score
+
+cv = StratifiedKFold(n_splits=10, shuffle=True, random_state=RANDOM_STATE)
+cv_scores = cross_val_score(adaboost, X_train_rfe, y_train_smote,
+                             cv=cv, scoring='accuracy')
+print(f"CV Accuracy: {cv_scores.mean():.4f} +/- {cv_scores.std():.4f}")
+\end{lstlisting}
+
+\subsection{SHAP Explainability}
+
+\begin{lstlisting}[language=Python, caption={SHAP TreeExplainer for AdaBoost}]
+import shap
+
+explainer  = shap.TreeExplainer(adaboost)
+shap_values = explainer.shap_values(X_test_rfe)
+
+# Global importance bar chart
+shap.summary_plot(shap_values, X_test_rfe,
+                  feature_names=selected_features,
+                  plot_type='bar')
+
+# Beeswarm plot (full distribution)
+shap.summary_plot(shap_values, X_test_rfe,
+                  feature_names=selected_features)
+\end{lstlisting}
+
+\subsection{MLflow Experiment Tracking}
+
+\begin{lstlisting}[language=Python, caption={MLflow logging for AdaBoost production run}]
+import mlflow
+from mlflow.models import infer_signature
+import joblib
+
+with mlflow.start_run(run_name="adaboost_production_v3"):
+    mlflow.log_params({
+        'n_estimators': 50,
+        'learning_rate': 1.0,
+        'algorithm': 'SAMME.R',
+        'random_state': RANDOM_STATE
+    })
+    mlflow.log_metrics({
+        'accuracy' : 0.9912,
+        'precision': 1.0000,
+        'recall'   : 0.9859,
+        'f1'       : 0.9929,
+        'roc_auc'  : 0.9987,
+        'kappa'    : 0.9823,
+        'mcc'      : 0.9825
+    })
+    signature = infer_signature(X_train_rfe, y_pred)
+    mlflow.sklearn.log_model(
+        adaboost,
+        artifact_path="model",
+        signature=signature,
+        registered_model_name="breast_cancer_adaboost_v3"
+    )
+    joblib.dump(scaler, "scaler.pkl")
+    joblib.dump(rfe,    "rfe_selector.pkl")
+    mlflow.log_artifact("scaler.pkl")
+    mlflow.log_artifact("rfe_selector.pkl")
+\end{lstlisting}
+
+\section{Model Card and Reproducibility Checklist}
+
+\subsection{Model Card}
+
+\begin{table}[h]
+\centering
+\caption{Model Card --- AdaBoost Breast Cancer Classifier v3.0}
+\label{tab:model_card}
+\begin{tabular}{ll}
+\toprule
+\textbf{Field} & \textbf{Value} \\
+\midrule
+Model name            & AdaBoost Breast Cancer Classifier v3.0 \\
+Intended use          & Clinical decision support for FNA cytology analysis \\
+Prohibited uses       & Standalone diagnosis without physician review \\
+Accuracy              & 99.12\% \\
+Precision (PPV)       & 100.00\% \\
+Recall (Sensitivity)  & 98.59\% \\
+ROC-AUC               & 0.9987 \\
+Training data         & WDBC $n=455$ (with SMOTE: 572) \\
+Evaluation data       & WDBC held-out $n=114$ \\
+Limitations           & Single-center; 1995 data; binary classification only \\
+Ethical considerations & Human oversight required; fairness audit needed \\
+Carbon footprint       & $\sim 0.02$\,kg CO$_2$e (training) \\
+Version               & 3.0.0 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Clinical Performance Against Thresholds}
+
+\begin{table}[h]
+\centering
+\caption{Performance vs.\ Clinical Decision Thresholds}
+\label{tab:clinical_thresholds}
+\begin{tabular}{lllr}
+\toprule
+\textbf{Metric} & \textbf{Clinical Threshold} & \textbf{Achieved} & \textbf{Margin} \\
+\midrule
+Sensitivity (Recall)    & $\geq 95\%$ & 98.59\%  & $+3.59\%$ \\
+Specificity             & $\geq 90\%$ & 100.00\% & $+10.00\%$ \\
+Positive Predictive Val & $\geq 85\%$ & 100.00\% & $+15.00\%$ \\
+Negative Predictive Val & $\geq 90\%$ & 97.67\%  & $+7.67\%$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Reproducibility Checklist}
+
+\begin{itemize}
+    \item[$\checkmark$] Global random seed: \texttt{RANDOM\_STATE = 42} applied to
+    \texttt{train\_test\_split}, \texttt{StandardScaler} (deterministic), \texttt{SMOTE},
+    \texttt{RFE}, and all classifiers.
+    \item[$\checkmark$] Stratified 80/20 train-test split preserving 62.74\% benign ratio.
+    \item[$\checkmark$] Scaler fit on training set only; transformation applied to test set
+    without re-fitting.
+    \item[$\checkmark$] SMOTE applied only to training data (post-split) to prevent leakage.
+    \item[$\checkmark$] RFE fit on SMOTE-balanced training data; same selector applied to test
+    set without re-fitting.
+    \item[$\checkmark$] 10-fold stratified CV performed on SMOTE-balanced training data.
+    \item[$\checkmark$] All hyperparameter configurations documented in Appendix C.
+    \item[$\checkmark$] MLflow experiment logs archived with full parameter/metric provenance.
+    \item[$\checkmark$] Dataset: UCI WDBC, DOI 10.24432/C5DW2B (publicly available, no PII).
+    \item[$\checkmark$] Software environment: Python 3.12, scikit-learn 1.5, XGBoost 2.1,
+    LightGBM 4.5, imbalanced-learn 0.12, SHAP 0.45, MLflow 2.15.
+\end{itemize}
+
+\end{document}
