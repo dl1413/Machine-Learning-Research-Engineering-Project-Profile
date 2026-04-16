@@ -6,8 +6,6 @@
 # Usage: ./compile_latex.sh [file1.tex file2.tex ...] or ./compile_latex.sh (compiles all)
 #
 
-set -e  # Exit on error
-
 # Colors for output
 RED='\033[0;31m'
 GREEN='\033[0;32m'
@@ -36,15 +34,31 @@ compile_tex() {
     local texfile="$1"
     local basename="${texfile%.tex}"
 
+    local compile_log="${basename}.pdflatex.out"
+
     echo -e "${YELLOW}Compiling: $texfile${NC}"
 
     # First pass
     echo "  Running pdflatex (pass 1/2)..."
-    pdflatex -interaction=nonstopmode -halt-on-error "$texfile" > /dev/null 2>&1
+    if ! pdflatex -interaction=nonstopmode -halt-on-error "$texfile" > "$compile_log" 2>&1; then
+        echo -e "${RED}✗ Error: pdflatex failed during pass 1 for ${texfile}${NC}"
+        echo "  pdflatex output:"
+        cat "$compile_log"
+        rm -f "$compile_log"
+        return 1
+    fi
 
     # Second pass (for references, TOC, etc.)
     echo "  Running pdflatex (pass 2/2)..."
-    pdflatex -interaction=nonstopmode -halt-on-error "$texfile" > /dev/null 2>&1
+    if ! pdflatex -interaction=nonstopmode -halt-on-error "$texfile" > "$compile_log" 2>&1; then
+        echo -e "${RED}✗ Error: pdflatex failed during pass 2 for ${texfile}${NC}"
+        echo "  pdflatex output:"
+        cat "$compile_log"
+        rm -f "$compile_log"
+        return 1
+    fi
+
+    rm -f "$compile_log"
 
     # Clean up auxiliary files
     echo "  Cleaning auxiliary files..."
