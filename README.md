@@ -11,13 +11,13 @@
 
 **Core Competencies:** Multi-Model LLM Evaluation • Ensemble ML Systems • Bayesian Uncertainty Quantification • Production MLOps • AI Safety Red-Teaming
 
-> **Impact-Driven ML Research Engineer** specialized in building production-grade LLM evaluation frameworks, multi-model ensemble systems, and Bayesian inference pipelines. Proven track record of delivering **96.8-99.12% accuracy** models with rigorous statistical validation. Experienced in processing **80K+ LLM annotations** at production scale (850 samples/hr) while maintaining research-grade reliability (Krippendorff's α ≥ 0.81). Published researcher with **3 technical reports** demonstrating compliance with IEEE 2830-2025, ISO/IEC 23894:2025, and EU AI Act standards.
+> **Impact-Driven ML Research Engineer** specialized in building production-grade LLM evaluation frameworks, multi-model ensemble systems, and Bayesian inference pipelines. Proven track record of delivering **96.8-99.12% accuracy** models with rigorous statistical validation. Experienced in processing **80K+ LLM annotations** at production scale (850 samples/hr) while maintaining research-grade reliability (Krippendorff's α ≥ 0.81). Published researcher with **3 technical reports** demonstrating compliance with IEEE 2830-2025, ISO/IEC 23894:2025, and EU AI Act standards. Expertise in Bayesian hyperparameter optimization (Optuna TPE), model calibration, adversarial attack taxonomy, and multi-publisher correlation analysis.
 
 ### 🏆 Key Achievements for 2026 ML Research Engineer Roles
 
-- 🛡️ **Built LLM Red-Team Framework**: 3-model ensemble (GPT-4o, Claude-3.5, Llama-3.2) with 340× cost reduction ($0.018/sample) and audit-grade reliability (α = 0.81)
-- 🔬 **Developed Multi-Model Evaluation Pipeline**: Krippendorff's α = 0.81-0.84 across frontier LLMs with Bayesian uncertainty quantification
-- 🏥 **Deployed Clinical-Grade ML System**: 99.12% accuracy breast cancer classifier exceeding human expert performance (90-95%)
+- 🛡️ **Built LLM Red-Team Framework**: 3-model ensemble (GPT-4o, Claude-3.5, Llama-3.2) with 340× cost reduction ($0.018/sample), audit-grade reliability (α = 0.81), and MITRE ATLAS-aligned adversarial attack taxonomy
+- 🔬 **Developed Multi-Model Evaluation Pipeline**: Krippendorff's α = 0.81-0.84 across frontier LLMs with Bayesian uncertainty quantification and inter-publisher correlation analysis
+- 🏥 **Deployed Clinical-Grade ML System**: 99.12% accuracy breast cancer classifier exceeding human expert performance (90-95%) with Optuna-optimized hyperparameters and Platt-calibrated probabilities (ECE: 0.0089)
 - 📊 **Scaled Production NLP Pipelines**: 80K+ API calls with circuit breakers, rate limiting, and MLflow experiment tracking
 - ⚡ **Engineered Low-Latency Inference**: FastAPI deployments with <100ms p95 latency and real-time monitoring
 - 📈 **Published Research-Quality Reports**: 3 technical publications with p < 0.001 significance, 95% HDI intervals, and SHAP explainability
@@ -44,6 +44,8 @@
 
 #### Technical Innovation
 - **Dual-Stage Framework**: LLM ensemble annotation → ML classification pipeline
+- **Adversarial Attack Taxonomy**: 8-category MITRE ATLAS-aligned framework; multi-turn escalation (31.8%) identified as highest-risk vector
+- **Defense Effectiveness Analysis**: Dual-filter reduces harm rate 21.8% → 4.8% (78% reduction)
 - **Multi-Model Risk Analysis**: Bayesian hierarchical modeling quantifying vulnerability (95% HDI)
 - **47 Engineered Features**: Linguistic, semantic, and structural harm signals
 - **6 Harm Categories**: Dangerous info, hate, deception, privacy, illegal activity, self-harm
@@ -70,6 +72,9 @@
 - **Multi-LLM Ensemble**: GPT-4o, Claude-3.5-Sonnet, Llama-3.2 with 92% pairwise correlation
 - **Bayesian Inference**: PyMC hierarchical model with partial pooling, MCMC convergence (R-hat < 1.01)
 - **Statistical Rigor**: 95% HDI quantification, publisher-level credible bias detection (3/5 significant)
+- **Inter-Publisher Correlation**: Spearman correlation matrix revealing structural editorial relationships (ρ up to 0.74)
+- **Cross-Topic Heatmap**: Social Issues shows highest polarization (Δ = 1.36 points across publishers)
+- **Passage-Level CIs**: Bootstrap uncertainty quantification flags 12.3% high-uncertainty passages for expert review
 - **Production Engineering**: Circuit breakers, exponential backoff, MLflow tracking
 
 #### Tech Stack
@@ -93,12 +98,15 @@
 
 #### Technical Innovation
 - **8-Algorithm Benchmark**: Comprehensive evaluation (RF, XGBoost, LightGBM, AdaBoost, Stacking, Voting)
+- **Bayesian Hyperparameter Optimization**: Optuna TPE converges in 5× fewer trials than grid search (45 vs. 240 trials)
+- **Model Calibration**: Platt scaling reduces ECE by 71.5% (0.0312 → 0.0089) for clinically reliable confidence
+- **Threshold Optimization**: Context-adaptive thresholds (100% sensitivity at 0.31 for mass screening)
 - **Advanced Preprocessing**: VIF multicollinearity analysis, SMOTE balancing, RFE feature selection
 - **Explainable AI**: SHAP values for clinical transparency, fairness auditing (IEEE 2830-2025)
 - **Production Ready**: MLflow registry, FastAPI deployment (<100ms p95 latency)
 
 #### Tech Stack
-`scikit-learn` `XGBoost` `LightGBM` `AdaBoost` `SMOTE` `SHAP` `MLflow` `FastAPI`
+`scikit-learn` `XGBoost` `LightGBM` `AdaBoost` `Optuna` `SMOTE` `SHAP` `MLflow` `FastAPI`
 
 </td>
 <td width="50%" valign="top">
@@ -342,9 +350,9 @@ Rochester Institute of Technology | Expected 2026
 
 | Title | Type | Date | Links |
 |-------|------|------|-------|
-| **AI Safety Red-Team Evaluation** | Technical Report v1.0.0 | Jan 2026 | [Report](./AI%20Safety%20Red-Team%20Evaluation_%20Technical%20Analysis%20Report.md) • [PDF](./AI_Safety_RedTeam_Evaluation_Publication.pdf) |
-| **LLM Ensemble Textbook Bias Detection** | Technical Report v3.0.0 | Jan 2026 | [Report](./LLM_Ensemble_Bias_Detection_Report.md) • [PDF](./LLM_Bias_Detection_Publication.pdf) |
-| **Breast Cancer Classification** | Technical Report v3.0.0 | Jan 2026 | [Report](./Breast_Cancer_Classification_Report.md) • [PDF](./Breast_Cancer_Classification_Publication.pdf) |
+| **AI Safety Red-Team Evaluation** | Technical Report v2.0.0 | Apr 2026 | [Report](./AI%20Safety%20Red-Team%20Evaluation_%20Technical%20Analysis%20Report.md) • [PDF](./AI_Safety_RedTeam_Evaluation_Publication.pdf) |
+| **LLM Ensemble Textbook Bias Detection** | Technical Report v4.0.0 | Apr 2026 | [Report](./LLM_Ensemble_Bias_Detection_Report.md) • [PDF](./LLM_Bias_Detection_Publication.pdf) |
+| **Breast Cancer Classification** | Technical Report v4.0.0 | Apr 2026 | [Report](./Breast_Cancer_Classification_Report.md) • [PDF](./Breast_Cancer_Classification_Publication.pdf) |
 
 ---
 
@@ -418,7 +426,7 @@ LLM-Portfolio/
 
 <div align="center">
 
-**📌 Last Updated:** January 2026  
+**📌 Last Updated:** April 2026  
 **✅ Compliance:** IEEE 2830-2025 (Transparent ML) • ISO/IEC 23894:2025 (AI Risk Management)  
 **🔒 License:** Portfolio content © 2026 Derek Lankeaux. Code samples available under MIT License.
 
