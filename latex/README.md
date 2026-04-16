@@ -132,7 +132,7 @@ All PDFs include comprehensive metadata:
 
 ### Accessibility
 - Searchable text (not image-based)
-- Clickable table of contents
+- Clickable PDF bookmarks/navigation
 - Hyperlinked cross-references
 - Hyperlinked citations and URLs
 
@@ -146,10 +146,10 @@ All PDFs include comprehensive metadata:
 
 | Document | LaTeX Source | PDF Output |
 |----------|--------------|------------|
-| AI Safety Red-Team Evaluation | 14 KB | 137 KB |
-| Breast Cancer Classification | 15 KB | 190 KB |
-| LLM Bias Detection | 14 KB | 179 KB |
-| **Total** | **43 KB** | **506 KB** |
+| AI Safety Red-Team Evaluation | 18 KB | 137 KB |
+| Breast Cancer Classification | 23 KB | 190 KB |
+| LLM Bias Detection | 24 KB | 179 KB |
+| **Total** | **65 KB** | **506 KB** |
 
 ## Customization
 
