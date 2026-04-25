@@ -559,7 +559,7 @@ REPORTS = [
 
 
 def main():
-    base = Path(__file__).parent
+    base = Path(__file__).parent.parent  # Go up to repo root where markdown files are
     print("=" * 70)
     print("2026 Publication PDF Generator")
     print("=" * 70)
