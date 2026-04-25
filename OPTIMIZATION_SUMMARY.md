@@ -2,11 +2,11 @@
 
 ## Overview
 
-Optimized the 3 project PDFs for 2026 publication standards by enhancing the `generate_publication_pdfs.py` script with comprehensive metadata, file size optimizations, and academic publishing features.
+Optimized the 3 project PDFs for 2026 publication standards by enhancing the `publication/generate_publication_pdfs.py` script with comprehensive metadata, file size optimizations, and academic publishing features.
 
 ## Files Modified/Created
 
-### 1. `generate_publication_pdfs.py` (+140 lines)
+### 1. `publication/generate_publication_pdfs.py` (+140 lines)
 Enhanced PDF generation script with 2026 publication standards:
 
 #### Added Features:
@@ -42,7 +42,7 @@ Enhanced PDF generation script with 2026 publication standards:
 - Enhanced `generate_pdf()` - Now includes metadata extraction and PDF optimization
 - Enhanced `md_to_publication_html()` - Adds comprehensive HTML head metadata
 
-### 2. `requirements-pdf.txt` (NEW)
+### 2. `publication/requirements-pdf.txt` (NEW)
 Complete dependency documentation for PDF generation:
 ```
 weasyprint>=60.0          # Modern HTML/CSS to PDF renderer
@@ -54,7 +54,7 @@ Includes:
 - Optional optimization libraries
 - Clear installation instructions
 
-### 3. `PDF_GENERATION_README.md` (NEW - 177 lines)
+### 3. `publication/PDF_GENERATION_README.md` (NEW - 177 lines)
 Comprehensive documentation covering:
 
 #### Technical Documentation:
@@ -145,10 +145,10 @@ To test the optimized PDF generation:
 
 ```bash
 # Install dependencies
-pip install -r requirements-pdf.txt
+pip install -r publication/requirements-pdf.txt
 
 # Generate PDFs
-python generate_publication_pdfs.py
+python publication/generate_publication_pdfs.py
 
 # Verify output
 ls -lh *.pdf
@@ -206,8 +206,8 @@ Expected metadata fields:
 
 The PDF generation pipeline is now optimized for 2026 publication. To regenerate PDFs with these optimizations:
 
-1. Ensure dependencies are installed: `pip install -r requirements-pdf.txt`
-2. Run the generation script: `python generate_publication_pdfs.py`
+1. Ensure dependencies are installed: `pip install -r publication/requirements-pdf.txt`
+2. Run the generation script: `python publication/generate_publication_pdfs.py`
 3. Verify the output PDFs contain proper metadata
 4. Distribute the optimized PDFs for publication
 
