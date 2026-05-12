@@ -2,89 +2,119 @@
 
 **Machine Learning Research Engineer | LLM Evaluation Specialist | AI Safety Researcher**
 
+Greenlawn, NY 11740 · (631) 626-0511 · dl1413@g.rit.edu
 [LinkedIn](https://linkedin.com/in/derek-lankeaux) | [GitHub](https://github.com/dl1413) | [Portfolio](https://dl1413.github.io/LLM-Portfolio/)
 
 ---
 
 ## Summary
 
-Impact-driven Machine Learning Research Engineer specialized in building production-grade LLM evaluation frameworks, multi-model ensemble systems, and Bayesian inference pipelines. Proven track record delivering 96.8-99.12% accuracy models with rigorous statistical validation. Experienced processing 80K+ LLM annotations at production scale (850 samples/hr) while maintaining research-grade reliability (Krippendorff's alpha >= 0.81). Published researcher with 3 technical reports demonstrating compliance with IEEE 2830-2025, ISO/IEC 23894:2025, and EU AI Act standards.
+Impact-driven Machine Learning Research Engineer specialized in frontier-LLM evaluation, multi-model ensemble systems, and Bayesian inference pipelines. Currently evaluating frontier models (GPT-5.1, Claude Opus 4.5, Gemini 3 Pro, Llama 4, DeepSeek-R1) in production at Toloka AI and developing LLM-powered features at Handshake. Proven track record delivering 96.8-99.12% accuracy models with rigorous statistical validation. Experienced processing 10K+ daily inferences with research-grade reliability (Krippendorff's alpha >= 0.81). Published researcher with 3 technical reports demonstrating compliance with IEEE 2830-2025, ISO/IEC 23894:2025, and EU AI Act standards.
 
 ---
 
-## Technical Skills
+## Core Competencies
 
-**Languages:** Python 3.12+, R, SQL, Bash
+**LLM Systems & Evaluation:** Frontier model evaluation (GPT-5.1, Claude Opus 4.5, Gemini 3 Pro, Llama 4, DeepSeek-R1), Constitutional AI compliance, LLM-as-Judge, agentic workflow evaluation, prompt engineering, few-shot learning, chain-of-thought reasoning, NL2SQL, RAG pipeline evaluation
 
-**ML Frameworks:** PyTorch 2.0+, TensorFlow 2.15+, scikit-learn 1.5+, JAX
+**Statistical Methods:** Bayesian hierarchical modeling (PyMC/ArviZ), MCMC sampling (NUTS, HMC), convergence diagnostics (R-hat, ESS), A/B testing, hypothesis testing, time series, survival analysis
 
-**LLM APIs:** OpenAI (GPT-4o), Anthropic (Claude-3.5), Meta (Llama-3.2), HuggingFace
+**ML Engineering & Production:** Ensemble methods, PyTorch, TensorFlow, scikit-learn, SHAP/LIME, SMOTE, RFE, cross-validation, hyperparameter optimization (Optuna TPE), Fairlearn
 
-**Ensemble ML:** XGBoost 2.1+, LightGBM 4.5+, CatBoost, AdaBoost
-
-**Bayesian Statistics:** PyMC 5.15+, ArviZ 0.18+, NumPyro, Stan
-
-**Data Stack:** Pandas 2.2+, Polars 1.0+, NumPy 2.0+, Dask, Apache Arrow
-
-**MLOps:** MLflow 2.15+, Weights & Biases, DVC, Kubeflow
-
-**Deployment:** FastAPI 0.110+, Docker, Kubernetes, AWS, GCP
-
-**Explainability:** SHAP, LIME, Captum, InterpretML
+**MLOps & Infrastructure:** Python, R, SQL, FastAPI, Flask, Docker, Kubernetes, MLflow, LangChain, GitHub Actions, CI/CD, vector databases, Redis
 
 ---
 
-## Education
+## Professional Experience
 
-**Master of Science in Applied Statistics**  
-Rochester Institute of Technology | Expected 2026  
-*Specialization: Bayesian Methods, Machine Learning, Experimental Design*
+### AI Quality Assurance Specialist | Toloka AI (Mindrift)
+*Oct 2025 – Present*
 
-**Relevant Coursework:** Advanced Bayesian Inference & MCMC Methods, Deep Learning & Neural Networks, Statistical Learning Theory, Experimental Design & Causal Inference, High-Dimensional Statistics, Computational Statistics & Optimization
+- Evaluate frontier LLMs (GPT-5.1, Claude Opus 4.5, Gemini 3 Pro, Llama 4) processing 10,000+ daily inferences across reasoning, instruction-following, and factual accuracy
+- Implement harm detection achieving <5% false negative rate across 6 categories
+- Design autonomous AI agent behavior assessments and Constitutional AI compliance metrics; identify adversarial patterns and edge cases
+- Provide annotations integrated into fine-tuning pipelines with MLflow tracking
+
+### AI Trainer | Handshake
+*Nov 2025 – Present*
+
+- Develop LLM-powered features for career platform serving 20M+ students; implement prompt engineering and few-shot learning to evaluate AI models with LLM-as-Judge methodologies
+- Conduct evaluation of frontier models (GPT-5.1, Claude Opus 4.5) for production deployment
+- Design A/B testing frameworks and analyze engagement metrics for ML-driven features
+
+### Cloud Software Analyst | BRdata Software Solutions
+*Apr 2024 – Nov 2024*
+
+- Developed NL2SQL training dataset using LangChain + Groq API through chain-of-thought reasoning and few-shot learning; processed 180 samples/hour with Redis caching
+- Engineered backend pipelines integrating SQL Server with cloud architecture, achieving 10% latency reduction
+- Orchestrated Docker deployment improving reliability by 20%
+
+### Mathematics Instructor | Huntington Learning Center
+*Oct 2021 – Dec 2023*
+
+- Delivered data-driven instruction to 30+ students; increased standardized test scores up to 150 points through curriculum interventions
+- Maintained 95%+ satisfaction rating
 
 ---
 
 ## Research Projects
 
 ### AI Safety Red-Team Evaluation Framework
-*Independent Research Project | January 2026*
+*Oct 2025 – Dec 2025*
 
-- Engineered dual-stage LLM ensemble (GPT-4o, Claude-3.5, Llama-3.2) achieving 96.8% accuracy in automated harm detection across 12,500 AI response pairs and 6 harm categories
-- Achieved 340x cost reduction ($0.018/sample vs $6.12 human annotation) while maintaining excellent inter-rater reliability (Krippendorff's alpha = 0.81)
-- Developed production ML pipeline processing 850 samples/hour with Stacking Classifier (97.2% precision, 96.1% recall, ROC-AUC 0.9923)
-- Designed 47 engineered features capturing linguistic, semantic, and structural harm signals for robust classification
-- Implemented Bayesian hierarchical modeling for multi-model risk analysis with 95% HDI uncertainty quantification
-- Built comprehensive MLOps infrastructure with SHAP explainability, audit trails, and IEEE 2830-2025 compliance
+- **Stage 1:** Architected dual-stage harm detection system processing 12,500 adversarial pairs across 12 attack categories; three-model ensemble achieving Krippendorff's alpha = 0.81, 340x cost reduction ($0.018/sample vs $6.12), 850 samples/hour
+- **Stage 2:** Engineered 5,800+ dimensional feature space; Stacking Classifier achieved 96.8% accuracy, 97.2% precision, 96.1% recall, ROC-AUC 0.9923
+- Bayesian uncertainty quantification, continuous monitoring (KS test), SHAP explainability per IEEE 2830-2025
+- Implemented Bayesian hierarchical modeling for multi-model risk analysis with 95% HDI
 
-**Tech Stack:** GPT-4o, Claude-3.5, Llama-3.2, XGBoost, Stacking Classifier, PyMC, SHAP, MLflow, Constitutional AI
+**Tech Stack:** GPT-5.1, Claude Opus 4.5, Gemini 3 Pro, Llama 4, XGBoost, Stacking Classifier, PyMC, SHAP, MLflow, Constitutional AI
 
 ---
 
-### LLM Ensemble Textbook Bias Detection System
-*Independent Research Project | January 2026*
+### LLM Ensemble Textbook Bias Quantification
+*Jun 2025 – Sep 2025*
 
-- Built multi-LLM evaluation framework processing 67,500 bias ratings across 4,500 textbook passages with 2.5M tokens at production scale
-- Achieved excellent inter-rater reliability (Krippendorff's alpha = 0.84) with 92% pairwise correlation across frontier LLMs
-- Implemented Bayesian hierarchical model with partial pooling and MCMC convergence (R-hat < 1.01) for publisher-level credible bias detection
-- Discovered statistically significant bias findings (Friedman chi-squared = 42.73, p < 0.001) in 3/5 publishers analyzed
+- Quantified political bias in 150 textbooks using multi-LLM pipeline processing 67,500 ratings across 4,500 passages; achieved Krippendorff's alpha = 0.84 with pairwise correlations r = 0.87–0.92
+- Built Bayesian hierarchical model with partial pooling (R-hat < 1.01, ESS > 3,000); identified systematic bias in 60% of publishers
 - Engineered production-grade API integration with circuit breakers, exponential backoff, and MLflow experiment tracking
 - Delivered research-quality technical report with 95% HDI quantification and reproducible statistical methodology
 
-**Tech Stack:** GPT-4o, Claude-3.5, Llama-3.2, PyMC, ArviZ, MLflow, FastAPI, LangChain
+**Tech Stack:** GPT-5.1, Claude Opus 4.5, Gemini 3 Pro, PyMC, ArviZ, MLflow, FastAPI, LangChain
 
 ---
 
-### Clinical-Grade Breast Cancer ML Classification System
-*Independent Research Project | January 2026*
+### NL2SQL Production System with LangChain
+*Apr 2024 – Nov 2024*
 
-- Developed ensemble ML system achieving 99.12% accuracy, exceeding human expert performance (90-95%) on breast cancer classification
-- Attained 100% precision (zero false positives) and 98.59% recall with near-perfect discrimination (ROC-AUC 0.9987)
-- Conducted comprehensive 8-algorithm benchmark evaluation (Random Forest, XGBoost, LightGBM, AdaBoost, Stacking, Voting)
+- Deployed conversational SQL interface for retail analytics achieving 90% query accuracy through few-shot learning, chain-of-thought reasoning, and schema-aware generation
+- Built on FastAPI + Docker + Redis with security protocols
+
+**Tech Stack:** LangChain, Groq API, FastAPI, Docker, Redis, SQL Server
+
+---
+
+### Ensemble Learning for Breast Cancer Classification
+*May 2023 – Dec 2023*
+
+- Benchmarked 8 ensemble algorithms; AdaBoost achieved 99.12% accuracy, 100% precision, ROC-AUC 0.9987
+- Deployed FastAPI endpoint with MLflow, SHAP explainability, and Fairlearn auditing per IEEE 2830-2025
+- Achieved <100ms p95 latency in production
 - Applied advanced preprocessing pipeline with VIF multicollinearity analysis, SMOTE class balancing, and RFE feature selection
-- Implemented explainable AI with SHAP values for clinical transparency and fairness auditing per IEEE 2830-2025 standards
-- Deployed production-ready model with MLflow registry and FastAPI serving (<100ms p95 latency)
 
-**Tech Stack:** scikit-learn, XGBoost, LightGBM, AdaBoost, SMOTE, SHAP, MLflow, FastAPI
+**Tech Stack:** scikit-learn, XGBoost, LightGBM, AdaBoost, SMOTE, SHAP, Fairlearn, MLflow, FastAPI
+
+---
+
+## Education
+
+**Master of Science in Applied Statistics**
+Rochester Institute of Technology *(in progress)*
+*Specialization: Bayesian Methods, Machine Learning, Experimental Design*
+
+**Bachelor of Science in Applied Mathematics & Statistics**
+Stony Brook University
+
+**Relevant Coursework:** Advanced Bayesian Inference & MCMC Methods, Deep Learning & Neural Networks, Statistical Learning Theory, Experimental Design & Causal Inference, High-Dimensional Statistics, Computational Statistics & Optimization
 
 ---
 
@@ -93,9 +123,9 @@ Rochester Institute of Technology | Expected 2026
 - Built LLM Red-Team Framework with 3-model ensemble achieving 340x cost reduction ($0.018/sample) and audit-grade reliability (alpha = 0.81)
 - Developed Multi-Model Evaluation Pipeline with Krippendorff's alpha = 0.81-0.84 across frontier LLMs with Bayesian uncertainty quantification
 - Deployed Clinical-Grade ML System achieving 99.12% accuracy exceeding human expert performance (90-95%)
-- Scaled Production NLP Pipelines processing 80K+ API calls with circuit breakers, rate limiting, and MLflow experiment tracking
-- Engineered Low-Latency Inference with FastAPI deployments achieving <100ms p95 latency with real-time monitoring
-- Published 3 Research-Quality Technical Reports with p < 0.001 significance, 95% HDI intervals, and SHAP explainability
+- Currently scaling production NLP workflows at Toloka AI (10K+ daily inferences) and Handshake (20M+ student platform)
+- Engineered low-latency inference with FastAPI deployments achieving <100ms p95 latency
+- Published 3 research-quality technical reports with p < 0.001 significance, 95% HDI intervals, and SHAP explainability
 
 ---
 
@@ -103,22 +133,11 @@ Rochester Institute of Technology | Expected 2026
 
 | Title | Type | Date |
 |-------|------|------|
-| AI Safety Red-Team Evaluation | Technical Report v1.0.0 | January 2026 |
-| LLM Ensemble Textbook Bias Detection | Technical Report v3.0.0 | January 2026 |
-| Breast Cancer Classification | Technical Report v3.0.0 | January 2026 |
+| AI Safety Red-Team Evaluation | Technical Report | Dec 2025 |
+| LLM Ensemble Textbook Bias Quantification | Technical Report | Sep 2025 |
+| Breast Cancer Classification | Technical Report | Dec 2023 |
 
 ---
 
-## Core Competencies
-
-**LLM & AI Safety:** Multi-model ensemble architectures, AI safety red-team evaluation, Prompt engineering & optimization, Inter-rater reliability analysis, Harm detection & classification, API integration at scale
-
-**Statistical ML:** Ensemble methods (8+ algorithms), Bayesian hierarchical modeling, MCMC diagnostics (R-hat, ESS), Hypothesis testing & validation, Feature engineering & selection
-
-**Production MLOps:** FastAPI model deployment, MLflow experiment tracking, Circuit breakers & rate limiting, Monitoring & drift detection, Docker/Kubernetes orchestration
-
----
-
-**Location:** Available for remote/hybrid positions  
-**Timeline:** Seeking positions starting 2026  
+**Location:** Greenlawn, NY (Long Island) · Open to NYC, hybrid, or remote
 **Work Authorization:** Authorized to work in the United States
