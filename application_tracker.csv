@@ -1,2 +1,6 @@
 date,company,role_title,role_family,location,source,lead_project,jd_link,resume_version,cover_letter_sent,referral,status,next_action,notes
-2026-05-12,EXAMPLE_Anthropic,Research Engineer - Evals,AI Safety,Remote,careers.anthropic.com,Project1_RedTeam,https://...,resume_v3_safety.pdf,Y,N,submitted,wait 10d,Tailored opener with 340x cost hook
+2026-05-12,Anthropic,Research Engineer - Evaluations,AI Safety,Remote,careers.anthropic.com,Project1_RedTeam,TBD,resume_v3_safety.pdf,Y,N,drafted,submit + save JD PDF,Lead P1; opener uses 340x cost + alpha=0.81 hook
+2026-05-12,Scale AI,LLM Red-Team / Eval Engineer,LLM Eval,Remote,scale.com/careers,Project1_RedTeam,TBD,resume_v3_eval.pdf,Y,N,drafted,submit + save JD PDF,Lead P1 eval-infra variant; 850 samples/hr hook
+2026-05-12,Two Sigma,ML Researcher - Inference,Bayesian DS,NYC,twosigma.com/careers,Project2_BiasDetection,TBD,resume_v3_bayes.pdf,Y,N,drafted,submit + save JD PDF,Lead P2; Friedman chi2=42.73 + R-hat<1.01 hook
+2026-05-12,Memorial Sloan Kettering,Computational Oncology ML Engineer,Healthcare ML,NYC,mskcc.org/careers,Project3_BreastCancer,TBD,resume_v3_clinical.pdf,Y,N,drafted,submit + save JD PDF,Lead P3; 99.12% acc + 100% precision + SHAP hook
+2026-05-12,Hugging Face,Research Engineer - Evaluations,LLM Eval,NYC+Remote,huggingface.co/careers,Project2_BiasDetection,TBD,resume_v3_eval.pdf,Y,N,drafted,submit + save JD PDF,Lead P2; 67.5K ratings + alpha=0.84 + MLflow hook
