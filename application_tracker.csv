@@ -1,2 +1,7 @@
 date,company,role_title,role_family,location,source,lead_project,jd_link,resume_version,cover_letter_sent,referral,status,next_action,notes
 2026-05-12,EXAMPLE_Anthropic,Research Engineer - Evals,AI Safety,Remote,careers.anthropic.com,Project1_RedTeam,https://...,resume_v3_safety.pdf,Y,N,submitted,wait 10d,Tailored opener with 340x cost hook
+2026-05-15,Anthropic,"Research Engineer, Alignment",AI Safety,Remote/NYC,careers.anthropic.com,Project1_RedTeam,TBD,resume_v3_safety.pdf,Y,N,planned,submit today,Lead P1; bridge P2+P3 in body
+2026-05-15,Hugging Face,Evaluation Research Engineer,LLM Eval,Remote,huggingface.co/careers,Project1_RedTeam,TBD,resume_v3_safety.pdf,Y,N,planned,submit today,Lead P1 Eval; mention HF Hub usage
+2026-05-15,Memorial Sloan Kettering,Computational Oncology ML Engineer,Healthcare ML,NYC,mskcc.org/careers,Project3_BreastCancer,TBD,resume_v3_clinical.pdf,Y,N,planned,submit today,Lead P3; SHAP + IEEE 2830 emphasis
+2026-05-15,Two Sigma,ML Research Engineer (Modeling),Data Scientist Bayesian,NYC,twosigma.com/careers,Project2_BiasDetection,TBD,resume_v3_research.pdf,Y,N,planned,submit today,Lead P2 PyMC; flag RIT Applied Stats
+2026-05-15,Patronus AI,LLM Eval Platform Engineer,LLM Eval,NYC + Remote,patronus.ai/careers,Project1_RedTeam,TBD,resume_v3_safety.pdf,Y,N,planned,submit today,Lead P1 Eval Infra; map to product
