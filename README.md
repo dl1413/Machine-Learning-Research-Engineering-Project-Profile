@@ -1,5 +1,5 @@
 # Derek Lankeaux, MS
-## Machine Learning Research Engineer | LLM Evaluation Specialist | AI Safety Researcher
+## Data Scientist | Applied Statistician | LLM Evaluation & GenAI Specialist
 
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect-0077B5?style=for-the-badge&logo=linkedin)](https://linkedin.com/in/derek-lankeaux)
 [![GitHub](https://img.shields.io/badge/GitHub-Follow-181717?style=for-the-badge&logo=github)](https://github.com/dl1413)
@@ -7,20 +7,20 @@
 
 ---
 
-### 🎯 Machine Learning Research Engineer | Actively Seeking 2026 Opportunities
+### 🎯 Data Scientist (MS, Applied Statistics) | Open to 2026 Full-Time Roles
 
-**Core Competencies:** Multi-Model LLM Evaluation • Ensemble ML Systems • Bayesian Uncertainty Quantification • Production MLOps • AI Safety Red-Teaming
+**Core Competencies:** Experimentation & Causal Inference • Bayesian Statistics • GenAI / LLM Evaluation • Predictive Modeling & MLOps • Stakeholder Communication
 
-> **Impact-Driven ML Research Engineer** specialized in building production-grade LLM evaluation frameworks, multi-model ensemble systems, and Bayesian inference pipelines. Proven track record of delivering **96.8-99.12% accuracy** models with rigorous statistical validation. Experienced in processing **80K+ LLM annotations** at production scale (850 samples/hr) while maintaining research-grade reliability (Krippendorff's α ≥ 0.81). Published researcher with **3 technical reports** demonstrating compliance with IEEE 2830-2025, ISO/IEC 23894:2025, and EU AI Act standards. Expertise in Bayesian hyperparameter optimization (Optuna TPE), model calibration, adversarial attack taxonomy, and multi-publisher correlation analysis.
+> **Data Scientist with an Applied Statistics MS** who turns ambiguous business and research questions into measurable outcomes using experimentation, Bayesian inference, and modern ML. I have shipped end-to-end projects spanning **GenAI evaluation, predictive modeling, and risk analytics** — delivering **96.8–99.12% model performance** with rigorous statistical validation (Krippendorff's α ≥ 0.81, MCMC R-hat < 1.01, p < 0.001). Comfortable owning the full DS workflow: framing the problem, designing the experiment, writing the SQL, building the model, quantifying uncertainty, and communicating impact to non-technical partners. 3 published technical reports aligned with IEEE 2830-2025, ISO/IEC 23894:2025, and the EU AI Act.
 
-### 🏆 Key Achievements for 2026 ML Research Engineer Roles
+### 🏆 Highlights for 2026 Data Science Roles
 
-- 🛡️ **Built LLM Red-Team Framework**: 3-model ensemble (GPT-4o, Claude-3.5, Llama-3.2) with 340× cost reduction ($0.018/sample), audit-grade reliability (α = 0.81), and MITRE ATLAS-aligned adversarial attack taxonomy
-- 🔬 **Developed Multi-Model Evaluation Pipeline**: Krippendorff's α = 0.81-0.84 across frontier LLMs with Bayesian uncertainty quantification and inter-publisher correlation analysis
-- 🏥 **Deployed Clinical-Grade ML System**: 99.12% accuracy breast cancer classifier exceeding human expert performance (90-95%) with Optuna-optimized hyperparameters and Platt-calibrated probabilities (ECE: 0.0089)
-- 📊 **Scaled Production NLP Pipelines**: 80K+ API calls with circuit breakers, rate limiting, and MLflow experiment tracking
-- ⚡ **Engineered Low-Latency Inference**: FastAPI deployments with <100ms p95 latency and real-time monitoring
-- 📈 **Published Research-Quality Reports**: 3 technical publications with p < 0.001 significance, 95% HDI intervals, and SHAP explainability
+- 💸 **340× Cost Reduction via GenAI**: Replaced $6.12 human annotation with $0.018/sample LLM-ensemble pipeline that preserved audit-grade reliability (Krippendorff's α = 0.81) across 12,500 evaluations — a reusable pattern for any team scaling human-in-the-loop labeling
+- 🧪 **Causal & Statistical Rigor**: Friedman χ² = 42.73 (p < 0.001), Bayesian hierarchical models with 95% HDI, multiple-testing correction (Bonferroni / FDR), bootstrap CIs, and power analysis — the toolkit DS teams actually use to defend a result
+- 🏥 **High-Stakes Predictive Modeling**: 99.12% accuracy, 100% precision, Platt-calibrated probabilities (ECE 0.0089) and threshold tuning for context-specific decision policies (e.g., 100% sensitivity for screening)
+- 📊 **Production Data Pipelines**: 80K+ API calls / 2.5M tokens processed with circuit breakers, exponential backoff, and MLflow tracking — repeatable, audited, and monitored
+- 🗣️ **Communication & Reproducibility**: 3 publication-grade reports with model cards, calibration plots, and SHAP-based explanations written for both technical reviewers and business stakeholders
+- 🧭 **Responsible AI by Default**: IEEE 2830-2025, ISO/IEC 23894:2025, and EU AI Act-aligned artifacts — increasingly required for DS work touching regulated data (healthcare, finance, education)
 
 ---
 
@@ -141,39 +141,41 @@
 <tr>
 <td width="33%" valign="top">
 
-#### 🤖 LLM & AI Safety
-- Multi-model ensemble architectures
-- AI safety red-team evaluation
-- Prompt engineering & optimization
-- Inter-rater reliability analysis
-- Harm detection & classification
-- API integration at scale
+#### 🧪 Experimentation & Causal Inference
+- A/B test design & sample size / power analysis
+- Frequentist & Bayesian hypothesis testing
+- Multiple-testing correction (Bonferroni, FDR)
+- Effect sizes (Cohen's d, η², Cramer's V)
+- Quasi-experimental & observational designs
+- Inter-rater reliability (Krippendorff's α, κ)
 
-**Tools:** GPT-4o, Claude-3.5, Llama-3.2, HuggingFace, LangChain, Constitutional AI
-
-</td>
-<td width="33%" valign="top">
-
-#### 📊 Statistical ML
-- Ensemble methods (8+ algorithms)
-- Bayesian hierarchical modeling
-- MCMC diagnostics (R-hat, ESS)
-- Hypothesis testing & validation
-- Feature engineering & selection
-
-**Tools:** PyMC, ArviZ, scikit-learn, XGBoost, LightGBM
+**Tools:** SciPy, statsmodels, PyMC, ArviZ, R
 
 </td>
 <td width="33%" valign="top">
 
-#### ⚙️ Production MLOps
-- FastAPI model deployment
-- MLflow experiment tracking
-- Circuit breakers & rate limiting
-- Monitoring & drift detection
-- Docker/Kubernetes orchestration
+#### 📊 Modeling & Analytics
+- Predictive modeling (classification, regression)
+- Ensemble methods (RF, XGBoost, LightGBM, AdaBoost)
+- Bayesian hierarchical & probabilistic models
+- Feature engineering, selection, calibration
+- Uncertainty quantification (HDI, bootstrap)
+- SQL & data wrangling at scale
 
-**Tools:** MLflow, FastAPI, Docker, Redis, Prometheus
+**Tools:** scikit-learn, XGBoost, LightGBM, PyMC, SQL, Pandas, Polars
+
+</td>
+<td width="33%" valign="top">
+
+#### 🤖 GenAI & Production DS
+- LLM evaluation & benchmarking (GPT-4o, Claude, Llama)
+- Prompt engineering & multi-model ensembling
+- LLM-as-judge & human-in-the-loop labeling
+- Model deployment (FastAPI) & monitoring
+- Experiment tracking (MLflow) & reproducibility
+- Stakeholder reporting & model cards
+
+**Tools:** OpenAI, Anthropic, HuggingFace, LangChain, MLflow, FastAPI, Docker
 
 </td>
 </tr>
@@ -283,7 +285,7 @@ Rochester Institute of Technology | Expected 2026
 
 ---
 
-## 💼 Target Opportunities (2026 Machine Learning Research Engineer)
+## 💼 Target Opportunities (2026 Data Science Roles)
 
 ### 🎯 Ideal Roles
 
@@ -291,58 +293,58 @@ Rochester Institute of Technology | Expected 2026
 <tr>
 <td width="50%">
 
-**Machine Learning Research Engineer**
-- LLM evaluation & benchmarking systems
-- Multi-model ensemble architectures
-- Foundation model red-teaming
-- Production ML pipeline development
-- Model performance optimization
+**Data Scientist (Product / Analytics)**
+- A/B testing & experimentation platforms
+- Causal inference & quasi-experiments
+- Metric design & North-Star definition
+- SQL-heavy exploratory analysis
+- Stakeholder-facing insights & readouts
 
 </td>
 <td width="50%">
 
-**ML Systems Engineer**
-- Scalable inference infrastructure
-- MLOps platform development
-- Real-time model serving (<100ms)
-- Distributed training pipelines
-- Monitoring & observability
+**Applied / GenAI Data Scientist**
+- LLM evaluation & offline benchmarking
+- LLM-as-judge & human-in-the-loop pipelines
+- Prompt iteration & regression testing
+- Retrieval / RAG quality measurement
+- Cost & latency optimization
 
 </td>
 </tr>
 <tr>
 <td width="50%">
 
-**Applied Research Scientist**
-- Bayesian uncertainty quantification
-- Ensemble learning methodologies
-- Statistical validation frameworks
-- Experimental design & analysis
-- Publication-ready research
+**Data Scientist (Statistics / Inference)**
+- Bayesian hierarchical modeling
+- Uncertainty quantification (HDI, calibration)
+- Survey design & inter-rater reliability
+- Reproducible research workflows
+- Statistical consulting for product teams
 
 </td>
 <td width="50%">
 
-**AI Safety Research Engineer**
-- Red-team evaluation frameworks
-- Harm detection & classification
-- Model alignment research
-- Responsible AI governance
-- Compliance (IEEE 2830-2025, EU AI Act)
+**Machine Learning / Decision Scientist**
+- End-to-end predictive modeling
+- Calibration, threshold tuning, decision policies
+- Model monitoring & drift detection
+- Risk analytics in regulated domains
+- Responsible AI / model governance
 
 </td>
 </tr>
 </table>
 
-### 🌟 What I Bring to 2026 ML Research Engineering Roles
+### 🌟 What I Bring to a 2026 Data Science Team
 
-✅ **LLM Expertise**: Multi-model ensemble systems (GPT-4o, Claude-3.5, Llama-3.2) with validated reliability (α ≥ 0.81)  
-✅ **Production ML**: FastAPI deployments processing 850 samples/hr with <100ms p95 latency  
-✅ **Statistical Rigor**: Bayesian inference, hypothesis testing, 95% HDI quantification (p < 0.001)  
-✅ **AI Safety**: Pioneered 340× cost-efficient red-team framework with 6-category harm taxonomy  
-✅ **Research Quality**: 3 technical reports with IEEE 2830-2025 and EU AI Act compliance  
-✅ **MLOps Maturity**: MLflow tracking, model versioning, circuit breakers, monitoring infrastructure  
-✅ **Proven Impact**: Clinical-grade ML (99.12% accuracy) exceeding human expert performance
+✅ **Statistical Foundation**: Applied Statistics MS — Bayesian inference, hypothesis testing, power analysis, causal designs  
+✅ **Experimentation Mindset**: A/B test design, multi-arm comparisons, multiple-testing correction, effect-size reporting  
+✅ **GenAI Fluency**: Production LLM-ensemble pipelines (GPT-4o, Claude, Llama) with measurable cost-to-quality tradeoffs  
+✅ **Modeling Range**: From XGBoost/LightGBM classifiers (99.12% acc) to Bayesian hierarchical models (R-hat < 1.01)  
+✅ **Engineering Hygiene**: SQL, Python (Pandas/Polars), MLflow, FastAPI, Docker, Git — ships and maintains pipelines, not just notebooks  
+✅ **Communication**: 3 publication-grade reports with model cards, calibration plots, and SHAP-based explanations for non-technical readers  
+✅ **Domain Versatility**: Healthcare, education, and AI-safety case studies — comfortable in regulated, high-stakes settings
 
 ---
 
@@ -360,7 +362,7 @@ Rochester Institute of Technology | Expected 2026
 
 <div align="center">
 
-### 🤝 Open to Research Engineer Opportunities | Available for Interviews
+### 🤝 Open to 2026 Data Science Opportunities | Available for Interviews
 
 **Preferred Contact:** [LinkedIn](https://linkedin.com/in/derek-lankeaux) • Email Available Upon Request
 
@@ -400,7 +402,9 @@ LLM-Portfolio/
 
 </div>
 
-**Machine Learning:** Deep Learning • Neural Networks • Ensemble Methods • Random Forest • XGBoost • LightGBM • AdaBoost • Gradient Boosting • Stacking • Bagging • Feature Engineering
+**Data Science:** Experimentation • A/B Testing • Causal Inference • Quasi-Experiments • Metric Design • Cohort Analysis • Funnel Analysis • Power Analysis • Hypothesis Testing • Stakeholder Communication • SQL • Dashboarding
+
+**Machine Learning:** Deep Learning • Neural Networks • Ensemble Methods • Random Forest • XGBoost • LightGBM • AdaBoost • Gradient Boosting • Stacking • Bagging • Feature Engineering • Model Calibration • Threshold Tuning
 
 **Large Language Models:** GPT-4 • GPT-4o • Claude-3.5-Sonnet • Llama-3.2 • BERT • Transformers • Prompt Engineering • Few-Shot Learning • Zero-Shot Learning • In-Context Learning • Constitutional AI
 
