@@ -1,6 +1,6 @@
 # Derek Lankeaux, MS
 
-**Data Scientist | Applied Statistician | LLM Evaluation & Bayesian Inference**
+**Data Scientist | NL2SQL & LLM Evaluation | Applied Statistics & Bayesian Inference**
 
 [LinkedIn](https://linkedin.com/in/derek-lankeaux) | [GitHub](https://github.com/dl1413) | [Portfolio](https://dl1413.github.io/LLM-Portfolio/)
 
@@ -8,7 +8,7 @@
 
 ## Summary
 
-Applied-statistics MS shipping end-to-end data science: framing the estimand, designing the experiment, writing the SQL, fitting the model, quantifying uncertainty, and writing the readout for non-technical stakeholders. Three published technical reports cover multi-LLM evaluation (Krippendorff's alpha 0.81-0.84), Bayesian hierarchical inference (R-hat < 1.01, p < 0.001), and clinical decision support (99.12% accuracy, 100% precision on WDBC). All three are reproducible, MLflow-tracked, and aligned with IEEE 2830-2025, ISO/IEC 23894:2025, and the EU AI Act.
+Applied-statistics MS shipping end-to-end data science: framing the estimand, designing the experiment, writing the SQL, fitting the model, quantifying uncertainty, and writing the readout for non-technical stakeholders. Recent work spans a natural-language-to-SQL query interface at BRData, an 8-algorithm ensemble benchmark on the WDBC dataset at RIT (99.12% accuracy, 100% precision, ROC-AUC 0.9987), and a multi-LLM hierarchical Bayesian evaluation study (Krippendorff's alpha = 0.84, R-hat < 1.01, Friedman chi-sq p < 0.001). Reproducible, MLflow-tracked, and aligned with IEEE 2830-2025 / ISO/IEC 23894:2025 / EU AI Act.
 
 ---
 
@@ -42,36 +42,26 @@ Rochester Institute of Technology | Expected 2026
 
 ---
 
-## Research Projects
+## Projects
 
-### AI Safety Red-Team Evaluation Framework — *Report AI-SR-2026-01*
-*Independent Research Project | January 2026*
+### Natural-Language-to-SQL Query Interface — *BRData*
+*[Role TBD] | [Dates TBD]*
 
-- Built a dual-stage evaluation pipeline: three frontier LLMs (GPT-4o, Claude-3.5-Sonnet, Llama-3.2-90B) annotate 12,500 prompt-response pairs across 6 harm categories; a stacking meta-learner scales those judgments at audit-grade reliability (Krippendorff's alpha = 0.81)
-- Stacking classifier reaches 96.8% accuracy, 97.2% precision, 96.1% recall, ROC-AUC 0.9923, and FNR 3.9% on a held-out fold (n = 2,500); wins on identical 10-fold splits against 7 alternative ensembles
-- Engineered 47 features (lexical, semantic, structural, safety-specific, embedding-derived) with VIF pruning, train-fold-only SMOTE, and RFE -- no SMOTE leakage into the test fold
-- Fit a PyMC hierarchical risk layer (model-class x category, with interaction) producing 95% HDI per population estimate; R-hat < 1.01, ESS > 3,000
-- Pipeline runs at ~850 samples/hr at $0.018/sample -- a 340x marginal cost reduction vs. human review ($6.12/sample) -- with circuit breakers, exponential backoff, MLflow lineage, SHAP attribution per prediction, and a FastAPI scoring stub at p95 < 100 ms
+> Numbers in [brackets] are placeholders — replace with the actual figures before sending out.
 
-**Stack:** Python, scikit-learn, XGBoost, LightGBM, PyMC, ArviZ, SHAP, MLflow, FastAPI
+- Built a natural-language-to-SQL interface over [TBD: data warehouse / source -- e.g., Snowflake / Postgres / BigQuery] so non-technical users could ask analytics questions in English and get back validated SQL plus result tables
+- Designed a Python pipeline that grounds an LLM (prompt + schema/context injection, few-shot examples drawn from a curated query log) in the live warehouse schema, then validates generated SQL by parsing it (sqlglot) and dry-running against the warehouse before returning results
+- Built a held-out NL2SQL benchmark of [TBD: # ] question/SQL pairs across [TBD: # ] tables; system reached [TBD: %] execution accuracy and [TBD: %] exact-match accuracy on the holdout
+- Added retrieval over a query-history corpus (embeddings + similarity search) for few-shot exemplar selection, which lifted execution accuracy from [TBD baseline %] to [TBD new %] on the same benchmark
+- Hardened the loop with retry on parse failure, schema-aware error messages, and a feedback table that logs every (NL, SQL, success/failure) tuple for offline evaluation and continuous improvement
+- Shipped behind a [TBD: FastAPI / Slack bot / internal UI] endpoint serving [TBD: # ] queries/day at p95 [TBD: ms] latency; instrumented with [TBD: MLflow / W&B / OpenTelemetry] for run lineage
 
----
-
-### LLM-Ensemble Textbook Bias Detection — *Report AI-SR-2026-02*
-*Independent Research Project | January 2026*
-
-- Sharpened a vague public-debate question into a measurable estimand: posterior contrast of per-publisher ideological lean against neutral, after accounting for per-rater calibration and finite-sample noise
-- Collected 67,500 ratings from a three-LLM ensemble (GPT-4o, Claude-3.5-Sonnet, Llama-3.2-90B) over 4,500 passages drawn from 150 textbooks across 5 U.S. publishers (~2.5M tokens) at temperature 0.3 with a 5-dimension rubric
-- Validated the instrument first: Krippendorff's alpha = 0.84; pairwise correlations 0.87-0.92; rater x publisher interaction not credible under partial pooling
-- Fit a PyMC hierarchical model (passages within subjects within publishers, with rater-specific intercepts); 4 chains x 4,000 post-warmup draws; R-hat < 1.01, ESS > 3,000, MCSE < 0.005
-- Reported posterior means and 95% HDIs per publisher; 3 of 5 publishers show credible non-neutral lean (two liberal, one conservative). Friedman chi-squared = 42.73, p < 0.001 confirms; rank order stable across binary, 5-point, and [-2, +2] scale operationalizations
-
-**Stack:** Python, PyMC, ArviZ, LangChain, Polars, MLflow, tenacity
+**Stack:** Python, SQL, LLM API (e.g., GPT-4o / Claude), sqlglot, vector store ([TBD: pgvector / FAISS / Chroma]), [TBD: warehouse], FastAPI, Docker, Git
 
 ---
 
-### Ensemble Classifier for the Wisconsin Diagnostic Breast Cancer (WDBC) Dataset — *Report AI-SR-2026-03*
-*Independent Research Project | January 2026*
+### Ensemble Classifier for the Wisconsin Diagnostic Breast Cancer Dataset — *Rochester Institute of Technology*
+*MS Applied Statistics, RIT | January 2026 | Report AI-SR-2026-03*
 
 - Reframed screening as a utility-maximization decision: published a cost-ratio threshold sweep (miss / FP in [1, 100]) rather than relying on a default 0.5 cutoff
 - Benchmarked 8 ensembles -- Random Forest, Gradient Boosting, AdaBoost, Bagging, XGBoost, LightGBM, Voting, Stacking -- on identical stratified 80/20 folds (n = 569, 30 features) with a shared preprocessing pipeline: z-score scaling fit on train only, VIF review, train-fold-only SMOTE (k = 5), and RFE to 15 features
@@ -84,13 +74,26 @@ Rochester Institute of Technology | Expected 2026
 
 ---
 
+### Multi-LLM Evaluation: Hierarchical Bayesian Bias Detection
+*Independent Research Project | January 2026 | Report AI-SR-2026-02*
+
+- Sharpened a vague public-debate question into a measurable estimand: posterior contrast of per-publisher ideological lean against neutral, after accounting for per-rater calibration and finite-sample noise
+- Collected 67,500 ratings from a three-LLM ensemble (GPT-4o, Claude-3.5-Sonnet, Llama-3.2-90B) over 4,500 passages drawn from 150 textbooks across 5 U.S. publishers (~2.5M tokens) at temperature 0.3 with a 5-dimension rubric
+- Validated the instrument first: Krippendorff's alpha = 0.84; pairwise correlations 0.87-0.92; rater x publisher interaction not credible under partial pooling
+- Fit a PyMC hierarchical model (passages within subjects within publishers, with rater-specific intercepts); 4 chains x 4,000 post-warmup draws; R-hat < 1.01, ESS > 3,000, MCSE < 0.005
+- Reported posterior means and 95% HDIs per publisher; 3 of 5 publishers show credible non-neutral lean (two liberal, one conservative). Friedman chi-squared = 42.73, p < 0.001 confirms; rank order stable across binary, 5-point, and [-2, +2] scale operationalizations
+
+**Stack:** Python, PyMC, ArviZ, LangChain, Polars, MLflow, tenacity
+
+---
+
 ## Publications & Technical Reports
 
 | Report | Title | Date |
 |---|---|---|
-| AI-SR-2026-01 | Multi-LLM Ensemble Annotation and Bayesian Classification for AI Safety Red-Team Evaluation | January 2026 |
-| AI-SR-2026-02 | Causal Bias Analysis in K-12 Textbooks: A Multi-LLM Hierarchical Study | January 2026 |
 | AI-SR-2026-03 | Enhanced Ensemble Methods for Wisconsin Breast Cancer Classification | January 2026 |
+| AI-SR-2026-02 | Causal Bias Analysis in K-12 Textbooks: A Multi-LLM Hierarchical Study | January 2026 |
+| AI-SR-2026-01 | Multi-LLM Ensemble Annotation and Bayesian Classification for AI Safety Red-Team Evaluation | January 2026 |
 
 ---
 
