@@ -1,6 +1,6 @@
 # Derek Lankeaux, MS
 
-**Entry-Level Data Engineer | Python & SQL | ETL/ELT Pipelines | Cloud-Curious**
+**Data Scientist | Applied Statistician | LLM Evaluation & Bayesian Inference**
 
 [LinkedIn](https://linkedin.com/in/derek-lankeaux) | [GitHub](https://github.com/dl1413) | [Portfolio](https://dl1413.github.io/LLM-Portfolio/)
 
@@ -8,7 +8,7 @@
 
 ## Summary
 
-Early-career data engineer with an Applied Statistics MS and hands-on experience building ETL/ELT pipelines in Python and SQL. Have shipped three end-to-end data projects covering multi-source API ingestion, relational data modeling, data quality checks, and BI-ready curated layers -- processing 80K+ API calls and millions of records with circuit breakers, retries, and full lineage tracking. Comfortable owning the pipeline lifecycle: extraction, transformation, validation, loading, monitoring, and documentation. Eager to grow under senior mentors on a modern cloud data stack (AWS/Azure/GCP, Airflow, dbt, Spark).
+Applied-statistics MS shipping end-to-end data science: framing the estimand, designing the experiment, writing the SQL, fitting the model, quantifying uncertainty, and writing the readout for non-technical stakeholders. Three published technical reports cover multi-LLM evaluation (Krippendorff's alpha 0.81-0.84), Bayesian hierarchical inference (R-hat < 1.01, p < 0.001), and clinical decision support (99.12% accuracy, 100% precision on WDBC). All three are reproducible, MLflow-tracked, and aligned with IEEE 2830-2025, ISO/IEC 23894:2025, and the EU AI Act.
 
 ---
 
@@ -16,109 +16,84 @@ Early-career data engineer with an Applied Statistics MS and hands-on experience
 
 **Languages:** Python 3.12+, R, SQL, Bash
 
-**Experimentation & Statistics:** A/B testing, power analysis, hypothesis testing, multiple-testing correction (Bonferroni, FDR), effect sizes (Cohen's d, eta-squared), bootstrap CIs, causal & quasi-experimental design, inter-rater reliability (Krippendorff's alpha, Cohen's kappa)
+**Experimentation & Statistics:** A/B testing, power analysis, hypothesis testing, multiple-testing correction (Bonferroni, FDR), effect sizes (Cohen's d, eta-squared), bootstrap CIs, quasi-experimental design, inter-rater reliability (Krippendorff's alpha, Cohen's kappa, Friedman)
 
-**Bayesian Statistics:** PyMC 5.15+, ArviZ 0.18+, NumPyro, Stan; hierarchical models, MCMC diagnostics (R-hat, ESS), 95% HDI, model calibration
+**Bayesian Inference:** PyMC 5.15+, ArviZ 0.18+, NumPyro; hierarchical models with partial pooling, MCMC diagnostics (R-hat, ESS, MCSE), 95% HDI, posterior predictive checks, sensitivity analysis
 
-**Modeling & ML:** scikit-learn 1.5+, XGBoost 2.1+, LightGBM 4.5+, CatBoost, AdaBoost, PyTorch 2.0+, TensorFlow 2.15+; feature engineering, calibration (Platt, isotonic), threshold tuning
+**ML & Modeling:** scikit-learn 1.5+, XGBoost 2.1+, LightGBM 4.5+, AdaBoost, Stacking/Voting; VIF, SMOTE (train-only), RFE, threshold tuning, cost-sensitive learning, calibration (Platt, isotonic, Brier)
 
-**GenAI / LLM:** OpenAI (GPT-4o), Anthropic (Claude-3.5), Meta (Llama-3.2), HuggingFace, LangChain; LLM-as-judge, multi-model ensembles, prompt iteration, offline evaluation
+**GenAI / LLM Evaluation:** GPT-4o, Claude-3.5-Sonnet, Llama-3.2-90B; LLM-as-judge ensembles, rubric design, structured-JSON output, prompt-versioned offline benchmarking
 
-**Data Stack:** SQL, Pandas 2.2+, Polars 1.0+, NumPy 2.0+, Dask, Apache Arrow
+**Data Stack:** SQL, Pandas 2.2+, Polars 1.0+, NumPy 2.0+, Apache Arrow
 
-**MLOps & Deployment:** MLflow 2.15+, Weights & Biases, DVC, FastAPI 0.110+, Docker, Kubernetes, AWS, GCP
+**MLOps & Deployment:** MLflow 2.15+, FastAPI 0.110+, Docker, AWS, GCP, DVC
 
-**Explainability & Responsible AI:** SHAP, LIME, Captum, InterpretML; model cards, IEEE 2830-2025, ISO/IEC 23894:2025, EU AI Act
+**Explainability & Responsible AI:** SHAP (TreeExplainer), LIME, Fairlearn, model cards; IEEE 2830-2025, ISO/IEC 23894:2025, EU AI Act Article 13
 
 ---
 
 ## Education
 
-**Master of Science in Applied Statistics**  
-Rochester Institute of Technology | Expected 2026  
-*Specialization: Bayesian Methods, Machine Learning, Experimental Design*
+**Master of Science in Applied Statistics**
+Rochester Institute of Technology | Expected 2026
+*Concentration: Bayesian Methods, Statistical Learning, Experimental Design*
 
-**Relevant Coursework:** Advanced Bayesian Inference & MCMC Methods, Deep Learning & Neural Networks, Statistical Learning Theory, Experimental Design & Causal Inference, High-Dimensional Statistics, Computational Statistics & Optimization
+**Relevant Coursework:** Advanced Bayesian Inference & MCMC, Statistical Learning Theory, Experimental Design & Causal Inference, High-Dimensional Statistics, Computational Statistics & Optimization, Deep Learning
 
 ---
 
 ## Research Projects
 
-### Multi-Source AI Evaluation Data Pipeline
+### AI Safety Red-Team Evaluation Framework — *Report AI-SR-2026-01*
 *Independent Research Project | January 2026*
 
-- Built an end-to-end ELT pipeline in Python ingesting 12,500 records from three external LLM APIs (GPT-4o, Claude-3.5, Llama-3.2), landing raw payloads to a staging zone and modeling curated facts/dimensions for downstream analytics
-- Authored SQL transformations to clean, deduplicate, and join multi-source rating data into a single analytics-ready table covering 6 harm categories and 47 derived feature columns
-- Hardened ingestion with retry/backoff, circuit breakers, and idempotent writes, sustaining ~850 records/hour throughput and cutting per-record processing cost by 340x ($0.018 vs $6.12 manual)
-- Implemented data quality checks (schema validation, null/range constraints, inter-rater agreement >= 0.81) to gate records before promotion from raw -> staging -> curated layers
-- Versioned pipeline code in Git with reproducible runs, parameterized configs, and MLflow run tracking for lineage and auditability
-- Produced documentation, run logs, and IEEE 2830-2025 / EU AI Act-aligned audit trails for cross-functional stakeholders
+- Built a dual-stage evaluation pipeline: three frontier LLMs (GPT-4o, Claude-3.5-Sonnet, Llama-3.2-90B) annotate 12,500 prompt-response pairs across 6 harm categories; a stacking meta-learner scales those judgments at audit-grade reliability (Krippendorff's alpha = 0.81)
+- Stacking classifier reaches 96.8% accuracy, 97.2% precision, 96.1% recall, ROC-AUC 0.9923, and FNR 3.9% on a held-out fold (n = 2,500); wins on identical 10-fold splits against 7 alternative ensembles
+- Engineered 47 features (lexical, semantic, structural, safety-specific, embedding-derived) with VIF pruning, train-fold-only SMOTE, and RFE -- no SMOTE leakage into the test fold
+- Fit a PyMC hierarchical risk layer (model-class x category, with interaction) producing 95% HDI per population estimate; R-hat < 1.01, ESS > 3,000
+- Pipeline runs at ~850 samples/hr at $0.018/sample -- a 340x marginal cost reduction vs. human review ($6.12/sample) -- with circuit breakers, exponential backoff, MLflow lineage, SHAP attribution per prediction, and a FastAPI scoring stub at p95 < 100 ms
 
-**Tech Stack:** Python, SQL, Pandas, REST APIs, MLflow, Git, Docker, PostgreSQL
+**Stack:** Python, scikit-learn, XGBoost, LightGBM, PyMC, ArviZ, SHAP, MLflow, FastAPI
 
 ---
 
-### High-Volume Text Ingestion & Rating ETL
+### LLM-Ensemble Textbook Bias Detection — *Report AI-SR-2026-02*
 *Independent Research Project | January 2026*
 
-- Designed and operated an ETL workflow that ingested 4,500 source documents (2.5M tokens), fanned out 67,500 rating calls across 3 external APIs, and persisted normalized results into a relational analytics schema
-- Wrote Python extract/load tasks and SQL transformations (window functions, CTEs, joins) to aggregate ratings by publisher, source, and category for BI consumption
-- Built reliability layer with exponential backoff, rate limiting, and circuit breakers, sustaining 80K+ outbound API calls with <0.5% failure rate
-- Enforced data quality through agreement checks (Krippendorff's alpha = 0.84, 92% pairwise correlation) and automated validation before loads
-- Modeled the curated layer for downstream BI dashboards (publisher-level bias metrics with 95% credible intervals) and documented schemas, run logs, and DAG dependencies
-- Tracked pipeline runs and artifacts in MLflow with Git-versioned configuration for full reproducibility
+- Sharpened a vague public-debate question into a measurable estimand: posterior contrast of per-publisher ideological lean against neutral, after accounting for per-rater calibration and finite-sample noise
+- Collected 67,500 ratings from a three-LLM ensemble (GPT-4o, Claude-3.5-Sonnet, Llama-3.2-90B) over 4,500 passages drawn from 150 textbooks across 5 U.S. publishers (~2.5M tokens) at temperature 0.3 with a 5-dimension rubric
+- Validated the instrument first: Krippendorff's alpha = 0.84; pairwise correlations 0.87-0.92; rater x publisher interaction not credible under partial pooling
+- Fit a PyMC hierarchical model (passages within subjects within publishers, with rater-specific intercepts); 4 chains x 4,000 post-warmup draws; R-hat < 1.01, ESS > 3,000, MCSE < 0.005
+- Reported posterior means and 95% HDIs per publisher; 3 of 5 publishers show credible non-neutral lean (two liberal, one conservative). Friedman chi-squared = 42.73, p < 0.001 confirms; rank order stable across binary, 5-point, and [-2, +2] scale operationalizations
 
-**Tech Stack:** Python, SQL, Pandas, PostgreSQL, REST APIs, MLflow, FastAPI, Git
+**Stack:** Python, PyMC, ArviZ, LangChain, Polars, MLflow, tenacity
 
 ---
 
-### Clinical Data Preparation & Feature Pipeline
+### Ensemble Classifier for the Wisconsin Diagnostic Breast Cancer (WDBC) Dataset — *Report AI-SR-2026-03*
 *Independent Research Project | January 2026*
 
-- Built a reproducible Python/SQL data pipeline transforming raw clinical tabular data into a feature-ready warehouse table for downstream modeling and reporting
-- Implemented preprocessing stages -- type coercion, null handling, VIF-based multicollinearity pruning, SMOTE rebalancing, and RFE feature selection -- with logged data quality metrics at each step
-- Authored SQL queries and Pandas transformations to produce analyst-friendly views and exported curated datasets for BI tooling
-- Packaged the workflow with Docker, exposed it through a FastAPI service (<100ms p95 latency), and versioned datasets/models in MLflow registry for lineage
-- Documented schemas, transformation logic, and run procedures so analysts and engineers could rerun and extend the pipeline independently
-- Validated pipeline outputs against governance standards (IEEE 2830-2025) with explainability artifacts (SHAP) for downstream auditing
+- Reframed screening as a utility-maximization decision: published a cost-ratio threshold sweep (miss / FP in [1, 100]) rather than relying on a default 0.5 cutoff
+- Benchmarked 8 ensembles -- Random Forest, Gradient Boosting, AdaBoost, Bagging, XGBoost, LightGBM, Voting, Stacking -- on identical stratified 80/20 folds (n = 569, 30 features) with a shared preprocessing pipeline: z-score scaling fit on train only, VIF review, train-fold-only SMOTE (k = 5), and RFE to 15 features
+- Winner -- AdaBoost -- reaches 99.12% accuracy, 100% precision (zero false positives on the held-out fold), 98.59% recall, F1 = 99.29%, ROC-AUC = 0.9987, Cohen's kappa = 0.9823, MCC = 0.9825
+- 10-fold stratified CV confirms 98.46% +/- 1.12%; 95% CI [96.27%, 100.65%]; coefficient of variation 1.14%
+- SHAP (TreeExplainer) attribution coheres with cytopathological intuition -- worst-region extreme-value features (worst concave points, worst perimeter, worst radius) dominate over mean-region features
+- Limitations explicit and in-section: WDBC is a benchmark dataset, n = 569 is small for fairness slicing, no prospective validation -- deployment claim is out of scope and stated as such
 
-**Tech Stack:** Python, SQL, Pandas, scikit-learn, FastAPI, Docker, MLflow, Git
-
----
-
-## Key Achievements
-
-- Built LLM Red-Team Framework with 3-model ensemble achieving 340x cost reduction ($0.018/sample) and audit-grade reliability (alpha = 0.81)
-- Developed Multi-Model Evaluation Pipeline with Krippendorff's alpha = 0.81-0.84 across frontier LLMs with Bayesian uncertainty quantification
-- Deployed Clinical-Grade ML System achieving 99.12% accuracy exceeding human expert performance (90-95%)
-- Scaled Production NLP Pipelines processing 80K+ API calls with circuit breakers, rate limiting, and MLflow experiment tracking
-- Engineered Low-Latency Inference with FastAPI deployments achieving <100ms p95 latency with real-time monitoring
-- Published 3 Research-Quality Technical Reports with p < 0.001 significance, 95% HDI intervals, and SHAP explainability
+**Stack:** Python, scikit-learn, XGBoost, LightGBM, imbalanced-learn, SHAP, MLflow, FastAPI, Fairlearn
 
 ---
 
 ## Publications & Technical Reports
 
-| Title | Type | Date |
-|-------|------|------|
-| AI Safety Red-Team Evaluation | Technical Report v1.0.0 | January 2026 |
-| LLM Ensemble Textbook Bias Detection | Technical Report v3.0.0 | January 2026 |
-| Breast Cancer Classification | Technical Report v3.0.0 | January 2026 |
+| Report | Title | Date |
+|---|---|---|
+| AI-SR-2026-01 | Multi-LLM Ensemble Annotation and Bayesian Classification for AI Safety Red-Team Evaluation | January 2026 |
+| AI-SR-2026-02 | Causal Bias Analysis in K-12 Textbooks: A Multi-LLM Hierarchical Study | January 2026 |
+| AI-SR-2026-03 | Enhanced Ensemble Methods for Wisconsin Breast Cancer Classification | January 2026 |
 
 ---
 
-## Core Competencies
-
-**Experimentation & Causal Inference:** A/B test design & sample sizing, hypothesis testing, multiple-testing correction, effect-size reporting, quasi-experimental analysis, inter-rater reliability (Krippendorff's alpha, Cohen's kappa)
-
-**Statistical Modeling:** Bayesian hierarchical modeling, MCMC diagnostics (R-hat, ESS), credible intervals (95% HDI), calibration (Platt / isotonic), ensemble methods (RF, XGBoost, LightGBM, AdaBoost, Stacking, Voting)
-
-**GenAI / LLM Evaluation:** Multi-model ensemble architectures, LLM-as-judge & human-in-the-loop labeling, prompt engineering, offline benchmarking, cost / latency tradeoff analysis
-
-**Production Data Science:** SQL, FastAPI model deployment, MLflow experiment tracking, circuit breakers & rate limiting, monitoring & drift detection, Docker/Kubernetes orchestration, stakeholder-ready model cards and readouts
-
----
-
-**Location:** Available for remote/hybrid positions  
-**Timeline:** Seeking positions starting 2026  
+**Location:** Available for remote/hybrid positions
+**Timeline:** Seeking 2026 start
 **Work Authorization:** Authorized to work in the United States
