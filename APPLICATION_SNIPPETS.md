@@ -34,6 +34,13 @@ family (Safety / MLE / Research / Healthcare / DS).
 - Modeled multi-judge uncertainty via PyMC Bayesian hierarchy, producing 95% HDI risk intervals for downstream policy decisions
 - Documented results in research-grade technical report; reproducible pipeline released alongside published findings
 
+### Resume bullets — Data Engineer (ETL/ELT, Pipelines)
+
+- Built Python ELT pipeline ingesting 12,500 records from three external APIs into staged raw/curated layers, with idempotent loads and Git-versioned configs
+- Authored SQL transformations (CTEs, window functions) to clean, deduplicate, and join multi-source rating data into an analytics-ready table covering 6 categories and 47 engineered columns
+- Hardened ingestion with retry/backoff and circuit breakers, sustaining ~850 records/hour with <0.5% failure rate; tracked runs and artifacts in MLflow for lineage
+- Implemented data quality gates (schema validation, null/range checks, inter-rater agreement >= 0.81) before promotion to the curated layer; documented schemas and workflows for analyst consumption
+
 ### Cover letter paragraph — AI Safety lab (Anthropic / OpenAI / METR / Apollo)
 
 > My most relevant work for [Company]'s mission is an independent AI Safety
@@ -89,6 +96,13 @@ family (Safety / MLE / Research / Healthcare / DS).
 - Engineered prompt templates and rubric for bias scoring; validated rubric stability via 92% pairwise inter-LLM correlation
 - Published reproducible technical report with methodology, priors, sensitivity analysis, and full posterior visualizations
 
+### Resume bullets — Data Engineer (ETL/ELT, Pipelines)
+
+- Designed and operated an ETL workflow ingesting 4,500 source documents (2.5M tokens), fanning out 67,500 rating calls across 3 external APIs into a normalized relational schema
+- Wrote Python extract/load tasks and SQL aggregations (window functions, CTEs, joins) producing publisher/source/category roll-ups for downstream BI dashboards
+- Built reliability layer with exponential backoff, rate limiting, and circuit breakers, sustaining 80K+ outbound API calls at <0.5% failure rate
+- Enforced data quality via automated agreement checks (Krippendorff's alpha = 0.84, 92% pairwise correlation) and schema validation before promotion to the curated layer; tracked runs in MLflow with Git-versioned configs
+
 ### Cover letter paragraph — Data / Stats-heavy role
 
 > One project I'd point to is an LLM-ensemble bias-detection study I ran
@@ -143,6 +157,13 @@ family (Safety / MLE / Research / Healthcare / DS).
 - Achieved 100% precision and 98.59% recall on a high-stakes binary classification task; documented full pipeline reproducibly
 - Productionized winning model behind FastAPI with MLflow model registry and <100ms p95 latency
 
+### Resume bullets — Data Engineer (ETL/ELT, Pipelines)
+
+- Built a reproducible Python/SQL data pipeline transforming raw clinical tabular records into a feature-ready warehouse table, with logged data-quality metrics at every step
+- Implemented preprocessing stages -- type coercion, null handling, VIF-based multicollinearity pruning, SMOTE rebalancing, RFE feature selection -- and exported curated views for analyst/BI consumption
+- Packaged the workflow in Docker, exposed it via FastAPI (<100ms p95), and versioned datasets and models in MLflow registry for end-to-end lineage
+- Documented schemas, transformations, and run procedures in Git so analysts and engineers could rerun and extend the pipeline independently
+
 ### Cover letter paragraph — Healthcare ML role
 
 > The work most relevant to [Company] is a clinical-grade breast-cancer
@@ -166,6 +187,20 @@ family (Safety / MLE / Research / Healthcare / DS).
 > habits I want to bring to [Company]: pick models by evidence not
 > fashion, ship the full pipeline (preprocessing, SHAP explanations,
 > MLflow registry), and treat latency as a feature.
+
+### Cover letter paragraph — Entry-Level Data Engineer (Mayzax)
+
+> Across three independent projects I've built the kind of pipelines
+> Mayzax's clients rely on: Python + SQL ETL/ELT flows that ingest from
+> external APIs, land raw payloads to a staging zone, transform with SQL
+> (CTEs, window functions, joins) into curated analytics tables, and
+> hand off BI-ready datasets to downstream consumers. The largest run
+> moved 80K+ API calls and 2.5M tokens through circuit breakers,
+> exponential backoff, and schema/data-quality gates with <0.5%
+> failure. Everything is versioned in Git with MLflow-tracked runs for
+> lineage. I'd be excited to bring that pipeline discipline to Mayzax
+> and grow it onto a modern cloud stack (AWS/Azure/GCP, Airflow, dbt,
+> Spark) under your senior mentors.
 
 ---
 
@@ -193,3 +228,4 @@ family (Safety / MLE / Research / Healthcare / DS).
 | "clinical", "healthcare", "diagnostic", "EHR" | Project 3 | Healthcare ML |
 | "ML engineer", "applied ML", "production model" | Project 3 | Applied ML / MLE |
 | "research engineer", "applied research" (generic) | Project 1 | ML Research Engineer |
+| "data engineer", "ETL/ELT", "data pipeline", "data warehouse", "Airflow / dbt / Spark / Kafka" | Project 2, then 1, then 3 | Data Engineer (ETL/ELT, Pipelines) |
