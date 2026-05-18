@@ -1,6 +1,6 @@
 # Derek Lankeaux, MS
 
-**Data Scientist | Applied Statistician | LLM Evaluation & GenAI Specialist**
+**Entry-Level Data Engineer | Python & SQL | ETL/ELT Pipelines | Cloud-Curious**
 
 [LinkedIn](https://linkedin.com/in/derek-lankeaux) | [GitHub](https://github.com/dl1413) | [Portfolio](https://dl1413.github.io/LLM-Portfolio/)
 
@@ -8,7 +8,7 @@
 
 ## Summary
 
-Data Scientist with an Applied Statistics MS focused on experimentation, Bayesian inference, and applied machine learning. Ship end-to-end projects spanning GenAI evaluation, predictive modeling, and risk analytics — delivering 96.8-99.12% model performance with rigorous statistical validation (Krippendorff's alpha >= 0.81, MCMC R-hat < 1.01, p < 0.001). Comfortable owning the full data science workflow: framing the question, designing the experiment, writing the SQL, building the model, quantifying uncertainty, and communicating impact to non-technical stakeholders. Published 3 technical reports aligned with IEEE 2830-2025, ISO/IEC 23894:2025, and the EU AI Act.
+Early-career data engineer with an Applied Statistics MS and hands-on experience building ETL/ELT pipelines in Python and SQL. Have shipped three end-to-end data projects covering multi-source API ingestion, relational data modeling, data quality checks, and BI-ready curated layers -- processing 80K+ API calls and millions of records with circuit breakers, retries, and full lineage tracking. Comfortable owning the pipeline lifecycle: extraction, transformation, validation, loading, monitoring, and documentation. Eager to grow under senior mentors on a modern cloud data stack (AWS/Azure/GCP, Airflow, dbt, Spark).
 
 ---
 
@@ -44,45 +44,45 @@ Rochester Institute of Technology | Expected 2026
 
 ## Research Projects
 
-### AI Safety Red-Team Evaluation Framework
+### Multi-Source AI Evaluation Data Pipeline
 *Independent Research Project | January 2026*
 
-- Engineered dual-stage LLM ensemble (GPT-4o, Claude-3.5, Llama-3.2) achieving 96.8% accuracy in automated harm detection across 12,500 AI response pairs and 6 harm categories
-- Achieved 340x cost reduction ($0.018/sample vs $6.12 human annotation) while maintaining excellent inter-rater reliability (Krippendorff's alpha = 0.81)
-- Developed production ML pipeline processing 850 samples/hour with Stacking Classifier (97.2% precision, 96.1% recall, ROC-AUC 0.9923)
-- Designed 47 engineered features capturing linguistic, semantic, and structural harm signals for robust classification
-- Implemented Bayesian hierarchical modeling for multi-model risk analysis with 95% HDI uncertainty quantification
-- Built comprehensive MLOps infrastructure with SHAP explainability, audit trails, and IEEE 2830-2025 compliance
+- Built an end-to-end ELT pipeline in Python ingesting 12,500 records from three external LLM APIs (GPT-4o, Claude-3.5, Llama-3.2), landing raw payloads to a staging zone and modeling curated facts/dimensions for downstream analytics
+- Authored SQL transformations to clean, deduplicate, and join multi-source rating data into a single analytics-ready table covering 6 harm categories and 47 derived feature columns
+- Hardened ingestion with retry/backoff, circuit breakers, and idempotent writes, sustaining ~850 records/hour throughput and cutting per-record processing cost by 340x ($0.018 vs $6.12 manual)
+- Implemented data quality checks (schema validation, null/range constraints, inter-rater agreement >= 0.81) to gate records before promotion from raw -> staging -> curated layers
+- Versioned pipeline code in Git with reproducible runs, parameterized configs, and MLflow run tracking for lineage and auditability
+- Produced documentation, run logs, and IEEE 2830-2025 / EU AI Act-aligned audit trails for cross-functional stakeholders
 
-**Tech Stack:** GPT-4o, Claude-3.5, Llama-3.2, XGBoost, Stacking Classifier, PyMC, SHAP, MLflow, Constitutional AI
+**Tech Stack:** Python, SQL, Pandas, REST APIs, MLflow, Git, Docker, PostgreSQL
 
 ---
 
-### LLM Ensemble Textbook Bias Detection System
+### High-Volume Text Ingestion & Rating ETL
 *Independent Research Project | January 2026*
 
-- Built multi-LLM evaluation framework processing 67,500 bias ratings across 4,500 textbook passages with 2.5M tokens at production scale
-- Achieved excellent inter-rater reliability (Krippendorff's alpha = 0.84) with 92% pairwise correlation across frontier LLMs
-- Implemented Bayesian hierarchical model with partial pooling and MCMC convergence (R-hat < 1.01) for publisher-level credible bias detection
-- Discovered statistically significant bias findings (Friedman chi-squared = 42.73, p < 0.001) in 3/5 publishers analyzed
-- Engineered production-grade API integration with circuit breakers, exponential backoff, and MLflow experiment tracking
-- Delivered research-quality technical report with 95% HDI quantification and reproducible statistical methodology
+- Designed and operated an ETL workflow that ingested 4,500 source documents (2.5M tokens), fanned out 67,500 rating calls across 3 external APIs, and persisted normalized results into a relational analytics schema
+- Wrote Python extract/load tasks and SQL transformations (window functions, CTEs, joins) to aggregate ratings by publisher, source, and category for BI consumption
+- Built reliability layer with exponential backoff, rate limiting, and circuit breakers, sustaining 80K+ outbound API calls with <0.5% failure rate
+- Enforced data quality through agreement checks (Krippendorff's alpha = 0.84, 92% pairwise correlation) and automated validation before loads
+- Modeled the curated layer for downstream BI dashboards (publisher-level bias metrics with 95% credible intervals) and documented schemas, run logs, and DAG dependencies
+- Tracked pipeline runs and artifacts in MLflow with Git-versioned configuration for full reproducibility
 
-**Tech Stack:** GPT-4o, Claude-3.5, Llama-3.2, PyMC, ArviZ, MLflow, FastAPI, LangChain
+**Tech Stack:** Python, SQL, Pandas, PostgreSQL, REST APIs, MLflow, FastAPI, Git
 
 ---
 
-### Clinical-Grade Breast Cancer ML Classification System
+### Clinical Data Preparation & Feature Pipeline
 *Independent Research Project | January 2026*
 
-- Developed ensemble ML system achieving 99.12% accuracy, exceeding human expert performance (90-95%) on breast cancer classification
-- Attained 100% precision (zero false positives) and 98.59% recall with near-perfect discrimination (ROC-AUC 0.9987)
-- Conducted comprehensive 8-algorithm benchmark evaluation (Random Forest, XGBoost, LightGBM, AdaBoost, Stacking, Voting)
-- Applied advanced preprocessing pipeline with VIF multicollinearity analysis, SMOTE class balancing, and RFE feature selection
-- Implemented explainable AI with SHAP values for clinical transparency and fairness auditing per IEEE 2830-2025 standards
-- Deployed production-ready model with MLflow registry and FastAPI serving (<100ms p95 latency)
+- Built a reproducible Python/SQL data pipeline transforming raw clinical tabular data into a feature-ready warehouse table for downstream modeling and reporting
+- Implemented preprocessing stages -- type coercion, null handling, VIF-based multicollinearity pruning, SMOTE rebalancing, and RFE feature selection -- with logged data quality metrics at each step
+- Authored SQL queries and Pandas transformations to produce analyst-friendly views and exported curated datasets for BI tooling
+- Packaged the workflow with Docker, exposed it through a FastAPI service (<100ms p95 latency), and versioned datasets/models in MLflow registry for lineage
+- Documented schemas, transformation logic, and run procedures so analysts and engineers could rerun and extend the pipeline independently
+- Validated pipeline outputs against governance standards (IEEE 2830-2025) with explainability artifacts (SHAP) for downstream auditing
 
-**Tech Stack:** scikit-learn, XGBoost, LightGBM, AdaBoost, SMOTE, SHAP, MLflow, FastAPI
+**Tech Stack:** Python, SQL, Pandas, scikit-learn, FastAPI, Docker, MLflow, Git
 
 ---
 
