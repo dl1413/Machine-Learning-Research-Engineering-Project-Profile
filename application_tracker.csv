@@ -1,2 +1,7 @@
 date,company,role_title,role_family,location,source,lead_project,jd_link,resume_version,cover_letter_sent,referral,status,next_action,notes
 2026-05-12,EXAMPLE_Anthropic,Research Engineer - Evals,AI Safety,Remote,careers.anthropic.com,Project1_RedTeam,https://...,resume_v3_safety.pdf,Y,N,submitted,wait 10d,Tailored opener with 340x cost hook
+2026-05-25,Anthropic,Research Engineer Model Evaluations,AI Safety,Remote/NYC,careers.anthropic.com,Project1_RedTeam,TBD,resume_v3_safety.pdf,Y,N,ready_to_submit,submit + log JD PDF,Lead 340x cost + alpha=0.81; echo Constitutional AI
+2026-05-25,OpenAI,MTS Red Team,AI Safety,NYC,openai.com/careers,Project1_RedTeam,TBD,resume_v3_safety.pdf,Y,N,ready_to_submit,submit + log JD PDF,Lead 96.8% acc + jailbreak/harm keywords
+2026-05-25,Two Sigma,ML Research Engineer,Finance ML,NYC,twosigma.com/careers,Project3_BreastCancer,TBD,resume_v3_mle.pdf,Y,N,ready_to_submit,submit + log JD PDF,Lead 99.12% + <100ms p95; Bayesian support
+2026-05-25,Memorial Sloan Kettering,ML Engineer Computational Oncology,Healthcare ML,NYC,careers.mskcc.org,Project3_BreastCancer,TBD,resume_v3_clinical.pdf,Y,N,ready_to_submit,submit + log JD PDF,Lead 100% precision + IEEE 2830-2025
+2026-05-25,Patronus AI,LLM Evaluation Engineer,Eval Platform,Remote,patronus.ai/careers,Project1_RedTeam,TBD,resume_v3_eval.pdf,Y,N,ready_to_submit,submit + log JD PDF,Lead 850 samples/hr + Bayesian judge-disagreement
