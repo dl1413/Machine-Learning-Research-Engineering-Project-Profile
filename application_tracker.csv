@@ -1,2 +1,7 @@
 date,company,role_title,role_family,location,source,lead_project,jd_link,resume_version,cover_letter_sent,referral,status,next_action,notes
 2026-05-12,EXAMPLE_Anthropic,Research Engineer - Evals,AI Safety,Remote,careers.anthropic.com,Project1_RedTeam,https://...,resume_v3_safety.pdf,Y,N,submitted,wait 10d,Tailored opener with 340x cost hook
+2026-05-26,Anthropic,Research Engineer - Evaluations,AI Safety / Eval,Remote / NYC,anthropic.com/jobs,Project1_RedTeam,https://www.anthropic.com/jobs,resume_v3_safety.pdf,Y,N,drafted,submit,Lead 340x cost + ROC-AUC 0.9923; Constitutional AI keyword
+2026-05-26,Hugging Face,Research Engineer - Open LLM Evaluation,LLM Eval,Remote,apply.workable.com/huggingface,Project1_RedTeam,https://apply.workable.com/huggingface/,resume_v3_eval.pdf,Y,N,drafted,submit,Open-source eval harness angle; 850 samples/hr
+2026-05-26,Two Sigma,ML Research Engineer,ML Research / Finance,NYC,twosigma.com/careers,Project1_RedTeam,https://www.twosigma.com/careers/,resume_v3_research.pdf,Y,N,drafted,submit,Bayesian + stacking ensemble + production angle
+2026-05-26,Memorial Sloan Kettering,Computational Oncology ML Engineer,Healthcare ML,NYC,careers.mskcc.org,Project3_BreastCancer,https://careers.mskcc.org/,resume_v3_healthcare.pdf,Y,N,drafted,submit,99.12% acc / 100% precision / SHAP / IEEE 2830 hook
+2026-05-26,Patronus AI,LLM Evaluation Engineer,Eval Platform,NYC / Remote,patronus.ai/careers,Project1_RedTeam,https://www.patronus.ai/careers,resume_v3_eval.pdf,Y,N,drafted,submit,Judge ensemble + hallucination/harm detection angle
