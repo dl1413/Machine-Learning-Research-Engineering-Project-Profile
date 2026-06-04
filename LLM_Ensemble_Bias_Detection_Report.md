@@ -3,13 +3,13 @@
 **Project:** Detecting Publisher Bias Using LLM Ensemble and Bayesian Hierarchical Methods  
 **Date:** April 2026  
 **Author:** Derek Lankeaux, MS Applied Statistics  
-**Role:** Machine Learning Research Engineer | LLM Evaluation Specialist  
+**Role:** Data Scientist | Applied Statistics  
 **Institution:** Rochester Institute of Technology  
 **Source:** LLM_Ensemble_Textbook_Bias_Detection.ipynb  
 **Version:** 4.0.0  
 **AI Standards Compliance:** IEEE 2830-2025, ISO/IEC 23894:2025, EU AI Act (2025)
 
-> **Research Engineering Focus:** This project demonstrates core competencies for **2026 Machine Learning Research Engineer** roles including multi-model LLM ensemble systems, Bayesian hierarchical inference, production NLP pipelines, and inter-rater reliability validation.
+> **Data Science Focus:** This project demonstrates core competencies for **2026 Data Science roles** (Product/Analytics, Applied/GenAI, Stats, Decision Science) including LLM-as-judge evaluation, Bayesian hierarchical models, hypothesis testing with effect sizes, inter-rater reliability for multi-rater labeling pipelines, and stakeholder-facing analysis with quantified uncertainty.
 
 ---
 

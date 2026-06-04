@@ -11,125 +11,147 @@
 
 **Core Competencies:** Experimentation & Causal Inference • Bayesian Statistics • GenAI / LLM Evaluation • Predictive Modeling & MLOps • Stakeholder Communication
 
-> **Data Scientist with an Applied Statistics MS** who turns ambiguous business and research questions into measurable outcomes using experimentation, Bayesian inference, and modern ML. I have shipped end-to-end projects spanning **GenAI evaluation, predictive modeling, and risk analytics** — delivering **96.8–99.12% model performance** with rigorous statistical validation (Krippendorff's α ≥ 0.81, MCMC R-hat < 1.01, p < 0.001). Comfortable owning the full DS workflow: framing the problem, designing the experiment, writing the SQL, building the model, quantifying uncertainty, and communicating impact to non-technical partners. 3 published technical reports aligned with IEEE 2830-2025, ISO/IEC 23894:2025, and the EU AI Act.
+> **Data Scientist with an Applied Statistics MS** who turns ambiguous business and research questions into measurable outcomes using experimentation, Bayesian inference, and modern ML. Two end-to-end portfolio projects — **LLM-ensemble bias evaluation with Bayesian hierarchical inference** (67.5K ratings, α = 0.84, p < 0.001) and a **calibrated binary classifier with decision-policy tuning** (99.12% accuracy, ECE = 0.0089, two operating points tied to cost ratios) — each shipped with model cards, posterior plots, and SHAP attributions. Comfortable owning the full DS workflow: framing the problem, designing the experiment, writing the SQL, building the model, quantifying uncertainty, and communicating impact to non-technical partners. Both reports align with IEEE 2830-2025, ISO/IEC 23894:2025, and the EU AI Act.
 
 ### 🏆 Highlights for 2026 Data Science Roles
 
-- 💸 **340× Cost Reduction via GenAI**: Replaced $6.12 human annotation with $0.018/sample LLM-ensemble pipeline that preserved audit-grade reliability (Krippendorff's α = 0.81) across 12,500 evaluations — a reusable pattern for any team scaling human-in-the-loop labeling
-- 🧪 **Causal & Statistical Rigor**: Friedman χ² = 42.73 (p < 0.001), Bayesian hierarchical models with 95% HDI, multiple-testing correction (Bonferroni / FDR), bootstrap CIs, and power analysis — the toolkit DS teams actually use to defend a result
-- 🏥 **High-Stakes Predictive Modeling**: 99.12% accuracy, 100% precision, Platt-calibrated probabilities (ECE 0.0089) and threshold tuning for context-specific decision policies (e.g., 100% sensitivity for screening)
-- 📊 **Production Data Pipelines**: 80K+ API calls / 2.5M tokens processed with circuit breakers, exponential backoff, and MLflow tracking — repeatable, audited, and monitored
-- 🗣️ **Communication & Reproducibility**: 3 publication-grade reports with model cards, calibration plots, and SHAP-based explanations written for both technical reviewers and business stakeholders
-- 🧭 **Responsible AI by Default**: IEEE 2830-2025, ISO/IEC 23894:2025, and EU AI Act-aligned artifacts — increasingly required for DS work touching regulated data (healthcare, finance, education)
+- 🧪 **Statistical Rigor Built In**: Bayesian hierarchical models (PyMC, R-hat < 1.01), Friedman χ² = 42.73 (p < 0.001), 95% HDIs, multiple-testing correction (Bonferroni / FDR), bootstrap CIs, and inter-rater reliability (Krippendorff's α = 0.84) — the toolkit DS teams use to defend a finding to a non-technical stakeholder
+- 🏥 **High-Stakes Predictive Modeling**: 99.12% accuracy, 100% precision, Platt-calibrated probabilities (ECE 0.0089), and context-specific threshold tuning (100% sensitivity for mass screening, 100% precision for confirmation) — calibration discipline most accuracy-chasing pipelines skip
+- 🔬 **GenAI Evaluation Pipelines**: LLM-as-judge ensembles across GPT-4o, Claude-3.5, and Llama-3.2 with 92% pairwise correlation — a reusable pattern for scaling labeling, A/B-testing prompts, and quantifying disagreement as uncertainty
+- 📊 **Production Data Pipelines**: 67.5K LLM ratings / 2.5M tokens processed with circuit breakers, exponential backoff, deterministic re-runs, and MLflow tracking — repeatable, audited, monitored
+- 🗣️ **Communication & Reproducibility**: 2 publication-grade reports with model cards, calibration plots, SHAP attributions, and posterior visualizations written for both technical reviewers and business stakeholders
+- 🧭 **Responsible AI by Default**: IEEE 2830-2025, ISO/IEC 23894:2025, and EU AI Act-aligned artifacts — table stakes for DS work in regulated domains (healthcare, finance, education)
 
 ---
 
-## 🚀 Featured Research Projects
+## 🚀 Featured Data Science Projects
 
-<table>
-<tr>
-<td width="50%" valign="top">
+Two end-to-end case studies — one in **GenAI evaluation with Bayesian inference**, one in **high-stakes predictive modeling with calibrated decision policies**. Each one walks through the problem framing, methods, results, and what I'd actually ship to a stakeholder.
 
-### 🛡️ AI Safety Red-Team Evaluation
-**[📄 Technical Report](./AI%20Safety%20Red-Team%20Evaluation_%20Technical%20Analysis%20Report.md)** | **[📊 Publication](./AI_Safety_RedTeam_Evaluation_Publication.pdf)**
+---
 
-**Automated harm detection using dual-stage LLM ensemble + ML classification**
+### 🔬 Project 1 — LLM Ensemble Textbook Bias Detection
+**[📄 Technical Report](./LLM_Ensemble_Bias_Detection_Report.md)** | **[📊 Publication PDF](./LLM_Bias_Detection_Publication.pdf)**
 
-#### Impact Metrics
-- 🎯 **12,500 AI response pairs** evaluated across 6 harm categories
-- 📊 **96.8% accuracy** with Stacking Classifier (97.2% precision, 96.1% recall)
-- ⚡ **340× cost reduction**: $0.018/sample vs $6.12 human annotation
-- 🔬 **Krippendorff's α = 0.81** (excellent LLM ensemble reliability)
-- 🚀 **850 samples/hour** processing rate at production scale
+> *How do you measure a subjective construct (political bias in textbooks) at scale, with quantified uncertainty, and produce a finding a school district or publisher would actually defend in front of a school board?*
 
-#### Technical Innovation
-- **Dual-Stage Framework**: LLM ensemble annotation → ML classification pipeline
-- **Adversarial Attack Taxonomy**: 8-category MITRE ATLAS-aligned framework; multi-turn escalation (31.8%) identified as highest-risk vector
-- **Defense Effectiveness Analysis**: Dual-filter reduces harm rate 21.8% → 4.8% (78% reduction)
-- **Multi-Model Risk Analysis**: Bayesian hierarchical modeling quantifying vulnerability (95% HDI)
-- **47 Engineered Features**: Linguistic, semantic, and structural harm signals
-- **6 Harm Categories**: Dangerous info, hate, deception, privacy, illegal activity, self-harm
-- **Production MLOps**: Scalable deployment with SHAP explainability and audit trails
+#### The problem
+Educational content shapes how millions of students learn history, civics, and economics. Stakeholders — districts, parents, publishers — want to know whether textbook content leans systematically in one direction. The traditional answer (expert human reviewers) is slow, expensive, and statistically thin: small N, no inter-rater agreement reporting, no uncertainty quantification on the headline number. The DS question: can we replace or augment expert review with an LLM-ensemble pipeline that is fast, cheap, *and* statistically defensible?
 
-#### Tech Stack
-`GPT-4o` `Claude-3.5` `Llama-3.2` `XGBoost` `Stacking` `PyMC` `SHAP` `MLflow` `Constitutional AI`
+#### The approach
+**Stage 1 — Multi-rater LLM annotation.** Three frontier LLMs (GPT-4o, Claude-3.5-Sonnet, Llama-3.2-90B) independently rated 4,500 passages from 150 textbooks on a [-2, +2] bias scale, generating **67,500 ratings** across 2.5M tokens. Prompts were engineered with rubrics, anchoring examples, and chain-of-thought elicitation; an LLM-as-judge setup with deliberate disagreement (rather than single-model labeling) is what unlocks uncertainty quantification downstream.
 
-</td>
-<td width="50%" valign="top">
+**Stage 2 — Inter-rater reliability validation.** Krippendorff's α was computed across all three raters before any inference: **α = 0.84** (excellent, ≥ 0.80 threshold). Pairwise Pearson correlations: 0.87–0.92. This is the gate — if the raters don't agree, downstream effects are noise.
 
-### 🔬 LLM Ensemble Bias Detection
-**[📄 Technical Report](./LLM_Ensemble_Bias_Detection_Report.md)** | **[📊 Publication](./LLM_Bias_Detection_Publication.pdf)**
+**Stage 3 — Bayesian hierarchical inference.** A PyMC partial-pooling model with publisher-level and passage-level random effects. Partial pooling regularizes small-sample publishers and lets us produce posterior distributions (not just point estimates) for each publisher's bias parameter. MCMC converged cleanly (**R-hat < 1.01, ESS > 3,000**).
 
-**Multi-LLM framework for bias detection using Bayesian hierarchical modeling**
+**Stage 4 — Frequentist confirmation.** A non-parametric Friedman test as a sanity check on the rank-based effect across publishers: **χ² = 42.73, p < 0.001**.
 
-#### Impact Metrics
-- 📊 **67,500 bias ratings** processed across 4,500 textbook passages
-- 🎯 **Krippendorff's α = 0.84** (excellent inter-rater reliability)
-- 📈 **Statistically significant findings** (Friedman χ² = 42.73, p < 0.001)
-- ⚡ **Production-scale deployment** handling 2.5M tokens
+#### Results that matter to a stakeholder
 
-#### Technical Innovation
-- **Multi-LLM Ensemble**: GPT-4o, Claude-3.5-Sonnet, Llama-3.2 with 92% pairwise correlation
-- **Bayesian Inference**: PyMC hierarchical model with partial pooling, MCMC convergence (R-hat < 1.01)
-- **Statistical Rigor**: 95% HDI quantification, publisher-level credible bias detection (3/5 significant)
-- **Inter-Publisher Correlation**: Spearman correlation matrix revealing structural editorial relationships (ρ up to 0.74)
-- **Cross-Topic Heatmap**: Social Issues shows highest polarization (Δ = 1.36 points across publishers)
-- **Passage-Level CIs**: Bootstrap uncertainty quantification flags 12.3% high-uncertainty passages for expert review
-- **Production Engineering**: Circuit breakers, exponential backoff, MLflow tracking
+| Publisher | Posterior mean | 95% HDI | Verdict |
+|-----------|---------------:|---------|---------|
+| Publisher C | −0.48 | [−0.62, −0.34] | **Liberal lean — credible** |
+| Publisher A | −0.29 | [−0.41, −0.17] | **Liberal lean — credible** |
+| Publisher E | +0.02 | [−0.10, +0.14] | Neutral |
+| Publisher B | +0.08 | [−0.04, +0.20] | Neutral |
+| Publisher D | +0.38 | [+0.26, +0.50] | **Conservative lean — credible** |
 
-#### Tech Stack
-`GPT-4o` `Claude-3.5` `Llama-3.2` `PyMC` `ArviZ` `MLflow` `FastAPI` `LangChain`
+- **3 of 5 publishers** had 95% HDIs that excluded zero — i.e., the model is statistically confident in the direction of the effect, not just the magnitude.
+- **Cross-topic heatmap** localized the polarization: Social Issues showed the widest spread (Δ = 1.36 points between publishers), Mathematics showed essentially none — exactly the topical pattern a domain expert would predict.
+- **Passage-level bootstrap CIs** flagged **12.3%** of passages as high-uncertainty and surfaced them for targeted human review — a hybrid LLM-plus-human workflow rather than full automation.
 
-</td>
-</tr>
-<tr>
-<td width="50%" valign="top">
+#### What I'd ship to a stakeholder
+1. A **per-publisher report card** with the posterior mean, 95% HDI, and a "what would change my mind" decision rule.
+2. A **topic-level drill-down** so a curriculum lead can see *where* the bias concentrates.
+3. An **uncertainty triage queue** — the 12.3% high-uncertainty passages routed to human reviewers, with the LLM ensemble's full reasoning attached.
+4. A **monitoring contract**: re-run quarterly, alert if any publisher's HDI shifts by > 0.15 from the prior estimate.
 
-### 🏥 Breast Cancer ML Classification
-**[📄 Technical Report](./Breast_Cancer_Classification_Report.md)** | **[📊 Publication](./Breast_Cancer_Classification_Publication.pdf)**
+#### Data science skills demonstrated
+- **Experimentation & inference:** Bayesian hierarchical modeling, partial pooling, posterior + HDI interpretation, multiple-testing-aware non-parametric tests, inter-rater reliability as a quality gate.
+- **GenAI fluency:** LLM-as-judge ensembling, prompt engineering for rubric-based scoring, multi-model agreement as an uncertainty signal.
+- **Engineering hygiene:** Circuit breakers, exponential backoff, MLflow experiment tracking, deterministic reruns with cached responses, audit trail.
+- **Communication:** Findings framed as decisions (credible vs. neutral) rather than p-values; CI-aware recommendations for downstream reviewers.
 
-**Clinical-grade ensemble system exceeding human expert performance**
+#### Tech stack
+`Python 3.12` `GPT-4o` `Claude-3.5-Sonnet` `Llama-3.2` `PyMC` `ArviZ` `SciPy` `statsmodels` `Pandas` `MLflow` `FastAPI` `LangChain`
 
-#### Impact Metrics
-- 🏆 **99.12% accuracy** (best-in-class AdaBoost)
-- 💯 **100% precision** (zero false positives)
-- 🎯 **98.59% recall** (minimal missed cases)
-- 📈 **ROC-AUC: 0.9987** (near-perfect discrimination)
+---
 
-#### Technical Innovation
-- **8-Algorithm Benchmark**: Comprehensive evaluation (RF, XGBoost, LightGBM, AdaBoost, Stacking, Voting)
-- **Bayesian Hyperparameter Optimization**: Optuna TPE converges in 5× fewer trials than grid search (45 vs. 240 trials)
-- **Model Calibration**: Platt scaling reduces ECE by 71.5% (0.0312 → 0.0089) for clinically reliable confidence
-- **Threshold Optimization**: Context-adaptive thresholds (100% sensitivity at 0.31 for mass screening)
-- **Advanced Preprocessing**: VIF multicollinearity analysis, SMOTE balancing, RFE feature selection
-- **Explainable AI**: SHAP values for clinical transparency, fairness auditing (IEEE 2830-2025)
-- **Production Ready**: MLflow registry, FastAPI deployment (<100ms p95 latency)
+### 🏥 Project 2 — Calibrated Binary Classification with Decision-Policy Tuning (WDBC)
+**[📄 Technical Report](./Breast_Cancer_Classification_Report.md)** | **[📊 Publication PDF](./Breast_Cancer_Classification_Publication.pdf)**
 
-#### Tech Stack
-`scikit-learn` `XGBoost` `LightGBM` `AdaBoost` `Optuna` `SMOTE` `SHAP` `MLflow` `FastAPI`
+> *In a high-stakes prediction problem with asymmetric error costs, the headline accuracy is the easy part. The real DS work is: which model, calibrated to what, with which threshold, for which downstream decision?*
 
-</td>
-<td width="50%" valign="top">
+#### The problem
+The Wisconsin Diagnostic Breast Cancer (WDBC) dataset is a tabular binary classification problem with imbalanced classes and catastrophically asymmetric error costs — a false negative is a missed cancer, a false positive is an unnecessary biopsy. The clinical literature reports human inter-observer agreement of only **85–95%** on the same task. The DS question isn't "can we hit a high accuracy?" — it's "how do we choose, calibrate, and operate a model so that the *decision* it informs is defensible?"
 
-### 📊 Research Impact Summary
+#### The approach
+**Step 1 — Preprocessing as a first-class step.**
+- **VIF analysis** to identify and prune collinear features (radius, perimeter, area triplet collapsed to a single feature).
+- **SMOTE** on the training fold only (never on holdout) to address the 63/37 class imbalance.
+- **Recursive Feature Elimination (RFE)** with cross-validated scoring to pick the operating subset.
 
-**Cross-Project Synthesis:**
-- **3 production ML systems** deployed across AI safety, bias detection, and healthcare
-- **80,000+ annotations** processed via LLM ensembles with validated reliability
-- **340× cost efficiency** gain in AI safety evaluation vs human baseline
-- **Consistent statistical rigor**: Krippendorff's α ≥ 0.81, MCMC R-hat < 1.01, p < 0.001
-- **Reproducible pipelines**: MLflow tracking, versioned artifacts, IEEE 2830-2025 compliance
+**Step 2 — Benchmark, don't single-model.** Eight ensemble algorithms compared under identical cross-validation: Random Forest, Gradient Boosting, AdaBoost, Bagging, XGBoost, LightGBM, Voting, Stacking. **AdaBoost won** — but the report shows the full leaderboard with overlap intervals, because a 0.2pp accuracy difference inside CV variance is not a real difference.
 
-**Domain Expertise:**
-- AI Safety & Red-Teaming
-- Educational Content Analysis  
-- Clinical Decision Support
-- Responsible AI Governance
-- Production MLOps at Scale
+**Step 3 — Bayesian hyperparameter optimization.** Optuna's TPE sampler converged in **45 trials** vs. ~240 for grid search — 5× fewer fits for the same operating point. This is the practical, reproducible version of "Bayesian optimization" that DS teams should default to.
 
-</td>
-</tr>
-</table>
+**Step 4 — Calibration, not just accuracy.** Raw classifier scores are not probabilities. **Platt scaling reduced Expected Calibration Error (ECE) from 0.0312 → 0.0089 — a 71.5% reduction.** This is the difference between a model whose "0.9 probability" actually means 90% and one whose scores are just rank-ordered.
+
+**Step 5 — Decision-policy threshold tuning.** Rather than ship a single 0.5 cutoff, the report derives two operating points:
+- **Mass screening:** threshold = 0.31 → **100% sensitivity** (zero missed cancers), specificity drops modestly.
+- **Confirmation / second-read:** threshold = 0.62 → **100% precision** (zero false positives), recall stays at 98.59%.
+
+The trade-off is explicit and tied to the cost ratio the stakeholder picks.
+
+**Step 6 — Explainability.** SHAP values for global feature importance and per-prediction attributions. Concave-points-worst, perimeter-worst, and radius-worst dominated — consistent with cytopathology priors, which is the kind of sanity check a domain expert will ask for.
+
+#### Headline results (held-out test, AdaBoost)
+
+| Metric | Value | Why it matters |
+|--------|------:|----------------|
+| Accuracy | **99.12%** | Above the 85–95% human inter-observer band |
+| Precision (PPV) | **100.00%** | Zero false positives at the chosen threshold |
+| Recall (Sensitivity) | **98.59%** | One missed malignancy in 71 |
+| Specificity | **100.00%** | Zero unnecessary biopsies at this threshold |
+| F1 | **99.29%** | — |
+| ROC-AUC | **0.9987** | Near-perfect discrimination |
+| Cohen's κ | **0.9823** | Near-perfect agreement |
+| Matthews CC | **0.9825** | Imbalance-robust scalar |
+| 10-fold CV | **98.46% ± 1.12%** | Generalization is stable, not test-set luck |
+| Calibration (ECE) | **0.0089** | Scores are actually probabilities |
+
+#### What I'd ship to a stakeholder
+1. **Two operating points** — screening vs. confirmation — with the cost ratio assumption written down so the choice is auditable.
+2. A **calibrated probability output** (not just a label) so downstream workflows can route uncertain cases.
+3. **Per-prediction SHAP attributions** so a reviewer sees *why* the model flagged a case.
+4. A **drift monitor** on input feature distributions and on calibration ECE (not just accuracy), because calibration drifts faster than accuracy does.
+5. A **model card** with the cohort, the metrics by subgroup, and the known failure modes — required for IEEE 2830-2025 / EU AI Act compliance in regulated domains.
+
+#### Data science skills demonstrated
+- **Modeling:** End-to-end tabular ML, ensemble benchmarking with CV-aware comparison, hyperparameter optimization (TPE), feature engineering with multicollinearity diagnostics.
+- **Statistics:** Class-imbalance handling that respects the holdout, calibration discipline (ECE, reliability diagrams, Platt vs. isotonic), Cohen's κ / MCC for imbalance robustness.
+- **Decision science:** Threshold tuning tied to asymmetric cost ratios, two-policy deployment, explicit decision rules instead of a black-box label.
+- **Production:** MLflow registry, FastAPI serving (<100ms p95), drift monitoring on calibration not just accuracy, model card with subgroup audit.
+- **Responsible AI:** SHAP attributions, fairness auditing, IEEE 2830-2025 alignment.
+
+#### Tech stack
+`Python 3.12` `scikit-learn` `XGBoost` `LightGBM` `AdaBoost` `Optuna` `SMOTE (imbalanced-learn)` `SHAP` `MLflow` `FastAPI` `Docker`
+
+---
+
+### 📊 Cross-Project Synthesis
+
+| | LLM Bias Detection | Calibrated Binary Classifier |
+|---|---|---|
+| **DS sub-discipline** | GenAI evaluation + Bayesian inference | Predictive modeling + decision policy |
+| **Headline rigor signal** | Krippendorff's α = 0.84, R-hat < 1.01 | ECE = 0.0089, 10-fold CV stable |
+| **Headline impact signal** | 3/5 publishers credibly biased (95% HDI) | 100% sensitivity at screening threshold |
+| **Scale** | 67,500 ratings, 2.5M tokens, 4,500 passages | 569 samples, 30 features, 8 algos benchmarked |
+| **What a reviewer can audit** | Posterior plots, HDI, prompt rubrics | Calibration plot, SHAP, threshold rationale |
+| **Production artifact** | Quarterly publisher report card | Two-policy binary classifier with drift monitor |
+
+Both projects share the same data-science backbone: **frame the decision first, choose statistics that match the decision, ship calibrated outputs and an audit trail, not just a metric**.
 
 ---
 
@@ -226,42 +248,35 @@ Version Control:  Git • GitHub Actions • GitLab CI/CD
 
 <table>
 <tr>
-<td width="33%" valign="top">
+<td width="50%" valign="top">
 
-### AI Safety Red-Team
-| Metric | Value | Benchmark |
-|--------|-------|-----------|
-| **Accuracy** | 96.8% | High reliability |
-| **Precision** | 97.2% | Low false alarms |
-| **Recall** | 96.1% | Comprehensive detection |
-| **ROC-AUC** | 0.9923 | Near-perfect |
-| **LLM Reliability** | α = 0.81 | Excellent (≥0.80) |
-| **Cost Reduction** | 340× | $0.018/sample |
-| **Throughput** | 850/hr | Production scale |
-
-</td>
-<td width="33%" valign="top">
-
-### LLM Bias Detection
+### LLM Ensemble Bias Detection
 | Metric | Value | Benchmark |
 |--------|-------|-----------|
 | **Inter-Rater Reliability** | α = 0.84 | Excellent (≥0.80) |
-| **Model Convergence** | R-hat < 1.01 | Perfect |
+| **Pairwise Correlation (GPT-4o ↔ Claude)** | r = 0.92 | Near-perfect |
+| **Model Convergence (R-hat)** | < 1.01 | Perfect |
+| **Effective Sample Size** | > 3,000 | Adequate posterior |
 | **Statistical Power** | χ² = 42.73 | p < 0.001 |
-| **Scale Deployment** | 67.5K ratings | Production |
-| **Credible Findings** | 3/5 publishers | 60% detection |
+| **Credible Findings** | 3 of 5 publishers | 95% HDI excludes 0 |
+| **Scale** | 67.5K ratings / 2.5M tokens | Production |
+| **Effect Size Range** | −0.48 to +0.38 | On [−2, +2] scale |
 
 </td>
-<td width="33%" valign="top">
+<td width="50%" valign="top">
 
-### Breast Cancer ML
+### Calibrated Binary Classifier (WDBC)
 | Metric | Value | Benchmark |
 |--------|-------|-----------|
-| **Accuracy** | 99.12% | Exceeds human (90-95%) |
-| **Precision** | 100.00% | Zero false positives |
-| **Recall** | 98.59% | Minimal misses |
-| **ROC-AUC** | 0.9987 | Near-perfect |
-| **CV Stability** | 98.46% ± 1.12% | Robust |
+| **Accuracy** | 99.12% | Above 85–95% human band |
+| **Precision (PPV)** | 100.00% | Zero false positives |
+| **Recall (Sensitivity)** | 98.59% | 1 miss in 71 |
+| **Specificity** | 100.00% | Zero unnecessary biopsies |
+| **ROC-AUC** | 0.9987 | Near-perfect discrimination |
+| **Cohen's κ / Matthews CC** | 0.9823 / 0.9825 | Imbalance-robust |
+| **10-fold CV** | 98.46% ± 1.12% | Stable generalization |
+| **Calibration (ECE)** | 0.0089 | After Platt scaling (71.5% ↓) |
+| **Optuna trials to converge** | 45 (vs 240 grid) | 5× fewer fits |
 
 </td>
 </tr>
@@ -343,8 +358,8 @@ Rochester Institute of Technology | Expected 2026
 ✅ **GenAI Fluency**: Production LLM-ensemble pipelines (GPT-4o, Claude, Llama) with measurable cost-to-quality tradeoffs  
 ✅ **Modeling Range**: From XGBoost/LightGBM classifiers (99.12% acc) to Bayesian hierarchical models (R-hat < 1.01)  
 ✅ **Engineering Hygiene**: SQL, Python (Pandas/Polars), MLflow, FastAPI, Docker, Git — ships and maintains pipelines, not just notebooks  
-✅ **Communication**: 3 publication-grade reports with model cards, calibration plots, and SHAP-based explanations for non-technical readers  
-✅ **Domain Versatility**: Healthcare, education, and AI-safety case studies — comfortable in regulated, high-stakes settings
+✅ **Communication**: 2 publication-grade reports with model cards, calibration plots, posterior visualizations, and SHAP attributions written for non-technical readers  
+✅ **Domain Versatility**: Healthcare (high-stakes decision modeling) and education (GenAI evaluation at scale) — comfortable in regulated environments
 
 ---
 
@@ -352,9 +367,8 @@ Rochester Institute of Technology | Expected 2026
 
 | Title | Type | Date | Links |
 |-------|------|------|-------|
-| **AI Safety Red-Team Evaluation** | Technical Report v2.0.0 | Apr 2026 | [Report](./AI%20Safety%20Red-Team%20Evaluation_%20Technical%20Analysis%20Report.md) • [PDF](./AI_Safety_RedTeam_Evaluation_Publication.pdf) |
 | **LLM Ensemble Textbook Bias Detection** | Technical Report v4.0.0 | Apr 2026 | [Report](./LLM_Ensemble_Bias_Detection_Report.md) • [PDF](./LLM_Bias_Detection_Publication.pdf) |
-| **Breast Cancer Classification** | Technical Report v4.0.0 | Apr 2026 | [Report](./Breast_Cancer_Classification_Report.md) • [PDF](./Breast_Cancer_Classification_Publication.pdf) |
+| **Calibrated Binary Classification (WDBC)** | Technical Report v4.0.0 | Apr 2026 | [Report](./Breast_Cancer_Classification_Report.md) • [PDF](./Breast_Cancer_Classification_Publication.pdf) |
 
 ---
 
@@ -383,17 +397,15 @@ Rochester Institute of Technology | Expected 2026
 ## 🛠️ Repository Structure
 
 ```
-LLM-Portfolio/
+Data-Science-Portfolio/
 ├── 📄 README.md                                           # This portfolio
-├── 🌐 index.html                                          # Interactive portfolio site
-├── 🎨 styles.css                                          # Portfolio styling
-├── 🛡️ AI Safety Red-Team Evaluation_ Technical...md       # AI safety report
-├── 📑 AI_Safety_RedTeam_Evaluation_Publication.pdf             # Publication PDF
-├── 📊 Breast_Cancer_Classification_Report.md              # ML technical report
-├── 📑 Breast_Cancer_Classification_Publication.pdf        # Publication PDF
-├── 🔬 LLM_Ensemble_Bias_Detection_Report.md               # LLM research report
-├── 📑 LLM_Bias_Detection_Publication.pdf                  # Publication PDF
-└── 📁 reports/                                            # Additional documentation
+├── 📄 Resume_Derek_Lankeaux.md                            # Resume
+├── 🔬 LLM_Ensemble_Bias_Detection_Report.md               # Project 1: GenAI eval + Bayesian inference
+├── 📑 LLM_Bias_Detection_Publication.pdf                  # Project 1 publication PDF
+├── 🏥 Breast_Cancer_Classification_Report.md              # Project 2: calibrated binary classifier
+├── 📑 Breast_Cancer_Classification_Publication.pdf        # Project 2 publication PDF
+├── 🐍 generate_publication_pdfs.py                        # PDF build script
+└── 📁 latex/                                              # LaTeX sources
 ```
 
 ---
@@ -406,9 +418,7 @@ LLM-Portfolio/
 
 **Machine Learning:** Deep Learning • Neural Networks • Ensemble Methods • Random Forest • XGBoost • LightGBM • AdaBoost • Gradient Boosting • Stacking • Bagging • Feature Engineering • Model Calibration • Threshold Tuning
 
-**Large Language Models:** GPT-4 • GPT-4o • Claude-3.5-Sonnet • Llama-3.2 • BERT • Transformers • Prompt Engineering • Few-Shot Learning • Zero-Shot Learning • In-Context Learning • Constitutional AI
-
-**AI Safety & Red-Teaming:** Harm Detection • Adversarial Testing • Safety Evaluation • Red Team • Jailbreak Detection • Model Alignment • RLHF • Constitutional AI • Safety Benchmarking • Vulnerability Assessment
+**Large Language Models:** GPT-4 • GPT-4o • Claude-3.5-Sonnet • Llama-3.2 • BERT • Transformers • Prompt Engineering • Few-Shot Learning • Zero-Shot Learning • In-Context Learning • LLM-as-Judge • RAG Evaluation
 
 **Bayesian Statistics:** Hierarchical Modeling • MCMC • PyMC • Stan • Posterior Inference • Prior Specification • Credible Intervals • Bayesian Inference • Probabilistic Programming • HDI
 
@@ -421,8 +431,6 @@ LLM-Portfolio/
 **Programming:** Python • R • SQL • PyTorch • TensorFlow • scikit-learn • Pandas • NumPy • Dask • Apache Spark
 
 **Research Engineering:** Technical Writing • Statistical Validation • Reproducible Research • Peer Review • Literature Review • Experimental Design • Causal Inference • Cost-Benefit Analysis
-
-**AI Safety Domains:** Dangerous Information • Hate Speech • Deception Detection • Privacy Violation • Illegal Activity • Self-Harm Prevention • Content Moderation • Trust & Safety
 
 **Standards & Compliance:** IEEE 2830-2025 • ISO/IEC 23894:2025 • EU AI Act • GDPR • Model Cards • Transparency • Accountability • AI Governance
 

@@ -8,7 +8,7 @@
 
 ## Summary
 
-Data Scientist with an Applied Statistics MS focused on experimentation, Bayesian inference, and applied machine learning. Ship end-to-end projects spanning GenAI evaluation, predictive modeling, and risk analytics — delivering 96.8-99.12% model performance with rigorous statistical validation (Krippendorff's alpha >= 0.81, MCMC R-hat < 1.01, p < 0.001). Comfortable owning the full data science workflow: framing the question, designing the experiment, writing the SQL, building the model, quantifying uncertainty, and communicating impact to non-technical stakeholders. Published 3 technical reports aligned with IEEE 2830-2025, ISO/IEC 23894:2025, and the EU AI Act.
+Data Scientist with an Applied Statistics MS focused on experimentation, Bayesian inference, and applied machine learning. Two portfolio projects: (1) an LLM-as-judge evaluation pipeline with Bayesian hierarchical inference (67,500 ratings, Krippendorff's alpha = 0.84, R-hat < 1.01, p < 0.001) and (2) a calibrated binary classifier with decision-policy tuning (99.12% accuracy, ECE = 0.0089, two operating points tied to asymmetric cost ratios). Comfortable owning the full data science workflow: framing the question, designing the experiment, writing the SQL, building the model, quantifying uncertainty, and communicating impact to non-technical stakeholders. Both projects shipped with model cards, posterior plots, and SHAP attributions, aligned with IEEE 2830-2025, ISO/IEC 23894:2025, and the EU AI Act.
 
 ---
 
@@ -42,58 +42,45 @@ Rochester Institute of Technology | Expected 2026
 
 ---
 
-## Research Projects
+## Data Science Projects
 
-### AI Safety Red-Team Evaluation Framework
-*Independent Research Project | January 2026*
+### LLM Ensemble Textbook Bias Detection — GenAI Evaluation + Bayesian Inference
+*Independent Research Project | 2026*
 
-- Engineered dual-stage LLM ensemble (GPT-4o, Claude-3.5, Llama-3.2) achieving 96.8% accuracy in automated harm detection across 12,500 AI response pairs and 6 harm categories
-- Achieved 340x cost reduction ($0.018/sample vs $6.12 human annotation) while maintaining excellent inter-rater reliability (Krippendorff's alpha = 0.81)
-- Developed production ML pipeline processing 850 samples/hour with Stacking Classifier (97.2% precision, 96.1% recall, ROC-AUC 0.9923)
-- Designed 47 engineered features capturing linguistic, semantic, and structural harm signals for robust classification
-- Implemented Bayesian hierarchical modeling for multi-model risk analysis with 95% HDI uncertainty quantification
-- Built comprehensive MLOps infrastructure with SHAP explainability, audit trails, and IEEE 2830-2025 compliance
+- Designed an LLM-as-judge evaluation pipeline using three frontier models (GPT-4o, Claude-3.5-Sonnet, Llama-3.2-90B) to rate 4,500 textbook passages, producing 67,500 ratings across 2.5M tokens
+- Validated multi-rater agreement with Krippendorff's alpha = 0.84 (excellent, >=0.80) and pairwise Pearson correlations of 0.87-0.92 before running any downstream inference
+- Fit a Bayesian hierarchical model in PyMC with partial pooling on publishers and passages; MCMC converged cleanly (R-hat < 1.01, ESS > 3,000) and produced 95% HDIs for each publisher
+- Confirmed effects with a non-parametric Friedman test (chi-squared = 42.73, p < 0.001); three of five publishers showed credible bias (95% HDI excluding zero), with effects from -0.48 to +0.38 on a [-2, +2] scale
+- Built an uncertainty-aware triage workflow: bootstrap CIs at the passage level flagged 12.3% of passages as high-uncertainty for human review, turning the pipeline into an LLM-plus-human hybrid
+- Engineered the production layer with circuit breakers, exponential backoff, deterministic cached re-runs, MLflow experiment tracking, and a stakeholder-facing per-publisher report card
 
-**Tech Stack:** GPT-4o, Claude-3.5, Llama-3.2, XGBoost, Stacking Classifier, PyMC, SHAP, MLflow, Constitutional AI
-
----
-
-### LLM Ensemble Textbook Bias Detection System
-*Independent Research Project | January 2026*
-
-- Built multi-LLM evaluation framework processing 67,500 bias ratings across 4,500 textbook passages with 2.5M tokens at production scale
-- Achieved excellent inter-rater reliability (Krippendorff's alpha = 0.84) with 92% pairwise correlation across frontier LLMs
-- Implemented Bayesian hierarchical model with partial pooling and MCMC convergence (R-hat < 1.01) for publisher-level credible bias detection
-- Discovered statistically significant bias findings (Friedman chi-squared = 42.73, p < 0.001) in 3/5 publishers analyzed
-- Engineered production-grade API integration with circuit breakers, exponential backoff, and MLflow experiment tracking
-- Delivered research-quality technical report with 95% HDI quantification and reproducible statistical methodology
-
-**Tech Stack:** GPT-4o, Claude-3.5, Llama-3.2, PyMC, ArviZ, MLflow, FastAPI, LangChain
+**Tech Stack:** Python, GPT-4o, Claude-3.5-Sonnet, Llama-3.2, PyMC, ArviZ, SciPy, statsmodels, Pandas, MLflow, FastAPI, LangChain
 
 ---
 
-### Clinical-Grade Breast Cancer ML Classification System
-*Independent Research Project | January 2026*
+### Calibrated Binary Classifier with Decision-Policy Tuning (WDBC)
+*Independent Research Project | 2026*
 
-- Developed ensemble ML system achieving 99.12% accuracy, exceeding human expert performance (90-95%) on breast cancer classification
-- Attained 100% precision (zero false positives) and 98.59% recall with near-perfect discrimination (ROC-AUC 0.9987)
-- Conducted comprehensive 8-algorithm benchmark evaluation (Random Forest, XGBoost, LightGBM, AdaBoost, Stacking, Voting)
-- Applied advanced preprocessing pipeline with VIF multicollinearity analysis, SMOTE class balancing, and RFE feature selection
-- Implemented explainable AI with SHAP values for clinical transparency and fairness auditing per IEEE 2830-2025 standards
-- Deployed production-ready model with MLflow registry and FastAPI serving (<100ms p95 latency)
+- Framed the problem as a high-stakes binary classification task with asymmetric error costs (missed cancer vs. unnecessary biopsy) rather than a single accuracy target
+- Benchmarked eight ensemble algorithms (Random Forest, Gradient Boosting, AdaBoost, Bagging, XGBoost, LightGBM, Voting, Stacking) under identical stratified k-fold CV; AdaBoost won at 99.12% accuracy with 10-fold CV = 98.46% +/- 1.12%
+- Tuned hyperparameters with Optuna's TPE sampler, converging in 45 trials vs. ~240 for grid search (5x fewer fits for the same operating point)
+- Applied Platt scaling to convert raw scores into calibrated probabilities, reducing Expected Calibration Error from 0.0312 to 0.0089 (71.5% reduction) so downstream decisions can trust the probability outputs
+- Designed two operating points tied to cost ratios: threshold = 0.31 yields 100% sensitivity for mass screening; threshold = 0.62 yields 100% precision for confirmation, with the rationale documented for audit
+- Built preprocessing pipeline with VIF multicollinearity analysis, SMOTE applied on training folds only, and RFE feature selection; shipped SHAP attributions and a model card aligned with IEEE 2830-2025 / EU AI Act
+- Deployed via FastAPI (<100ms p95) with MLflow registry and a drift monitor on calibration ECE in addition to accuracy
 
-**Tech Stack:** scikit-learn, XGBoost, LightGBM, AdaBoost, SMOTE, SHAP, MLflow, FastAPI
+**Tech Stack:** Python, scikit-learn, XGBoost, LightGBM, AdaBoost, Optuna, imbalanced-learn (SMOTE), SHAP, MLflow, FastAPI, Docker
 
 ---
 
 ## Key Achievements
 
-- Built LLM Red-Team Framework with 3-model ensemble achieving 340x cost reduction ($0.018/sample) and audit-grade reliability (alpha = 0.81)
-- Developed Multi-Model Evaluation Pipeline with Krippendorff's alpha = 0.81-0.84 across frontier LLMs with Bayesian uncertainty quantification
-- Deployed Clinical-Grade ML System achieving 99.12% accuracy exceeding human expert performance (90-95%)
-- Scaled Production NLP Pipelines processing 80K+ API calls with circuit breakers, rate limiting, and MLflow experiment tracking
-- Engineered Low-Latency Inference with FastAPI deployments achieving <100ms p95 latency with real-time monitoring
-- Published 3 Research-Quality Technical Reports with p < 0.001 significance, 95% HDI intervals, and SHAP explainability
+- Built a GenAI evaluation pipeline that combines LLM-as-judge ensembling with Bayesian hierarchical inference, producing publisher-level findings with 95% HDIs rather than point estimates
+- Designed a calibrated binary classifier with two decision policies (screening / confirmation) and a calibration-aware drift monitor — accuracy alone is insufficient in high-stakes settings
+- Validated rigor end-to-end: Krippendorff's alpha = 0.84, R-hat < 1.01, p < 0.001, ECE = 0.0089 after Platt scaling, Cohen's kappa = 0.9823
+- Engineered production data pipelines processing 67,500 LLM ratings / 2.5M tokens with circuit breakers, exponential backoff, deterministic re-runs, and MLflow tracking
+- Communicated findings with model cards, posterior plots, calibration reliability diagrams, and per-prediction SHAP attributions — written for non-technical stakeholders
+- Published 2 technical reports aligned with IEEE 2830-2025, ISO/IEC 23894:2025, and the EU AI Act
 
 ---
 
@@ -101,9 +88,8 @@ Rochester Institute of Technology | Expected 2026
 
 | Title | Type | Date |
 |-------|------|------|
-| AI Safety Red-Team Evaluation | Technical Report v1.0.0 | January 2026 |
-| LLM Ensemble Textbook Bias Detection | Technical Report v3.0.0 | January 2026 |
-| Breast Cancer Classification | Technical Report v3.0.0 | January 2026 |
+| LLM Ensemble Textbook Bias Detection | Technical Report v4.0.0 | 2026 |
+| Calibrated Binary Classification (WDBC) | Technical Report v4.0.0 | 2026 |
 
 ---
 
