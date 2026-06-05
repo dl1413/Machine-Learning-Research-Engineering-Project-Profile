@@ -1,2 +1,7 @@
 date,company,role_title,role_family,location,source,lead_project,jd_link,resume_version,cover_letter_sent,referral,status,next_action,notes
 2026-05-12,EXAMPLE_Anthropic,Research Engineer - Evals,AI Safety,Remote,careers.anthropic.com,Project1_RedTeam,https://...,resume_v3_safety.pdf,Y,N,submitted,wait 10d,Tailored opener with 340x cost hook
+2026-06-05,Anthropic,Research Engineer - Evaluations,AI Safety,Remote/NYC,careers.anthropic.com,Project1_RedTeam,TBD,resume_v3_safety.pdf,Y,N,drafted,submit,Opener: 340x cost / 96.8% accuracy / Krippendorff alpha 0.81
+2026-06-05,Patronus AI,LLM Evaluation Engineer,LLM Eval,Remote/NYC,patronus.ai/careers,Project1_RedTeam,TBD,resume_v3_eval.pdf,Y,N,drafted,submit,Opener: 850 samples-hr / MLflow / 340x reduction
+2026-06-05,Hugging Face,Research Engineer - Evaluation,LLM Eval / T&S,Remote/NYC,huggingface.co/jobs,Project2_BiasDetection,TBD,resume_v3_eval.pdf,Y,N,drafted,submit,Opener: 67500 ratings / alpha 0.84 / p < 0.001
+2026-06-05,Two Sigma,Data Scientist - Inference & Bayesian,DS Bayesian,NYC,twosigma.com/careers,Project2_BiasDetection,TBD,resume_v3_ds_bayesian.pdf,Y,N,drafted,submit,Opener: Friedman chi-sq 42.73 / R-hat < 1.01 / 95% HDI
+2026-06-05,Memorial Sloan Kettering,ML Engineer - Computational Oncology,Clinical ML,NYC,mskcc.org/careers,Project3_BreastCancer,TBD,resume_v3_clinical.pdf,Y,N,drafted,submit,Opener: 99.12% / 100% precision / SHAP / IEEE 2830-2025
