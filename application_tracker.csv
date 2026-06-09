@@ -1,2 +1,7 @@
 date,company,role_title,role_family,location,source,lead_project,jd_link,resume_version,cover_letter_sent,referral,status,next_action,notes
 2026-05-12,EXAMPLE_Anthropic,Research Engineer - Evals,AI Safety,Remote,careers.anthropic.com,Project1_RedTeam,https://...,resume_v3_safety.pdf,Y,N,submitted,wait 10d,Tailored opener with 340x cost hook
+2026-06-09,Anthropic,Research Engineer - Frontier Red Team,AI Safety,Remote/NYC,careers.anthropic.com,Project1_RedTeam,TBD,resume_v3_safety.pdf,Y,N,drafted,submit today,Lead: 340x cost + alpha=0.81 + ATLAS taxonomy
+2026-06-09,OpenAI,MTS - Model Behavior & Evals,LLM Eval,NYC,openai.com/careers,Project1_RedTeam+Project2_Bias,TBD,resume_v3_eval.pdf,Y,N,drafted,submit today,LLM-as-judge stacking + PyMC hierarchical blind-spot map
+2026-06-09,Memorial Sloan Kettering,ML Engineer - Computational Oncology,Healthcare ML,NYC,careers.mskcc.org,Project3_BreastCancer,TBD,resume_v3_clinical.pdf,Y,N,drafted,submit today,99.12% acc + 100% precision + Platt calibration + SHAP
+2026-06-09,Two Sigma,Data Scientist - Modeling Research,DS Bayesian,NYC,twosigma.com/careers,Project2_Bias,TBD,resume_v3_bayes.pdf,Y,N,drafted,submit today,PyMC hierarchical R-hat<1.01 + Friedman p<0.001
+2026-06-09,Patronus AI,LLM Evaluation Engineer,LLM Eval,Remote,patronus.ai/careers,Project1_RedTeam+Project2_Bias,TBD,resume_v3_eval.pdf,Y,N,drafted,submit today,3-LLM harness + judge disagreement reconciliation
