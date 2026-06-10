@@ -1,2 +1,7 @@
 date,company,role_title,role_family,location,source,lead_project,jd_link,resume_version,cover_letter_sent,referral,status,next_action,notes
 2026-05-12,EXAMPLE_Anthropic,Research Engineer - Evals,AI Safety,Remote,careers.anthropic.com,Project1_RedTeam,https://...,resume_v3_safety.pdf,Y,N,submitted,wait 10d,Tailored opener with 340x cost hook
+2026-06-10,Anthropic,"Research Engineer, Model Evaluations",AI Safety,Remote/NYC,careers.anthropic.com,Project1_RedTeam,TO_FILL,resume_v3_safety.pdf,Y,N,queued,submit today,Lead 340x + 96.8% eval hook; see applications/2026-06-10/01_anthropic.md
+2026-06-10,Hugging Face,"ML Research Engineer, Evaluation",LLM Eval,Remote,huggingface.co/careers,Project1_RedTeam,TO_FILL,resume_v3_eval.pdf,Y,N,queued,submit today,Frame as `evaluate`/`lighteval` fit; emphasize open-source harness
+2026-06-10,Two Sigma,Quantitative Data Scientist,DS Bayesian,NYC,twosigma.com/careers,Project2_BiasBayes,TO_FILL,resume_v3_stats.pdf,Y,N,queued,submit today,Lead with R-hat<1.01 + Friedman p<0.001; Bayesian-first framing
+2026-06-10,Memorial Sloan Kettering,"ML Engineer, Computational Oncology",Healthcare ML,NYC,careers.mskcc.org,Project3_BreastCancer,TO_FILL,resume_v3_health.pdf,Y,N,queued,submit today,Lead 99.12% acc / 100% precision + SHAP + IEEE 2830 transparency
+2026-06-10,Patronus AI,LLM Evaluation Platform Engineer,LLM Eval Platform,Remote,patronus.ai/careers,Project1_RedTeam,TO_FILL,resume_v3_eval.pdf,Y,N,queued,submit today,Pitch harness as product surface; 850 samples/hr throughput hook
