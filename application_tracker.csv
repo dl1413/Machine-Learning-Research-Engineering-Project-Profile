@@ -1,2 +1,7 @@
 date,company,role_title,role_family,location,source,lead_project,jd_link,resume_version,cover_letter_sent,referral,status,next_action,notes
 2026-05-12,EXAMPLE_Anthropic,Research Engineer - Evals,AI Safety,Remote,careers.anthropic.com,Project1_RedTeam,https://...,resume_v3_safety.pdf,Y,N,submitted,wait 10d,Tailored opener with 340x cost hook
+2026-06-11,Anthropic,Research Engineer - Model Evaluations,AI Safety,Remote,careers.anthropic.com,Project1_RedTeam,TBD,resume_v3_safety.pdf,Y,N,queued,submit today,Lead 340x cost hook; echo Constitutional AI + eval harness
+2026-06-11,OpenAI,Red-Team Engineer - Preparedness,AI Safety,NYC,openai.com/careers,Project1_RedTeam,TBD,resume_v3_safety.pdf,Y,N,queued,submit today,Lead with MITRE ATLAS + multi-turn escalation 31.8%
+2026-06-11,Bloomberg AI,Data Scientist - Statistics & Inference,DS Bayesian/Causal,NYC,bloomberg.com/careers,Project2_LLMBias,TBD,resume_v3_stats.pdf,Y,N,queued,submit today,Lead Friedman chi-sq 42.73 + R-hat<1.01
+2026-06-11,Hugging Face,Research Engineer - Evaluations,LLM Eval,Remote,huggingface.co/jobs,Project2_LLMBias,TBD,resume_v3_research.pdf,Y,N,queued,submit today,Lead 92% pairwise correlation + 2.5M tokens
+2026-06-11,Memorial Sloan Kettering,ML Engineer - Computational Oncology,Healthcare ML,NYC,mskcc.org/careers,Project3_BreastCancer,TBD,resume_v3_clinical.pdf,Y,N,queued,submit today,Lead 99.12% acc + ECE 0.0089 + 100% screening sensitivity
