@@ -2,8 +2,8 @@
 
 **Owner:** Derek Lankeaux, MS (Applied Statistics)
 **Purpose:** Reusable, honestly-formatted proposal for winning data science
-engagements — full-time roles, contract work, and freelance-platform bids
-(Upwork / Toptal / direct outreach).
+roles — direct outreach to hiring managers, scoped-role applications, and
+"optional cover letter" / approach-document boxes.
 **Companion docs:** `Resume_Derek_Lankeaux.md`, `APPLICATION_SNIPPETS.md`,
 `JOB_APPLICATIONS_PLAYBOOK.md`
 
@@ -19,10 +19,10 @@ engagements — full-time roles, contract work, and freelance-platform bids
 ## How to use this document
 
 1. Pick the format that matches the channel:
-   - **Long-form proposal** → direct outreach, consulting pitch, or a posting
+   - **Long-form proposal** → direct outreach to a hiring manager, or a posting
      that asks for an approach/scope document.
-   - **Short-form proposal** → freelance-platform bid or "optional cover
-     letter" box (250–350 words).
+   - **Short-form proposal** → "optional cover letter" box or a short intro
+     message (250–350 words).
 2. Pick the **role-tailored variant** (Safety/Eval, Bayesian/Causal DS, or
    Applied ML/Healthcare) whose lead project best matches the JD. See the
    matrix in `JOB_APPLICATIONS_PLAYBOOK.md §1`.
@@ -31,7 +31,7 @@ engagements — full-time roles, contract work, and freelance-platform bids
 
 ---
 
-## Part A — Long-Form Proposal (direct outreach / consulting / scoped role)
+## Part A — Long-Form Proposal (direct outreach / scoped role)
 
 ### Subject / Title
 **Data Science Proposal: [SPECIFIC OUTCOME] for [COMPANY/TEAM]**
@@ -81,19 +81,7 @@ Three independent, published projects back the approach above:
 Full technical reports and code are in my GitHub (`dl1413`); happy to walk
 through any of them.
 
-### 5. Scope, deliverables & timeline *(contract/consulting only — delete for FTE)*
-- **In scope:** [bullet the deliverables]
-- **Out of scope (this phase):** [name what you're *not* doing — protects both sides]
-- **Deliverables:** [e.g., evaluation harness + report; trained model + model card + API]
-- **Timeline:** [Phase 1: X weeks → Phase 2: Y weeks]
-- **What I need from you:** [data access, a point of contact, success criteria]
-
-### 6. Engagement & rate *(contract/consulting only)*
-- **Model:** [hourly / fixed-scope per phase / retainer]
-- **Rate:** [$RATE — or "open, targeting market for the scope and timeline"]
-- **Assumptions behind the estimate:** [data is reasonably clean / I own modeling, not data eng / etc.]
-
-### 7. Next step (one clear ask)
+### 5. Next step (one clear ask)
 Could we schedule a short call this week? I'll come with [one concrete thing —
 a sketch of the eval plan / questions about your data]. Either way, thank you
 for reading.
@@ -129,9 +117,10 @@ Why me specifically:
 - **Communication:** three published technical reports written for both
   reviewers and non-technical stakeholders.
 
-I can start with a [small, fixed-scope first step — e.g., a 1-week evaluation
-plan / baseline model] so you can judge the work before committing further.
-Code and reports are on my GitHub (`dl1413`).
+If it's useful, I'm happy to walk through a [concrete first step — e.g., a
+sketch of the evaluation plan, or how I'd baseline this] on a short call, so
+you can judge how I think before committing to a full process. Code and reports
+are on my GitHub (`dl1413`).
 
 Happy to hop on a quick call. Thanks for your time.
 
@@ -184,9 +173,9 @@ production ML pipeline, MLOps, low-latency inference, explainability.
 - [ ] At least 3 phrases from the posting appear verbatim
 - [ ] Exactly one metric in the opener; the rest live in the proof table
 - [ ] Every number is traceable to a report in this repo (no rounding up, no new claims)
-- [ ] One clear, low-friction next step (a call, or a small fixed-scope first step)
+- [ ] One clear, low-friction next step (a call, or a concrete first step)
 - [ ] LinkedIn / GitHub / Portfolio links are live
-- [ ] For contract: scope, out-of-scope, deliverables, timeline, and rate are all stated
+- [ ] Work authorization + location/timeline answered if the posting asks (see resume footer)
 - [ ] Tone check: confident, specific, and honest — no superlatives you can't defend
 
 ---
@@ -198,8 +187,6 @@ production ML pipeline, MLOps, low-latency inference, explainability.
 - **All claim, no proof.** Pair every capability statement with a traceable
   result or a code link.
 - **No clear ask.** End with one concrete next step, not "let me know."
-- **Over-scoping a first engagement.** Offer a small, fixed-scope first step so
-  the client can de-risk before committing.
 - **Inflated numbers.** A single unverifiable stat poisons the whole proposal
   at the technical screen. Specific and true beats big and shaky.
 </content>
