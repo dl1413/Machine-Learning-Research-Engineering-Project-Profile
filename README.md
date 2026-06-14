@@ -398,6 +398,19 @@ LLM-Portfolio/
 
 ---
 
+### 📝 Job-Search Materials
+
+Supporting documents for applying to 2026 data science roles, all grounded in
+the three published reports above:
+
+- **[Résumé](./Resume_Derek_Lankeaux.md)** — one-page data scientist résumé
+- **[Technical Capabilities Dossier](./Technical_Capabilities_Dossier.pdf)** ([source](./Technical_Capabilities_Dossier.md)) — advanced, publication-formatted PDF synthesizing the architecture, statistical methodology, and production engineering across all three projects; built for technical reviewers and hiring panels
+- **[Data Science Proposal](./DATA_SCIENCE_PROPOSAL.md)** — reusable proposal template (long-form, short-form, and role-tailored variants) for direct outreach and applications
+- **[Application Snippets](./APPLICATION_SNIPPETS.md)** — paste-ready résumé bullets and cover-letter blurbs keyed to each project
+- **[Job Applications Playbook](./JOB_APPLICATIONS_PLAYBOOK.md)** — role-targeting matrix, target companies, and daily application routine
+
+---
+
 ### 🔍 Keywords for Search & ATS
 
 </div>
