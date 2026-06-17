@@ -39,7 +39,7 @@ PRO_HEADER = (
     "**Institution:** Rochester Institute of Technology  \n"
     "**Date:** April 2026  \n"
     "**Version:** {version}  \n"
-    "**Standards Compliance:** IEEE 2830-2025, ISO/IEC 23894:2025, EU AI Act (2025)\n\n"
+    "**AI Standards Compliance:** IEEE 2830-2025, ISO/IEC 23894:2025, EU AI Act (2025)\n\n"
     "> **Data Science Focus:** This report documents an end-to-end data "
     "science project — problem framing, statistical methodology, results with "
     "quantified uncertainty, and stakeholder-ready deliverables — relevant to "
@@ -294,12 +294,15 @@ def build_combined() -> str:
 # ─── Render to MD + PDF ──────────────────────────────────────────────────────
 
 def render(out_stem: str, md_text: str) -> None:
-    md_path  = OUT / f"{out_stem}.md"
-    pdf_path = OUT / f"{out_stem}.pdf"
+    """Write the source markdown as `<stem>_Report.md` and render the
+    publication-formatted PDF as `<stem>_Publication.pdf`, matching the
+    repository's established source/publication file convention."""
+    md_path  = OUT / f"{out_stem}_Report.md"
+    pdf_path = OUT / f"{out_stem}_Publication.pdf"
     md_path.write_text(md_text, encoding="utf-8")
     generate_pdf(str(md_path), str(pdf_path))
-    print(f"  MD : {md_path.relative_to(ROOT)}")
-    print(f"  PDF: {pdf_path.relative_to(ROOT)} ({pdf_path.stat().st_size // 1024} KB)")
+    print(f"  Source MD  : {md_path.relative_to(ROOT)}")
+    print(f"  Publication: {pdf_path.relative_to(ROOT)} ({pdf_path.stat().st_size // 1024} KB)")
 
 
 def main() -> int:

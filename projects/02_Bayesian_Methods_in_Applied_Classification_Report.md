@@ -6,7 +6,7 @@
 **Institution:** Rochester Institute of Technology  
 **Date:** April 2026  
 **Version:** 1.0.0  
-**Standards Compliance:** IEEE 2830-2025, ISO/IEC 23894:2025, EU AI Act (2025)
+**AI Standards Compliance:** IEEE 2830-2025, ISO/IEC 23894:2025, EU AI Act (2025)
 
 > **Data Science Focus:** This report documents an end-to-end data science project — problem framing, statistical methodology, results with quantified uncertainty, and stakeholder-ready deliverables — relevant to 2026 Data Scientist roles (experimentation, Bayesian inference, predictive modeling, and responsible-AI practice).
 
