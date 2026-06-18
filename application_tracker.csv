@@ -1,2 +1,7 @@
 date,company,role_title,role_family,location,source,lead_project,jd_link,resume_version,cover_letter_sent,referral,status,next_action,notes
 2026-05-12,EXAMPLE_Anthropic,Research Engineer - Evals,AI Safety,Remote,careers.anthropic.com,Project1_RedTeam,https://...,resume_v3_safety.pdf,Y,N,submitted,wait 10d,Tailored opener with 340x cost hook
+2026-05-20,Anthropic,Research Engineer - Evaluations,AI Safety,Remote/NYC,careers.anthropic.com,Project1_RedTeam,TBD-paste-req-url,resume_v3_safety.pdf,Y,N,drafted,paste req url + submit,Batch 2026-05-20 #1; 340x cost + alpha 0.81 hook
+2026-05-20,Patronus AI,LLM Evaluation Engineer,LLM Eval,Remote/NYC,patronus.ai/careers,Project1_RedTeam,TBD-paste-req-url,resume_v3_safety.pdf,Y,N,drafted,paste req url + submit,Batch 2026-05-20 #2; eval-infra framing 850 samples/hr
+2026-05-20,Two Sigma,Data Scientist - Inference,Data Scientist,NYC,careers.twosigma.com,Project2_Bias,TBD-paste-req-url,resume_v3_bayesian.pdf,Y,N,drafted,paste req url + submit,Batch 2026-05-20 #3; Bayesian R-hat<1.01 Friedman p<0.001
+2026-05-20,Memorial Sloan Kettering,Clinical ML Engineer - Computational Oncology,Healthcare ML,NYC,careers.mskcc.org,Project3_BreastCancer,TBD-paste-req-url,resume_v3_healthcare.pdf,Y,N,drafted,paste req url + submit,Batch 2026-05-20 #4; 99.12% acc 100% precision SHAP
+2026-05-20,Hugging Face,Research/Evaluation Engineer,ML Research,Remote,huggingface.co/jobs,Project1_RedTeam,TBD-paste-req-url,resume_v3_research.pdf,Y,N,drafted,paste req url + submit,Batch 2026-05-20 #5; reproducible eval open-source framing
