@@ -1,2 +1,7 @@
 date,company,role_title,role_family,location,source,lead_project,jd_link,resume_version,cover_letter_sent,referral,status,next_action,notes
 2026-05-12,EXAMPLE_Anthropic,Research Engineer - Evals,AI Safety,Remote,careers.anthropic.com,Project1_RedTeam,https://...,resume_v3_safety.pdf,Y,N,submitted,wait 10d,Tailored opener with 340x cost hook
+2026-05-17,Anthropic,Research Engineer - Evaluations,AI Safety / Eval,Remote-NYC,careers.anthropic.com,Project1_RedTeam,TBD,resume_v_safety.pdf,Y,N,drafted,verify JD and submit Mon AM,Lead: 340x cost / 96.8% acc / Krippendorff 0.81
+2026-05-17,Hugging Face,ML Research Engineer - Evaluation,LLM Research / Eval,Remote,huggingface.co/jobs,Project1_RedTeam,TBD,resume_v_safety.pdf,Y,N,drafted,verify JD and submit Mon AM,Open-eval angle; 850 samples/hr harness
+2026-05-17,Bloomberg,ML Engineer - AI Group,Applied ML / MLE,NYC,bloomberg.com/careers,Project3_BreastCancer,TBD,resume_v_mle.pdf,Y,N,drafted,verify JD and submit Mon AM,Lead: 99.12% acc / FastAPI <100ms p95
+2026-05-17,Memorial Sloan Kettering,ML Engineer - Computational Oncology,Healthcare ML,NYC,careers.mskcc.org,Project3_BreastCancer,TBD,resume_v_healthcare.pdf,Y,N,drafted,verify JD and submit Mon AM,IEEE 2830-2025 + SHAP angle
+2026-05-17,Two Sigma,Data Scientist - Modeling,DS / Bayesian,NYC,twosigma.com/careers,Project2_BiasDetection,TBD,resume_v_ds_bayesian.pdf,Y,N,drafted,verify JD and submit Mon AM,Lead: PyMC partial pooling / Friedman p<0.001
