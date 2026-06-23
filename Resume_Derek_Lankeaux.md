@@ -1,6 +1,6 @@
 # Derek Lankeaux, MS
 
-**Data Scientist | Applied Statistician | LLM Evaluation & GenAI Specialist**
+**Data Scientist | NL2SQL & LLM Evaluation | Applied Statistics & Bayesian Inference**
 
 [LinkedIn](https://linkedin.com/in/derek-lankeaux) | [GitHub](https://github.com/dl1413) | [Portfolio](https://dl1413.github.io/LLM-Portfolio/)
 
@@ -8,7 +8,7 @@
 
 ## Summary
 
-Data Scientist with an Applied Statistics MS focused on experimentation, Bayesian inference, and applied machine learning. Ship end-to-end projects spanning GenAI evaluation, predictive modeling, and risk analytics — delivering 96.8-99.12% model performance with rigorous statistical validation (Krippendorff's alpha >= 0.81, MCMC R-hat < 1.01, p < 0.001). Comfortable owning the full data science workflow: framing the question, designing the experiment, writing the SQL, building the model, quantifying uncertainty, and communicating impact to non-technical stakeholders. Published 3 technical reports aligned with IEEE 2830-2025, ISO/IEC 23894:2025, and the EU AI Act.
+Applied-statistics MS shipping end-to-end data science: framing the estimand, designing the experiment, writing the SQL, fitting the model, quantifying uncertainty, and writing the readout for non-technical stakeholders. Recent work spans a natural-language-to-SQL query interface at BRData, an 8-algorithm ensemble benchmark on the WDBC dataset at RIT (99.12% accuracy, 100% precision, ROC-AUC 0.9987), and a multi-LLM hierarchical Bayesian evaluation study (Krippendorff's alpha = 0.84, R-hat < 1.01, Friedman chi-sq p < 0.001). Reproducible, MLflow-tracked, and aligned with IEEE 2830-2025 / ISO/IEC 23894:2025 / EU AI Act.
 
 ---
 
@@ -16,109 +16,87 @@ Data Scientist with an Applied Statistics MS focused on experimentation, Bayesia
 
 **Languages:** Python 3.12+, R, SQL, Bash
 
-**Experimentation & Statistics:** A/B testing, power analysis, hypothesis testing, multiple-testing correction (Bonferroni, FDR), effect sizes (Cohen's d, eta-squared), bootstrap CIs, causal & quasi-experimental design, inter-rater reliability (Krippendorff's alpha, Cohen's kappa)
+**Experimentation & Statistics:** A/B testing, power analysis, hypothesis testing, multiple-testing correction (Bonferroni, FDR), effect sizes (Cohen's d, eta-squared), bootstrap CIs, quasi-experimental design, inter-rater reliability (Krippendorff's alpha, Cohen's kappa, Friedman)
 
-**Bayesian Statistics:** PyMC 5.15+, ArviZ 0.18+, NumPyro, Stan; hierarchical models, MCMC diagnostics (R-hat, ESS), 95% HDI, model calibration
+**Bayesian Inference:** PyMC 5.15+, ArviZ 0.18+, NumPyro; hierarchical models with partial pooling, MCMC diagnostics (R-hat, ESS, MCSE), 95% HDI, posterior predictive checks, sensitivity analysis
 
-**Modeling & ML:** scikit-learn 1.5+, XGBoost 2.1+, LightGBM 4.5+, CatBoost, AdaBoost, PyTorch 2.0+, TensorFlow 2.15+; feature engineering, calibration (Platt, isotonic), threshold tuning
+**ML & Modeling:** scikit-learn 1.5+, XGBoost 2.1+, LightGBM 4.5+, AdaBoost, Stacking/Voting; VIF, SMOTE (train-only), RFE, threshold tuning, cost-sensitive learning, calibration (Platt, isotonic, Brier)
 
-**GenAI / LLM:** OpenAI (GPT-4o), Anthropic (Claude-3.5), Meta (Llama-3.2), HuggingFace, LangChain; LLM-as-judge, multi-model ensembles, prompt iteration, offline evaluation
+**GenAI / LLM Evaluation:** GPT-4o, Claude-3.5-Sonnet, Llama-3.2-90B; LLM-as-judge ensembles, rubric design, structured-JSON output, prompt-versioned offline benchmarking
 
-**Data Stack:** SQL, Pandas 2.2+, Polars 1.0+, NumPy 2.0+, Dask, Apache Arrow
+**Data Stack:** SQL, Pandas 2.2+, Polars 1.0+, NumPy 2.0+, Apache Arrow
 
-**MLOps & Deployment:** MLflow 2.15+, Weights & Biases, DVC, FastAPI 0.110+, Docker, Kubernetes, AWS, GCP
+**MLOps & Deployment:** MLflow 2.15+, FastAPI 0.110+, Docker, AWS, GCP, DVC
 
-**Explainability & Responsible AI:** SHAP, LIME, Captum, InterpretML; model cards, IEEE 2830-2025, ISO/IEC 23894:2025, EU AI Act
+**Explainability & Responsible AI:** SHAP (TreeExplainer), LIME, Fairlearn, model cards; IEEE 2830-2025, ISO/IEC 23894:2025, EU AI Act Article 13
 
 ---
 
 ## Education
 
-**Master of Science in Applied Statistics**  
-Rochester Institute of Technology | Expected 2026  
-*Specialization: Bayesian Methods, Machine Learning, Experimental Design*
+**Master of Science in Applied Statistics**
+Rochester Institute of Technology | Expected 2026
+*Concentration: Bayesian Methods, Statistical Learning, Experimental Design*
 
-**Relevant Coursework:** Advanced Bayesian Inference & MCMC Methods, Deep Learning & Neural Networks, Statistical Learning Theory, Experimental Design & Causal Inference, High-Dimensional Statistics, Computational Statistics & Optimization
-
----
-
-## Research Projects
-
-### AI Safety Red-Team Evaluation Framework
-*Independent Research Project | January 2026*
-
-- Engineered dual-stage LLM ensemble (GPT-4o, Claude-3.5, Llama-3.2) achieving 96.8% accuracy in automated harm detection across 12,500 AI response pairs and 6 harm categories
-- Achieved 340x cost reduction ($0.018/sample vs $6.12 human annotation) while maintaining excellent inter-rater reliability (Krippendorff's alpha = 0.81)
-- Developed production ML pipeline processing 850 samples/hour with Stacking Classifier (97.2% precision, 96.1% recall, ROC-AUC 0.9923)
-- Designed 47 engineered features capturing linguistic, semantic, and structural harm signals for robust classification
-- Implemented Bayesian hierarchical modeling for multi-model risk analysis with 95% HDI uncertainty quantification
-- Built comprehensive MLOps infrastructure with SHAP explainability, audit trails, and IEEE 2830-2025 compliance
-
-**Tech Stack:** GPT-4o, Claude-3.5, Llama-3.2, XGBoost, Stacking Classifier, PyMC, SHAP, MLflow, Constitutional AI
+**Relevant Coursework:** Advanced Bayesian Inference & MCMC, Statistical Learning Theory, Experimental Design & Causal Inference, High-Dimensional Statistics, Computational Statistics & Optimization, Deep Learning
 
 ---
 
-### LLM Ensemble Textbook Bias Detection System
-*Independent Research Project | January 2026*
+## Projects
 
-- Built multi-LLM evaluation framework processing 67,500 bias ratings across 4,500 textbook passages with 2.5M tokens at production scale
-- Achieved excellent inter-rater reliability (Krippendorff's alpha = 0.84) with 92% pairwise correlation across frontier LLMs
-- Implemented Bayesian hierarchical model with partial pooling and MCMC convergence (R-hat < 1.01) for publisher-level credible bias detection
-- Discovered statistically significant bias findings (Friedman chi-squared = 42.73, p < 0.001) in 3/5 publishers analyzed
-- Engineered production-grade API integration with circuit breakers, exponential backoff, and MLflow experiment tracking
-- Delivered research-quality technical report with 95% HDI quantification and reproducible statistical methodology
+### Natural-Language-to-SQL Query Interface — *BRData*
+*[Role TBD] | [Dates TBD]*
 
-**Tech Stack:** GPT-4o, Claude-3.5, Llama-3.2, PyMC, ArviZ, MLflow, FastAPI, LangChain
+> Numbers in [brackets] are placeholders — replace with the actual figures before sending out.
 
----
+- Built a natural-language-to-SQL interface over [TBD: data warehouse / source -- e.g., Snowflake / Postgres / BigQuery] so non-technical users could ask analytics questions in English and get back validated SQL plus result tables
+- Designed a Python pipeline that grounds an LLM (prompt + schema/context injection, few-shot examples drawn from a curated query log) in the live warehouse schema, then validates generated SQL by parsing it (sqlglot) and dry-running against the warehouse before returning results
+- Built a held-out NL2SQL benchmark of [TBD: # ] question/SQL pairs across [TBD: # ] tables; system reached [TBD: %] execution accuracy and [TBD: %] exact-match accuracy on the holdout
+- Added retrieval over a query-history corpus (embeddings + similarity search) for few-shot exemplar selection, which lifted execution accuracy from [TBD baseline %] to [TBD new %] on the same benchmark
+- Hardened the loop with retry on parse failure, schema-aware error messages, and a feedback table that logs every (NL, SQL, success/failure) tuple for offline evaluation and continuous improvement
+- Shipped behind a [TBD: FastAPI / Slack bot / internal UI] endpoint serving [TBD: # ] queries/day at p95 [TBD: ms] latency; instrumented with [TBD: MLflow / W&B / OpenTelemetry] for run lineage
 
-### Clinical-Grade Breast Cancer ML Classification System
-*Independent Research Project | January 2026*
-
-- Developed ensemble ML system achieving 99.12% accuracy, exceeding human expert performance (90-95%) on breast cancer classification
-- Attained 100% precision (zero false positives) and 98.59% recall with near-perfect discrimination (ROC-AUC 0.9987)
-- Conducted comprehensive 8-algorithm benchmark evaluation (Random Forest, XGBoost, LightGBM, AdaBoost, Stacking, Voting)
-- Applied advanced preprocessing pipeline with VIF multicollinearity analysis, SMOTE class balancing, and RFE feature selection
-- Implemented explainable AI with SHAP values for clinical transparency and fairness auditing per IEEE 2830-2025 standards
-- Deployed production-ready model with MLflow registry and FastAPI serving (<100ms p95 latency)
-
-**Tech Stack:** scikit-learn, XGBoost, LightGBM, AdaBoost, SMOTE, SHAP, MLflow, FastAPI
+**Stack:** Python, SQL, LLM API (e.g., GPT-4o / Claude), sqlglot, vector store ([TBD: pgvector / FAISS / Chroma]), [TBD: warehouse], FastAPI, Docker, Git
 
 ---
 
-## Key Achievements
+### Ensemble Classifier for the Wisconsin Diagnostic Breast Cancer Dataset — *Rochester Institute of Technology*
+*MS Applied Statistics, RIT | January 2026 | Report AI-SR-2026-03*
 
-- Built LLM Red-Team Framework with 3-model ensemble achieving 340x cost reduction ($0.018/sample) and audit-grade reliability (alpha = 0.81)
-- Developed Multi-Model Evaluation Pipeline with Krippendorff's alpha = 0.81-0.84 across frontier LLMs with Bayesian uncertainty quantification
-- Deployed Clinical-Grade ML System achieving 99.12% accuracy exceeding human expert performance (90-95%)
-- Scaled Production NLP Pipelines processing 80K+ API calls with circuit breakers, rate limiting, and MLflow experiment tracking
-- Engineered Low-Latency Inference with FastAPI deployments achieving <100ms p95 latency with real-time monitoring
-- Published 3 Research-Quality Technical Reports with p < 0.001 significance, 95% HDI intervals, and SHAP explainability
+- Reframed screening as a utility-maximization decision: published a cost-ratio threshold sweep (miss / FP in [1, 100]) rather than relying on a default 0.5 cutoff
+- Benchmarked 8 ensembles -- Random Forest, Gradient Boosting, AdaBoost, Bagging, XGBoost, LightGBM, Voting, Stacking -- on identical stratified 80/20 folds (n = 569, 30 features) with a shared preprocessing pipeline: z-score scaling fit on train only, VIF review, train-fold-only SMOTE (k = 5), and RFE to 15 features
+- Winner -- AdaBoost -- reaches 99.12% accuracy, 100% precision (zero false positives on the held-out fold), 98.59% recall, F1 = 99.29%, ROC-AUC = 0.9987, Cohen's kappa = 0.9823, MCC = 0.9825
+- 10-fold stratified CV confirms 98.46% +/- 1.12%; 95% CI [96.27%, 100.65%]; coefficient of variation 1.14%
+- SHAP (TreeExplainer) attribution coheres with cytopathological intuition -- worst-region extreme-value features (worst concave points, worst perimeter, worst radius) dominate over mean-region features
+- Limitations explicit and in-section: WDBC is a benchmark dataset, n = 569 is small for fairness slicing, no prospective validation -- deployment claim is out of scope and stated as such
+
+**Stack:** Python, scikit-learn, XGBoost, LightGBM, imbalanced-learn, SHAP, MLflow, FastAPI, Fairlearn
+
+---
+
+### Multi-LLM Evaluation: Hierarchical Bayesian Bias Detection
+*Independent Research Project | January 2026 | Report AI-SR-2026-02*
+
+- Sharpened a vague public-debate question into a measurable estimand: posterior contrast of per-publisher ideological lean against neutral, after accounting for per-rater calibration and finite-sample noise
+- Collected 67,500 ratings from a three-LLM ensemble (GPT-4o, Claude-3.5-Sonnet, Llama-3.2-90B) over 4,500 passages drawn from 150 textbooks across 5 U.S. publishers (~2.5M tokens) at temperature 0.3 with a 5-dimension rubric
+- Validated the instrument first: Krippendorff's alpha = 0.84; pairwise correlations 0.87-0.92; rater x publisher interaction not credible under partial pooling
+- Fit a PyMC hierarchical model (passages within subjects within publishers, with rater-specific intercepts); 4 chains x 4,000 post-warmup draws; R-hat < 1.01, ESS > 3,000, MCSE < 0.005
+- Reported posterior means and 95% HDIs per publisher; 3 of 5 publishers show credible non-neutral lean (two liberal, one conservative). Friedman chi-squared = 42.73, p < 0.001 confirms; rank order stable across binary, 5-point, and [-2, +2] scale operationalizations
+
+**Stack:** Python, PyMC, ArviZ, LangChain, Polars, MLflow, tenacity
 
 ---
 
 ## Publications & Technical Reports
 
-| Title | Type | Date |
-|-------|------|------|
-| AI Safety Red-Team Evaluation | Technical Report v1.0.0 | January 2026 |
-| LLM Ensemble Textbook Bias Detection | Technical Report v3.0.0 | January 2026 |
-| Breast Cancer Classification | Technical Report v3.0.0 | January 2026 |
+| Report | Title | Date |
+|---|---|---|
+| AI-SR-2026-03 | Enhanced Ensemble Methods for Wisconsin Breast Cancer Classification | January 2026 |
+| AI-SR-2026-02 | Causal Bias Analysis in K-12 Textbooks: A Multi-LLM Hierarchical Study | January 2026 |
+| AI-SR-2026-01 | Multi-LLM Ensemble Annotation and Bayesian Classification for AI Safety Red-Team Evaluation | January 2026 |
 
 ---
 
-## Core Competencies
-
-**Experimentation & Causal Inference:** A/B test design & sample sizing, hypothesis testing, multiple-testing correction, effect-size reporting, quasi-experimental analysis, inter-rater reliability (Krippendorff's alpha, Cohen's kappa)
-
-**Statistical Modeling:** Bayesian hierarchical modeling, MCMC diagnostics (R-hat, ESS), credible intervals (95% HDI), calibration (Platt / isotonic), ensemble methods (RF, XGBoost, LightGBM, AdaBoost, Stacking, Voting)
-
-**GenAI / LLM Evaluation:** Multi-model ensemble architectures, LLM-as-judge & human-in-the-loop labeling, prompt engineering, offline benchmarking, cost / latency tradeoff analysis
-
-**Production Data Science:** SQL, FastAPI model deployment, MLflow experiment tracking, circuit breakers & rate limiting, monitoring & drift detection, Docker/Kubernetes orchestration, stakeholder-ready model cards and readouts
-
----
-
-**Location:** Available for remote/hybrid positions  
-**Timeline:** Seeking positions starting 2026  
+**Location:** Available for remote/hybrid positions
+**Timeline:** Seeking 2026 start
 **Work Authorization:** Authorized to work in the United States
