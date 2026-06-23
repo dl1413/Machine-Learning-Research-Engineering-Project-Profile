@@ -1,2 +1,7 @@
 date,company,role_title,role_family,location,source,lead_project,jd_link,resume_version,cover_letter_sent,referral,status,next_action,notes
 2026-05-12,EXAMPLE_Anthropic,Research Engineer - Evals,AI Safety,Remote,careers.anthropic.com,Project1_RedTeam,https://...,resume_v3_safety.pdf,Y,N,submitted,wait 10d,Tailored opener with 340x cost hook
+2026-05-30,Anthropic,Research Engineer - Evaluations,AI Safety / LLM Eval,Remote/NYC,anthropic.com/jobs,Project1_RedTeam,TBD,resume_v_safety.pdf,Y,N,ready_to_submit,submit + log JD URL,Lead 340x cost hook + alpha=0.81 + Bayesian HDI
+2026-05-30,Scale AI,LLM Evaluation Engineer,LLM Eval Infra,NYC/Remote,scale.com/careers,Project1_RedTeam,TBD,resume_v_eval.pdf,Y,N,ready_to_submit,submit + log JD URL,Lead 850/hr throughput + stacking meta-classifier; support P2 67.5K ratings
+2026-05-30,Two Sigma,Data Scientist - Bayesian/Causal,DS Inference,NYC,twosigma.com/careers,Project2_BiasDetection,TBD,resume_v_stats.pdf,Y,N,ready_to_submit,submit + log JD URL,Lead PyMC R-hat<1.01 + Friedman chi2=42.73 p<0.001; support P3 calibration
+2026-05-30,Memorial Sloan Kettering,Computational ML Scientist,Healthcare ML,NYC,careers.mskcc.org,Project3_BreastCancer,TBD,resume_v_healthcare.pdf,Y,N,ready_to_submit,submit + log JD URL,Lead 99.12% acc / 100% precision / ECE 0.0089 / 100% screening sensitivity
+2026-05-30,Patronus AI,Eval Research Engineer,LLM Eval Platform,Remote/NYC,patronus.ai/careers,Project1_RedTeam,TBD,resume_v_eval.pdf,Y,N,ready_to_submit,submit + log JD URL,Lead multi-judge harness + Bayesian HDI; support P2 67.5K ratings
