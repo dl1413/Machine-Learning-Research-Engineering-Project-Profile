@@ -1,2 +1,7 @@
 date,company,role_title,role_family,location,source,lead_project,jd_link,resume_version,cover_letter_sent,referral,status,next_action,notes
 2026-05-12,EXAMPLE_Anthropic,Research Engineer - Evals,AI Safety,Remote,careers.anthropic.com,Project1_RedTeam,https://...,resume_v3_safety.pdf,Y,N,submitted,wait 10d,Tailored opener with 340x cost hook
+2026-05-17,Anthropic,Research Engineer - Model Evaluations,AI Safety,Remote,careers.anthropic.com,Project1_RedTeam,TBD,resume_v3_safety.pdf,Y,N,drafted,paste JD + submit,Lead 340x cost / Krippendorff 0.81 hook
+2026-05-17,Hugging Face,ML Engineer - Evaluation,LLM Evaluation,Remote,huggingface.co/jobs,Project1_RedTeam,TBD,resume_v3_eval.pdf,Y,N,drafted,paste JD + submit,Eval-platform variant; link GitHub dl1413
+2026-05-17,Memorial Sloan Kettering,ML Engineer - Computational Oncology,Healthcare ML,NYC,mskcc.org/careers,Project3_BreastCancer,TBD,resume_v3_healthcare.pdf,Y,N,drafted,paste JD + submit,Lead 99.12% / 100% precision; add IEEE 2830 bullet
+2026-05-17,Bloomberg,Data Scientist - Inference,Data Scientist Bayesian,NYC,bloomberg.com/careers,Project2_BiasDetection,TBD,resume_v3_ds_bayes.pdf,Y,N,drafted,paste JD + submit,Lead Friedman p<0.001 + R-hat<1.01
+2026-05-17,Datadog,ML Engineer - Applied AI,Applied MLE,NYC/Remote,datadoghq.com/careers,Project3_BreastCancer,TBD,resume_v3_mle.pdf,Y,N,drafted,paste JD + submit,Production angle; FastAPI <100ms p95 + MLflow
