@@ -1,2 +1,7 @@
 date,company,role_title,role_family,location,source,lead_project,jd_link,resume_version,cover_letter_sent,referral,status,next_action,notes
 2026-05-12,EXAMPLE_Anthropic,Research Engineer - Evals,AI Safety,Remote,careers.anthropic.com,Project1_RedTeam,https://...,resume_v3_safety.pdf,Y,N,submitted,wait 10d,Tailored opener with 340x cost hook
+2026-05-23,Anthropic,Research Engineer - Alignment Evals,AI Safety,Remote/NYC,anthropic.com/jobs,Project1_RedTeam,TBD,resume_v_safety.pdf,Y,N,drafted,submit today,Opener 340x/96.8%/alpha 0.81; supports P2+P3
+2026-05-23,Scale AI,LLM Evaluation Engineer,LLM Eval Eng,NYC/Remote,scale.com/careers,Project1_RedTeam,TBD,resume_v_eval.pdf,Y,N,drafted,submit today,Hook 850 samples/hr + 340x; supports P2
+2026-05-23,Memorial Sloan Kettering,Computational Oncology ML Engineer,Healthcare ML,NYC,careers.mskcc.org,Project3_BreastCancer,TBD,resume_v_clinical.pdf,Y,N,drafted,submit today,Hook 99.12%/100% precision; supports P1 rigor + P2 Bayes
+2026-05-23,Two Sigma,ML Research Engineer (Inference),DS Bayesian,NYC,twosigma.com/careers,Project2_BiasDetection,TBD,resume_v_bayes.pdf,Y,N,drafted,submit today,Hook Friedman 42.73 p<0.001 / R-hat<1.01; supports P1+P3
+2026-05-23,Hugging Face,Research Engineer - Evaluation,LLM Eval/Research,Remote,apply.workable.com/huggingface,Project1_RedTeam,TBD,resume_v_eval.pdf,Y,N,drafted,submit today,Reproducible open benchmark angle; supports P2+P3
