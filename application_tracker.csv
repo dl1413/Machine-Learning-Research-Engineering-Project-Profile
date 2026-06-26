@@ -1,2 +1,7 @@
 date,company,role_title,role_family,location,source,lead_project,jd_link,resume_version,cover_letter_sent,referral,status,next_action,notes
 2026-05-12,EXAMPLE_Anthropic,Research Engineer - Evals,AI Safety,Remote,careers.anthropic.com,Project1_RedTeam,https://...,resume_v3_safety.pdf,Y,N,submitted,wait 10d,Tailored opener with 340x cost hook
+2026-06-04,Anthropic,Research Engineer - Alignment Evaluations,AI Safety,Remote/NYC,careers.anthropic.com,Project1_RedTeam,TBD,resume_v3_safety.pdf,Y,N,planned,submit + log JD link,Lead 340x cost hook; mention recent RSP update
+2026-06-04,Hugging Face,LLM Evaluation Engineer,LLM Eval,Remote/NYC,huggingface.co/jobs,Project1_RedTeam,TBD,resume_v3_eval.pdf,Y,N,planned,submit + log JD link,Reference lighteval/evaluate; attach published PDF
+2026-06-04,Patronus AI,Evaluation Platform Engineer,LLM Eval,Remote,patronus.ai/careers,Project1_RedTeam,TBD,resume_v3_eval.pdf,Y,N,planned,submit + log JD link,Lead Bayesian disagreement-modeling differentiator
+2026-06-04,Memorial Sloan Kettering,Computational Oncology ML Engineer,Healthcare ML,NYC,careers.mskcc.org,Project3_BreastCancer,TBD,resume_v3_health.pdf,Y,N,planned,submit + log JD link,Cite IEEE 2830-2025 + SHAP-per-prediction
+2026-06-04,Two Sigma,Data Scientist - Modeling,DS Bayesian,NYC,twosigma.com/careers,Project2_BiasDetection,TBD,resume_v3_stats.pdf,Y,N,planned,submit + log JD link,Stats-memo tone; lead with R-hat + Friedman
