@@ -1,2 +1,7 @@
 date,company,role_title,role_family,location,source,lead_project,jd_link,resume_version,cover_letter_sent,referral,status,next_action,notes
 2026-05-12,EXAMPLE_Anthropic,Research Engineer - Evals,AI Safety,Remote,careers.anthropic.com,Project1_RedTeam,https://...,resume_v3_safety.pdf,Y,N,submitted,wait 10d,Tailored opener with 340x cost hook
+2026-05-27,Anthropic,MTS Frontier Red Team,AI Safety,Remote,careers.anthropic.com,Project1_RedTeam,TBD,resume_v3_safety.pdf,Y,N,drafted,submit,Lead 340x cost + Krippendorff 0.81; package at applications/2026-05-27/01-anthropic.md
+2026-05-27,OpenAI,Research Engineer Safety Systems,LLM Eval,NYC,openai.com/careers,Project1_RedTeam,TBD,resume_v3_safety.pdf,Y,N,drafted,submit,Lead 96.8% acc + 850 samples/hr eval harness; applications/2026-05-27/02-openai.md
+2026-05-27,Hugging Face,ML Research Engineer Evaluations,LLM Eval,Remote,apply.workable.com/huggingface,Project2_BiasDetection,TBD,resume_v3_eval.pdf,Y,N,drafted,submit,Lead 67.5K ratings + alpha 0.84; applications/2026-05-27/03-huggingface.md
+2026-05-27,Two Sigma,Quant Researcher ML & Statistics,DS Bayesian,NYC,twosigma.com/careers,Project2_BiasDetection,TBD,resume_v3_ds.pdf,Y,N,drafted,submit,Lead PyMC hierarchical + Friedman p<0.001; applications/2026-05-27/04-two-sigma.md
+2026-05-27,Memorial Sloan Kettering,ML Engineer Computational Oncology,Healthcare ML,NYC,careers.mskcc.org,Project3_BreastCancer,TBD,resume_v3_healthcare.pdf,Y,N,drafted,submit,Lead 99.12% acc + 100% precision + SHAP; applications/2026-05-27/05-msk.md
