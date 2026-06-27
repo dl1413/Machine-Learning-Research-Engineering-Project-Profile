@@ -3,13 +3,13 @@
 **Project:** Enhanced Ensemble Methods for Wisconsin Breast Cancer Classification  
 **Date:** April 2026  
 **Author:** Derek Lankeaux, MS Applied Statistics  
-**Role:** Machine Learning Research Engineer | Clinical ML Specialist  
+**Role:** Data Scientist | Applied Statistician
 **Institution:** Rochester Institute of Technology  
 **Source:** Breast_Cancer_Classification_PUBLICATION.ipynb  
 **Version:** 4.0.0  
 **AI Standards Compliance:** IEEE 2830-2025 (Transparent ML), ISO/IEC 23894:2025 (AI Risk Management)
 
-> **Research Engineering Focus:** This project demonstrates core competencies for **2026 Machine Learning Research Engineer** roles including ensemble algorithm benchmarking, production ML pipelines, explainable AI (XAI), and clinical-grade model validation.
+> **Data Science Focus:** This project demonstrates core competencies for **2026 Data Scientist** roles including predictive modeling, ensemble benchmarking, model calibration, threshold-based decision policy, and explainable AI (XAI).
 
 ---
 
@@ -1446,21 +1446,21 @@ Computer-aided detection (CAD) system intended to assist pathologists in the cla
 ## About the Author
 
 ### Derek Lankeaux, MS Applied Statistics
-**Machine Learning Research Engineer | Clinical ML Specialist | Ensemble Methods Expert**
+**Data Scientist | Applied Statistician | Predictive Modeling Specialist**
 
 #### Professional Focus (2026)
-Seeking **Machine Learning Research Engineer** and **Applied Research Scientist** roles at healthcare technology companies, AI research labs, and medical device firms. Specialized in building production-grade clinical ML systems with rigorous statistical validation and regulatory compliance.
+Seeking **Data Scientist** roles (predictive modeling, ML/decision science, product analytics) where rigorous statistical validation, calibrated probability outputs, and context-specific decision policies drive business or clinical impact. Demonstrated ability to benchmark multiple algorithms, tune models for specific operating points, and communicate uncertainty to stakeholders.
 
-#### Core Research Engineering Competencies Demonstrated
+#### Core Data Science Competencies Demonstrated
 
 | Competency Area | This Project | Industry Relevance (2026) |
 |-----------------|--------------|---------------------------|
-| **Ensemble ML Systems** | 8-algorithm comparative benchmark (RF, XGBoost, LightGBM, AdaBoost, Stacking) | Core skill for production ML optimization |
-| **Clinical ML Performance** | 99.12% accuracy, 100% precision, exceeds human expert baseline | Critical for healthcare AI deployment |
-| **Feature Engineering** | VIF analysis, SMOTE balancing, RFE selection | Essential for robust model development |
-| **Statistical Validation** | 10-fold CV, bootstrap CI, multiple hypothesis testing | Foundational for research rigor |
-| **Explainable AI (XAI)** | SHAP values, fairness auditing, clinical interpretability | Required for FDA-regulated AI systems |
-| **Production MLOps** | MLflow registry, FastAPI deployment, <100ms latency | Standard for ML systems engineering |
+| **Predictive Modeling** | 8-algorithm comparative benchmark — best: 99.12% accuracy (AdaBoost) | Core DS skill for classification and decision support |
+| **Model Calibration & Decision Policy** | Platt scaling ECE 0.0089; threshold tuning for mass screening vs. confirmation | Required for DS work with asymmetric error costs |
+| **Bayesian Hyperparameter Optimization** | Optuna TPE converges in 5× fewer trials than grid search (45 vs. 240) | Efficient model development workflow |
+| **Statistical Validation** | 10-fold CV, bootstrap CI, McNemar's test, DeLong AUC comparison | Defending model quality to technical stakeholders |
+| **Explainable AI (XAI)** | SHAP values, fairness auditing, model card documentation | Standard for DS work in regulated or high-stakes domains |
+| **Production MLOps** | MLflow registry, FastAPI deployment, <100ms latency, drift monitoring | Operationalizing models beyond the notebook |
 
 #### Technical Stack Expertise
 
@@ -1484,10 +1484,10 @@ Deployment:      FastAPI • uvicorn • Redis • Prometheus Monitoring
 
 #### Career Objectives
 
-1. **ML Research Engineer** at healthcare AI companies developing clinical decision support systems
-2. **Applied Research Scientist** advancing ensemble methods for medical imaging and diagnostics
-3. **ML Systems Engineer** building scalable inference pipelines for real-time clinical applications
-4. **Technical Lead** for FDA-regulated AI/ML product development teams
+1. **Data Scientist (ML / Decision Science)** building calibrated predictive models with explicit decision policies for high-stakes or regulated domains
+2. **Applied Data Scientist** benchmarking and optimizing ML pipelines for product or clinical use cases
+3. **Data Scientist (Statistics / Inference)** applying rigorous statistical validation (CV, bootstrap, hypothesis testing) and uncertainty quantification to model evaluation
+4. **ML Data Scientist** deploying end-to-end pipelines — from feature engineering to MLflow-tracked production serving — with drift monitoring
 
 #### Contact Information
 
