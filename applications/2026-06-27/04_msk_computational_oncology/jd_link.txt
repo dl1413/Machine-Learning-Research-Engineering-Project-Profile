@@ -1,0 +1,15 @@
+Company: Memorial Sloan Kettering Cancer Center (MSK)
+Role: Machine Learning Scientist / ML Engineer — Computational Oncology
+Location: New York, NY (hybrid)
+Careers page: https://careers.mskcc.org/career-areas/data-science-engineering/
+Program page: https://www.mskcc.org/departments/epidemiology-biostatistics/computational-oncology
+Lead: Sohrab Shah, PhD (Computational Oncology)
+Discovered: 2026-06-27 via MSK careers + computational oncology program search
+
+Program summary:
+"Computational Oncology at MSK uses computer science, data engineering,
+machine learning, and software tools to advance major questions in oncology,
+cancer biology, and clinical care. MSK is recruiting research faculty, computer
+and data scientists, and software engineers to a recently expanded computational
+campus encompassing Computational Oncology, Radiology Informatics, Clinical
+Bioinformatics, and HPC."

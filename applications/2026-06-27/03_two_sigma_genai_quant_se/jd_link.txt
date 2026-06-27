@@ -1,0 +1,12 @@
+Company: Two Sigma
+Role: Quantitative Software Engineer — Generative AI (News Engineering)
+Location: New York City
+Direct link: https://careers.twosigma.com/careers/JobDetail/New-York-City-United-States-Quantitative-Software-Engineer-Generative-AI/13079
+Discovered: 2026-06-27 via Two Sigma careers search
+
+JD summary:
+"The News Engineering team is looking for a machine learning engineer with a
+strong background in NLP and LLMs. Develop and deploy machine learning
+solutions; minimum 1 yr experience, 3-10 yrs preferred. Work spans designing
+architectures, scaling research tools, and building systems that power
+research and trading."
