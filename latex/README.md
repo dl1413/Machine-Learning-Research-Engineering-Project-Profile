@@ -269,7 +269,7 @@ All documents comply with:
 ## Author
 
 **Derek Lankeaux, MS Applied Statistics**
-Machine Learning Research Engineer
+Data Scientist | Applied Statistician
 Rochester Institute of Technology
 
 - GitHub: [@dl1413](https://github.com/dl1413)

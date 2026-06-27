@@ -3,13 +3,13 @@
 **Project:** Automated Harm Detection Using LLM Ensemble Annotation and Bayesian ML Classification  
 **Date:** April 2026  
 **Author:** Derek Lankeaux, MS Applied Statistics  
-**Role:** Machine Learning Research Engineer | AI Safety Specialist  
+**Role:** Data Scientist | Applied Statistician
 **Institution:** Rochester Institute of Technology  
 **Source:** AI_Safety_RedTeam_Evaluation.ipynb  
 **Version:** 2.0.0  
 **AI Standards Compliance:** IEEE 2830-2025 (Transparent ML), ISO/IEC 23894:2025 (AI Risk Management), EU AI Act (2025)
 
-> **Research Engineering Focus:** This project demonstrates core competencies for **2026 Machine Learning Research Engineer** roles including multi-model LLM evaluation, production ML pipelines, Bayesian uncertainty quantification, and AI safety methodologies.
+> **Data Science Focus:** This project demonstrates core competencies for **2026 Data Scientist** roles including multi-model LLM evaluation, Bayesian uncertainty quantification, production ML pipelines, and responsible AI measurement.
 
 ---
 
@@ -1667,21 +1667,21 @@ Where:
 ## About the Author
 
 ### Derek Lankeaux, MS Applied Statistics
-**Machine Learning Research Engineer | AI Safety Specialist | LLM Evaluation Expert**
+**Data Scientist | Applied Statistician | LLM Evaluation Specialist**
 
 #### Professional Focus (2026)
-Seeking **Machine Learning Research Engineer** and **AI Safety Researcher** roles at leading AI labs, technology companies, and research institutions. Specialized in building production-grade AI safety evaluation systems, multi-model LLM ensembles, and Bayesian uncertainty quantification frameworks.
+Seeking **Data Scientist** roles (product analytics, GenAI/LLM evaluation, applied statistics) where experimentation, Bayesian inference, and scalable measurement pipelines create business value. Demonstrated ability to frame ambiguous evaluation problems, build cost-efficient annotation pipelines (340× cost reduction), and deliver stakeholder-ready results with rigorous uncertainty quantification.
 
-#### Core Research Engineering Competencies Demonstrated
+#### Core Data Science Competencies Demonstrated
 
 | Competency Area | This Project | Industry Relevance (2026) |
 |-----------------|--------------|---------------------------|
-| **LLM Ensemble Systems** | 3-model evaluation pipeline (GPT-4o, Claude-3.5, Llama-3.2) | Critical for foundation model evaluation and benchmarking |
-| **AI Safety & Red-Teaming** | 6-category harm taxonomy, 12,500 adversarial samples | Essential for responsible AI deployment and compliance |
-| **Production ML Pipelines** | 850 samples/hr at $0.018/sample, FastAPI deployment | Required for scalable ML systems engineering |
-| **Statistical Rigor** | Krippendorff's α = 0.81, Bayesian HDI quantification | Foundational for research methodology and validation |
-| **MLOps & Reproducibility** | MLflow tracking, IEEE 2830-2025 compliance, model versioning | Standard for production ML teams |
-| **Explainable AI (XAI)** | SHAP feature attribution, audit-ready documentation | Required for AI governance and stakeholder trust |
+| **LLM-as-Judge Pipelines** | 3-model ensemble (GPT-4o, Claude-3.5, Llama-3.2) achieving α = 0.81 | Critical for offline GenAI evaluation and labeling cost reduction |
+| **Bayesian Inference** | Hierarchical risk model with 95% HDI across 6 harm categories | Uncertainty-aware decision-making for DS teams |
+| **Experimentation & Measurement** | Krippendorff's α validation, Friedman test, multiple-testing correction | Foundational for rigorous A/B testing and analysis |
+| **Production Data Pipelines** | 850 samples/hr at $0.018/sample, circuit breakers, MLflow tracking | Required for scalable, monitored DS workflows |
+| **Stakeholder Communication** | Model cards, SHAP attribution, IEEE 2830-2025 audit trail | Translating technical results to non-technical partners |
+| **Cost-Benefit Analysis** | 340× annotation cost reduction with maintained reliability | DS impact framing for business cases |
 
 #### Technical Stack Expertise
 
@@ -1704,10 +1704,10 @@ Safety Tools:    Constitutional AI • RLHF Evaluation • Harm Classifiers
 
 #### Career Objectives
 
-1. **Research Engineer** at AI labs developing next-generation safety evaluation frameworks
-2. **ML Systems Engineer** building scalable LLM evaluation and monitoring infrastructure
-3. **AI Safety Researcher** advancing red-team methodologies for foundation models
-4. **Applied Research Scientist** combining Bayesian methods with production ML systems
+1. **Data Scientist (GenAI / LLM Evaluation)** building offline evaluation and LLM-as-judge pipelines to measure model quality and guide product decisions
+2. **Applied Data Scientist** designing experimentation frameworks and scalable annotation workflows for AI-powered products
+3. **Data Scientist (Statistics / Inference)** applying Bayesian hierarchical models and uncertainty quantification to real-world measurement problems
+4. **Decision Scientist** combining predictive modeling with cost-ratio decision policies for responsible, auditable AI systems
 
 #### Contact Information
 

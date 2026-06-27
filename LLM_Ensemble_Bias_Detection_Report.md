@@ -3,13 +3,13 @@
 **Project:** Detecting Publisher Bias Using LLM Ensemble and Bayesian Hierarchical Methods  
 **Date:** April 2026  
 **Author:** Derek Lankeaux, MS Applied Statistics  
-**Role:** Machine Learning Research Engineer | LLM Evaluation Specialist  
+**Role:** Data Scientist | Applied Statistician
 **Institution:** Rochester Institute of Technology  
 **Source:** LLM_Ensemble_Textbook_Bias_Detection.ipynb  
 **Version:** 4.0.0  
 **AI Standards Compliance:** IEEE 2830-2025, ISO/IEC 23894:2025, EU AI Act (2025)
 
-> **Research Engineering Focus:** This project demonstrates core competencies for **2026 Machine Learning Research Engineer** roles including multi-model LLM ensemble systems, Bayesian hierarchical inference, production NLP pipelines, and inter-rater reliability validation.
+> **Data Science Focus:** This project demonstrates core competencies for **2026 Data Scientist** roles including multi-model LLM evaluation, Bayesian hierarchical inference, inter-rater reliability validation, and production-scale annotation pipelines.
 
 ---
 
@@ -1252,21 +1252,21 @@ We tested 5 prompt variations to assess stability of bias ratings:
 ## About the Author
 
 ### Derek Lankeaux, MS Applied Statistics
-**Machine Learning Research Engineer | LLM Evaluation Specialist | Bayesian Inference Expert**
+**Data Scientist | Applied Statistician | Bayesian Inference Specialist**
 
 #### Professional Focus (2026)
-Seeking **Machine Learning Research Engineer** and **Applied Research Scientist** roles at foundation model companies, AI research labs, and technology companies. Specialized in building multi-model LLM evaluation frameworks, Bayesian uncertainty quantification, and production-scale NLP systems.
+Seeking **Data Scientist** roles (GenAI evaluation, applied statistics, product analytics) where Bayesian inference, multi-model LLM frameworks, and rigorous uncertainty quantification drive decision-making. Demonstrated ability to design scalable annotation pipelines, quantify uncertainty with HDI, and deliver credible findings to technical and non-technical stakeholders.
 
-#### Core Research Engineering Competencies Demonstrated
+#### Core Data Science Competencies Demonstrated
 
 | Competency Area | This Project | Industry Relevance (2026) |
 |-----------------|--------------|---------------------------|
-| **Multi-Model LLM Evaluation** | GPT-4o, Claude-3.5-Sonnet, Llama-3.2 ensemble with 92% correlation | Essential for foundation model benchmarking |
-| **Bayesian Hierarchical Modeling** | PyMC MCMC with full posterior inference, R-hat < 1.01 | Critical for uncertainty-aware ML systems |
-| **Inter-Rater Reliability** | Krippendorff's α = 0.84 (excellent agreement validation) | Foundational for annotation quality assurance |
-| **Production NLP Pipelines** | 67,500 API calls with circuit breakers and rate limiting | Required for scalable LLM applications |
-| **Statistical Hypothesis Testing** | Friedman χ², Wilcoxon, Bonferroni correction, HDI intervals | Core research methodology skill |
-| **Responsible AI** | EU AI Act compliance, transparency reporting, bias documentation | Standard for ethical AI deployment |
+| **Multi-Model LLM Evaluation** | GPT-4o, Claude-3.5-Sonnet, Llama-3.2 ensemble with α = 0.84 | Essential for offline LLM benchmarking and labeling quality |
+| **Bayesian Hierarchical Modeling** | PyMC MCMC with partial pooling, R-hat < 1.01, ESS > 3,000 | Uncertainty-aware inference over grouped data |
+| **Inter-Rater Reliability** | Krippendorff's α = 0.84 across 67,500 ratings | Foundational for annotation quality assurance and labeling pipelines |
+| **Statistical Hypothesis Testing** | Friedman χ² = 42.73, Bonferroni correction, 95% HDI decision rules | Core DS skill for defending analytical conclusions |
+| **Production Data Pipelines** | 67,500 API calls with circuit breakers, rate limiting, MLflow tracking | Required for scalable, monitored data engineering |
+| **Stakeholder Reporting** | Publisher-level posterior report cards with credible interval communication | Translating Bayesian results for non-technical audiences |
 
 #### Technical Stack Expertise
 
@@ -1289,10 +1289,10 @@ Production:      async/await • Retry Logic • Error Handling • Logging (str
 
 #### Career Objectives
 
-1. **LLM Evaluation Engineer** at foundation model companies developing benchmarking frameworks
-2. **Research Engineer** building multi-model AI systems for content analysis and safety
-3. **Applied Research Scientist** advancing Bayesian methods for LLM uncertainty quantification
-4. **ML Systems Engineer** scaling NLP pipelines for production workloads
+1. **Data Scientist (GenAI / LLM Evaluation)** designing multi-model evaluation pipelines and offline benchmarking frameworks to measure LLM quality at scale
+2. **Applied Data Scientist (Bayesian / Statistics)** advancing Bayesian hierarchical methods for grouped-data inference and uncertainty communication
+3. **Data Scientist (Product Analytics)** applying inter-rater reliability and Bayesian posteriors to annotation quality and content measurement problems
+4. **Decision Scientist** translating credible-interval findings into stakeholder-ready report cards and operational recommendations
 
 #### Contact Information
 
