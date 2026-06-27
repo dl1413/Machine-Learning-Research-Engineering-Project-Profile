@@ -1,0 +1,13 @@
+Company: OpenAI
+Role: Trust & Safety / Intelligence & Investigations Engineer
+Location: New York, NY
+Careers page: https://openai.com/careers/search/
+Filter to NYC + Trust & Safety / Intelligence & Investigations team
+Discovered: 2026-06-27 via OpenAI careers search
+
+JD summary (from team description):
+"The Intelligence & Investigations team identifies, investigates, and disrupts
+malicious uses of OpenAI products, working at the intersection of
+investigations, analytics, policy, engineering, and trust & safety. Strong
+background in CS, ML, and data analysis required; work is highly
+interdisciplinary."

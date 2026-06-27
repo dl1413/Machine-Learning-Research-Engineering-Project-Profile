@@ -1,0 +1,13 @@
+Company: Anthropic
+Role: Research Engineer, Model Evaluations
+Location: New York, NY
+Direct link: https://job-boards.greenhouse.io/anthropic/jobs/5198255008
+Careers page: https://www.anthropic.com/careers/jobs
+Team: Frontier Red Team / Evaluations
+Discovered: 2026-06-27 via Anthropic careers search
+
+JD summary (extracted):
+"Design and implement evaluations across the full spectrum of Claude's
+capabilities and personality. Build infrastructure that runs evals reliably at
+scale. Partner closely with researchers throughout the lifecycle of a new
+capability. Requires significant Python experience and ML research background."

@@ -1,0 +1,14 @@
+Company: Patronus AI
+Role: Machine Learning Engineer
+Location: Remote
+Direct link: https://ats.rippling.com/patronus-ai-jobs/jobs/084d6e2b-0ffc-4672-8a5d-ad7d55e019fc
+Careers page: https://patronus.ai/
+Discovered: 2026-06-27 via Patronus AI careers search
+
+JD summary:
+"As a Machine Learning Engineer at Patronus AI, you'll develop state-of-the-art
+systems for AI evaluation and train language models for novel use cases, such
+as evaluating whether content is engaging, hallucinatory, age-appropriate, or
+contains PII. Patronus AI is the leading automated AI evaluation and security
+company; the platform lets enterprise dev teams score LLM performance,
+generate adversarial test cases, and benchmark LLMs."
