@@ -47,6 +47,8 @@ This report presents a machine learning pipeline for binary classification of br
 
 ### Performance Overview
 
+**Table 1.** Headline performance metrics of the best model on the test set.
+
 | Metric | Value | Formula | Clinical Interpretation |
 |--------|-------|---------|------------------------|
 | **Accuracy** | 99.12% | (TP+TN)/(TP+TN+FP+FN) = 113/114 | Exceptional diagnostic performance |
@@ -94,6 +96,8 @@ This investigation pursues four technical objectives:
 
 **Wisconsin Diagnostic Breast Cancer (WDBC) Database**
 
+**Table 2.** Specifications of the WDBC dataset.
+
 | Specification | Value |
 |--------------|-------|
 | **Repository** | UCI Machine Learning Repository |
@@ -110,6 +114,8 @@ This investigation pursues four technical objectives:
 Features are computed from digitized FNA images via image segmentation and morphometric analysis. For each of 10 nuclear characteristics, three statistical measures are derived:
 
 **Base Cytological Measurements:**
+
+**Table 3.** Definitions and biological significance of base cytological features.
 
 | Feature | Mathematical Definition | Biological Significance |
 |---------|------------------------|------------------------|
@@ -248,6 +254,8 @@ X_train, X_test, y_train, y_test = train_test_split(
 
 **Partition Statistics:**
 
+**Table 4.** Class distribution across the train-test stratified split.
+
 | Partition | Total | Benign | Malignant | Benign % |
 |-----------|-------|--------|-----------|----------|
 | Training | 455 | 286 | 169 | 62.86% |
@@ -285,6 +293,9 @@ $$VIF_j = \frac{1}{1 - R_j^2}$$
 Where $R_j^2$ is the coefficient of determination from regressing feature j on all other features.
 
 **Interpretation Thresholds:**
+
+**Table 5.** Variance Inflation Factor thresholds and recommended actions.
+
 | VIF Value | Interpretation | Action |
 |-----------|---------------|--------|
 | VIF = 1 | No multicollinearity | Retain |
@@ -293,6 +304,8 @@ Where $R_j^2$ is the coefficient of determination from regressing feature j on a
 | VIF ≥ 10 | Severe | Strong candidate for removal |
 
 **Analysis Results:**
+
+**Table 6.** Features with the highest measured VIF values.
 
 | Rank | Feature | VIF | Interpretation |
 |------|---------|-----|----------------|
@@ -326,6 +339,8 @@ X_train_smote, y_train_smote = smote.fit_resample(X_train_scaled, y_train)
 
 **Class Distribution Transformation:**
 
+**Table 7.** Class counts before and after SMOTE balancing.
+
 | Class | Before SMOTE | After SMOTE | Δ |
 |-------|--------------|-------------|---|
 | Malignant (0) | 169 | 286 | +117 synthetic |
@@ -351,6 +366,8 @@ X_test_rfe = rfe.transform(X_test_scaled)
 ```
 
 **Selected Features (15 of 30):**
+
+**Table 8.** Features retained by Recursive Feature Elimination.
 
 | # | Feature | Category | Importance Rank |
 |---|---------|----------|-----------------|
@@ -553,6 +570,8 @@ StackingClassifier(
 
 ### 5.1 Model Performance Comparison
 
+**Table 9.** Comparative test-set performance across the eight ensemble models.
+
 | Model | Accuracy | Precision | Recall | F1-Score | ROC-AUC | Training Time |
 |-------|----------|-----------|--------|----------|---------|---------------|
 | **AdaBoost** (Best) | **99.12%** | **100.00%** | **98.59%** | **99.29%** | **0.9987** | 0.42s |
@@ -588,6 +607,8 @@ ACTUAL            ├──────────┼────────�
 ### 5.3 ROC Curve Analysis
 
 All models achieve exceptional ROC-AUC scores (>0.99):
+
+**Table 10.** ROC-AUC scores with 95% confidence intervals by model.
 
 | Model | ROC-AUC | 95% CI |
 |-------|---------|--------|
@@ -643,6 +664,8 @@ study.optimize(objective_adaboost, n_trials=100, show_progress_bar=False)
 
 ### 5a.3 Hyperparameter Search Space and Results
 
+**Table 11.** AdaBoost search space and Bayesian-optimal hyperparameters.
+
 | Hyperparameter | Range | Default | Bayesian Optimal | Change |
 |---------------|-------|---------|-----------------|--------|
 | `n_estimators` | [25, 200] | 50 | 63 | +13 |
@@ -650,6 +673,8 @@ study.optimize(objective_adaboost, n_trials=100, show_progress_bar=False)
 | `algorithm` | SAMME / SAMME.R | SAMME.R | SAMME.R | — |
 
 **Convergence Behavior (ROC-AUC across 100 trials):**
+
+**Table 12.** Optuna convergence of ROC-AUC across trial ranges.
 
 | Trial Range | Best Trial AUC | Running Best |
 |-------------|----------------|-------------|
@@ -672,6 +697,8 @@ adaboost_optimized = AdaBoostClassifier(
 ```
 
 ### 5a.4 Efficiency Comparison
+
+**Table 13.** Search-strategy efficiency for reaching target ROC-AUC.
 
 | Search Strategy | Trials to 0.9985 AUC | Wall-Clock Time | Evaluations |
 |----------------|----------------------|-----------------|-------------|
@@ -724,6 +751,8 @@ print(f"ECE (raw AdaBoost): {ece_raw:.4f}")
 
 **Calibration Curve Summary (Before Calibration):**
 
+**Table 14.** Reliability of predicted confidence before calibration.
+
 | Confidence Bin | Predicted Confidence | Actual Frequency | |Δ| |
 |----------------|---------------------|------------------|-----|
 | [0.00, 0.20] | 0.08 | 0.04 | 0.04 |
@@ -753,6 +782,8 @@ calibrated_iso.fit(X_val_rfe, y_val)
 ```
 
 ### 5b.4 Calibration Results
+
+**Table 15.** Calibration metrics across calibration methods.
 
 | Calibration Method | ECE (↓ better) | Brier Score (↓ better) | Accuracy | ROC-AUC |
 |-------------------|----------------|----------------------|----------|---------|
@@ -786,6 +817,8 @@ print(f"Optimal threshold (F2): {optimal_threshold:.3f}")
 # Optimal threshold (F2): 0.312
 ```
 
+**Table 16.** Clinical operating metrics at different decision thresholds.
+
 | Decision Threshold | Sensitivity | Specificity | PPV | NPV | Clinical Use |
 |-------------------|------------|-------------|-----|-----|-------------|
 | 0.30 | 100.0% | 95.2% | 93.3% | 100.0% | Mass screening (maximize recall) |
@@ -804,6 +837,8 @@ print(f"Optimal threshold (F2): {optimal_threshold:.3f}")
 - Scoring metric: Accuracy
 
 **AdaBoost Cross-Validation Results:**
+
+**Table 17.** Per-fold accuracy from 10-fold stratified cross-validation.
 
 | Fold | Accuracy | Deviation from Mean |
 |------|----------|---------------------|
@@ -844,6 +879,8 @@ Learning curves demonstrate:
 
 ### 7.1 Feature Importance (Random Forest)
 
+**Table 18.** Top Random Forest features by Gini importance.
+
 | Rank | Feature | Gini Importance | Cumulative |
 |------|---------|-----------------|------------|
 | 1 | worst concave points | 0.1420 | 14.20% |
@@ -863,6 +900,8 @@ Learning curves demonstrate:
 
 Permutation importance gives model-agnostic feature rankings by measuring the accuracy drop when feature values are shuffled:
 
+**Table 19.** Model-agnostic permutation importance of top features.
+
 | Feature | Importance | Std |
 |---------|------------|-----|
 | worst concave points | 0.0526 | 0.0183 |
@@ -876,6 +915,8 @@ Permutation importance gives model-agnostic feature rankings by measuring the ac
 
 ### 8.1 Diagnostic Performance Metrics
 
+**Table 20.** Diagnostic performance metrics with clinical interpretation.
+
 | Metric | Value | Formula | Clinical Interpretation |
 |--------|-------|---------|------------------------|
 | **Sensitivity (TPR)** | 98.59% | TP/(TP+FN) | Probability of detecting malignancy given disease present |
@@ -888,6 +929,8 @@ Permutation importance gives model-agnostic feature rankings by measuring the ac
 ### 8.2 Clinical Decision Analysis
 
 **Cost-Benefit Considerations:**
+
+**Table 21.** Clinical impact and mitigation for each error type.
 
 | Error Type | Count | Clinical Impact | Mitigation |
 |------------|-------|-----------------|------------|
@@ -919,6 +962,8 @@ shap.summary_plot(shap_values, X_test_rfe, feature_names=selected_features)
 ```
 
 **Global Feature Attribution (SHAP):**
+
+**Table 22.** Global SHAP feature attribution and clinical significance.
 
 | Rank | Feature | Mean |SHAP| | Direction | Clinical Significance |
 |------|---------|---------------|-----------|----------------------|
@@ -967,6 +1012,8 @@ metric_frame = MetricFrame(
 
 ### 9.4 Model Card (Google Framework)
 
+**Table 23.** Model card summarizing intended use and limitations.
+
 | Field | Value |
 |-------|-------|
 | **Model Name** | AdaBoost Breast Cancer Classifier v3.0 |
@@ -991,6 +1038,8 @@ Four factors explain AdaBoost's superior performance:
 4. **Low Variance:** Ensemble averaging reduces prediction variance
 
 ### 10.2 Impact of Preprocessing Pipeline
+
+**Table 24.** Accuracy contribution of each preprocessing technique.
 
 | Technique | Accuracy Without | Accuracy With | Improvement |
 |-----------|------------------|---------------|-------------|
@@ -1091,6 +1140,8 @@ async def predict(features: list[float]):
 ```
 
 ### 11.4 Monitoring Dashboard
+
+**Table 25.** Production monitoring metrics, thresholds, and alerts.
 
 | Metric | Threshold | Alert Trigger | Current |
 |--------|-----------|---------------|---------|
@@ -1227,6 +1278,8 @@ For questions about code or data access, please contact:
 
 ### Appendix A: Complete Feature List
 
+**Table 26.** Complete 30-feature list with RFE selection status.
+
 | # | Feature Name | Category | Selected by RFE |
 |---|--------------|----------|-----------------|
 | 1 | mean radius | Size (Mean) | [Yes] |
@@ -1324,6 +1377,8 @@ pydantic: 2.5+
 
 **Hypothesis Testing Framework:**
 
+**Table 27.** Statistical hypothesis tests and their outcomes.
+
 | Test | Null Hypothesis | Alternative | Result | Interpretation |
 |------|-----------------|-------------|--------|----------------|
 | **McNemar's Test** | Models have equal error rates | Error rates differ | χ² = 8.47, p = 0.003 | AdaBoost significantly better |
@@ -1332,6 +1387,8 @@ pydantic: 2.5+
 | **DeLong Test (ROC)** | AUC₁ = AUC₂ | AUC₁ ≠ AUC₂ | z = 2.18, p = 0.029 | AdaBoost has higher AUC |
 
 **Bootstrap Confidence Intervals (10,000 iterations):**
+
+**Table 28.** Bootstrap confidence intervals for key metrics.
 
 | Metric | Point Estimate | 95% Bootstrap CI | SE |
 |--------|----------------|------------------|-----|
@@ -1344,6 +1401,8 @@ pydantic: 2.5+
 ### Appendix E: Cost-Benefit Analysis for Clinical Deployment
 
 **Economic Impact Assessment:**
+
+**Table 29.** Expected misclassification costs across screening scenarios.
 
 | Scenario | False Positive Cost | False Negative Cost | Total Expected Cost |
 |----------|--------------------|--------------------|-------------------|
@@ -1362,6 +1421,8 @@ pydantic: 2.5+
 
 **Hyperparameter Robustness Testing:**
 
+**Table 30.** Accuracy stability across tested hyperparameter ranges.
+
 | Parameter | Range Tested | Optimal | Accuracy Range | Variance |
 |-----------|--------------|---------|----------------|----------|
 | AdaBoost n_estimators | [25, 50, 75, 100, 150] | 50 | 98.2% - 99.1% | Low |
@@ -1375,6 +1436,9 @@ pydantic: 2.5+
 ### Appendix G: Model Card (FDA-Style Documentation)
 
 **Device Identification:**
+
+**Table 31.** Device identification fields for FDA-style documentation.
+
 | Field | Value |
 |-------|-------|
 | **Device Name** | AdaBoost Breast Cancer Classifier |
@@ -1386,6 +1450,9 @@ pydantic: 2.5+
 Computer-aided detection (CAD) system intended to assist pathologists in the classification of fine needle aspiration (FNA) cytology samples as benign or malignant breast tissue. Not intended for standalone diagnosis.
 
 **Performance Summary:**
+
+**Table 32.** Achieved performance against clinical thresholds.
+
 | Metric | Clinical Threshold | Achieved | Margin |
 |--------|-------------------|----------|--------|
 | Sensitivity | ≥ 95% | 98.59% | +3.59% |
@@ -1407,6 +1474,8 @@ Computer-aided detection (CAD) system intended to assist pathologists in the cla
 
 ### Appendix H: Reproducibility Checklist
 
+**Table 33.** Reproducibility checklist with implementation status.
+
 | Requirement | Implementation | Status |
 |-------------|---------------|--------|
 | **Random Seed** | RANDOM_STATE = 42 globally set | [Yes] |
@@ -1421,6 +1490,8 @@ Computer-aided detection (CAD) system intended to assist pathologists in the cla
 | **Experiment Tracking** | MLflow with full parameter logging | [Yes] |
 
 ### Appendix I: Glossary of Medical and Technical Terms
+
+**Table 34.** Glossary of medical and technical terms.
 
 | Term | Definition |
 |------|------------|
@@ -1452,6 +1523,8 @@ Computer-aided detection (CAD) system intended to assist pathologists in the cla
 Seeking **Data Scientist** and **Applied Statistician** roles at technology companies, healthcare organizations, and research institutions. Specialized in experimentation, Bayesian inference, predictive modeling, ensemble methods, and responsible-AI practice.
 
 #### Core Data Science Competencies Demonstrated
+
+**Table 35.** Data science competencies demonstrated by this project.
 
 | Competency Area | This Project | Industry Relevance (2026) |
 |-----------------|--------------|---------------------------|

@@ -170,6 +170,25 @@ p {
     text-indent: 0;
 }
 
+/* ── Table / figure captions ── */
+.caption {
+    font-size: 8.5pt;
+    color: #333;
+    margin: 12pt 0 0 0;
+    line-height: 1.3;
+    text-align: left;
+    page-break-after: avoid;
+}
+
+.caption strong {
+    color: #000;
+}
+
+/* Tuck a caption directly against the table it labels. */
+.caption + table {
+    margin-top: 3pt;
+}
+
 /* ── Tables ── */
 table {
     width: 100%;
@@ -447,6 +466,15 @@ def md_to_publication_html(md_text: str) -> str:
     # Convert remaining markdown to HTML
     extensions = ['tables', 'fenced_code', 'codehilite', 'sane_lists']
     body_html = markdown.markdown(remaining_body, extensions=extensions)
+
+    # Render "**Table N.** ..." / "**Figure N.** ..." lines as publication
+    # captions: a dedicated class lets the CSS style them smaller and tuck
+    # them directly against the table/figure they label.
+    body_html = re.sub(
+        r'<p><strong>(Table|Figure)\s+(\d+)\.</strong>',
+        r'<p class="caption"><strong>\1 \2.</strong>',
+        body_html,
+    )
 
     # Build full HTML document
     title_block = build_title_block(metadata)

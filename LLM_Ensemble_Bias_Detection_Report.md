@@ -47,6 +47,8 @@ This report presents a computational framework for detecting and quantifying pol
 
 ### Key Performance Metrics
 
+**Table 1.** Key performance metrics for the LLM-ensemble bias-detection framework.
+
 | Metric | Value | Interpretation |
 |--------|-------|----------------|
 | **Krippendorff's Alpha** | 0.84 | Excellent inter-rater reliability (≥0.80 threshold) |
@@ -59,6 +61,8 @@ This report presents a computational framework for detecting and quantifying pol
 | **Effective Sample Size (ESS)** | > 3,000 | Adequate posterior sampling |
 
 ### Publisher Bias Summary
+
+**Table 2.** Publisher bias summary ranked by posterior mean effect.
 
 | Rank | Publisher | Posterior Mean | 95% HDI | Classification |
 |------|-----------|----------------|---------|----------------|
@@ -103,6 +107,8 @@ This project introduces a new paradigm: frontier Large Language Models (LLMs) as
 ## 2. LLM Architecture and Capabilities
 
 ### 2.1 Model Specifications
+
+**Table 3.** Specifications of the three ensemble LLMs.
 
 | Model | Parameters | Context Window | Training Cutoff | Architecture |
 |-------|------------|----------------|-----------------|--------------|
@@ -216,6 +222,8 @@ class LLMEnsemble:
 
 ### 3.1 Corpus Statistics
 
+**Table 4.** Corpus statistics across publishers, textbooks, and passages.
+
 | Dimension | Count | Description |
 |-----------|-------|-------------|
 | **Publishers** | 5 | Major U.S. educational publishers |
@@ -237,6 +245,8 @@ Passages were selected to maximize coverage of politically relevant content:
 
 ### 3.3 Topic Distribution
 
+**Table 5.** Topic distribution of passages across the corpus.
+
 | Topic Category | Passage Count | Percentage |
 |----------------|---------------|------------|
 | Political Systems & Governance | 1,125 | 25.0% |
@@ -247,6 +257,8 @@ Passages were selected to maximize coverage of politically relevant content:
 | **Total** | **4,500** | **100%** |
 
 ### 3.4 Bias Rating Scale
+
+**Table 6.** Bias rating scale with operational definitions.
 
 | Score | Label | Operational Definition |
 |-------|-------|----------------------|
@@ -334,6 +346,8 @@ alpha = krippendorff.alpha(
 
 ### 5.2 Interpretation Thresholds
 
+**Table 7.** Krippendorff's alpha interpretation thresholds and recommendations.
+
 | α Value | Interpretation | Recommendation |
 |---------|---------------|----------------|
 | ≥ 0.80 | **Excellent** | Reliable for drawing conclusions |
@@ -344,6 +358,8 @@ alpha = krippendorff.alpha(
 **Result:** α = 0.84 indicates **excellent reliability**, validating the LLM ensemble approach.
 
 ### 5.3 Pairwise Correlation Analysis
+
+**Table 8.** Pairwise model agreement via correlation and error metrics.
 
 | Model Pair | Pearson r | Spearman ρ | RMSE |
 |------------|-----------|------------|------|
@@ -489,6 +505,8 @@ with pm.Model() as hierarchical_model:
 
 ### 6.4 Prior Justification
 
+**Table 9.** Prior distributions and justifications for model parameters.
+
 | Parameter | Prior | Justification |
 |-----------|-------|---------------|
 | μ_global | Normal(0, 1) | Weakly informative; centered on neutral |
@@ -539,6 +557,9 @@ stat, p_value = friedmanchisquare(*publisher_groups)
 ```
 
 **Results:**
+
+**Table 10.** Friedman test results for publisher bias differences.
+
 | Statistic | Value |
 |-----------|-------|
 | χ² | 42.73 |
@@ -549,6 +570,8 @@ stat, p_value = friedmanchisquare(*publisher_groups)
 ### 7.2 Post-Hoc Pairwise Comparisons (Wilcoxon Signed-Rank)
 
 **Bonferroni-Corrected α:** 0.05 / 10 = 0.005
+
+**Table 11.** Post-hoc Wilcoxon signed-rank pairwise publisher comparisons.
 
 | Comparison | W Statistic | p-value | Significant? |
 |------------|-------------|---------|--------------|
@@ -564,6 +587,8 @@ stat, p_value = friedmanchisquare(*publisher_groups)
 
 ### 8.1 Posterior Summary Statistics
 
+**Table 12.** Posterior summary statistics for publisher bias effects.
+
 | Publisher | Mean | Median | SD | 2.5% HDI | 97.5% HDI | P(effect > 0) |
 |-----------|------|--------|-----|----------|-----------|---------------|
 | Publisher C | -0.48 | -0.47 | 0.07 | -0.62 | -0.34 | 0.00 |
@@ -576,6 +601,8 @@ stat, p_value = friedmanchisquare(*publisher_groups)
 
 A publisher has **statistically credible bias** if the 95% HDI excludes zero:
 
+**Table 13.** Credibility assessment of publisher bias via 95% HDI.
+
 | Publisher | 95% HDI | Contains Zero? | Credible Bias? | Direction |
 |-----------|---------|----------------|----------------|-----------|
 | Publisher C | [-0.62, -0.34] | No | Yes | **Liberal** |
@@ -587,6 +614,8 @@ A publisher has **statistically credible bias** if the 95% HDI excludes zero:
 ### 8.3 Effect Size Interpretation
 
 Using the bias scale [-2, +2]:
+
+**Table 14.** Effect size interpretation thresholds on the bias scale.
 
 | Effect Size | Interpretation |
 |-------------|---------------|
@@ -603,6 +632,8 @@ Using the bias scale [-2, +2]:
 ### 8.4 Within-Publisher Variability
 
 Textbook-level standard deviations within each publisher:
+
+**Table 15.** Within-publisher textbook-level bias variability.
 
 | Publisher | Mean Textbook Bias | Textbook SD | Range |
 |-----------|-------------------|-------------|-------|
@@ -642,6 +673,8 @@ corr_matrix = pivot_bias.corr(method='spearman')
 
 **Spearman Correlation Matrix (Publisher Bias by Topic):**
 
+**Table 16.** Spearman correlation matrix of publisher bias across topics.
+
 | | Pub A | Pub B | Pub C | Pub D | Pub E |
 |---|-------|-------|-------|-------|-------|
 | **Pub A** | 1.00 | -0.18 | **+0.74** | -0.62 | +0.11 |
@@ -672,6 +705,8 @@ topic_bias = (
 ```
 
 **Topic-Level Bias Heatmap (Mean Bias Score, [-2 = Liberal, +2 = Conservative]):**
+
+**Table 17.** Topic-level mean bias scores by publisher with divergence range.
 
 | Topic | Pub A | Pub B | Pub C | Pub D | Pub E | Δ Range |
 |-------|-------|-------|-------|-------|-------|---------|
@@ -707,6 +742,8 @@ df['high_uncertainty'] = df['ci_width'] > 0.5  # > 0.5 point spread
 
 **Passage Uncertainty Distribution:**
 
+**Table 18.** Passage-level uncertainty distribution by confidence-interval width.
+
 | CI Width | Interpretation | Passage Count | % of Corpus |
 |----------|---------------|---------------|-------------|
 | [0.00, 0.10] | High consensus | 1,247 | 27.7% |
@@ -722,6 +759,8 @@ df['high_uncertainty'] = df['ci_width'] > 0.5  # > 0.5 point spread
 ## 9. Model Diagnostics and Convergence
 
 ### 9.1 MCMC Convergence Diagnostics
+
+**Table 19.** MCMC convergence diagnostics per model parameter.
 
 | Parameter | R-hat | ESS Bulk | ESS Tail | Convergence |
 |-----------|-------|----------|----------|-------------|
@@ -752,6 +791,9 @@ Posterior predictive distribution aligns with observed data:
 Per 2026 AI governance standards (IEEE 2830-2025, EU AI Act):
 
 **Model Transparency:**
+
+**Table 20.** Model transparency aspects and their implementation.
+
 | Aspect | Implementation |
 |--------|----------------|
 | **Prompt Versioning** | All prompts version-controlled with SHA hashes |
@@ -770,6 +812,8 @@ LLMs may themselves exhibit political bias in their assessments. We address this
 4. **Calibration Studies:** Comparison with human expert panel on 500-passage subset
 
 ### 10.3 Ethical Use Guidelines
+
+**Table 21.** Ethical use guidelines by use case and permitted conditions.
 
 | Use Case | Permitted | Conditions |
 |----------|-----------|------------|
@@ -806,6 +850,8 @@ LLMs may themselves exhibit political bias in their assessments. We address this
 
 ### 11.2 Comparison: Frequentist vs. Bayesian
 
+**Table 22.** Comparison of frequentist and Bayesian inference approaches.
+
 | Aspect | Frequentist | Bayesian |
 |--------|-------------|----------|
 | **Point Estimate** | Sample mean | Posterior mean |
@@ -830,6 +876,8 @@ LLMs may themselves exhibit political bias in their assessments. We address this
 ## 12. Production Framework and MLOps
 
 ### 12.1 API Processing Summary (2026 Architecture)
+
+**Table 23.** API processing summary for the 2026 production architecture.
 
 | Component | Specification |
 |-----------|--------------|
@@ -902,6 +950,8 @@ async def robust_api_call(prompt: str, model: str) -> float:
 ```
 
 ### 12.4 Deliverables (MLflow Registry)
+
+**Table 24.** Project deliverables and their locations in the MLflow registry.
 
 | Artifact | Description | Location |
 |----------|-------------|----------|
@@ -1105,6 +1155,8 @@ structlog: 24.1+
 
 **Convergence Assessment:**
 
+**Table 25.** MCMC convergence diagnostics against acceptance thresholds.
+
 | Diagnostic | Threshold | All Parameters | Status |
 |------------|-----------|----------------|--------|
 | **R-hat (Gelman-Rubin)** | < 1.01 | 1.000 - 1.003 | [Yes] Pass |
@@ -1119,6 +1171,9 @@ structlog: 24.1+
 - Geweke diagnostic: z-scores within [-2, +2] for all parameters
 
 **Prior-Posterior Comparison:**
+
+**Table 26.** Prior-to-posterior comparison and shrinkage for key parameters.
+
 | Parameter | Prior Mean | Prior SD | Posterior Mean | Posterior SD | Shrinkage |
 |-----------|------------|----------|----------------|--------------|-----------|
 | μ_global | 0.0 | 1.0 | -0.06 | 0.04 | 96% |
@@ -1131,6 +1186,8 @@ structlog: 24.1+
 **Sensitivity to Prompt Wording:**
 
 We tested 5 prompt variations to assess stability of bias ratings:
+
+**Table 27.** Prompt variation sensitivity analysis relative to baseline.
 
 | Variation | Description | α with Baseline | Mean Δ |
 |-----------|-------------|-----------------|--------|
@@ -1146,6 +1203,8 @@ We tested 5 prompt variations to assess stability of bias ratings:
 
 **API Cost Breakdown:**
 
+**Table 28.** Per-model API cost breakdown across the full corpus.
+
 | Model | Tokens/Sample | Cost/1K Tokens | Cost/Sample | Total (67.5K) |
 |-------|---------------|----------------|-------------|---------------|
 | GPT-4o | ~1,200 | $0.0075 | $0.009 | $607.50 |
@@ -1157,6 +1216,8 @@ We tested 5 prompt variations to assess stability of bias ratings:
 
 **Scalability Projections:**
 
+**Table 29.** Scalability projections across corpus sizes and processing costs.
+
 | Corpus Size | Passages | API Cost | Processing Time | Human Equivalent |
 |-------------|----------|----------|-----------------|------------------|
 | Small | 1,000 | ~$85 | 2 hours | 4 weeks |
@@ -1167,6 +1228,9 @@ We tested 5 prompt variations to assess stability of bias ratings:
 ### Appendix H: Bias Detection Model Card
 
 **Model Identification:**
+
+**Table 30.** Model identification metadata for the bias detector.
+
 | Field | Value |
 |-------|-------|
 | **System Name** | LLM Ensemble Textbook Bias Detector |
@@ -1175,6 +1239,9 @@ We tested 5 prompt variations to assess stability of bias ratings:
 | **Primary Use** | Educational content bias assessment |
 
 **Component Models:**
+
+**Table 31.** Component LLMs, their organizations, versions, and roles.
+
 | LLM | Organization | Version | Role |
 |-----|-------------|---------|------|
 | GPT-4o | OpenAI | 2025-12 | Primary annotator |
@@ -1182,6 +1249,9 @@ We tested 5 prompt variations to assess stability of bias ratings:
 | Llama-3.2-90B | Meta | 2025-09 | Open-source validation |
 
 **Performance Metrics:**
+
+**Table 32.** Model card performance metrics for the bias-detection system.
+
 | Metric | Value | Interpretation |
 |--------|-------|----------------|
 | Krippendorff's α | 0.84 | Excellent inter-rater reliability |
@@ -1202,6 +1272,8 @@ We tested 5 prompt variations to assess stability of bias ratings:
 - Temporal limitation: Models trained before some textbooks published
 
 ### Appendix I: Glossary of Terms
+
+**Table 33.** Glossary of key statistical and machine-learning terms.
 
 | Term | Definition |
 |------|------------|
@@ -1224,6 +1296,8 @@ We tested 5 prompt variations to assess stability of bias ratings:
 
 **Full Publisher Effect Posterior Summary:**
 
+**Table 34.** Full publisher effect posterior summary across HDI quantiles.
+
 | Publisher | Mean | SD | HDI 2.5% | HDI 25% | HDI 50% | HDI 75% | HDI 97.5% |
 |-----------|------|-----|----------|---------|---------|---------|-----------|
 | Publisher A | -0.29 | 0.06 | -0.41 | -0.33 | -0.29 | -0.25 | -0.17 |
@@ -1233,6 +1307,8 @@ We tested 5 prompt variations to assess stability of bias ratings:
 | Publisher E | +0.02 | 0.06 | -0.10 | -0.02 | +0.02 | +0.06 | +0.14 |
 
 **Pairwise Publisher Contrasts:**
+
+**Table 35.** Pairwise publisher contrasts with posterior probabilities and significance.
 
 | Contrast | Mean | SD | P(> 0) | Significant? |
 |----------|------|-----|--------|--------------|
@@ -1258,6 +1334,8 @@ We tested 5 prompt variations to assess stability of bias ratings:
 Seeking **Data Scientist** and **Applied Statistician** roles at technology companies, foundation model companies, and research institutions. Specialized in experimentation, Bayesian hierarchical inference, GenAI evaluation, and responsible-AI practice.
 
 #### Core Data Science Competencies Demonstrated
+
+**Table 36.** Core data science competencies demonstrated and their industry relevance.
 
 | Competency Area | This Project | Industry Relevance (2026) |
 |-----------------|--------------|---------------------------|

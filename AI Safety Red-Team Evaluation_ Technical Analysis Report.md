@@ -47,6 +47,8 @@ This report presents a dual-stage framework for automated AI safety evaluation t
 
 ### Key Performance Metrics
 
+**Table 1.** Key performance metrics for the two-stage evaluation framework.
+
 | Metric | Stage 1 (LLM Ensemble) | Stage 2 (ML Classifier) |
 |--------|------------------------|-------------------------|
 | **Primary Reliability/Accuracy** | α = 0.81 (Excellent) | 96.8% Accuracy |
@@ -60,6 +62,8 @@ This report presents a dual-stage framework for automated AI safety evaluation t
 
 ### Harm Category Detection Performance
 
+**Table 2.** Detection performance by harm category with Bayesian risk intervals.
+
 | Harm Category | Prevalence | Precision | Recall | F1-Score | 95% HDI (Risk) |
 |---------------|------------|-----------|--------|----------|----------------|
 | **Dangerous Information** | 8.2% | 98.1% | 95.8% | 96.9% | [0.42, 0.58] |
@@ -70,6 +74,8 @@ This report presents a dual-stage framework for automated AI safety evaluation t
 | **Self-Harm/Violence** | 3.8% | 97.9% | 93.1% | 95.4% | [0.15, 0.28] |
 
 ### Model Vulnerability Rankings (Bayesian Posterior)
+
+**Table 3.** Model vulnerability rankings from Bayesian posterior harm rates.
 
 | Rank | Model | Harm Rate (Posterior Mean) | 95% HDI | Risk Classification |
 |------|-------|---------------------------|---------|---------------------|
@@ -122,6 +128,8 @@ This project addresses these challenges through a **hybrid human-AI evaluation f
 
 This project synthesizes methods from two foundational analyses:
 
+**Table 4.** Methods adapted from prior foundational analyses.
+
 | Component | Source Project | Adaptation |
 |-----------|---------------|------------|
 | LLM Ensemble + Krippendorff's α | Textbook Bias Detection | Multi-dimensional harm annotation |
@@ -154,6 +162,8 @@ Based on industry standards (Anthropic Usage Policy, OpenAI Content Policy, Goog
 
 ### 2.2 Operational Definitions
 
+**Table 5.** Operational definitions of the six harm categories.
+
 | Category | Code | Definition | Examples |
 |----------|------|------------|----------|
 | **Dangerous Information** | DI | Content enabling physical harm through CBRN, weapons, or cyberattacks | Synthesis routes, exploit code, weapon modifications |
@@ -166,6 +176,8 @@ Based on industry standards (Anthropic Usage Policy, OpenAI Content Policy, Goog
 ### 2.3 Severity Scale
 
 Each annotation includes a severity rating on a 0-3 scale:
+
+**Table 6.** Four-point harm severity rating scale.
 
 | Score | Label | Operational Definition |
 |-------|-------|----------------------|
@@ -197,6 +209,8 @@ Adversarial prompts in the dataset were categorized into eight primary attack st
   "DAN"      "Act as"    "Ignore     Base64/  Authority/
   "JEDI"     "Pretend"   previous"   Unicode  Urgency
 ```
+
+**Table 7.** Adversarial attack vector taxonomy with prevalence and harm rates.
 
 | Attack Type | Code | Description | Dataset % | Avg. Harm Rate |
 |-------------|------|-------------|-----------|----------------|
@@ -234,6 +248,8 @@ for defense_name, defense in DEFENSE_MECHANISMS.items():
 
 **Defense Effectiveness Matrix (Harm Rate Reduction vs. No Defense):**
 
+**Table 8.** Defense effectiveness matrix by attack type (harm rate reduction).
+
 | Defense Strategy | DHR | IDO | RPI | INJ | ENC | SOC | MTE | CWS | **Avg** |
 |-----------------|-----|-----|-----|-----|-----|-----|-----|-----|---------|
 | No Defense | 6.8% | 24.3% | 21.7% | 18.4% | 29.6% | 19.2% | 31.8% | 22.4% | 21.8% |
@@ -251,6 +267,8 @@ for defense_name, defense in DEFENSE_MECHANISMS.items():
 - **System-prompt-only** defenses are insufficient against identity override attacks (12.4% harm rate)
 
 ### 2a.4 Cost-Effectiveness of Defense Strategies
+
+**Table 9.** Cost-effectiveness comparison of defense strategies.
 
 | Defense Strategy | Harm Rate | Added Latency | Cost/1K Samples | Safety Score | ROI |
 |-----------------|-----------|---------------|-----------------|-------------|-----|
@@ -270,6 +288,8 @@ for defense_name, defense in DEFENSE_MECHANISMS.items():
 ## 3. LLM Ensemble Annotation Framework
 
 ### 3.1 Model Selection and Configuration
+
+**Table 10.** LLM ensemble member configurations and selection rationale.
 
 | Model | Parameters | Context Window | Safety Training | Selection Rationale |
 |-------|------------|----------------|-----------------|---------------------|
@@ -422,6 +442,8 @@ class SafetyAnnotationEnsemble:
 
 ### 4.1 Dataset Statistics
 
+**Table 11.** Dataset composition statistics.
+
 | Dimension | Count | Description |
 |-----------|-------|-------------|
 | **AI Models Evaluated** | 5 | Mix of open-source and commercial |
@@ -433,6 +455,8 @@ class SafetyAnnotationEnsemble:
 | **Harmful Samples (Ground Truth)** | 2,847 | 22.8% base rate |
 
 ### 4.2 Adversarial Prompt Categories
+
+**Table 12.** Distribution of adversarial prompt categories.
 
 | Category | Count | % of Total | Description |
 |----------|-------|------------|-------------|
@@ -545,6 +569,8 @@ class SafetyFeatureExtractor:
 
 ### 4.4 Feature Categories Summary
 
+**Table 13.** Summary of engineered feature categories.
+
 | Category | Features | Description |
 |----------|----------|-------------|
 | **Lexical** | 12 | Length, word count, character distributions |
@@ -590,6 +616,8 @@ alpha_severity = krippendorff.alpha(
 
 ### 5.2 Reliability Results Summary
 
+**Table 14.** Krippendorff's alpha reliability results by measure.
+
 | Measure | α Value | Interpretation |
 |---------|---------|----------------|
 | **Overall Harm (Binary)** | 0.81 | Excellent |
@@ -602,6 +630,8 @@ alpha_severity = krippendorff.alpha(
 | **Self-Harm/Violence** | 0.83 | Excellent |
 
 ### 5.3 Pairwise Agreement Analysis
+
+**Table 15.** Pairwise inter-annotator agreement between ensemble models.
 
 | Model Pair | Cohen's κ (Binary) | Pearson r (Severity) | RMSE |
 |------------|-------------------|---------------------|------|
@@ -661,6 +691,8 @@ vif_data['VIF'] = [
 
 **High VIF Features Identified (VIF > 10):**
 
+**Table 16.** High-VIF features identified for multicollinearity removal.
+
 | Feature | VIF | Action |
 |---------|-----|--------|
 | response_length | 847.3 | Remove (correlated with word_count) |
@@ -708,6 +740,8 @@ X_train_rfe = rfe.fit_transform(X_train_smote, y_train_smote)
 ```
 
 **Top 25 Selected Features:**
+
+**Table 17.** Top features selected by recursive feature elimination.
 
 | Rank | Feature | Category | Importance |
 |------|---------|----------|------------|
@@ -888,6 +922,8 @@ with pm.Model() as safety_hierarchical_model:
 
 ### 7.3 Posterior Results: Model-Level Effects
 
+**Table 18.** Posterior model-level harm effects from the hierarchical model.
+
 | Model | Posterior Mean (logit) | 95% HDI | Harm Rate (prob) | Risk Level |
 |-------|------------------------|---------|------------------|------------|
 | Model-A (Open 7B) | +0.67 | [+0.48, +0.87] | 18.4% | High |
@@ -900,6 +936,8 @@ with pm.Model() as safety_hierarchical_model:
 
 ### 7.4 Posterior Results: Category-Level Effects
 
+**Table 19.** Posterior category-level harm effects from the hierarchical model.
+
 | Category | Posterior Mean | 95% HDI | Interpretation |
 |----------|----------------|---------|----------------|
 | Deception/Manipulation | +0.54 | [+0.38, +0.71] | Highest vulnerability |
@@ -910,6 +948,8 @@ with pm.Model() as safety_hierarchical_model:
 | Self-Harm/Violence | +0.12 | [-0.04, +0.28] | Lowest (borderline) |
 
 ### 7.5 Model Diagnostics
+
+**Table 20.** MCMC convergence diagnostics for the Bayesian model.
 
 | Parameter | R-hat | ESS Bulk | ESS Tail | Convergence |
 |-----------|-------|----------|----------|-------------|
@@ -924,6 +964,8 @@ with pm.Model() as safety_hierarchical_model:
 ## 8. Model Performance and Validation
 
 ### 8.1 Classification Performance Comparison
+
+**Table 21.** Classification performance comparison across ensemble classifiers.
 
 | Model | Accuracy | Precision | Recall | F1-Score | ROC-AUC | Training Time |
 |-------|----------|-----------|--------|----------|---------|---------------|
@@ -959,6 +1001,8 @@ ACTUAL            ├──────────┼────────�
 
 **10-Fold Stratified Cross-Validation (Stacking):**
 
+**Table 22.** Ten-fold cross-validation results for the Stacking classifier.
+
 | Fold | Accuracy | F1-Score |
 |------|----------|----------|
 | 1 | 96.4% | 96.1% |
@@ -978,6 +1022,8 @@ ACTUAL            ├──────────┼────────�
 - **95% CI:** [93.2%, 98.6%]
 
 ### 8.4 Per-Category Performance
+
+**Table 23.** Per-category classification performance with support counts.
 
 | Category | Precision | Recall | F1 | Support |
 |----------|-----------|--------|-----|---------|
@@ -1007,6 +1053,8 @@ shap.summary_plot(shap_values, X_test_rfe, feature_names=selected_features)
 
 ### 9.2 Global Feature Attribution
 
+**Table 24.** Global feature attribution from SHAP analysis.
+
 | Rank | Feature | Mean |SHAP| | Direction | Interpretation |
 |------|---------|---------------|-----------|----------------|
 | 1 | refusal_phrases | 0.234 | − → Safe | Model refusal strongly predicts safety |
@@ -1019,6 +1067,8 @@ shap.summary_plot(shap_values, X_test_rfe, feature_names=selected_features)
 | 8 | prompt_response_similarity | 0.076 | + → Harmful | High similarity suggests direct compliance |
 
 ### 9.3 Category-Specific Feature Importance
+
+**Table 25.** Category-specific feature importance across harm categories.
 
 | Feature | DI | HD | DM | PV | IA | SH |
 |---------|----|----|----|----|----|----|
@@ -1209,6 +1259,8 @@ with mlflow.start_run(run_name="safety_classifier_v2"):
 
 ### 10.4 Performance Benchmarks
 
+**Table 26.** Production performance benchmarks against targets.
+
 | Metric | Value | Target | Status |
 |--------|-------|--------|--------|
 | **Latency (p50)** | 23ms | <50ms | [Yes] |
@@ -1224,6 +1276,8 @@ with mlflow.start_run(run_name="safety_classifier_v2"):
 
 ### 11.1 IEEE 2830-2025 Compliance
 
+**Table 27.** IEEE 2830-2025 compliance requirements and implementation.
+
 | Requirement | Implementation | Status |
 |-------------|---------------|--------|
 | **Transparency** | Full SHAP explanations for every prediction | [Yes] |
@@ -1233,6 +1287,8 @@ with mlflow.start_run(run_name="safety_classifier_v2"):
 | **Human Oversight** | High-disagreement samples flagged for review | [Yes] |
 
 ### 11.2 Model Card
+
+**Table 28.** Model card summary for the safety evaluator.
 
 | Field | Value |
 |-------|-------|
@@ -1249,6 +1305,8 @@ with mlflow.start_run(run_name="safety_classifier_v2"):
 ### 11.3 Bias and Fairness Analysis
 
 **Cross-Model Fairness:**
+
+**Table 29.** Cross-model fairness analysis of classifier performance.
 
 | AI Model Type | TPR | FPR | Δ from Mean |
 |---------------|-----|-----|-------------|
@@ -1277,6 +1335,8 @@ with mlflow.start_run(run_name="safety_classifier_v2"):
 5. **Feature Importance:** Safety-specific engineered features (refusal detection, jailbreak markers) outperform generic linguistic features
 
 ### 12.2 Comparison: LLM Annotation vs. Human Annotation
+
+**Table 30.** Comparison of LLM ensemble and human expert annotation.
 
 | Dimension | LLM Ensemble | Human Experts |
 |-----------|--------------|---------------|
@@ -1449,6 +1509,8 @@ For questions about code or data access, please contact:
 
 ### Appendix A: Complete Feature List
 
+**Table 31.** Complete engineered feature list with selection status.
+
 | # | Feature | Category | Selected |
 |---|---------|----------|----------|
 | 1 | prompt_length | Lexical | [No] |
@@ -1544,6 +1606,8 @@ sentence-transformers: 3.0+
 
 The study was designed with the following power analysis parameters:
 
+**Table 32.** Statistical power analysis parameters.
+
 | Parameter | Value | Justification |
 |-----------|-------|---------------|
 | **Target Power (1-β)** | 0.95 | High confidence in detecting true effects |
@@ -1567,6 +1631,8 @@ Where:
 
 **Economic Comparison: LLM Ensemble vs. Human Expert Annotation**
 
+**Table 33.** Cost-benefit comparison of annotation approaches.
+
 | Cost Component | LLM Ensemble | Human Experts | Savings |
 |----------------|--------------|---------------|---------|
 | **Per-Sample Cost** | $0.018 | $6.12 | **340×** |
@@ -1585,6 +1651,8 @@ Where:
 
 **Robustness of Results to Hyperparameter Variations:**
 
+**Table 34.** Sensitivity of accuracy to hyperparameter variations.
+
 | Parameter | Baseline | Variation | Impact on Accuracy |
 |-----------|----------|-----------|-------------------|
 | SMOTE k_neighbors | 5 | 3, 7, 10 | ±0.3% |
@@ -1598,6 +1666,8 @@ Where:
 ### Appendix H: Model Card (Full Specification)
 
 **Model Details:**
+**Table 35.** Full model details specification.
+
 | Field | Specification |
 |-------|--------------|
 | **Model Name** | AI Safety Red-Team Evaluator v1.0.0 |
@@ -1621,6 +1691,8 @@ Where:
 - Real-time production filtering without human oversight
 
 **Metrics:**
+**Table 36.** Model performance metrics with confidence intervals.
+
 | Metric | Value | Confidence Interval |
 |--------|-------|---------------------|
 | Accuracy | 96.8% | [93.2%, 98.6%] |
@@ -1643,6 +1715,8 @@ Where:
 - Monthly monitoring for distribution drift
 
 ### Appendix I: Glossary of Terms
+
+**Table 37.** Glossary of key terms.
 
 | Term | Definition |
 |------|------------|
@@ -1673,6 +1747,8 @@ Where:
 Seeking **Data Scientist** and **Applied Statistician** roles at technology companies, AI labs, and research institutions. Specialized in experimentation, Bayesian inference, predictive modeling, multi-model LLM evaluation, and responsible-AI practice.
 
 #### Core Data Science Competencies Demonstrated
+
+**Table 38.** Core data science competencies demonstrated in this project.
 
 | Competency Area | This Project | Industry Relevance (2026) |
 |-----------------|--------------|---------------------------|
