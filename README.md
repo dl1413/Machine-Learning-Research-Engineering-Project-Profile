@@ -385,15 +385,15 @@ Rochester Institute of Technology | Expected 2026
 ```
 LLM-Portfolio/
 ├── 📄 README.md                                           # This portfolio
-├── 🌐 index.html                                          # Interactive portfolio site
-├── 🎨 styles.css                                          # Portfolio styling
+├── 👤 Resume_Derek_Lankeaux.md                            # Resume
 ├── 🛡️ AI Safety Red-Team Evaluation_ Technical...md       # AI safety report
-├── 📑 AI_Safety_RedTeam_Evaluation_Publication.pdf             # Publication PDF
+├── 📑 AI_Safety_RedTeam_Evaluation_Publication.pdf        # Publication PDF
 ├── 📊 Breast_Cancer_Classification_Report.md              # ML technical report
 ├── 📑 Breast_Cancer_Classification_Publication.pdf        # Publication PDF
 ├── 🔬 LLM_Ensemble_Bias_Detection_Report.md               # LLM research report
 ├── 📑 LLM_Bias_Detection_Publication.pdf                  # Publication PDF
-└── 📁 reports/                                            # Additional documentation
+├── ⚙️ generate_publication_pdfs.py                        # PDF build pipeline
+└── 📦 requirements-pdf.txt                                # Build dependencies
 ```
 
 ---
@@ -420,7 +420,7 @@ LLM-Portfolio/
 
 **Programming:** Python • R • SQL • PyTorch • TensorFlow • scikit-learn • Pandas • NumPy • Dask • Apache Spark
 
-**Research Engineering:** Technical Writing • Statistical Validation • Reproducible Research • Peer Review • Literature Review • Experimental Design • Causal Inference • Cost-Benefit Analysis
+**Applied Research & Communication:** Technical Writing • Statistical Validation • Reproducible Research • Peer Review • Literature Review • Experimental Design • Causal Inference • Cost-Benefit Analysis
 
 **AI Safety Domains:** Dangerous Information • Hate Speech • Deception Detection • Privacy Violation • Illegal Activity • Self-Harm Prevention • Content Moderation • Trust & Safety
 
@@ -431,7 +431,7 @@ LLM-Portfolio/
 <div align="center">
 
 **📌 Last Updated:** April 2026  
-**✅ Compliance:** IEEE 2830-2025 (Transparent ML) • ISO/IEC 23894:2025 (AI Risk Management)  
+**✅ Compliance:** IEEE 2830-2025 (Transparent ML) • ISO/IEC 23894:2025 (AI Risk Management) • EU AI Act (2025)  
 **🔒 License:** Portfolio content © 2026 Derek Lankeaux. Code samples available under MIT License.
 
 ---
