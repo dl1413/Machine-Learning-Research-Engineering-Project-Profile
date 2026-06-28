@@ -521,7 +521,7 @@ def generate_pdf(md_path: str, pdf_path: str):
         'subject': subject,
         'keywords': keywords,
         'creator': 'WeasyPrint PDF Generator - 2026 Publication Pipeline',
-        'producer': 'Derek Lankeaux Machine Learning Research Portfolio',
+        'producer': 'Derek Lankeaux — Data Science Portfolio',
     }
 
     # Generate PDF with metadata and optimization settings
