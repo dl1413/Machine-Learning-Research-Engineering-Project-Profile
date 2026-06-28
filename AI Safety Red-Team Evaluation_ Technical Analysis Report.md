@@ -3,13 +3,13 @@
 **Project:** Automated Harm Detection Using LLM Ensemble Annotation and Bayesian ML Classification  
 **Date:** April 2026  
 **Author:** Derek Lankeaux, MS Applied Statistics  
-**Role:** Machine Learning Research Engineer | AI Safety Specialist  
+**Role:** Data Scientist | Applied Statistician  
 **Institution:** Rochester Institute of Technology  
 **Source:** AI_Safety_RedTeam_Evaluation.ipynb  
 **Version:** 2.0.0  
 **AI Standards Compliance:** IEEE 2830-2025 (Transparent ML), ISO/IEC 23894:2025 (AI Risk Management), EU AI Act (2025)
 
-> **Research Engineering Focus:** This project demonstrates core competencies for **2026 Machine Learning Research Engineer** roles including multi-model LLM evaluation, production ML pipelines, Bayesian uncertainty quantification, and AI safety methodologies.
+> **Data Science Focus:** This report documents an end-to-end data science project — problem framing, statistical methodology, results with quantified uncertainty, and stakeholder-ready deliverables — relevant to 2026 Data Scientist roles (experimentation, Bayesian inference, predictive modeling, and responsible-AI practice).
 
 ---
 
@@ -1667,31 +1667,31 @@ Where:
 ## About the Author
 
 ### Derek Lankeaux, MS Applied Statistics
-**Machine Learning Research Engineer | AI Safety Specialist | LLM Evaluation Expert**
+**Data Scientist | Applied Statistician | GenAI Evaluation Specialist**
 
 #### Professional Focus (2026)
-Seeking **Machine Learning Research Engineer** and **AI Safety Researcher** roles at leading AI labs, technology companies, and research institutions. Specialized in building production-grade AI safety evaluation systems, multi-model LLM ensembles, and Bayesian uncertainty quantification frameworks.
+Seeking **Data Scientist** and **Applied Statistician** roles at technology companies, AI labs, and research institutions. Specialized in experimentation, Bayesian inference, predictive modeling, multi-model LLM evaluation, and responsible-AI practice.
 
-#### Core Research Engineering Competencies Demonstrated
+#### Core Data Science Competencies Demonstrated
 
 | Competency Area | This Project | Industry Relevance (2026) |
 |-----------------|--------------|---------------------------|
-| **LLM Ensemble Systems** | 3-model evaluation pipeline (GPT-4o, Claude-3.5, Llama-3.2) | Critical for foundation model evaluation and benchmarking |
-| **AI Safety & Red-Teaming** | 6-category harm taxonomy, 12,500 adversarial samples | Essential for responsible AI deployment and compliance |
-| **Production ML Pipelines** | 850 samples/hr at $0.018/sample, FastAPI deployment | Required for scalable ML systems engineering |
-| **Statistical Rigor** | Krippendorff's α = 0.81, Bayesian HDI quantification | Foundational for research methodology and validation |
-| **MLOps & Reproducibility** | MLflow tracking, IEEE 2830-2025 compliance, model versioning | Standard for production ML teams |
-| **Explainable AI (XAI)** | SHAP feature attribution, audit-ready documentation | Required for AI governance and stakeholder trust |
+| **GenAI / LLM Evaluation** | 3-model ensemble pipeline (GPT-4o, Claude-3.5, Llama-3.2) | Critical for foundation model benchmarking and evaluation |
+| **Experimentation & Statistics** | Krippendorff's α = 0.81, Bayesian HDI quantification | Foundational for A/B testing, inter-rater reliability, and inference |
+| **Predictive Modeling** | 96.8% accuracy, Stacking Classifier, 47 engineered features | Core skill for production data science |
+| **Bayesian Inference** | PyMC hierarchical model, 95% HDI, uncertainty quantification | Essential for decision-grade probabilistic outputs |
+| **MLOps & Deployment** | MLflow tracking, FastAPI, 850 samples/hr at $0.018/sample | Standard for production data science teams |
+| **Explainability & Responsible AI** | SHAP values, IEEE 2830-2025 compliance, audit-ready docs | Required for AI governance and stakeholder communication |
 
 #### Technical Stack Expertise
 
 ```
-LLM APIs:        GPT-4o • Claude-3.5-Sonnet • Llama-3.2 • HuggingFace Transformers
-ML Frameworks:   PyTorch 2.0+ • scikit-learn 1.5+ • XGBoost 2.1+ • LightGBM
-Bayesian:        PyMC 5.15+ • ArviZ 0.18+ • NumPyro • Stan
+Statistics:      A/B Testing • Power Analysis • Hypothesis Testing • Bootstrap CIs • Krippendorff's α
+Bayesian:        PyMC 5.15+ • ArviZ 0.18+ • NumPyro • Stan • MCMC Diagnostics
+ML & GenAI:      scikit-learn 1.5+ • XGBoost 2.1+ • GPT-4o • Claude-3.5 • Llama-3.2
+Data Stack:      SQL • Pandas 2.2+ • Polars • NumPy 2.0+ • Apache Arrow
 MLOps:           MLflow 2.15+ • FastAPI 0.110+ • Docker • Kubernetes
-Explainability:  SHAP • LIME • InterpretML • Model Cards
-Safety Tools:    Constitutional AI • RLHF Evaluation • Harm Classifiers
+Explainability:  SHAP • LIME • InterpretML • Model Cards • IEEE 2830-2025
 ```
 
 #### Key Achievements from This Research
@@ -1704,10 +1704,10 @@ Safety Tools:    Constitutional AI • RLHF Evaluation • Harm Classifiers
 
 #### Career Objectives
 
-1. **Research Engineer** at AI labs developing next-generation safety evaluation frameworks
-2. **ML Systems Engineer** building scalable LLM evaluation and monitoring infrastructure
-3. **AI Safety Researcher** advancing red-team methodologies for foundation models
-4. **Applied Research Scientist** combining Bayesian methods with production ML systems
+1. **Data Scientist** at technology companies owning end-to-end experimentation and inference
+2. **Applied Statistician** building Bayesian models and uncertainty quantification frameworks
+3. **GenAI Evaluation Specialist** developing LLM benchmarking and safety assessment pipelines
+4. **Senior Data Scientist** leading responsible-AI practice and stakeholder-facing analytics
 
 #### Contact Information
 
@@ -1720,7 +1720,7 @@ Safety Tools:    Constitutional AI • RLHF Evaluation • Harm Classifiers
 ---
 
 *Report generated from analysis in AI_Safety_RedTeam_Evaluation.ipynb*  
-*Technical Review: Dual-Stage AI Safety Evaluation per 2026 Industry Standards*  
+*Technical Review: Dual-Stage AI Safety Evaluation per 2026 Data Scientist Standards*  
 *Compliant with IEEE 2830-2025, ISO/IEC 23894:2025, and EU AI Act*  
 *© 2026 Derek Lankeaux. All rights reserved.*
 

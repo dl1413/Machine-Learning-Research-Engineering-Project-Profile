@@ -3,13 +3,13 @@
 **Project:** Detecting Publisher Bias Using LLM Ensemble and Bayesian Hierarchical Methods  
 **Date:** April 2026  
 **Author:** Derek Lankeaux, MS Applied Statistics  
-**Role:** Machine Learning Research Engineer | LLM Evaluation Specialist  
+**Role:** Data Scientist | Applied Statistician  
 **Institution:** Rochester Institute of Technology  
 **Source:** LLM_Ensemble_Textbook_Bias_Detection.ipynb  
 **Version:** 4.0.0  
 **AI Standards Compliance:** IEEE 2830-2025, ISO/IEC 23894:2025, EU AI Act (2025)
 
-> **Research Engineering Focus:** This project demonstrates core competencies for **2026 Machine Learning Research Engineer** roles including multi-model LLM ensemble systems, Bayesian hierarchical inference, production NLP pipelines, and inter-rater reliability validation.
+> **Data Science Focus:** This report documents an end-to-end data science project — problem framing, statistical methodology, results with quantified uncertainty, and stakeholder-ready deliverables — relevant to 2026 Data Scientist roles (experimentation, Bayesian inference, predictive modeling, and responsible-AI practice).
 
 ---
 
@@ -1252,31 +1252,31 @@ We tested 5 prompt variations to assess stability of bias ratings:
 ## About the Author
 
 ### Derek Lankeaux, MS Applied Statistics
-**Machine Learning Research Engineer | LLM Evaluation Specialist | Bayesian Inference Expert**
+**Data Scientist | Applied Statistician | Bayesian Inference Specialist**
 
 #### Professional Focus (2026)
-Seeking **Machine Learning Research Engineer** and **Applied Research Scientist** roles at foundation model companies, AI research labs, and technology companies. Specialized in building multi-model LLM evaluation frameworks, Bayesian uncertainty quantification, and production-scale NLP systems.
+Seeking **Data Scientist** and **Applied Statistician** roles at technology companies, foundation model companies, and research institutions. Specialized in experimentation, Bayesian hierarchical inference, GenAI evaluation, and responsible-AI practice.
 
-#### Core Research Engineering Competencies Demonstrated
+#### Core Data Science Competencies Demonstrated
 
 | Competency Area | This Project | Industry Relevance (2026) |
 |-----------------|--------------|---------------------------|
-| **Multi-Model LLM Evaluation** | GPT-4o, Claude-3.5-Sonnet, Llama-3.2 ensemble with 92% correlation | Essential for foundation model benchmarking |
-| **Bayesian Hierarchical Modeling** | PyMC MCMC with full posterior inference, R-hat < 1.01 | Critical for uncertainty-aware ML systems |
-| **Inter-Rater Reliability** | Krippendorff's α = 0.84 (excellent agreement validation) | Foundational for annotation quality assurance |
-| **Production NLP Pipelines** | 67,500 API calls with circuit breakers and rate limiting | Required for scalable LLM applications |
-| **Statistical Hypothesis Testing** | Friedman χ², Wilcoxon, Bonferroni correction, HDI intervals | Core research methodology skill |
-| **Responsible AI** | EU AI Act compliance, transparency reporting, bias documentation | Standard for ethical AI deployment |
+| **GenAI / LLM Evaluation** | GPT-4o, Claude-3.5-Sonnet, Llama-3.2 ensemble with 92% correlation | Essential for foundation model benchmarking and evaluation |
+| **Bayesian Inference** | PyMC hierarchical model, MCMC, R-hat < 1.01, 95% HDI | Critical for uncertainty quantification and decision-grade outputs |
+| **Experimentation & Statistics** | Krippendorff's α = 0.84, Friedman χ², Bonferroni correction | Foundational for A/B testing, inter-rater reliability, and inference |
+| **Data Engineering at Scale** | 67,500 API calls with circuit breakers, rate limiting, error handling | Required for production data science pipelines |
+| **Causal & Hierarchical Modeling** | Partial pooling, publisher-level effects, posterior decision rules | Core skill for grouped-data inference and experimentation |
+| **Responsible AI** | EU AI Act compliance, IEEE 2830-2025, bias documentation | Standard for ethical AI deployment and stakeholder trust |
 
 #### Technical Stack Expertise
 
 ```
-LLM APIs:        GPT-4o • Claude-3.5-Sonnet • Llama-3.2 • OpenAI • Anthropic • Together AI
-Bayesian:        PyMC 5.15+ • ArviZ 0.18+ • MCMC Diagnostics • Posterior Inference
-NLP:             LangChain 0.3+ • Prompt Engineering • Token Management • RAG
-Statistics:      Krippendorff's Alpha • Friedman Test • Hierarchical Models • HDI
+Statistics:      Krippendorff's α • Friedman Test • Bonferroni Correction • Effect Sizes • HDI
+Bayesian:        PyMC 5.15+ • ArviZ 0.18+ • MCMC Diagnostics • Hierarchical Models
+GenAI / LLM:     GPT-4o • Claude-3.5-Sonnet • Llama-3.2 • LangChain • Prompt Engineering
+Data Stack:      SQL • Pandas 2.2+ • NumPy 2.0+ • Polars • Apache Arrow
 MLOps:           MLflow 2.15+ • FastAPI 0.110+ • Circuit Breakers • Rate Limiting
-Production:      async/await • Retry Logic • Error Handling • Logging (structlog)
+Explainability:  SHAP • Model Cards • IEEE 2830-2025 • EU AI Act • ISO/IEC 23894
 ```
 
 #### Key Achievements from This Research
@@ -1289,10 +1289,10 @@ Production:      async/await • Retry Logic • Error Handling • Logging (str
 
 #### Career Objectives
 
-1. **LLM Evaluation Engineer** at foundation model companies developing benchmarking frameworks
-2. **Research Engineer** building multi-model AI systems for content analysis and safety
-3. **Applied Research Scientist** advancing Bayesian methods for LLM uncertainty quantification
-4. **ML Systems Engineer** scaling NLP pipelines for production workloads
+1. **Data Scientist** at technology companies owning end-to-end experimentation and Bayesian inference
+2. **Applied Statistician** building hierarchical models and uncertainty quantification frameworks
+3. **GenAI Data Scientist** developing LLM evaluation and benchmarking methodologies
+4. **Senior Data Scientist** leading responsible-AI practice and stakeholder-facing analytics
 
 #### Contact Information
 
@@ -1305,6 +1305,6 @@ Production:      async/await • Retry Logic • Error Handling • Logging (str
 ---
 
 *Report generated from analysis in LLM_Ensemble_Textbook_Bias_Detection.ipynb*  
-*Technical Review: Bayesian Hierarchical Analysis with LLM Ensemble per 2026 Standards*  
+*Technical Review: Bayesian Hierarchical Analysis with LLM Ensemble per 2026 Data Scientist Standards*  
 *Compliant with IEEE 2830-2025, ISO/IEC 23894:2025, and EU AI Act*  
 *© 2026 Derek Lankeaux. All rights reserved.*

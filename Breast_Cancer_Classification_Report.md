@@ -3,13 +3,13 @@
 **Project:** Enhanced Ensemble Methods for Wisconsin Breast Cancer Classification  
 **Date:** April 2026  
 **Author:** Derek Lankeaux, MS Applied Statistics  
-**Role:** Machine Learning Research Engineer | Clinical ML Specialist  
+**Role:** Data Scientist | Applied Statistician  
 **Institution:** Rochester Institute of Technology  
 **Source:** Breast_Cancer_Classification_PUBLICATION.ipynb  
 **Version:** 4.0.0  
 **AI Standards Compliance:** IEEE 2830-2025 (Transparent ML), ISO/IEC 23894:2025 (AI Risk Management)
 
-> **Research Engineering Focus:** This project demonstrates core competencies for **2026 Machine Learning Research Engineer** roles including ensemble algorithm benchmarking, production ML pipelines, explainable AI (XAI), and clinical-grade model validation.
+> **Data Science Focus:** This report documents an end-to-end data science project — problem framing, statistical methodology, results with quantified uncertainty, and stakeholder-ready deliverables — relevant to 2026 Data Scientist roles (experimentation, Bayesian inference, predictive modeling, and responsible-AI practice).
 
 ---
 
@@ -1446,32 +1446,31 @@ Computer-aided detection (CAD) system intended to assist pathologists in the cla
 ## About the Author
 
 ### Derek Lankeaux, MS Applied Statistics
-**Machine Learning Research Engineer | Clinical ML Specialist | Ensemble Methods Expert**
+**Data Scientist | Applied Statistician | Predictive Modeling Specialist**
 
 #### Professional Focus (2026)
-Seeking **Machine Learning Research Engineer** and **Applied Research Scientist** roles at healthcare technology companies, AI research labs, and medical device firms. Specialized in building production-grade clinical ML systems with rigorous statistical validation and regulatory compliance.
+Seeking **Data Scientist** and **Applied Statistician** roles at technology companies, healthcare organizations, and research institutions. Specialized in experimentation, Bayesian inference, predictive modeling, ensemble methods, and responsible-AI practice.
 
-#### Core Research Engineering Competencies Demonstrated
+#### Core Data Science Competencies Demonstrated
 
 | Competency Area | This Project | Industry Relevance (2026) |
 |-----------------|--------------|---------------------------|
-| **Ensemble ML Systems** | 8-algorithm comparative benchmark (RF, XGBoost, LightGBM, AdaBoost, Stacking) | Core skill for production ML optimization |
-| **Clinical ML Performance** | 99.12% accuracy, 100% precision, exceeds human expert baseline | Critical for healthcare AI deployment |
-| **Feature Engineering** | VIF analysis, SMOTE balancing, RFE selection | Essential for robust model development |
-| **Statistical Validation** | 10-fold CV, bootstrap CI, multiple hypothesis testing | Foundational for research rigor |
-| **Explainable AI (XAI)** | SHAP values, fairness auditing, clinical interpretability | Required for FDA-regulated AI systems |
-| **Production MLOps** | MLflow registry, FastAPI deployment, <100ms latency | Standard for ML systems engineering |
+| **Predictive Modeling** | 8-algorithm benchmark (RF, XGBoost, LightGBM, AdaBoost, Stacking) | Core skill for production data science |
+| **Bayesian Optimization** | Optuna TPE hyperparameter search, Platt calibration (ECE 0.0089) | Essential for decision-grade probabilistic outputs |
+| **Feature Engineering** | VIF multicollinearity analysis, SMOTE balancing, RFE selection | Foundational for robust model development |
+| **Experimentation & Statistics** | 10-fold CV, bootstrap CI, multiple hypothesis testing | Foundational for A/B testing and statistical rigor |
+| **Explainability & Responsible AI** | SHAP values, fairness auditing, clinical interpretability | Required for regulated AI and stakeholder trust |
+| **MLOps & Deployment** | MLflow registry, FastAPI deployment, <100ms p95 latency | Standard for production data science teams |
 
 #### Technical Stack Expertise
 
 ```
-ML Frameworks:   scikit-learn 1.5+ • XGBoost 2.1+ • LightGBM 4.5+ • CatBoost
-Ensemble:        AdaBoost • Stacking • Voting • Bagging • Gradient Boosting
-Statistics:      SciPy • statsmodels • Bootstrap • Permutation Testing
-Preprocessing:   SMOTE • RFE • StandardScaler • VIF Analysis
+Statistics:      A/B Testing • Power Analysis • Hypothesis Testing • Bootstrap CIs • 10-Fold CV
+Bayesian:        Optuna TPE • Platt Calibration • Isotonic Regression • ECE
+ML Frameworks:   scikit-learn 1.5+ • XGBoost 2.1+ • LightGBM 4.5+ • CatBoost • AdaBoost
+Data Stack:      SQL • Pandas 2.2+ • NumPy 2.0+ • SMOTE • RFE • VIF Analysis
 MLOps:           MLflow 2.15+ • FastAPI 0.110+ • Docker • Model Registry
-Explainability:  SHAP • LIME • Feature Importance • Model Cards
-Deployment:      FastAPI • uvicorn • Redis • Prometheus Monitoring
+Explainability:  SHAP • LIME • Feature Importance • Model Cards • IEEE 2830-2025
 ```
 
 #### Key Achievements from This Research
@@ -1484,10 +1483,10 @@ Deployment:      FastAPI • uvicorn • Redis • Prometheus Monitoring
 
 #### Career Objectives
 
-1. **ML Research Engineer** at healthcare AI companies developing clinical decision support systems
-2. **Applied Research Scientist** advancing ensemble methods for medical imaging and diagnostics
-3. **ML Systems Engineer** building scalable inference pipelines for real-time clinical applications
-4. **Technical Lead** for FDA-regulated AI/ML product development teams
+1. **Data Scientist** at technology companies owning end-to-end experimentation and predictive modeling
+2. **Applied Statistician** building calibrated classifiers and decision-grade probabilistic systems
+3. **Senior Data Scientist** leading ensemble methods, explainability, and responsible-AI practice
+4. **Healthcare Data Scientist** deploying clinical decision support with regulatory compliance
 
 #### Contact Information
 
@@ -1500,6 +1499,6 @@ Deployment:      FastAPI • uvicorn • Redis • Prometheus Monitoring
 ---
 
 *Report generated from analysis in Breast_Cancer_Classification_PUBLICATION.ipynb*  
-*Technical Review: Machine Learning Pipeline Analysis per 2026 AI Data Analyst Standards*  
+*Technical Review: Machine Learning Pipeline Analysis per 2026 Data Scientist Standards*  
 *Compliant with IEEE 2830-2025 and ISO/IEC 23894:2025*  
 *© 2026 Derek Lankeaux. All rights reserved.*
