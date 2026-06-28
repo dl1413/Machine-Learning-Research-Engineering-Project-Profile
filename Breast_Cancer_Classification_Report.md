@@ -15,7 +15,7 @@
 
 ## Abstract
 
-This technical report presents a comprehensive machine learning pipeline for binary classification of breast cancer tumors using the Wisconsin Diagnostic Breast Cancer (WDBC) dataset. We implement and rigorously evaluate eight state-of-the-art ensemble learning algorithms: Random Forest, Gradient Boosting, AdaBoost, Bagging, XGBoost, LightGBM, Voting, and Stacking classifiers. Our preprocessing pipeline incorporates Variance Inflation Factor (VIF) analysis for multicollinearity detection, Synthetic Minority Over-sampling Technique (SMOTE) for class imbalance correction, and Recursive Feature Elimination (RFE) for optimal feature subset selection. The best-performing model (AdaBoost) achieved **99.12% accuracy**, **100% precision**, **98.59% recall**, and **0.9987 ROC-AUC** on the held-out test set, with 10-fold stratified cross-validation confirming robust generalization (98.46% ± 1.12%). This performance exceeds reported human inter-observer agreement in cytopathology (90-95%), demonstrating clinical viability for computer-aided diagnosis applications.
+This report presents a machine learning pipeline for binary classification of breast cancer tumors using the Wisconsin Diagnostic Breast Cancer (WDBC) dataset. We implement and rigorously evaluate eight ensemble learning algorithms: Random Forest, Gradient Boosting, AdaBoost, Bagging, XGBoost, LightGBM, Voting, and Stacking classifiers. The preprocessing pipeline combines Variance Inflation Factor (VIF) analysis for multicollinearity detection, Synthetic Minority Over-sampling Technique (SMOTE) for class imbalance correction, and Recursive Feature Elimination (RFE) for feature subset selection. The best model (AdaBoost) achieved **99.12% accuracy**, **100% precision**, **98.59% recall**, and **0.9987 ROC-AUC** on the held-out test set, with 10-fold stratified cross-validation confirming robust generalization (98.46% ± 1.12%). This performance exceeds reported human inter-observer agreement in cytopathology (90-95%), demonstrating clinical viability for computer-aided diagnosis.
 
 **Keywords:** Breast Cancer Classification, Ensemble Learning, AdaBoost, SMOTE, Recursive Feature Elimination, Machine Learning, Computer-Aided Diagnosis, Wisconsin Breast Cancer Dataset, Gradient Boosting, XGBoost, LightGBM, Explainable AI (XAI), MLOps, Responsible AI, Model Governance
 
@@ -71,11 +71,11 @@ This technical report presents a comprehensive machine learning pipeline for bin
 
 ### 1.1 Clinical Background and Motivation
 
-Breast cancer represents the most prevalent malignancy among women globally, with approximately 2.3 million new diagnoses and 685,000 deaths annually (WHO, 2020). The imperative for early detection is underscored by dramatic survival differentials: localized disease demonstrates 99% 5-year survival versus 29% for distant metastatic presentation (SEER Cancer Statistics, 2023).
+Breast cancer is the most prevalent malignancy among women globally, with approximately 2.3 million new diagnoses and 685,000 deaths annually (WHO, 2020). Early detection is critical: localized disease shows 99% 5-year survival versus 29% for distant metastatic presentation (SEER Cancer Statistics, 2023).
 
-Fine Needle Aspiration (FNA) cytology serves as a frontline diagnostic modality, offering minimally invasive tissue sampling for microscopic evaluation. Despite its clinical utility, FNA interpretation exhibits inter-observer variability, with concordance rates ranging from 85-95% depending on pathologist experience and tumor characteristics (Cibas & Ducatman, 2020).
+Fine Needle Aspiration (FNA) cytology is a frontline diagnostic modality, offering minimally invasive tissue sampling for microscopic evaluation. Yet FNA interpretation exhibits inter-observer variability, with concordance rates of 85-95% depending on pathologist experience and tumor characteristics (Cibas & Ducatman, 2020).
 
-Computer-Aided Diagnosis (CAD) systems implementing machine learning algorithms can function as decision support tools, potentially:
+Computer-Aided Diagnosis (CAD) systems using machine learning can function as decision support tools, potentially:
 - Reducing cognitive load on pathologists
 - Providing consistent, reproducible assessments
 - Flagging cases requiring specialist review
@@ -83,12 +83,12 @@ Computer-Aided Diagnosis (CAD) systems implementing machine learning algorithms 
 
 ### 1.2 Research Objectives
 
-This investigation pursues the following technical objectives:
+This investigation pursues four technical objectives:
 
-1. **Algorithm Benchmarking:** Systematic comparative evaluation of eight ensemble learning methodologies on cytological feature data
-2. **Preprocessing Optimization:** Implementation of multicollinearity analysis, class balancing, and feature selection to enhance model performance
-3. **Clinical Validation:** Establishment of performance metrics relevant to diagnostic decision-making
-4. **Production Pipeline:** Development of serializable model artifacts for deployment in clinical workflows
+1. **Algorithm Benchmarking:** Systematic comparison of eight ensemble learning methods on cytological feature data
+2. **Preprocessing Optimization:** Multicollinearity analysis, class balancing, and feature selection to improve model performance
+3. **Clinical Validation:** Performance metrics relevant to diagnostic decision-making
+4. **Production Pipeline:** Serializable model artifacts for deployment in clinical workflows
 
 ### 1.3 Dataset Specification
 
@@ -107,7 +107,7 @@ This investigation pursues the following technical objectives:
 
 ### 1.4 Feature Engineering from Cytological Images
 
-Features are computed from digitized FNA images using image segmentation and morphometric analysis. For each of 10 nuclear characteristics, three statistical measures are derived:
+Features are computed from digitized FNA images via image segmentation and morphometric analysis. For each of 10 nuclear characteristics, three statistical measures are derived:
 
 **Base Cytological Measurements:**
 
@@ -606,7 +606,7 @@ All models achieve exceptional ROC-AUC scores (>0.99):
 
 ### 5a.1 Motivation
 
-Grid search and random search explore hyperparameter space inefficiently—they do not use information from previous evaluations to guide future trials. Bayesian optimization with Tree-structured Parzen Estimator (TPE) maintains a probabilistic model of the objective function and samples from regions with high expected improvement, converging to near-optimal configurations in far fewer trials.
+Grid search and random search explore hyperparameter space inefficiently, ignoring information from previous evaluations. Bayesian optimization with a Tree-structured Parzen Estimator (TPE) maintains a probabilistic model of the objective function and samples regions of high expected improvement, converging to near-optimal configurations in far fewer trials.
 
 ### 5a.2 Optuna Framework
 
@@ -687,10 +687,10 @@ adaboost_optimized = AdaBoostClassifier(
 
 ### 5b.1 Motivation
 
-A model with 99% accuracy may still produce poorly calibrated probability estimates—predicting 90% confidence when the true probability is only 60%. For clinical decision support, calibrated probabilities are essential for:
-- Setting risk-stratified treatment thresholds
-- Communicating diagnostic uncertainty to clinicians
-- Triggering human review on borderline cases
+A model with 99% accuracy may still produce poorly calibrated probability estimates—predicting 90% confidence when the true probability is only 60%. For clinical decision support, calibrated probabilities are essential to:
+- Set risk-stratified treatment thresholds
+- Communicate diagnostic uncertainty to clinicians
+- Trigger human review on borderline cases
 
 ### 5b.2 Calibration Evaluation
 
@@ -829,7 +829,7 @@ print(f"Optimal threshold (F2): {optimal_threshold:.3f}")
 Learning curves demonstrate:
 - **No underfitting:** Training score starts high (~99%)
 - **No overfitting:** Training and validation scores converge
-- **Sufficient data:** Validation curve plateaus, indicating additional data unlikely to improve performance significantly
+- **Sufficient data:** Validation curve plateaus, indicating additional data is unlikely to improve performance significantly
 
 ### 6.3 Statistical Significance Testing
 
@@ -861,7 +861,7 @@ Learning curves demonstrate:
 
 ### 7.2 Permutation Importance
 
-Permutation importance provides model-agnostic feature rankings by measuring accuracy drop when feature values are shuffled:
+Permutation importance gives model-agnostic feature rankings by measuring the accuracy drop when feature values are shuffled:
 
 | Feature | Importance | Std |
 |---------|------------|-----|
@@ -905,7 +905,7 @@ Permutation importance provides model-agnostic feature rankings by measuring acc
 
 ### 9.1 SHAP (SHapley Additive exPlanations) Analysis
 
-Per 2026 AI data analyst standards and IEEE 2830-2025 requirements, we implement comprehensive model explainability:
+Per 2026 AI data analyst standards and IEEE 2830-2025 requirements, we implement full model explainability:
 
 ```python
 import shap
@@ -983,11 +983,11 @@ metric_frame = MetricFrame(
 
 ### 10.1 Why AdaBoost Excelled
 
-AdaBoost's superior performance can be attributed to:
+Four factors explain AdaBoost's superior performance:
 
-1. **Adaptive Sample Weighting:** Focuses on difficult-to-classify samples, particularly borderline cases between benign and malignant
+1. **Adaptive Sample Weighting:** Focuses on hard-to-classify samples, particularly borderline benign-malignant cases
 2. **Weak Learner Synergy:** Sequential decision stumps capture complementary decision boundaries
-3. **Robustness to Noise:** SAMME.R variant's probabilistic predictions smooth decision boundaries
+3. **Robustness to Noise:** The SAMME.R variant's probabilistic predictions smooth decision boundaries
 4. **Low Variance:** Ensemble averaging reduces prediction variance
 
 ### 10.2 Impact of Preprocessing Pipeline
@@ -1000,10 +1000,10 @@ AdaBoost's superior performance can be attributed to:
 
 ### 10.3 Limitations and Considerations
 
-1. **Single-Center Data:** WDBC originates from University of Wisconsin, limiting generalizability
+1. **Single-Center Data:** WDBC originates from the University of Wisconsin, limiting generalizability
 2. **Feature Dependency:** Relies on pre-computed morphometric features, not raw images
-3. **Class Definition:** Binary classification doesn't capture tumor grade or subtype
-4. **Temporal Validity:** Dataset from 1995; modern imaging may differ
+3. **Class Definition:** Binary classification does not capture tumor grade or subtype
+4. **Temporal Validity:** The dataset dates from 1995; modern imaging may differ
 
 ---
 
@@ -1105,19 +1105,19 @@ async def predict(features: list[float]):
 ### 12.1 Summary of Contributions
 
 1. **Comprehensive Benchmarking:** Evaluated 8+ ensemble algorithms per 2026 standards
-2. **Bayesian Hyperparameter Optimization:** Optuna TPE identifies optimal AdaBoost configuration in 5× fewer trials than grid search
+2. **Bayesian Hyperparameter Optimization:** Optuna TPE finds the optimal AdaBoost configuration in 5× fewer trials than grid search
 3. **Optimal Pipeline:** SMOTE + RFE + AdaBoost achieves 99.12% accuracy with full explainability
-4. **Calibrated Probability Output:** Platt scaling reduces ECE by 71.5% (0.0312 → 0.0089) for clinically reliable confidence estimates
+4. **Calibrated Probability Output:** Platt scaling cuts ECE by 71.5% (0.0312 → 0.0089) for clinically reliable confidence estimates
 5. **Clinical Viability:** Performance exceeds human inter-observer agreement (85-95%)
-6. **Production Readiness:** MLOps-enabled deployment with monitoring and drift detection
-7. **Responsible AI:** Full SHAP explainability, fairness auditing, IEEE 2830-2025 compliance
+6. **Production Readiness:** MLOps deployment with monitoring and drift detection
+7. **Responsible AI:** Full SHAP explainability, fairness auditing, and IEEE 2830-2025 compliance
 8. **Reproducibility:** MLflow tracking with versioned artifacts
 
 ### 12.2 Key Findings
 
-- AdaBoost classifier achieves best overall performance (99.12% accuracy, 100% precision)
+- The AdaBoost classifier achieves the best overall performance (99.12% accuracy, 100% precision)
 - Bayesian optimization (Optuna TPE) converges in ~45 trials vs. 240 for exhaustive grid search
-- Platt-calibrated model achieves Brier score of 0.0127, a 30.6% improvement over uncalibrated
+- The Platt-calibrated model achieves a Brier score of 0.0127, a 30.6% improvement over uncalibrated
 - Threshold optimization (0.31 vs. default 0.50) enables 100% sensitivity for mass-screening contexts
 - SMOTE improves minority class recall by 3-7%
 - RFE reduces dimensionality 50% without accuracy loss

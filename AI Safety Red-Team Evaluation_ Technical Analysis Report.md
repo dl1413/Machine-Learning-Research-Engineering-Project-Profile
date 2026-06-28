@@ -15,7 +15,7 @@
 
 ## Abstract
 
-This technical report presents a novel dual-stage framework for automated AI safety evaluation combining Large Language Model (LLM) ensemble annotation with production-grade machine learning classification. Stage 1 employs an ensemble of three frontier LLMs—GPT-4o, Claude-3.5-Sonnet, and Llama-3.2-90B—to generate multi-dimensional harm annotations across **12,500 AI model response pairs**, achieving excellent inter-rater reliability (Krippendorff's α = 0.81). Stage 2 trains eight ensemble classifiers on LLM-generated labels augmented with engineered features, with the best-performing model (Stacking Classifier) achieving **96.8% accuracy**, **97.2% precision**, **96.1% recall**, and **0.9923 ROC-AUC** for harm detection. Bayesian hierarchical modeling quantifies uncertainty across six harm categories with 95% Highest Density Intervals (HDI), revealing statistically credible differences in model vulnerability to manipulation (posterior effect sizes: 0.12–0.67). The framework enables scalable red-team evaluation processing **~850 prompt-response pairs per hour** at **$0.018/sample**—a 340× cost reduction versus human annotation—while maintaining audit-grade reliability for AI governance compliance.
+This report presents a dual-stage framework for automated AI safety evaluation that combines Large Language Model (LLM) ensemble annotation with production-grade machine learning classification. Stage 1 employs an ensemble of three frontier LLMs—GPT-4o, Claude-3.5-Sonnet, and Llama-3.2-90B—to generate multi-dimensional harm annotations across **12,500 AI model response pairs**, achieving excellent inter-rater reliability (Krippendorff's α = 0.81). Stage 2 trains eight ensemble classifiers on the LLM-generated labels and engineered features; the best model (Stacking Classifier) reaches **96.8% accuracy**, **97.2% precision**, **96.1% recall**, and **0.9923 ROC-AUC** for harm detection. Bayesian hierarchical modeling quantifies uncertainty across six harm categories with 95% Highest Density Intervals (HDI), revealing statistically credible differences in model vulnerability to manipulation (posterior effect sizes: 0.12–0.67). The framework scales red-team evaluation to **~850 prompt-response pairs per hour** at **$0.018/sample**—a 340× cost reduction versus human annotation—while maintaining audit-grade reliability for AI governance compliance.
 
 **Keywords:** AI Safety, Red-Teaming, Large Language Models, Harm Detection, Ensemble Learning, Bayesian Hierarchical Modeling, Constitutional AI, LLM Evaluation, RLHF, Krippendorff's Alpha, XGBoost, SHAP, MLOps, Responsible AI, Model Governance, Prompt Injection
 
@@ -85,7 +85,7 @@ This technical report presents a novel dual-stage framework for automated AI saf
 
 ### 1.1 Problem Statement and Motivation
 
-The rapid deployment of Large Language Models (LLMs) in consumer-facing applications has created an urgent need for scalable, rigorous safety evaluation methodologies. Traditional red-teaming approaches rely on human experts to craft adversarial prompts and assess model responses—a process that is expensive (~$50-100/hour), non-scalable, and subject to inter-annotator variability.
+The rapid deployment of Large Language Models (LLMs) in consumer-facing applications demands scalable, rigorous safety evaluation. Traditional red-teaming relies on human experts to craft adversarial prompts and assess model responses—a process that is expensive (~$50-100/hour), non-scalable, and subject to inter-annotator variability.
 
 **Critical Challenges in Current AI Safety Evaluation:**
 
@@ -98,8 +98,8 @@ The rapid deployment of Large Language Models (LLMs) in consumer-facing applicat
 This project addresses these challenges through a **hybrid human-AI evaluation framework** that:
 - Uses frontier LLMs as calibrated "expert annotators" with validated reliability
 - Trains efficient ML classifiers to scale LLM-quality annotations
-- Quantifies uncertainty through Bayesian hierarchical modeling
-- Provides explainable, auditable safety assessments for governance compliance
+- Quantifies uncertainty via Bayesian hierarchical modeling
+- Delivers explainable, auditable safety assessments for governance compliance
 
 ### 1.2 Research Questions
 
@@ -120,7 +120,7 @@ This project addresses these challenges through a **hybrid human-AI evaluation f
 
 ### 1.4 Relationship to Prior Work
 
-This project synthesizes methodologies from two foundational analyses:
+This project synthesizes methods from two foundational analyses:
 
 | Component | Source Project | Adaptation |
 |-----------|---------------|------------|
@@ -180,7 +180,7 @@ Each annotation includes a severity rating on a 0-3 scale:
 
 ### 2a.1 Motivation
 
-A comprehensive red-team evaluation must characterize not only *what* harms occur but *how* adversaries elicit them. Understanding attack vectors enables more targeted detection and defense. This section introduces a structured adversarial attack taxonomy applied to the 12,500-sample dataset and analyzes the relative effectiveness of different defense mechanisms.
+A comprehensive red-team evaluation must characterize not only *what* harms occur but *how* adversaries elicit them; understanding attack vectors enables more targeted detection and defense. This section introduces a structured adversarial attack taxonomy applied to the 12,500-sample dataset and analyzes the relative effectiveness of different defense mechanisms.
 
 ### 2a.2 Attack Vector Taxonomy
 
@@ -1266,13 +1266,13 @@ with mlflow.start_run(run_name="safety_classifier_v2"):
 
 ### 12.1 Key Findings
 
-1. **LLM Ensemble Reliability:** α = 0.81 demonstrates frontier LLMs can serve as calibrated safety annotators, comparable to expert human agreement (typically 0.75-0.85)
+1. **LLM Ensemble Reliability:** α = 0.81 shows frontier LLMs can serve as calibrated safety annotators, matching expert human agreement (typically 0.75-0.85)
 
-2. **ML Scalability:** Stacking classifier achieves 96.8% accuracy at 340× lower cost than human annotation ($0.018 vs. ~$6.12/sample)
+2. **ML Scalability:** The Stacking classifier achieves 96.8% accuracy at 340× lower cost than human annotation ($0.018 vs. ~$6.12/sample)
 
-3. **Model Vulnerability Hierarchy:** Open-source models (especially smaller parameter counts) show significantly higher vulnerability to adversarial manipulation
+3. **Model Vulnerability Hierarchy:** Open-source models—especially smaller parameter counts—are significantly more vulnerable to adversarial manipulation
 
-4. **Category-Specific Risk:** Deception/manipulation attacks show highest success rates; self-harm/violence prompts are most reliably refused
+4. **Category-Specific Risk:** Deception/manipulation attacks succeed most often; self-harm/violence prompts are most reliably refused
 
 5. **Feature Importance:** Safety-specific engineered features (refusal detection, jailbreak markers) outperform generic linguistic features
 
@@ -1310,13 +1310,13 @@ with mlflow.start_run(run_name="safety_classifier_v2"):
 
 ### 13.1 Summary of Contributions
 
-1. **Validated LLM-as-Annotator Paradigm:** Krippendorff's α = 0.81 demonstrates frontier LLMs achieve expert-level inter-rater reliability for safety annotation
+1. **Validated LLM-as-Annotator Paradigm:** Krippendorff's α = 0.81 shows frontier LLMs achieve expert-level inter-rater reliability for safety annotation
 
-2. **Adversarial Attack Taxonomy:** Comprehensive 8-category taxonomy (MITRE ATLAS-aligned) revealing multi-turn escalation (31.8%) and encoding evasion (29.6%) as the highest-risk attack vectors
+2. **Adversarial Attack Taxonomy:** An 8-category, MITRE ATLAS-aligned taxonomy identifying multi-turn escalation (31.8%) and encoding evasion (29.6%) as the highest-risk attack vectors
 
-3. **Defense Effectiveness Analysis:** Dual-filter ML classification reduces average harm rate from 21.8% → 4.8% (78% reduction); adversarial training achieves best single-strategy performance (4.2%)
+3. **Defense Effectiveness Analysis:** Dual-filter ML classification reduces average harm rate from 21.8% → 4.8% (78% reduction); adversarial training achieves the best single-strategy performance (4.2%)
 
-4. **Production-Grade Classification:** Stacking classifier achieves 96.8% accuracy with 3.9% false negative rate—meeting safety-critical application requirements
+4. **Production-Grade Classification:** The Stacking classifier achieves 96.8% accuracy with a 3.9% false negative rate—meeting safety-critical requirements
 
 5. **Bayesian Risk Quantification:** Hierarchical modeling reveals statistically credible differences in model vulnerability (HDIs: 0.12-0.67 effect sizes)
 

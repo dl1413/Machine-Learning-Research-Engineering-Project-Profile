@@ -170,6 +170,15 @@ table {
     border-collapse: collapse;
     margin: 10pt 0 14pt 0;
     font-size: 9pt;
+}
+
+/* Repeat header row when a long table spans a page break. */
+thead {
+    display: table-header-group;
+}
+
+/* Keep individual rows from splitting across pages. */
+tr {
     page-break-inside: avoid;
 }
 

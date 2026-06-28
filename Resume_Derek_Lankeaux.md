@@ -45,7 +45,7 @@ Rochester Institute of Technology | Expected 2026
 ## Research Projects
 
 ### AI Safety Red-Team Evaluation Framework
-*Independent Research Project | January 2026*
+*Independent Research Project | April 2026*
 
 - Engineered dual-stage LLM ensemble (GPT-4o, Claude-3.5, Llama-3.2) achieving 96.8% accuracy in automated harm detection across 12,500 AI response pairs and 6 harm categories
 - Achieved 340x cost reduction ($0.018/sample vs $6.12 human annotation) while maintaining excellent inter-rater reliability (Krippendorff's alpha = 0.81)
@@ -59,7 +59,7 @@ Rochester Institute of Technology | Expected 2026
 ---
 
 ### LLM Ensemble Textbook Bias Detection System
-*Independent Research Project | January 2026*
+*Independent Research Project | April 2026*
 
 - Built multi-LLM evaluation framework processing 67,500 bias ratings across 4,500 textbook passages with 2.5M tokens at production scale
 - Achieved excellent inter-rater reliability (Krippendorff's alpha = 0.84) with 92% pairwise correlation across frontier LLMs
@@ -73,7 +73,7 @@ Rochester Institute of Technology | Expected 2026
 ---
 
 ### Clinical-Grade Breast Cancer ML Classification System
-*Independent Research Project | January 2026*
+*Independent Research Project | April 2026*
 
 - Developed ensemble ML system achieving 99.12% accuracy, exceeding human expert performance (90-95%) on breast cancer classification
 - Attained 100% precision (zero false positives) and 98.59% recall with near-perfect discrimination (ROC-AUC 0.9987)
@@ -101,9 +101,9 @@ Rochester Institute of Technology | Expected 2026
 
 | Title | Type | Date |
 |-------|------|------|
-| AI Safety Red-Team Evaluation | Technical Report v1.0.0 | January 2026 |
-| LLM Ensemble Textbook Bias Detection | Technical Report v3.0.0 | January 2026 |
-| Breast Cancer Classification | Technical Report v3.0.0 | January 2026 |
+| AI Safety Red-Team Evaluation | Technical Report v2.0.0 | April 2026 |
+| LLM Ensemble Textbook Bias Detection | Technical Report v4.0.0 | April 2026 |
+| Breast Cancer Classification | Technical Report v4.0.0 | April 2026 |
 
 ---
 

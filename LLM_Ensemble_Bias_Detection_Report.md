@@ -15,7 +15,7 @@
 
 ## Abstract
 
-This technical report presents a novel computational framework for detecting and quantifying political bias in educational textbooks using an ensemble of three frontier Large Language Models (LLMs)—GPT-4, Claude-3-Opus, and Llama-3-70B—combined with Bayesian hierarchical modeling for robust statistical inference. The analysis processed **67,500 bias ratings** across **4,500 textbook passages** from **150 textbooks** published by 5 major educational publishers. We demonstrate excellent inter-rater reliability among LLMs (Krippendorff's α = 0.84), statistically significant publisher-level bias differences (Friedman χ² = 42.73, p < 0.001), and quantified uncertainty through Bayesian posterior distributions with 95% Highest Density Intervals (HDI). Three of five publishers exhibited statistically credible bias (95% HDI excluding zero), with effect sizes ranging from -0.48 (liberal) to +0.38 (conservative) on a [-2, +2] scale. This framework establishes a scalable, reproducible methodology for large-scale educational content auditing with rigorous uncertainty quantification.
+This report presents a computational framework for detecting and quantifying political bias in educational textbooks, combining an ensemble of three frontier Large Language Models (LLMs)—GPT-4, Claude-3-Opus, and Llama-3-70B—with Bayesian hierarchical modeling for robust inference. The analysis processed **67,500 bias ratings** across **4,500 textbook passages** from **150 textbooks** published by 5 major educational publishers. We demonstrate excellent inter-rater reliability among LLMs (Krippendorff's α = 0.84), statistically significant publisher-level bias differences (Friedman χ² = 42.73, p < 0.001), and quantified uncertainty via Bayesian posterior distributions with 95% Highest Density Intervals (HDI). Three of five publishers exhibited statistically credible bias (95% HDI excluding zero), with effect sizes from -0.48 (liberal) to +0.38 (conservative) on a [-2, +2] scale. The framework establishes a scalable, reproducible methodology for large-scale educational content auditing with rigorous uncertainty quantification.
 
 **Keywords:** Large Language Models, GPT-4o, Claude-3.5-Sonnet, Llama-3.2, Ensemble Methods, Bayesian Hierarchical Modeling, Krippendorff's Alpha, Inter-Rater Reliability, Political Bias Detection, Textbook Analysis, Educational Content, MCMC Sampling, PyMC, Responsible AI, LLM Governance, Prompt Engineering
 
@@ -74,14 +74,14 @@ This technical report presents a novel computational framework for detecting and
 
 ### 1.1 Problem Statement and Motivation
 
-Political bias in educational materials represents a significant concern for educational equity and democratic discourse. Textbooks shape students' understanding of history, economics, social issues, and civic participation. Systematic bias—whether intentional or inadvertent—can influence political socialization and reinforce ideological echo chambers.
+Political bias in educational materials threatens educational equity and democratic discourse. Textbooks shape students' understanding of history, economics, social issues, and civic participation, so systematic bias—whether intentional or inadvertent—can influence political socialization and reinforce ideological echo chambers.
 
 Traditional approaches to detecting textbook bias rely on:
 - **Expert human reviewers:** Subjective, expensive, and non-scalable
 - **Keyword analysis:** Superficial, missing contextual nuance
 - **Readability metrics:** Irrelevant to ideological content
 
-This project introduces a novel paradigm: leveraging frontier Large Language Models (LLMs) as calibrated bias detectors, validated through ensemble consensus and quantified through Bayesian uncertainty estimation.
+This project introduces a new paradigm: frontier Large Language Models (LLMs) as calibrated bias detectors, validated through ensemble consensus and quantified through Bayesian uncertainty estimation.
 
 ### 1.2 Research Questions
 
@@ -368,7 +368,7 @@ alpha = krippendorff.alpha(
 
 ### 6.1 Model Motivation
 
-Frequentist approaches (simple means, t-tests) provide point estimates but lack:
+Frequentist approaches (simple means, t-tests) give point estimates but lack:
 - **Uncertainty quantification:** No probability distributions on parameters
 - **Partial pooling:** Cannot borrow strength across publishers/textbooks
 - **Hierarchical structure:** Ignore nested data (passages within textbooks within publishers)
@@ -506,7 +506,7 @@ Bayesian hierarchical models implement **partial pooling**:
 - **Complete pooling:** All publishers treated as identical (high bias, underfitting)
 - **Partial pooling:** Publisher estimates "shrunk" toward global mean proportional to sample size and variance
 
-This produces more reliable estimates, especially for publishers/textbooks with limited data.
+This yields more reliable estimates, especially for publishers and textbooks with limited data.
 
 ---
 
@@ -620,7 +620,7 @@ Textbook-level standard deviations within each publisher:
 
 ### 8a.1 Motivation
 
-Beyond publisher-level averages, understanding how bias patterns correlate across publishers and vary by topic provides deeper actionable insights for content auditing. Two publishers may show the same average bias for different reasons—correlated (systematic industry-wide trend) or independent (publisher-specific editorial stance).
+Beyond publisher-level averages, how bias patterns correlate across publishers and vary by topic yields deeper, actionable insights for content auditing. Two publishers may show the same average bias for different reasons—correlated (a systematic industry-wide trend) or independent (a publisher-specific editorial stance).
 
 ### 8a.2 Inter-Publisher Bias Correlation
 
@@ -685,7 +685,7 @@ topic_bias = (
 
 ### 8a.4 Passage-Level Uncertainty Quantification
 
-For individual educational content decisions, passage-level confidence intervals provide granular risk assessment:
+For individual content decisions, passage-level confidence intervals provide granular risk assessment:
 
 ```python
 # Bootstrap passage-level confidence intervals
