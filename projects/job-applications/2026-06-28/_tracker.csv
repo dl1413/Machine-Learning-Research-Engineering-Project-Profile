@@ -1,0 +1,6 @@
+date,company,role,location,source_url,status,letter_file,notes
+2026-06-28,SentiLink,"Data Scientist, New Grad",Remote (US),https://jobs.ashbyhq.com/sentilink/3cb2885e-7a58-4a14-94d5-b7b851053408,drafted,01_SentiLink_DataScientist_NewGrad.md,"New-grad targeted; risk/fraud calibration angle"
+2026-06-28,The New York Times,Machine Learning Scientist,"New York, NY",https://job-boards.greenhouse.io/thenewyorktimes/jobs/4690108005,drafted,02_NYTimes_MLScientist.md,"MS+2yr acceptable; editorial-bias angle"
+2026-06-28,Patronus AI,Research Scientist,Remote,https://www.glassdoor.com/job-listing/research-scientist-patronus-ai-inc-JV_KO0,18_KE19,34.htm,drafted,03_PatronusAI_ResearchScientist.md,"LLM eval bullseye; verify role still open on careers page"
+2026-06-28,Snorkel AI,"Applied AI Engineer, AI Solutions",Remote/Hybrid,https://job-boards.greenhouse.io/snorkelai/jobs/5709067004,drafted,04_SnorkelAI_AppliedAIEngineer.md,"Weak-supervision + LLM eval angle"
+2026-06-28,AirOps,Data Scientist / MLE,Remote/NYC,https://jobs.ashbyhq.com/airops/8fec67ba-1d12-4ecb-b1dc-610d28f85a51,drafted,05_AirOps_DataScientist_MLE.md,"AI search behavior + ranking angle"
