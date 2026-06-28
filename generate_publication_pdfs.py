@@ -77,6 +77,12 @@ body {
     margin: 4pt 0 2pt 0;
 }
 
+.title-block .role {
+    font-size: 10pt;
+    color: #333;
+    margin: 1pt 0 3pt 0;
+}
+
 .title-block .affiliation {
     font-size: 10pt;
     font-style: italic;
@@ -358,6 +364,7 @@ def build_title_block(metadata: dict) -> str:
     title = metadata.get('title', 'Untitled')
     # Clean up title - remove "Technical Analysis Report" suffix for cleaner look
     author = metadata.get('Author', metadata.get('author', 'Unknown'))
+    role = metadata.get('Role', '')
     institution = metadata.get('Institution', '')
     date = metadata.get('Date', '')
     compliance = metadata.get('AI Standards Compliance', '')
@@ -368,6 +375,8 @@ def build_title_block(metadata: dict) -> str:
     if project and project != title:
         html += f'  <p style="font-size: 10pt; margin: 2pt 0 8pt 0; color: #444;">{project}</p>\n'
     html += f'  <p class="author">{author}</p>\n'
+    if role:
+        html += f'  <p class="role">{role}</p>\n'
     if institution:
         html += f'  <p class="affiliation">{institution}</p>\n'
     if date:
@@ -544,15 +553,15 @@ def generate_pdf(md_path: str, pdf_path: str):
 
 REPORTS = [
     {
-        'md': 'AI Safety Red-Team Evaluation_ Technical Analysis Report (3).md',
+        'md': 'AI Safety Red-Team Evaluation_ Technical Analysis Report.md',
         'pdf': 'AI_Safety_RedTeam_Evaluation_Publication.pdf',
     },
     {
-        'md': 'Breast_Cancer_Classification_Report (4).md',
+        'md': 'Breast_Cancer_Classification_Report.md',
         'pdf': 'Breast_Cancer_Classification_Publication.pdf',
     },
     {
-        'md': 'LLM_Ensemble_Bias_Detection_Report (3).md',
+        'md': 'LLM_Ensemble_Bias_Detection_Report.md',
         'pdf': 'LLM_Bias_Detection_Publication.pdf',
     },
 ]
