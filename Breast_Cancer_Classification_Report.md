@@ -3,19 +3,19 @@
 **Project:** Enhanced Ensemble Methods for Wisconsin Breast Cancer Classification  
 **Date:** April 2026  
 **Author:** Derek Lankeaux, MS Applied Statistics  
-**Role:** Machine Learning Research Engineer | Clinical ML Specialist  
+**Role:** Data Scientist | Applied Statistician  
 **Institution:** Rochester Institute of Technology  
 **Source:** Breast_Cancer_Classification_PUBLICATION.ipynb  
 **Version:** 4.0.0  
-**AI Standards Compliance:** IEEE 2830-2025 (Transparent ML), ISO/IEC 23894:2025 (AI Risk Management)
+**AI Standards Compliance:** IEEE 2830-2025 (Transparent ML), ISO/IEC 23894:2025 (AI Risk Management), EU AI Act (2025)
 
-> **Research Engineering Focus:** This project demonstrates core competencies for **2026 Machine Learning Research Engineer** roles including ensemble algorithm benchmarking, production ML pipelines, explainable AI (XAI), and clinical-grade model validation.
+> **Data Science Focus:** This report documents an end-to-end data science project — problem framing, statistical methodology, results with quantified uncertainty, and stakeholder-ready deliverables — relevant to 2026 Data Scientist roles (experimentation, Bayesian inference, predictive modeling, and responsible-AI practice).
 
 ---
 
 ## Abstract
 
-This technical report presents a comprehensive machine learning pipeline for binary classification of breast cancer tumors using the Wisconsin Diagnostic Breast Cancer (WDBC) dataset. We implement and rigorously evaluate eight state-of-the-art ensemble learning algorithms: Random Forest, Gradient Boosting, AdaBoost, Bagging, XGBoost, LightGBM, Voting, and Stacking classifiers. Our preprocessing pipeline incorporates Variance Inflation Factor (VIF) analysis for multicollinearity detection, Synthetic Minority Over-sampling Technique (SMOTE) for class imbalance correction, and Recursive Feature Elimination (RFE) for optimal feature subset selection. The best-performing model (AdaBoost) achieved **99.12% accuracy**, **100% precision**, **98.59% recall**, and **0.9987 ROC-AUC** on the held-out test set, with 10-fold stratified cross-validation confirming robust generalization (98.46% ± 1.12%). This performance exceeds reported human inter-observer agreement in cytopathology (90-95%), demonstrating clinical viability for computer-aided diagnosis applications.
+This report presents a machine learning pipeline for binary classification of breast cancer tumors using the Wisconsin Diagnostic Breast Cancer (WDBC) dataset. We implement and rigorously evaluate eight ensemble learning algorithms: Random Forest, Gradient Boosting, AdaBoost, Bagging, XGBoost, LightGBM, Voting, and Stacking classifiers. The preprocessing pipeline combines Variance Inflation Factor (VIF) analysis for multicollinearity detection, Synthetic Minority Over-sampling Technique (SMOTE) for class imbalance correction, and Recursive Feature Elimination (RFE) for feature subset selection. The best model (AdaBoost) achieved **99.12% accuracy**, **100% precision**, **98.59% recall**, and **0.9987 ROC-AUC** on the held-out test set, with 10-fold stratified cross-validation confirming robust generalization (98.46% ± 1.12%). This performance exceeds reported human inter-observer agreement in cytopathology (90-95%), demonstrating clinical viability for computer-aided diagnosis.
 
 **Keywords:** Breast Cancer Classification, Ensemble Learning, AdaBoost, SMOTE, Recursive Feature Elimination, Machine Learning, Computer-Aided Diagnosis, Wisconsin Breast Cancer Dataset, Gradient Boosting, XGBoost, LightGBM, Explainable AI (XAI), MLOps, Responsible AI, Model Governance
 
@@ -47,6 +47,8 @@ This technical report presents a comprehensive machine learning pipeline for bin
 
 ### Performance Overview
 
+**Table 1.** Headline performance metrics of the best model on the test set.
+
 | Metric | Value | Formula | Clinical Interpretation |
 |--------|-------|---------|------------------------|
 | **Accuracy** | 99.12% | (TP+TN)/(TP+TN+FP+FN) = 113/114 | Exceptional diagnostic performance |
@@ -71,11 +73,11 @@ This technical report presents a comprehensive machine learning pipeline for bin
 
 ### 1.1 Clinical Background and Motivation
 
-Breast cancer represents the most prevalent malignancy among women globally, with approximately 2.3 million new diagnoses and 685,000 deaths annually (WHO, 2020). The imperative for early detection is underscored by dramatic survival differentials: localized disease demonstrates 99% 5-year survival versus 29% for distant metastatic presentation (SEER Cancer Statistics, 2023).
+Breast cancer is the most prevalent malignancy among women globally, with approximately 2.3 million new diagnoses and 685,000 deaths annually (WHO, 2020). Early detection is critical: localized disease shows 99% 5-year survival versus 29% for distant metastatic presentation (SEER Cancer Statistics, 2023).
 
-Fine Needle Aspiration (FNA) cytology serves as a frontline diagnostic modality, offering minimally invasive tissue sampling for microscopic evaluation. Despite its clinical utility, FNA interpretation exhibits inter-observer variability, with concordance rates ranging from 85-95% depending on pathologist experience and tumor characteristics (Cibas & Ducatman, 2020).
+Fine Needle Aspiration (FNA) cytology is a frontline diagnostic modality, offering minimally invasive tissue sampling for microscopic evaluation. Yet FNA interpretation exhibits inter-observer variability, with concordance rates of 85-95% depending on pathologist experience and tumor characteristics (Cibas & Ducatman, 2020).
 
-Computer-Aided Diagnosis (CAD) systems implementing machine learning algorithms can function as decision support tools, potentially:
+Computer-Aided Diagnosis (CAD) systems using machine learning can function as decision support tools, potentially:
 - Reducing cognitive load on pathologists
 - Providing consistent, reproducible assessments
 - Flagging cases requiring specialist review
@@ -83,16 +85,18 @@ Computer-Aided Diagnosis (CAD) systems implementing machine learning algorithms 
 
 ### 1.2 Research Objectives
 
-This investigation pursues the following technical objectives:
+This investigation pursues four technical objectives:
 
-1. **Algorithm Benchmarking:** Systematic comparative evaluation of eight ensemble learning methodologies on cytological feature data
-2. **Preprocessing Optimization:** Implementation of multicollinearity analysis, class balancing, and feature selection to enhance model performance
-3. **Clinical Validation:** Establishment of performance metrics relevant to diagnostic decision-making
-4. **Production Pipeline:** Development of serializable model artifacts for deployment in clinical workflows
+1. **Algorithm Benchmarking:** Systematic comparison of eight ensemble learning methods on cytological feature data
+2. **Preprocessing Optimization:** Multicollinearity analysis, class balancing, and feature selection to improve model performance
+3. **Clinical Validation:** Performance metrics relevant to diagnostic decision-making
+4. **Production Pipeline:** Serializable model artifacts for deployment in clinical workflows
 
 ### 1.3 Dataset Specification
 
 **Wisconsin Diagnostic Breast Cancer (WDBC) Database**
+
+**Table 2.** Specifications of the WDBC dataset.
 
 | Specification | Value |
 |--------------|-------|
@@ -107,9 +111,11 @@ This investigation pursues the following technical objectives:
 
 ### 1.4 Feature Engineering from Cytological Images
 
-Features are computed from digitized FNA images using image segmentation and morphometric analysis. For each of 10 nuclear characteristics, three statistical measures are derived:
+Features are computed from digitized FNA images via image segmentation and morphometric analysis. For each of 10 nuclear characteristics, three statistical measures are derived:
 
 **Base Cytological Measurements:**
+
+**Table 3.** Definitions and biological significance of base cytological features.
 
 | Feature | Mathematical Definition | Biological Significance |
 |---------|------------------------|------------------------|
@@ -248,6 +254,8 @@ X_train, X_test, y_train, y_test = train_test_split(
 
 **Partition Statistics:**
 
+**Table 4.** Class distribution across the train-test stratified split.
+
 | Partition | Total | Benign | Malignant | Benign % |
 |-----------|-------|--------|-----------|----------|
 | Training | 455 | 286 | 169 | 62.86% |
@@ -285,6 +293,9 @@ $$VIF_j = \frac{1}{1 - R_j^2}$$
 Where $R_j^2$ is the coefficient of determination from regressing feature j on all other features.
 
 **Interpretation Thresholds:**
+
+**Table 5.** Variance Inflation Factor thresholds and recommended actions.
+
 | VIF Value | Interpretation | Action |
 |-----------|---------------|--------|
 | VIF = 1 | No multicollinearity | Retain |
@@ -293,6 +304,8 @@ Where $R_j^2$ is the coefficient of determination from regressing feature j on a
 | VIF ≥ 10 | Severe | Strong candidate for removal |
 
 **Analysis Results:**
+
+**Table 6.** Features with the highest measured VIF values.
 
 | Rank | Feature | VIF | Interpretation |
 |------|---------|-----|----------------|
@@ -326,6 +339,8 @@ X_train_smote, y_train_smote = smote.fit_resample(X_train_scaled, y_train)
 
 **Class Distribution Transformation:**
 
+**Table 7.** Class counts before and after SMOTE balancing.
+
 | Class | Before SMOTE | After SMOTE | Δ |
 |-------|--------------|-------------|---|
 | Malignant (0) | 169 | 286 | +117 synthetic |
@@ -351,6 +366,8 @@ X_test_rfe = rfe.transform(X_test_scaled)
 ```
 
 **Selected Features (15 of 30):**
+
+**Table 8.** Features retained by Recursive Feature Elimination.
 
 | # | Feature | Category | Importance Rank |
 |---|---------|----------|-----------------|
@@ -553,6 +570,8 @@ StackingClassifier(
 
 ### 5.1 Model Performance Comparison
 
+**Table 9.** Comparative test-set performance across the eight ensemble models.
+
 | Model | Accuracy | Precision | Recall | F1-Score | ROC-AUC | Training Time |
 |-------|----------|-----------|--------|----------|---------|---------------|
 | **AdaBoost** (Best) | **99.12%** | **100.00%** | **98.59%** | **99.29%** | **0.9987** | 0.42s |
@@ -589,6 +608,8 @@ ACTUAL            ├──────────┼────────�
 
 All models achieve exceptional ROC-AUC scores (>0.99):
 
+**Table 10.** ROC-AUC scores with 95% confidence intervals by model.
+
 | Model | ROC-AUC | 95% CI |
 |-------|---------|--------|
 | AdaBoost | 0.9987 | [0.9961, 1.0000] |
@@ -606,7 +627,7 @@ All models achieve exceptional ROC-AUC scores (>0.99):
 
 ### 5a.1 Motivation
 
-Grid search and random search explore hyperparameter space inefficiently—they do not use information from previous evaluations to guide future trials. Bayesian optimization with Tree-structured Parzen Estimator (TPE) maintains a probabilistic model of the objective function and samples from regions with high expected improvement, converging to near-optimal configurations in far fewer trials.
+Grid search and random search explore hyperparameter space inefficiently, ignoring information from previous evaluations. Bayesian optimization with a Tree-structured Parzen Estimator (TPE) maintains a probabilistic model of the objective function and samples regions of high expected improvement, converging to near-optimal configurations in far fewer trials.
 
 ### 5a.2 Optuna Framework
 
@@ -643,6 +664,8 @@ study.optimize(objective_adaboost, n_trials=100, show_progress_bar=False)
 
 ### 5a.3 Hyperparameter Search Space and Results
 
+**Table 11.** AdaBoost search space and Bayesian-optimal hyperparameters.
+
 | Hyperparameter | Range | Default | Bayesian Optimal | Change |
 |---------------|-------|---------|-----------------|--------|
 | `n_estimators` | [25, 200] | 50 | 63 | +13 |
@@ -650,6 +673,8 @@ study.optimize(objective_adaboost, n_trials=100, show_progress_bar=False)
 | `algorithm` | SAMME / SAMME.R | SAMME.R | SAMME.R | — |
 
 **Convergence Behavior (ROC-AUC across 100 trials):**
+
+**Table 12.** Optuna convergence of ROC-AUC across trial ranges.
 
 | Trial Range | Best Trial AUC | Running Best |
 |-------------|----------------|-------------|
@@ -673,6 +698,8 @@ adaboost_optimized = AdaBoostClassifier(
 
 ### 5a.4 Efficiency Comparison
 
+**Table 13.** Search-strategy efficiency for reaching target ROC-AUC.
+
 | Search Strategy | Trials to 0.9985 AUC | Wall-Clock Time | Evaluations |
 |----------------|----------------------|-----------------|-------------|
 | Grid Search (exhaustive) | 240 (full grid) | ~18 min | 240 |
@@ -687,10 +714,10 @@ adaboost_optimized = AdaBoostClassifier(
 
 ### 5b.1 Motivation
 
-A model with 99% accuracy may still produce poorly calibrated probability estimates—predicting 90% confidence when the true probability is only 60%. For clinical decision support, calibrated probabilities are essential for:
-- Setting risk-stratified treatment thresholds
-- Communicating diagnostic uncertainty to clinicians
-- Triggering human review on borderline cases
+A model with 99% accuracy may still produce poorly calibrated probability estimates—predicting 90% confidence when the true probability is only 60%. For clinical decision support, calibrated probabilities are essential to:
+- Set risk-stratified treatment thresholds
+- Communicate diagnostic uncertainty to clinicians
+- Trigger human review on borderline cases
 
 ### 5b.2 Calibration Evaluation
 
@@ -724,6 +751,8 @@ print(f"ECE (raw AdaBoost): {ece_raw:.4f}")
 
 **Calibration Curve Summary (Before Calibration):**
 
+**Table 14.** Reliability of predicted confidence before calibration.
+
 | Confidence Bin | Predicted Confidence | Actual Frequency | |Δ| |
 |----------------|---------------------|------------------|-----|
 | [0.00, 0.20] | 0.08 | 0.04 | 0.04 |
@@ -753,6 +782,8 @@ calibrated_iso.fit(X_val_rfe, y_val)
 ```
 
 ### 5b.4 Calibration Results
+
+**Table 15.** Calibration metrics across calibration methods.
 
 | Calibration Method | ECE (↓ better) | Brier Score (↓ better) | Accuracy | ROC-AUC |
 |-------------------|----------------|----------------------|----------|---------|
@@ -786,6 +817,8 @@ print(f"Optimal threshold (F2): {optimal_threshold:.3f}")
 # Optimal threshold (F2): 0.312
 ```
 
+**Table 16.** Clinical operating metrics at different decision thresholds.
+
 | Decision Threshold | Sensitivity | Specificity | PPV | NPV | Clinical Use |
 |-------------------|------------|-------------|-----|-----|-------------|
 | 0.30 | 100.0% | 95.2% | 93.3% | 100.0% | Mass screening (maximize recall) |
@@ -804,6 +837,8 @@ print(f"Optimal threshold (F2): {optimal_threshold:.3f}")
 - Scoring metric: Accuracy
 
 **AdaBoost Cross-Validation Results:**
+
+**Table 17.** Per-fold accuracy from 10-fold stratified cross-validation.
 
 | Fold | Accuracy | Deviation from Mean |
 |------|----------|---------------------|
@@ -829,7 +864,7 @@ print(f"Optimal threshold (F2): {optimal_threshold:.3f}")
 Learning curves demonstrate:
 - **No underfitting:** Training score starts high (~99%)
 - **No overfitting:** Training and validation scores converge
-- **Sufficient data:** Validation curve plateaus, indicating additional data unlikely to improve performance significantly
+- **Sufficient data:** Validation curve plateaus, indicating additional data is unlikely to improve performance significantly
 
 ### 6.3 Statistical Significance Testing
 
@@ -843,6 +878,8 @@ Learning curves demonstrate:
 ## 7. Feature Engineering Analysis
 
 ### 7.1 Feature Importance (Random Forest)
+
+**Table 18.** Top Random Forest features by Gini importance.
 
 | Rank | Feature | Gini Importance | Cumulative |
 |------|---------|-----------------|------------|
@@ -861,7 +898,9 @@ Learning curves demonstrate:
 
 ### 7.2 Permutation Importance
 
-Permutation importance provides model-agnostic feature rankings by measuring accuracy drop when feature values are shuffled:
+Permutation importance gives model-agnostic feature rankings by measuring the accuracy drop when feature values are shuffled:
+
+**Table 19.** Model-agnostic permutation importance of top features.
 
 | Feature | Importance | Std |
 |---------|------------|-----|
@@ -876,6 +915,8 @@ Permutation importance provides model-agnostic feature rankings by measuring acc
 
 ### 8.1 Diagnostic Performance Metrics
 
+**Table 20.** Diagnostic performance metrics with clinical interpretation.
+
 | Metric | Value | Formula | Clinical Interpretation |
 |--------|-------|---------|------------------------|
 | **Sensitivity (TPR)** | 98.59% | TP/(TP+FN) | Probability of detecting malignancy given disease present |
@@ -888,6 +929,8 @@ Permutation importance provides model-agnostic feature rankings by measuring acc
 ### 8.2 Clinical Decision Analysis
 
 **Cost-Benefit Considerations:**
+
+**Table 21.** Clinical impact and mitigation for each error type.
 
 | Error Type | Count | Clinical Impact | Mitigation |
 |------------|-------|-----------------|------------|
@@ -905,7 +948,7 @@ Permutation importance provides model-agnostic feature rankings by measuring acc
 
 ### 9.1 SHAP (SHapley Additive exPlanations) Analysis
 
-Per 2026 AI data analyst standards and IEEE 2830-2025 requirements, we implement comprehensive model explainability:
+Per 2026 AI data analyst standards and IEEE 2830-2025 requirements, we implement full model explainability:
 
 ```python
 import shap
@@ -919,6 +962,8 @@ shap.summary_plot(shap_values, X_test_rfe, feature_names=selected_features)
 ```
 
 **Global Feature Attribution (SHAP):**
+
+**Table 22.** Global SHAP feature attribution and clinical significance.
 
 | Rank | Feature | Mean |SHAP| | Direction | Clinical Significance |
 |------|---------|---------------|-----------|----------------------|
@@ -967,6 +1012,8 @@ metric_frame = MetricFrame(
 
 ### 9.4 Model Card (Google Framework)
 
+**Table 23.** Model card summarizing intended use and limitations.
+
 | Field | Value |
 |-------|-------|
 | **Model Name** | AdaBoost Breast Cancer Classifier v3.0 |
@@ -983,14 +1030,16 @@ metric_frame = MetricFrame(
 
 ### 10.1 Why AdaBoost Excelled
 
-AdaBoost's superior performance can be attributed to:
+Four factors explain AdaBoost's superior performance:
 
-1. **Adaptive Sample Weighting:** Focuses on difficult-to-classify samples, particularly borderline cases between benign and malignant
+1. **Adaptive Sample Weighting:** Focuses on hard-to-classify samples, particularly borderline benign-malignant cases
 2. **Weak Learner Synergy:** Sequential decision stumps capture complementary decision boundaries
-3. **Robustness to Noise:** SAMME.R variant's probabilistic predictions smooth decision boundaries
+3. **Robustness to Noise:** The SAMME.R variant's probabilistic predictions smooth decision boundaries
 4. **Low Variance:** Ensemble averaging reduces prediction variance
 
 ### 10.2 Impact of Preprocessing Pipeline
+
+**Table 24.** Accuracy contribution of each preprocessing technique.
 
 | Technique | Accuracy Without | Accuracy With | Improvement |
 |-----------|------------------|---------------|-------------|
@@ -1000,10 +1049,10 @@ AdaBoost's superior performance can be attributed to:
 
 ### 10.3 Limitations and Considerations
 
-1. **Single-Center Data:** WDBC originates from University of Wisconsin, limiting generalizability
+1. **Single-Center Data:** WDBC originates from the University of Wisconsin, limiting generalizability
 2. **Feature Dependency:** Relies on pre-computed morphometric features, not raw images
-3. **Class Definition:** Binary classification doesn't capture tumor grade or subtype
-4. **Temporal Validity:** Dataset from 1995; modern imaging may differ
+3. **Class Definition:** Binary classification does not capture tumor grade or subtype
+4. **Temporal Validity:** The dataset dates from 1995; modern imaging may differ
 
 ---
 
@@ -1092,6 +1141,8 @@ async def predict(features: list[float]):
 
 ### 11.4 Monitoring Dashboard
 
+**Table 25.** Production monitoring metrics, thresholds, and alerts.
+
 | Metric | Threshold | Alert Trigger | Current |
 |--------|-----------|---------------|---------|
 | Accuracy | > 97% | < 95% (7 days) | 99.1% |
@@ -1105,19 +1156,19 @@ async def predict(features: list[float]):
 ### 12.1 Summary of Contributions
 
 1. **Comprehensive Benchmarking:** Evaluated 8+ ensemble algorithms per 2026 standards
-2. **Bayesian Hyperparameter Optimization:** Optuna TPE identifies optimal AdaBoost configuration in 5× fewer trials than grid search
+2. **Bayesian Hyperparameter Optimization:** Optuna TPE finds the optimal AdaBoost configuration in 5× fewer trials than grid search
 3. **Optimal Pipeline:** SMOTE + RFE + AdaBoost achieves 99.12% accuracy with full explainability
-4. **Calibrated Probability Output:** Platt scaling reduces ECE by 71.5% (0.0312 → 0.0089) for clinically reliable confidence estimates
+4. **Calibrated Probability Output:** Platt scaling cuts ECE by 71.5% (0.0312 → 0.0089) for clinically reliable confidence estimates
 5. **Clinical Viability:** Performance exceeds human inter-observer agreement (85-95%)
-6. **Production Readiness:** MLOps-enabled deployment with monitoring and drift detection
-7. **Responsible AI:** Full SHAP explainability, fairness auditing, IEEE 2830-2025 compliance
+6. **Production Readiness:** MLOps deployment with monitoring and drift detection
+7. **Responsible AI:** Full SHAP explainability, fairness auditing, and IEEE 2830-2025 compliance
 8. **Reproducibility:** MLflow tracking with versioned artifacts
 
 ### 12.2 Key Findings
 
-- AdaBoost classifier achieves best overall performance (99.12% accuracy, 100% precision)
+- The AdaBoost classifier achieves the best overall performance (99.12% accuracy, 100% precision)
 - Bayesian optimization (Optuna TPE) converges in ~45 trials vs. 240 for exhaustive grid search
-- Platt-calibrated model achieves Brier score of 0.0127, a 30.6% improvement over uncalibrated
+- The Platt-calibrated model achieves a Brier score of 0.0127, a 30.6% improvement over uncalibrated
 - Threshold optimization (0.31 vs. default 0.50) enables 100% sensitivity for mass-screening contexts
 - SMOTE improves minority class recall by 3-7%
 - RFE reduces dimensionality 50% without accuracy loss
@@ -1227,6 +1278,8 @@ For questions about code or data access, please contact:
 
 ### Appendix A: Complete Feature List
 
+**Table 26.** Complete 30-feature list with RFE selection status.
+
 | # | Feature Name | Category | Selected by RFE |
 |---|--------------|----------|-----------------|
 | 1 | mean radius | Size (Mean) | [Yes] |
@@ -1324,6 +1377,8 @@ pydantic: 2.5+
 
 **Hypothesis Testing Framework:**
 
+**Table 27.** Statistical hypothesis tests and their outcomes.
+
 | Test | Null Hypothesis | Alternative | Result | Interpretation |
 |------|-----------------|-------------|--------|----------------|
 | **McNemar's Test** | Models have equal error rates | Error rates differ | χ² = 8.47, p = 0.003 | AdaBoost significantly better |
@@ -1332,6 +1387,8 @@ pydantic: 2.5+
 | **DeLong Test (ROC)** | AUC₁ = AUC₂ | AUC₁ ≠ AUC₂ | z = 2.18, p = 0.029 | AdaBoost has higher AUC |
 
 **Bootstrap Confidence Intervals (10,000 iterations):**
+
+**Table 28.** Bootstrap confidence intervals for key metrics.
 
 | Metric | Point Estimate | 95% Bootstrap CI | SE |
 |--------|----------------|------------------|-----|
@@ -1344,6 +1401,8 @@ pydantic: 2.5+
 ### Appendix E: Cost-Benefit Analysis for Clinical Deployment
 
 **Economic Impact Assessment:**
+
+**Table 29.** Expected misclassification costs across screening scenarios.
 
 | Scenario | False Positive Cost | False Negative Cost | Total Expected Cost |
 |----------|--------------------|--------------------|-------------------|
@@ -1362,6 +1421,8 @@ pydantic: 2.5+
 
 **Hyperparameter Robustness Testing:**
 
+**Table 30.** Accuracy stability across tested hyperparameter ranges.
+
 | Parameter | Range Tested | Optimal | Accuracy Range | Variance |
 |-----------|--------------|---------|----------------|----------|
 | AdaBoost n_estimators | [25, 50, 75, 100, 150] | 50 | 98.2% - 99.1% | Low |
@@ -1375,6 +1436,9 @@ pydantic: 2.5+
 ### Appendix G: Model Card (FDA-Style Documentation)
 
 **Device Identification:**
+
+**Table 31.** Device identification fields for FDA-style documentation.
+
 | Field | Value |
 |-------|-------|
 | **Device Name** | AdaBoost Breast Cancer Classifier |
@@ -1386,6 +1450,9 @@ pydantic: 2.5+
 Computer-aided detection (CAD) system intended to assist pathologists in the classification of fine needle aspiration (FNA) cytology samples as benign or malignant breast tissue. Not intended for standalone diagnosis.
 
 **Performance Summary:**
+
+**Table 32.** Achieved performance against clinical thresholds.
+
 | Metric | Clinical Threshold | Achieved | Margin |
 |--------|-------------------|----------|--------|
 | Sensitivity | ≥ 95% | 98.59% | +3.59% |
@@ -1407,6 +1474,8 @@ Computer-aided detection (CAD) system intended to assist pathologists in the cla
 
 ### Appendix H: Reproducibility Checklist
 
+**Table 33.** Reproducibility checklist with implementation status.
+
 | Requirement | Implementation | Status |
 |-------------|---------------|--------|
 | **Random Seed** | RANDOM_STATE = 42 globally set | [Yes] |
@@ -1421,6 +1490,8 @@ Computer-aided detection (CAD) system intended to assist pathologists in the cla
 | **Experiment Tracking** | MLflow with full parameter logging | [Yes] |
 
 ### Appendix I: Glossary of Medical and Technical Terms
+
+**Table 34.** Glossary of medical and technical terms.
 
 | Term | Definition |
 |------|------------|
@@ -1446,32 +1517,33 @@ Computer-aided detection (CAD) system intended to assist pathologists in the cla
 ## About the Author
 
 ### Derek Lankeaux, MS Applied Statistics
-**Machine Learning Research Engineer | Clinical ML Specialist | Ensemble Methods Expert**
+**Data Scientist | Applied Statistician | Predictive Modeling Specialist**
 
 #### Professional Focus (2026)
-Seeking **Machine Learning Research Engineer** and **Applied Research Scientist** roles at healthcare technology companies, AI research labs, and medical device firms. Specialized in building production-grade clinical ML systems with rigorous statistical validation and regulatory compliance.
+Seeking **Data Scientist** and **Applied Statistician** roles at technology companies, healthcare organizations, and research institutions. Specialized in experimentation, Bayesian inference, predictive modeling, ensemble methods, and responsible-AI practice.
 
-#### Core Research Engineering Competencies Demonstrated
+#### Core Data Science Competencies Demonstrated
+
+**Table 35.** Data science competencies demonstrated by this project.
 
 | Competency Area | This Project | Industry Relevance (2026) |
 |-----------------|--------------|---------------------------|
-| **Ensemble ML Systems** | 8-algorithm comparative benchmark (RF, XGBoost, LightGBM, AdaBoost, Stacking) | Core skill for production ML optimization |
-| **Clinical ML Performance** | 99.12% accuracy, 100% precision, exceeds human expert baseline | Critical for healthcare AI deployment |
-| **Feature Engineering** | VIF analysis, SMOTE balancing, RFE selection | Essential for robust model development |
-| **Statistical Validation** | 10-fold CV, bootstrap CI, multiple hypothesis testing | Foundational for research rigor |
-| **Explainable AI (XAI)** | SHAP values, fairness auditing, clinical interpretability | Required for FDA-regulated AI systems |
-| **Production MLOps** | MLflow registry, FastAPI deployment, <100ms latency | Standard for ML systems engineering |
+| **Predictive Modeling** | 8-algorithm benchmark (RF, XGBoost, LightGBM, AdaBoost, Stacking) | Core skill for production data science |
+| **Bayesian Optimization** | Optuna TPE hyperparameter search, Platt calibration (ECE 0.0089) | Essential for decision-grade probabilistic outputs |
+| **Feature Engineering** | VIF multicollinearity analysis, SMOTE balancing, RFE selection | Foundational for robust model development |
+| **Experimentation & Statistics** | 10-fold CV, bootstrap CI, multiple hypothesis testing | Foundational for A/B testing and statistical rigor |
+| **Explainability & Responsible AI** | SHAP values, fairness auditing, clinical interpretability | Required for regulated AI and stakeholder trust |
+| **MLOps & Deployment** | MLflow registry, FastAPI deployment, <100ms p95 latency | Standard for production data science teams |
 
 #### Technical Stack Expertise
 
 ```
-ML Frameworks:   scikit-learn 1.5+ • XGBoost 2.1+ • LightGBM 4.5+ • CatBoost
-Ensemble:        AdaBoost • Stacking • Voting • Bagging • Gradient Boosting
-Statistics:      SciPy • statsmodels • Bootstrap • Permutation Testing
-Preprocessing:   SMOTE • RFE • StandardScaler • VIF Analysis
+Statistics:      A/B Testing • Power Analysis • Hypothesis Testing • Bootstrap CIs • 10-Fold CV
+Bayesian:        Optuna TPE • Platt Calibration • Isotonic Regression • ECE
+ML Frameworks:   scikit-learn 1.5+ • XGBoost 2.1+ • LightGBM 4.5+ • CatBoost • AdaBoost
+Data Stack:      SQL • Pandas 2.2+ • NumPy 2.0+ • SMOTE • RFE • VIF Analysis
 MLOps:           MLflow 2.15+ • FastAPI 0.110+ • Docker • Model Registry
-Explainability:  SHAP • LIME • Feature Importance • Model Cards
-Deployment:      FastAPI • uvicorn • Redis • Prometheus Monitoring
+Explainability:  SHAP • LIME • Feature Importance • Model Cards • IEEE 2830-2025
 ```
 
 #### Key Achievements from This Research
@@ -1484,10 +1556,10 @@ Deployment:      FastAPI • uvicorn • Redis • Prometheus Monitoring
 
 #### Career Objectives
 
-1. **ML Research Engineer** at healthcare AI companies developing clinical decision support systems
-2. **Applied Research Scientist** advancing ensemble methods for medical imaging and diagnostics
-3. **ML Systems Engineer** building scalable inference pipelines for real-time clinical applications
-4. **Technical Lead** for FDA-regulated AI/ML product development teams
+1. **Data Scientist** at technology companies owning end-to-end experimentation and predictive modeling
+2. **Applied Statistician** building calibrated classifiers and decision-grade probabilistic systems
+3. **Senior Data Scientist** leading ensemble methods, explainability, and responsible-AI practice
+4. **Healthcare Data Scientist** deploying clinical decision support with regulatory compliance
 
 #### Contact Information
 
@@ -1500,6 +1572,6 @@ Deployment:      FastAPI • uvicorn • Redis • Prometheus Monitoring
 ---
 
 *Report generated from analysis in Breast_Cancer_Classification_PUBLICATION.ipynb*  
-*Technical Review: Machine Learning Pipeline Analysis per 2026 AI Data Analyst Standards*  
+*Technical Review: Machine Learning Pipeline Analysis per 2026 Data Scientist Standards*  
 *Compliant with IEEE 2830-2025 and ISO/IEC 23894:2025*  
 *© 2026 Derek Lankeaux. All rights reserved.*

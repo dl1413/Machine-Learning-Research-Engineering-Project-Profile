@@ -77,6 +77,12 @@ body {
     margin: 4pt 0 2pt 0;
 }
 
+.title-block .role {
+    font-size: 10pt;
+    color: #333;
+    margin: 1pt 0 3pt 0;
+}
+
 .title-block .affiliation {
     font-size: 10pt;
     font-style: italic;
@@ -98,25 +104,31 @@ body {
 
 /* ── Abstract ── */
 .abstract {
-    margin: 0 0.3in 18pt 0.3in;
-    padding: 0;
+    margin: 0 0.3in 14pt 0.3in;
+    padding: 10pt 0 2pt 0;
+    border-top: 0.5pt solid #bbb;
+    border-bottom: 0.5pt solid #bbb;
 }
 
 .abstract h2 {
     font-size: 11pt;
     text-align: center;
-    margin-bottom: 6pt;
+    margin: 0 0 6pt 0;
+    border-bottom: none;
+    padding-bottom: 0;
 }
 
 .abstract p {
     font-size: 9.5pt;
-    line-height: 1.35;
+    line-height: 1.4;
+    text-align: justify;
     text-indent: 0;
 }
 
 .keywords {
     font-size: 9pt;
-    margin: 8pt 0.3in 18pt 0.3in;
+    margin: 0 0.3in 18pt 0.3in;
+    line-height: 1.4;
     color: #333;
 }
 
@@ -158,30 +170,64 @@ p {
     text-indent: 0;
 }
 
+/* ── Table / figure captions ── */
+.caption {
+    font-size: 8.5pt;
+    color: #333;
+    margin: 12pt 0 0 0;
+    line-height: 1.3;
+    text-align: left;
+    page-break-after: avoid;
+}
+
+.caption strong {
+    color: #000;
+}
+
+/* Tuck a caption directly against the table it labels. */
+.caption + table {
+    margin-top: 3pt;
+}
+
 /* ── Tables ── */
 table {
     width: 100%;
     border-collapse: collapse;
     margin: 10pt 0 14pt 0;
     font-size: 9pt;
+}
+
+/* Repeat header row when a long table spans a page break. */
+thead {
+    display: table-header-group;
+}
+
+/* Keep individual rows from splitting across pages. */
+tr {
     page-break-inside: avoid;
 }
 
 thead th {
-    background-color: #f0f0f0;
+    background-color: #ececec;
     border-top: 1.5pt solid #333;
     border-bottom: 1pt solid #333;
-    padding: 5pt 6pt;
+    padding: 5pt 7pt;
     text-align: left;
     font-weight: bold;
     font-size: 8.5pt;
 }
 
 tbody td {
-    border-bottom: 0.5pt solid #ccc;
-    padding: 4pt 6pt;
+    border-bottom: 0.5pt solid #d9d9d9;
+    padding: 4pt 7pt;
     vertical-align: top;
     font-size: 8.5pt;
+    line-height: 1.3;
+}
+
+/* Subtle zebra striping improves legibility of the dense metric tables. */
+tbody tr:nth-child(even) td {
+    background-color: #f7f7f7;
 }
 
 tbody tr:last-child td {
@@ -358,6 +404,7 @@ def build_title_block(metadata: dict) -> str:
     title = metadata.get('title', 'Untitled')
     # Clean up title - remove "Technical Analysis Report" suffix for cleaner look
     author = metadata.get('Author', metadata.get('author', 'Unknown'))
+    role = metadata.get('Role', '')
     institution = metadata.get('Institution', '')
     date = metadata.get('Date', '')
     compliance = metadata.get('AI Standards Compliance', '')
@@ -368,6 +415,8 @@ def build_title_block(metadata: dict) -> str:
     if project and project != title:
         html += f'  <p style="font-size: 10pt; margin: 2pt 0 8pt 0; color: #444;">{project}</p>\n'
     html += f'  <p class="author">{author}</p>\n'
+    if role:
+        html += f'  <p class="role">{role}</p>\n'
     if institution:
         html += f'  <p class="affiliation">{institution}</p>\n'
     if date:
@@ -417,6 +466,15 @@ def md_to_publication_html(md_text: str) -> str:
     # Convert remaining markdown to HTML
     extensions = ['tables', 'fenced_code', 'codehilite', 'sane_lists']
     body_html = markdown.markdown(remaining_body, extensions=extensions)
+
+    # Render "**Table N.** ..." / "**Figure N.** ..." lines as publication
+    # captions: a dedicated class lets the CSS style them smaller and tuck
+    # them directly against the table/figure they label.
+    body_html = re.sub(
+        r'<p><strong>(Table|Figure)\s+(\d+)\.</strong>',
+        r'<p class="caption"><strong>\1 \2.</strong>',
+        body_html,
+    )
 
     # Build full HTML document
     title_block = build_title_block(metadata)
@@ -512,7 +570,7 @@ def generate_pdf(md_path: str, pdf_path: str):
         'subject': subject,
         'keywords': keywords,
         'creator': 'WeasyPrint PDF Generator - 2026 Publication Pipeline',
-        'producer': 'Derek Lankeaux Machine Learning Research Portfolio',
+        'producer': 'Derek Lankeaux — Data Science Portfolio',
     }
 
     # Generate PDF with metadata and optimization settings
@@ -544,15 +602,15 @@ def generate_pdf(md_path: str, pdf_path: str):
 
 REPORTS = [
     {
-        'md': 'AI Safety Red-Team Evaluation_ Technical Analysis Report (3).md',
+        'md': 'AI Safety Red-Team Evaluation_ Technical Analysis Report.md',
         'pdf': 'AI_Safety_RedTeam_Evaluation_Publication.pdf',
     },
     {
-        'md': 'Breast_Cancer_Classification_Report (4).md',
+        'md': 'Breast_Cancer_Classification_Report.md',
         'pdf': 'Breast_Cancer_Classification_Publication.pdf',
     },
     {
-        'md': 'LLM_Ensemble_Bias_Detection_Report (3).md',
+        'md': 'LLM_Ensemble_Bias_Detection_Report.md',
         'pdf': 'LLM_Bias_Detection_Publication.pdf',
     },
 ]

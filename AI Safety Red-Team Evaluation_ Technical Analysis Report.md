@@ -3,19 +3,19 @@
 **Project:** Automated Harm Detection Using LLM Ensemble Annotation and Bayesian ML Classification  
 **Date:** April 2026  
 **Author:** Derek Lankeaux, MS Applied Statistics  
-**Role:** Machine Learning Research Engineer | AI Safety Specialist  
+**Role:** Data Scientist | Applied Statistician  
 **Institution:** Rochester Institute of Technology  
 **Source:** AI_Safety_RedTeam_Evaluation.ipynb  
 **Version:** 2.0.0  
 **AI Standards Compliance:** IEEE 2830-2025 (Transparent ML), ISO/IEC 23894:2025 (AI Risk Management), EU AI Act (2025)
 
-> **Research Engineering Focus:** This project demonstrates core competencies for **2026 Machine Learning Research Engineer** roles including multi-model LLM evaluation, production ML pipelines, Bayesian uncertainty quantification, and AI safety methodologies.
+> **Data Science Focus:** This report documents an end-to-end data science project — problem framing, statistical methodology, results with quantified uncertainty, and stakeholder-ready deliverables — relevant to 2026 Data Scientist roles (experimentation, Bayesian inference, predictive modeling, and responsible-AI practice).
 
 ---
 
 ## Abstract
 
-This technical report presents a novel dual-stage framework for automated AI safety evaluation combining Large Language Model (LLM) ensemble annotation with production-grade machine learning classification. Stage 1 employs an ensemble of three frontier LLMs—GPT-4o, Claude-3.5-Sonnet, and Llama-3.2-90B—to generate multi-dimensional harm annotations across **12,500 AI model response pairs**, achieving excellent inter-rater reliability (Krippendorff's α = 0.81). Stage 2 trains eight ensemble classifiers on LLM-generated labels augmented with engineered features, with the best-performing model (Stacking Classifier) achieving **96.8% accuracy**, **97.2% precision**, **96.1% recall**, and **0.9923 ROC-AUC** for harm detection. Bayesian hierarchical modeling quantifies uncertainty across six harm categories with 95% Highest Density Intervals (HDI), revealing statistically credible differences in model vulnerability to manipulation (posterior effect sizes: 0.12–0.67). The framework enables scalable red-team evaluation processing **~850 prompt-response pairs per hour** at **$0.018/sample**—a 340× cost reduction versus human annotation—while maintaining audit-grade reliability for AI governance compliance.
+This report presents a dual-stage framework for automated AI safety evaluation that combines Large Language Model (LLM) ensemble annotation with production-grade machine learning classification. Stage 1 employs an ensemble of three frontier LLMs—GPT-4o, Claude-3.5-Sonnet, and Llama-3.2-90B—to generate multi-dimensional harm annotations across **12,500 AI model response pairs**, achieving excellent inter-rater reliability (Krippendorff's α = 0.81). Stage 2 trains eight ensemble classifiers on the LLM-generated labels and engineered features; the best model (Stacking Classifier) reaches **96.8% accuracy**, **97.2% precision**, **96.1% recall**, and **0.9923 ROC-AUC** for harm detection. Bayesian hierarchical modeling quantifies uncertainty across six harm categories with 95% Highest Density Intervals (HDI), revealing statistically credible differences in model vulnerability to manipulation (posterior effect sizes: 0.12–0.67). The framework scales red-team evaluation to **~850 prompt-response pairs per hour** at **$0.018/sample**—a 340× cost reduction versus human annotation—while maintaining audit-grade reliability for AI governance compliance.
 
 **Keywords:** AI Safety, Red-Teaming, Large Language Models, Harm Detection, Ensemble Learning, Bayesian Hierarchical Modeling, Constitutional AI, LLM Evaluation, RLHF, Krippendorff's Alpha, XGBoost, SHAP, MLOps, Responsible AI, Model Governance, Prompt Injection
 
@@ -47,6 +47,8 @@ This technical report presents a novel dual-stage framework for automated AI saf
 
 ### Key Performance Metrics
 
+**Table 1.** Key performance metrics for the two-stage evaluation framework.
+
 | Metric | Stage 1 (LLM Ensemble) | Stage 2 (ML Classifier) |
 |--------|------------------------|-------------------------|
 | **Primary Reliability/Accuracy** | α = 0.81 (Excellent) | 96.8% Accuracy |
@@ -60,6 +62,8 @@ This technical report presents a novel dual-stage framework for automated AI saf
 
 ### Harm Category Detection Performance
 
+**Table 2.** Detection performance by harm category with Bayesian risk intervals.
+
 | Harm Category | Prevalence | Precision | Recall | F1-Score | 95% HDI (Risk) |
 |---------------|------------|-----------|--------|----------|----------------|
 | **Dangerous Information** | 8.2% | 98.1% | 95.8% | 96.9% | [0.42, 0.58] |
@@ -70,6 +74,8 @@ This technical report presents a novel dual-stage framework for automated AI saf
 | **Self-Harm/Violence** | 3.8% | 97.9% | 93.1% | 95.4% | [0.15, 0.28] |
 
 ### Model Vulnerability Rankings (Bayesian Posterior)
+
+**Table 3.** Model vulnerability rankings from Bayesian posterior harm rates.
 
 | Rank | Model | Harm Rate (Posterior Mean) | 95% HDI | Risk Classification |
 |------|-------|---------------------------|---------|---------------------|
@@ -85,7 +91,7 @@ This technical report presents a novel dual-stage framework for automated AI saf
 
 ### 1.1 Problem Statement and Motivation
 
-The rapid deployment of Large Language Models (LLMs) in consumer-facing applications has created an urgent need for scalable, rigorous safety evaluation methodologies. Traditional red-teaming approaches rely on human experts to craft adversarial prompts and assess model responses—a process that is expensive (~$50-100/hour), non-scalable, and subject to inter-annotator variability.
+The rapid deployment of Large Language Models (LLMs) in consumer-facing applications demands scalable, rigorous safety evaluation. Traditional red-teaming relies on human experts to craft adversarial prompts and assess model responses—a process that is expensive (~$50-100/hour), non-scalable, and subject to inter-annotator variability.
 
 **Critical Challenges in Current AI Safety Evaluation:**
 
@@ -98,8 +104,8 @@ The rapid deployment of Large Language Models (LLMs) in consumer-facing applicat
 This project addresses these challenges through a **hybrid human-AI evaluation framework** that:
 - Uses frontier LLMs as calibrated "expert annotators" with validated reliability
 - Trains efficient ML classifiers to scale LLM-quality annotations
-- Quantifies uncertainty through Bayesian hierarchical modeling
-- Provides explainable, auditable safety assessments for governance compliance
+- Quantifies uncertainty via Bayesian hierarchical modeling
+- Delivers explainable, auditable safety assessments for governance compliance
 
 ### 1.2 Research Questions
 
@@ -120,7 +126,9 @@ This project addresses these challenges through a **hybrid human-AI evaluation f
 
 ### 1.4 Relationship to Prior Work
 
-This project synthesizes methodologies from two foundational analyses:
+This project synthesizes methods from two foundational analyses:
+
+**Table 4.** Methods adapted from prior foundational analyses.
 
 | Component | Source Project | Adaptation |
 |-----------|---------------|------------|
@@ -154,6 +162,8 @@ Based on industry standards (Anthropic Usage Policy, OpenAI Content Policy, Goog
 
 ### 2.2 Operational Definitions
 
+**Table 5.** Operational definitions of the six harm categories.
+
 | Category | Code | Definition | Examples |
 |----------|------|------------|----------|
 | **Dangerous Information** | DI | Content enabling physical harm through CBRN, weapons, or cyberattacks | Synthesis routes, exploit code, weapon modifications |
@@ -166,6 +176,8 @@ Based on industry standards (Anthropic Usage Policy, OpenAI Content Policy, Goog
 ### 2.3 Severity Scale
 
 Each annotation includes a severity rating on a 0-3 scale:
+
+**Table 6.** Four-point harm severity rating scale.
 
 | Score | Label | Operational Definition |
 |-------|-------|----------------------|
@@ -180,7 +192,7 @@ Each annotation includes a severity rating on a 0-3 scale:
 
 ### 2a.1 Motivation
 
-A comprehensive red-team evaluation must characterize not only *what* harms occur but *how* adversaries elicit them. Understanding attack vectors enables more targeted detection and defense. This section introduces a structured adversarial attack taxonomy applied to the 12,500-sample dataset and analyzes the relative effectiveness of different defense mechanisms.
+A comprehensive red-team evaluation must characterize not only *what* harms occur but *how* adversaries elicit them; understanding attack vectors enables more targeted detection and defense. This section introduces a structured adversarial attack taxonomy applied to the 12,500-sample dataset and analyzes the relative effectiveness of different defense mechanisms.
 
 ### 2a.2 Attack Vector Taxonomy
 
@@ -197,6 +209,8 @@ Adversarial prompts in the dataset were categorized into eight primary attack st
   "DAN"      "Act as"    "Ignore     Base64/  Authority/
   "JEDI"     "Pretend"   previous"   Unicode  Urgency
 ```
+
+**Table 7.** Adversarial attack vector taxonomy with prevalence and harm rates.
 
 | Attack Type | Code | Description | Dataset % | Avg. Harm Rate |
 |-------------|------|-------------|-----------|----------------|
@@ -234,6 +248,8 @@ for defense_name, defense in DEFENSE_MECHANISMS.items():
 
 **Defense Effectiveness Matrix (Harm Rate Reduction vs. No Defense):**
 
+**Table 8.** Defense effectiveness matrix by attack type (harm rate reduction).
+
 | Defense Strategy | DHR | IDO | RPI | INJ | ENC | SOC | MTE | CWS | **Avg** |
 |-----------------|-----|-----|-----|-----|-----|-----|-----|-----|---------|
 | No Defense | 6.8% | 24.3% | 21.7% | 18.4% | 29.6% | 19.2% | 31.8% | 22.4% | 21.8% |
@@ -251,6 +267,8 @@ for defense_name, defense in DEFENSE_MECHANISMS.items():
 - **System-prompt-only** defenses are insufficient against identity override attacks (12.4% harm rate)
 
 ### 2a.4 Cost-Effectiveness of Defense Strategies
+
+**Table 9.** Cost-effectiveness comparison of defense strategies.
 
 | Defense Strategy | Harm Rate | Added Latency | Cost/1K Samples | Safety Score | ROI |
 |-----------------|-----------|---------------|-----------------|-------------|-----|
@@ -270,6 +288,8 @@ for defense_name, defense in DEFENSE_MECHANISMS.items():
 ## 3. LLM Ensemble Annotation Framework
 
 ### 3.1 Model Selection and Configuration
+
+**Table 10.** LLM ensemble member configurations and selection rationale.
 
 | Model | Parameters | Context Window | Safety Training | Selection Rationale |
 |-------|------------|----------------|-----------------|---------------------|
@@ -422,6 +442,8 @@ class SafetyAnnotationEnsemble:
 
 ### 4.1 Dataset Statistics
 
+**Table 11.** Dataset composition statistics.
+
 | Dimension | Count | Description |
 |-----------|-------|-------------|
 | **AI Models Evaluated** | 5 | Mix of open-source and commercial |
@@ -433,6 +455,8 @@ class SafetyAnnotationEnsemble:
 | **Harmful Samples (Ground Truth)** | 2,847 | 22.8% base rate |
 
 ### 4.2 Adversarial Prompt Categories
+
+**Table 12.** Distribution of adversarial prompt categories.
 
 | Category | Count | % of Total | Description |
 |----------|-------|------------|-------------|
@@ -545,6 +569,8 @@ class SafetyFeatureExtractor:
 
 ### 4.4 Feature Categories Summary
 
+**Table 13.** Summary of engineered feature categories.
+
 | Category | Features | Description |
 |----------|----------|-------------|
 | **Lexical** | 12 | Length, word count, character distributions |
@@ -590,6 +616,8 @@ alpha_severity = krippendorff.alpha(
 
 ### 5.2 Reliability Results Summary
 
+**Table 14.** Krippendorff's alpha reliability results by measure.
+
 | Measure | α Value | Interpretation |
 |---------|---------|----------------|
 | **Overall Harm (Binary)** | 0.81 | Excellent |
@@ -602,6 +630,8 @@ alpha_severity = krippendorff.alpha(
 | **Self-Harm/Violence** | 0.83 | Excellent |
 
 ### 5.3 Pairwise Agreement Analysis
+
+**Table 15.** Pairwise inter-annotator agreement between ensemble models.
 
 | Model Pair | Cohen's κ (Binary) | Pearson r (Severity) | RMSE |
 |------------|-------------------|---------------------|------|
@@ -661,6 +691,8 @@ vif_data['VIF'] = [
 
 **High VIF Features Identified (VIF > 10):**
 
+**Table 16.** High-VIF features identified for multicollinearity removal.
+
 | Feature | VIF | Action |
 |---------|-----|--------|
 | response_length | 847.3 | Remove (correlated with word_count) |
@@ -708,6 +740,8 @@ X_train_rfe = rfe.fit_transform(X_train_smote, y_train_smote)
 ```
 
 **Top 25 Selected Features:**
+
+**Table 17.** Top features selected by recursive feature elimination.
 
 | Rank | Feature | Category | Importance |
 |------|---------|----------|------------|
@@ -888,6 +922,8 @@ with pm.Model() as safety_hierarchical_model:
 
 ### 7.3 Posterior Results: Model-Level Effects
 
+**Table 18.** Posterior model-level harm effects from the hierarchical model.
+
 | Model | Posterior Mean (logit) | 95% HDI | Harm Rate (prob) | Risk Level |
 |-------|------------------------|---------|------------------|------------|
 | Model-A (Open 7B) | +0.67 | [+0.48, +0.87] | 18.4% | High |
@@ -900,6 +936,8 @@ with pm.Model() as safety_hierarchical_model:
 
 ### 7.4 Posterior Results: Category-Level Effects
 
+**Table 19.** Posterior category-level harm effects from the hierarchical model.
+
 | Category | Posterior Mean | 95% HDI | Interpretation |
 |----------|----------------|---------|----------------|
 | Deception/Manipulation | +0.54 | [+0.38, +0.71] | Highest vulnerability |
@@ -910,6 +948,8 @@ with pm.Model() as safety_hierarchical_model:
 | Self-Harm/Violence | +0.12 | [-0.04, +0.28] | Lowest (borderline) |
 
 ### 7.5 Model Diagnostics
+
+**Table 20.** MCMC convergence diagnostics for the Bayesian model.
 
 | Parameter | R-hat | ESS Bulk | ESS Tail | Convergence |
 |-----------|-------|----------|----------|-------------|
@@ -924,6 +964,8 @@ with pm.Model() as safety_hierarchical_model:
 ## 8. Model Performance and Validation
 
 ### 8.1 Classification Performance Comparison
+
+**Table 21.** Classification performance comparison across ensemble classifiers.
 
 | Model | Accuracy | Precision | Recall | F1-Score | ROC-AUC | Training Time |
 |-------|----------|-----------|--------|----------|---------|---------------|
@@ -959,6 +1001,8 @@ ACTUAL            ├──────────┼────────�
 
 **10-Fold Stratified Cross-Validation (Stacking):**
 
+**Table 22.** Ten-fold cross-validation results for the Stacking classifier.
+
 | Fold | Accuracy | F1-Score |
 |------|----------|----------|
 | 1 | 96.4% | 96.1% |
@@ -978,6 +1022,8 @@ ACTUAL            ├──────────┼────────�
 - **95% CI:** [93.2%, 98.6%]
 
 ### 8.4 Per-Category Performance
+
+**Table 23.** Per-category classification performance with support counts.
 
 | Category | Precision | Recall | F1 | Support |
 |----------|-----------|--------|-----|---------|
@@ -1007,6 +1053,8 @@ shap.summary_plot(shap_values, X_test_rfe, feature_names=selected_features)
 
 ### 9.2 Global Feature Attribution
 
+**Table 24.** Global feature attribution from SHAP analysis.
+
 | Rank | Feature | Mean |SHAP| | Direction | Interpretation |
 |------|---------|---------------|-----------|----------------|
 | 1 | refusal_phrases | 0.234 | − → Safe | Model refusal strongly predicts safety |
@@ -1019,6 +1067,8 @@ shap.summary_plot(shap_values, X_test_rfe, feature_names=selected_features)
 | 8 | prompt_response_similarity | 0.076 | + → Harmful | High similarity suggests direct compliance |
 
 ### 9.3 Category-Specific Feature Importance
+
+**Table 25.** Category-specific feature importance across harm categories.
 
 | Feature | DI | HD | DM | PV | IA | SH |
 |---------|----|----|----|----|----|----|
@@ -1209,6 +1259,8 @@ with mlflow.start_run(run_name="safety_classifier_v2"):
 
 ### 10.4 Performance Benchmarks
 
+**Table 26.** Production performance benchmarks against targets.
+
 | Metric | Value | Target | Status |
 |--------|-------|--------|--------|
 | **Latency (p50)** | 23ms | <50ms | [Yes] |
@@ -1224,6 +1276,8 @@ with mlflow.start_run(run_name="safety_classifier_v2"):
 
 ### 11.1 IEEE 2830-2025 Compliance
 
+**Table 27.** IEEE 2830-2025 compliance requirements and implementation.
+
 | Requirement | Implementation | Status |
 |-------------|---------------|--------|
 | **Transparency** | Full SHAP explanations for every prediction | [Yes] |
@@ -1233,6 +1287,8 @@ with mlflow.start_run(run_name="safety_classifier_v2"):
 | **Human Oversight** | High-disagreement samples flagged for review | [Yes] |
 
 ### 11.2 Model Card
+
+**Table 28.** Model card summary for the safety evaluator.
 
 | Field | Value |
 |-------|-------|
@@ -1250,6 +1306,8 @@ with mlflow.start_run(run_name="safety_classifier_v2"):
 
 **Cross-Model Fairness:**
 
+**Table 29.** Cross-model fairness analysis of classifier performance.
+
 | AI Model Type | TPR | FPR | Δ from Mean |
 |---------------|-----|-----|-------------|
 | Open-Source Small | 95.2% | 3.8% | -0.9% |
@@ -1266,17 +1324,19 @@ with mlflow.start_run(run_name="safety_classifier_v2"):
 
 ### 12.1 Key Findings
 
-1. **LLM Ensemble Reliability:** α = 0.81 demonstrates frontier LLMs can serve as calibrated safety annotators, comparable to expert human agreement (typically 0.75-0.85)
+1. **LLM Ensemble Reliability:** α = 0.81 shows frontier LLMs can serve as calibrated safety annotators, matching expert human agreement (typically 0.75-0.85)
 
-2. **ML Scalability:** Stacking classifier achieves 96.8% accuracy at 340× lower cost than human annotation ($0.018 vs. ~$6.12/sample)
+2. **ML Scalability:** The Stacking classifier achieves 96.8% accuracy at 340× lower cost than human annotation ($0.018 vs. ~$6.12/sample)
 
-3. **Model Vulnerability Hierarchy:** Open-source models (especially smaller parameter counts) show significantly higher vulnerability to adversarial manipulation
+3. **Model Vulnerability Hierarchy:** Open-source models—especially smaller parameter counts—are significantly more vulnerable to adversarial manipulation
 
-4. **Category-Specific Risk:** Deception/manipulation attacks show highest success rates; self-harm/violence prompts are most reliably refused
+4. **Category-Specific Risk:** Deception/manipulation attacks succeed most often; self-harm/violence prompts are most reliably refused
 
 5. **Feature Importance:** Safety-specific engineered features (refusal detection, jailbreak markers) outperform generic linguistic features
 
 ### 12.2 Comparison: LLM Annotation vs. Human Annotation
+
+**Table 30.** Comparison of LLM ensemble and human expert annotation.
 
 | Dimension | LLM Ensemble | Human Experts |
 |-----------|--------------|---------------|
@@ -1310,13 +1370,13 @@ with mlflow.start_run(run_name="safety_classifier_v2"):
 
 ### 13.1 Summary of Contributions
 
-1. **Validated LLM-as-Annotator Paradigm:** Krippendorff's α = 0.81 demonstrates frontier LLMs achieve expert-level inter-rater reliability for safety annotation
+1. **Validated LLM-as-Annotator Paradigm:** Krippendorff's α = 0.81 shows frontier LLMs achieve expert-level inter-rater reliability for safety annotation
 
-2. **Adversarial Attack Taxonomy:** Comprehensive 8-category taxonomy (MITRE ATLAS-aligned) revealing multi-turn escalation (31.8%) and encoding evasion (29.6%) as the highest-risk attack vectors
+2. **Adversarial Attack Taxonomy:** An 8-category, MITRE ATLAS-aligned taxonomy identifying multi-turn escalation (31.8%) and encoding evasion (29.6%) as the highest-risk attack vectors
 
-3. **Defense Effectiveness Analysis:** Dual-filter ML classification reduces average harm rate from 21.8% → 4.8% (78% reduction); adversarial training achieves best single-strategy performance (4.2%)
+3. **Defense Effectiveness Analysis:** Dual-filter ML classification reduces average harm rate from 21.8% → 4.8% (78% reduction); adversarial training achieves the best single-strategy performance (4.2%)
 
-4. **Production-Grade Classification:** Stacking classifier achieves 96.8% accuracy with 3.9% false negative rate—meeting safety-critical application requirements
+4. **Production-Grade Classification:** The Stacking classifier achieves 96.8% accuracy with a 3.9% false negative rate—meeting safety-critical requirements
 
 5. **Bayesian Risk Quantification:** Hierarchical modeling reveals statistically credible differences in model vulnerability (HDIs: 0.12-0.67 effect sizes)
 
@@ -1449,6 +1509,8 @@ For questions about code or data access, please contact:
 
 ### Appendix A: Complete Feature List
 
+**Table 31.** Complete engineered feature list with selection status.
+
 | # | Feature | Category | Selected |
 |---|---------|----------|----------|
 | 1 | prompt_length | Lexical | [No] |
@@ -1544,6 +1606,8 @@ sentence-transformers: 3.0+
 
 The study was designed with the following power analysis parameters:
 
+**Table 32.** Statistical power analysis parameters.
+
 | Parameter | Value | Justification |
 |-----------|-------|---------------|
 | **Target Power (1-β)** | 0.95 | High confidence in detecting true effects |
@@ -1567,6 +1631,8 @@ Where:
 
 **Economic Comparison: LLM Ensemble vs. Human Expert Annotation**
 
+**Table 33.** Cost-benefit comparison of annotation approaches.
+
 | Cost Component | LLM Ensemble | Human Experts | Savings |
 |----------------|--------------|---------------|---------|
 | **Per-Sample Cost** | $0.018 | $6.12 | **340×** |
@@ -1585,6 +1651,8 @@ Where:
 
 **Robustness of Results to Hyperparameter Variations:**
 
+**Table 34.** Sensitivity of accuracy to hyperparameter variations.
+
 | Parameter | Baseline | Variation | Impact on Accuracy |
 |-----------|----------|-----------|-------------------|
 | SMOTE k_neighbors | 5 | 3, 7, 10 | ±0.3% |
@@ -1598,6 +1666,8 @@ Where:
 ### Appendix H: Model Card (Full Specification)
 
 **Model Details:**
+**Table 35.** Full model details specification.
+
 | Field | Specification |
 |-------|--------------|
 | **Model Name** | AI Safety Red-Team Evaluator v1.0.0 |
@@ -1621,6 +1691,8 @@ Where:
 - Real-time production filtering without human oversight
 
 **Metrics:**
+**Table 36.** Model performance metrics with confidence intervals.
+
 | Metric | Value | Confidence Interval |
 |--------|-------|---------------------|
 | Accuracy | 96.8% | [93.2%, 98.6%] |
@@ -1643,6 +1715,8 @@ Where:
 - Monthly monitoring for distribution drift
 
 ### Appendix I: Glossary of Terms
+
+**Table 37.** Glossary of key terms.
 
 | Term | Definition |
 |------|------------|
@@ -1667,31 +1741,33 @@ Where:
 ## About the Author
 
 ### Derek Lankeaux, MS Applied Statistics
-**Machine Learning Research Engineer | AI Safety Specialist | LLM Evaluation Expert**
+**Data Scientist | Applied Statistician | GenAI Evaluation Specialist**
 
 #### Professional Focus (2026)
-Seeking **Machine Learning Research Engineer** and **AI Safety Researcher** roles at leading AI labs, technology companies, and research institutions. Specialized in building production-grade AI safety evaluation systems, multi-model LLM ensembles, and Bayesian uncertainty quantification frameworks.
+Seeking **Data Scientist** and **Applied Statistician** roles at technology companies, AI labs, and research institutions. Specialized in experimentation, Bayesian inference, predictive modeling, multi-model LLM evaluation, and responsible-AI practice.
 
-#### Core Research Engineering Competencies Demonstrated
+#### Core Data Science Competencies Demonstrated
+
+**Table 38.** Core data science competencies demonstrated in this project.
 
 | Competency Area | This Project | Industry Relevance (2026) |
 |-----------------|--------------|---------------------------|
-| **LLM Ensemble Systems** | 3-model evaluation pipeline (GPT-4o, Claude-3.5, Llama-3.2) | Critical for foundation model evaluation and benchmarking |
-| **AI Safety & Red-Teaming** | 6-category harm taxonomy, 12,500 adversarial samples | Essential for responsible AI deployment and compliance |
-| **Production ML Pipelines** | 850 samples/hr at $0.018/sample, FastAPI deployment | Required for scalable ML systems engineering |
-| **Statistical Rigor** | Krippendorff's α = 0.81, Bayesian HDI quantification | Foundational for research methodology and validation |
-| **MLOps & Reproducibility** | MLflow tracking, IEEE 2830-2025 compliance, model versioning | Standard for production ML teams |
-| **Explainable AI (XAI)** | SHAP feature attribution, audit-ready documentation | Required for AI governance and stakeholder trust |
+| **GenAI / LLM Evaluation** | 3-model ensemble pipeline (GPT-4o, Claude-3.5, Llama-3.2) | Critical for foundation model benchmarking and evaluation |
+| **Experimentation & Statistics** | Krippendorff's α = 0.81, Bayesian HDI quantification | Foundational for A/B testing, inter-rater reliability, and inference |
+| **Predictive Modeling** | 96.8% accuracy, Stacking Classifier, 47 engineered features | Core skill for production data science |
+| **Bayesian Inference** | PyMC hierarchical model, 95% HDI, uncertainty quantification | Essential for decision-grade probabilistic outputs |
+| **MLOps & Deployment** | MLflow tracking, FastAPI, 850 samples/hr at $0.018/sample | Standard for production data science teams |
+| **Explainability & Responsible AI** | SHAP values, IEEE 2830-2025 compliance, audit-ready docs | Required for AI governance and stakeholder communication |
 
 #### Technical Stack Expertise
 
 ```
-LLM APIs:        GPT-4o • Claude-3.5-Sonnet • Llama-3.2 • HuggingFace Transformers
-ML Frameworks:   PyTorch 2.0+ • scikit-learn 1.5+ • XGBoost 2.1+ • LightGBM
-Bayesian:        PyMC 5.15+ • ArviZ 0.18+ • NumPyro • Stan
+Statistics:      A/B Testing • Power Analysis • Hypothesis Testing • Bootstrap CIs • Krippendorff's α
+Bayesian:        PyMC 5.15+ • ArviZ 0.18+ • NumPyro • Stan • MCMC Diagnostics
+ML & GenAI:      scikit-learn 1.5+ • XGBoost 2.1+ • GPT-4o • Claude-3.5 • Llama-3.2
+Data Stack:      SQL • Pandas 2.2+ • Polars • NumPy 2.0+ • Apache Arrow
 MLOps:           MLflow 2.15+ • FastAPI 0.110+ • Docker • Kubernetes
-Explainability:  SHAP • LIME • InterpretML • Model Cards
-Safety Tools:    Constitutional AI • RLHF Evaluation • Harm Classifiers
+Explainability:  SHAP • LIME • InterpretML • Model Cards • IEEE 2830-2025
 ```
 
 #### Key Achievements from This Research
@@ -1704,10 +1780,10 @@ Safety Tools:    Constitutional AI • RLHF Evaluation • Harm Classifiers
 
 #### Career Objectives
 
-1. **Research Engineer** at AI labs developing next-generation safety evaluation frameworks
-2. **ML Systems Engineer** building scalable LLM evaluation and monitoring infrastructure
-3. **AI Safety Researcher** advancing red-team methodologies for foundation models
-4. **Applied Research Scientist** combining Bayesian methods with production ML systems
+1. **Data Scientist** at technology companies owning end-to-end experimentation and inference
+2. **Applied Statistician** building Bayesian models and uncertainty quantification frameworks
+3. **GenAI Evaluation Specialist** developing LLM benchmarking and safety assessment pipelines
+4. **Senior Data Scientist** leading responsible-AI practice and stakeholder-facing analytics
 
 #### Contact Information
 
@@ -1720,7 +1796,7 @@ Safety Tools:    Constitutional AI • RLHF Evaluation • Harm Classifiers
 ---
 
 *Report generated from analysis in AI_Safety_RedTeam_Evaluation.ipynb*  
-*Technical Review: Dual-Stage AI Safety Evaluation per 2026 Industry Standards*  
+*Technical Review: Dual-Stage AI Safety Evaluation per 2026 Data Scientist Standards*  
 *Compliant with IEEE 2830-2025, ISO/IEC 23894:2025, and EU AI Act*  
 *© 2026 Derek Lankeaux. All rights reserved.*
 

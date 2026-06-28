@@ -3,19 +3,19 @@
 **Project:** Detecting Publisher Bias Using LLM Ensemble and Bayesian Hierarchical Methods  
 **Date:** April 2026  
 **Author:** Derek Lankeaux, MS Applied Statistics  
-**Role:** Machine Learning Research Engineer | LLM Evaluation Specialist  
+**Role:** Data Scientist | Applied Statistician  
 **Institution:** Rochester Institute of Technology  
 **Source:** LLM_Ensemble_Textbook_Bias_Detection.ipynb  
 **Version:** 4.0.0  
-**AI Standards Compliance:** IEEE 2830-2025, ISO/IEC 23894:2025, EU AI Act (2025)
+**AI Standards Compliance:** IEEE 2830-2025 (Transparent ML), ISO/IEC 23894:2025 (AI Risk Management), EU AI Act (2025)
 
-> **Research Engineering Focus:** This project demonstrates core competencies for **2026 Machine Learning Research Engineer** roles including multi-model LLM ensemble systems, Bayesian hierarchical inference, production NLP pipelines, and inter-rater reliability validation.
+> **Data Science Focus:** This report documents an end-to-end data science project — problem framing, statistical methodology, results with quantified uncertainty, and stakeholder-ready deliverables — relevant to 2026 Data Scientist roles (experimentation, Bayesian inference, predictive modeling, and responsible-AI practice).
 
 ---
 
 ## Abstract
 
-This technical report presents a novel computational framework for detecting and quantifying political bias in educational textbooks using an ensemble of three frontier Large Language Models (LLMs)—GPT-4, Claude-3-Opus, and Llama-3-70B—combined with Bayesian hierarchical modeling for robust statistical inference. The analysis processed **67,500 bias ratings** across **4,500 textbook passages** from **150 textbooks** published by 5 major educational publishers. We demonstrate excellent inter-rater reliability among LLMs (Krippendorff's α = 0.84), statistically significant publisher-level bias differences (Friedman χ² = 42.73, p < 0.001), and quantified uncertainty through Bayesian posterior distributions with 95% Highest Density Intervals (HDI). Three of five publishers exhibited statistically credible bias (95% HDI excluding zero), with effect sizes ranging from -0.48 (liberal) to +0.38 (conservative) on a [-2, +2] scale. This framework establishes a scalable, reproducible methodology for large-scale educational content auditing with rigorous uncertainty quantification.
+This report presents a computational framework for detecting and quantifying political bias in educational textbooks, combining an ensemble of three frontier Large Language Models (LLMs)—GPT-4, Claude-3-Opus, and Llama-3-70B—with Bayesian hierarchical modeling for robust inference. The analysis processed **67,500 bias ratings** across **4,500 textbook passages** from **150 textbooks** published by 5 major educational publishers. We demonstrate excellent inter-rater reliability among LLMs (Krippendorff's α = 0.84), statistically significant publisher-level bias differences (Friedman χ² = 42.73, p < 0.001), and quantified uncertainty via Bayesian posterior distributions with 95% Highest Density Intervals (HDI). Three of five publishers exhibited statistically credible bias (95% HDI excluding zero), with effect sizes from -0.48 (liberal) to +0.38 (conservative) on a [-2, +2] scale. The framework establishes a scalable, reproducible methodology for large-scale educational content auditing with rigorous uncertainty quantification.
 
 **Keywords:** Large Language Models, GPT-4o, Claude-3.5-Sonnet, Llama-3.2, Ensemble Methods, Bayesian Hierarchical Modeling, Krippendorff's Alpha, Inter-Rater Reliability, Political Bias Detection, Textbook Analysis, Educational Content, MCMC Sampling, PyMC, Responsible AI, LLM Governance, Prompt Engineering
 
@@ -47,6 +47,8 @@ This technical report presents a novel computational framework for detecting and
 
 ### Key Performance Metrics
 
+**Table 1.** Key performance metrics for the LLM-ensemble bias-detection framework.
+
 | Metric | Value | Interpretation |
 |--------|-------|----------------|
 | **Krippendorff's Alpha** | 0.84 | Excellent inter-rater reliability (≥0.80 threshold) |
@@ -59,6 +61,8 @@ This technical report presents a novel computational framework for detecting and
 | **Effective Sample Size (ESS)** | > 3,000 | Adequate posterior sampling |
 
 ### Publisher Bias Summary
+
+**Table 2.** Publisher bias summary ranked by posterior mean effect.
 
 | Rank | Publisher | Posterior Mean | 95% HDI | Classification |
 |------|-----------|----------------|---------|----------------|
@@ -74,14 +78,14 @@ This technical report presents a novel computational framework for detecting and
 
 ### 1.1 Problem Statement and Motivation
 
-Political bias in educational materials represents a significant concern for educational equity and democratic discourse. Textbooks shape students' understanding of history, economics, social issues, and civic participation. Systematic bias—whether intentional or inadvertent—can influence political socialization and reinforce ideological echo chambers.
+Political bias in educational materials threatens educational equity and democratic discourse. Textbooks shape students' understanding of history, economics, social issues, and civic participation, so systematic bias—whether intentional or inadvertent—can influence political socialization and reinforce ideological echo chambers.
 
 Traditional approaches to detecting textbook bias rely on:
 - **Expert human reviewers:** Subjective, expensive, and non-scalable
 - **Keyword analysis:** Superficial, missing contextual nuance
 - **Readability metrics:** Irrelevant to ideological content
 
-This project introduces a novel paradigm: leveraging frontier Large Language Models (LLMs) as calibrated bias detectors, validated through ensemble consensus and quantified through Bayesian uncertainty estimation.
+This project introduces a new paradigm: frontier Large Language Models (LLMs) as calibrated bias detectors, validated through ensemble consensus and quantified through Bayesian uncertainty estimation.
 
 ### 1.2 Research Questions
 
@@ -103,6 +107,8 @@ This project introduces a novel paradigm: leveraging frontier Large Language Mod
 ## 2. LLM Architecture and Capabilities
 
 ### 2.1 Model Specifications
+
+**Table 3.** Specifications of the three ensemble LLMs.
 
 | Model | Parameters | Context Window | Training Cutoff | Architecture |
 |-------|------------|----------------|-----------------|--------------|
@@ -216,6 +222,8 @@ class LLMEnsemble:
 
 ### 3.1 Corpus Statistics
 
+**Table 4.** Corpus statistics across publishers, textbooks, and passages.
+
 | Dimension | Count | Description |
 |-----------|-------|-------------|
 | **Publishers** | 5 | Major U.S. educational publishers |
@@ -237,6 +245,8 @@ Passages were selected to maximize coverage of politically relevant content:
 
 ### 3.3 Topic Distribution
 
+**Table 5.** Topic distribution of passages across the corpus.
+
 | Topic Category | Passage Count | Percentage |
 |----------------|---------------|------------|
 | Political Systems & Governance | 1,125 | 25.0% |
@@ -247,6 +257,8 @@ Passages were selected to maximize coverage of politically relevant content:
 | **Total** | **4,500** | **100%** |
 
 ### 3.4 Bias Rating Scale
+
+**Table 6.** Bias rating scale with operational definitions.
 
 | Score | Label | Operational Definition |
 |-------|-------|----------------------|
@@ -334,6 +346,8 @@ alpha = krippendorff.alpha(
 
 ### 5.2 Interpretation Thresholds
 
+**Table 7.** Krippendorff's alpha interpretation thresholds and recommendations.
+
 | α Value | Interpretation | Recommendation |
 |---------|---------------|----------------|
 | ≥ 0.80 | **Excellent** | Reliable for drawing conclusions |
@@ -344,6 +358,8 @@ alpha = krippendorff.alpha(
 **Result:** α = 0.84 indicates **excellent reliability**, validating the LLM ensemble approach.
 
 ### 5.3 Pairwise Correlation Analysis
+
+**Table 8.** Pairwise model agreement via correlation and error metrics.
 
 | Model Pair | Pearson r | Spearman ρ | RMSE |
 |------------|-----------|------------|------|
@@ -368,7 +384,7 @@ alpha = krippendorff.alpha(
 
 ### 6.1 Model Motivation
 
-Frequentist approaches (simple means, t-tests) provide point estimates but lack:
+Frequentist approaches (simple means, t-tests) give point estimates but lack:
 - **Uncertainty quantification:** No probability distributions on parameters
 - **Partial pooling:** Cannot borrow strength across publishers/textbooks
 - **Hierarchical structure:** Ignore nested data (passages within textbooks within publishers)
@@ -489,6 +505,8 @@ with pm.Model() as hierarchical_model:
 
 ### 6.4 Prior Justification
 
+**Table 9.** Prior distributions and justifications for model parameters.
+
 | Parameter | Prior | Justification |
 |-----------|-------|---------------|
 | μ_global | Normal(0, 1) | Weakly informative; centered on neutral |
@@ -506,7 +524,7 @@ Bayesian hierarchical models implement **partial pooling**:
 - **Complete pooling:** All publishers treated as identical (high bias, underfitting)
 - **Partial pooling:** Publisher estimates "shrunk" toward global mean proportional to sample size and variance
 
-This produces more reliable estimates, especially for publishers/textbooks with limited data.
+This yields more reliable estimates, especially for publishers and textbooks with limited data.
 
 ---
 
@@ -539,6 +557,9 @@ stat, p_value = friedmanchisquare(*publisher_groups)
 ```
 
 **Results:**
+
+**Table 10.** Friedman test results for publisher bias differences.
+
 | Statistic | Value |
 |-----------|-------|
 | χ² | 42.73 |
@@ -549,6 +570,8 @@ stat, p_value = friedmanchisquare(*publisher_groups)
 ### 7.2 Post-Hoc Pairwise Comparisons (Wilcoxon Signed-Rank)
 
 **Bonferroni-Corrected α:** 0.05 / 10 = 0.005
+
+**Table 11.** Post-hoc Wilcoxon signed-rank pairwise publisher comparisons.
 
 | Comparison | W Statistic | p-value | Significant? |
 |------------|-------------|---------|--------------|
@@ -564,6 +587,8 @@ stat, p_value = friedmanchisquare(*publisher_groups)
 
 ### 8.1 Posterior Summary Statistics
 
+**Table 12.** Posterior summary statistics for publisher bias effects.
+
 | Publisher | Mean | Median | SD | 2.5% HDI | 97.5% HDI | P(effect > 0) |
 |-----------|------|--------|-----|----------|-----------|---------------|
 | Publisher C | -0.48 | -0.47 | 0.07 | -0.62 | -0.34 | 0.00 |
@@ -576,6 +601,8 @@ stat, p_value = friedmanchisquare(*publisher_groups)
 
 A publisher has **statistically credible bias** if the 95% HDI excludes zero:
 
+**Table 13.** Credibility assessment of publisher bias via 95% HDI.
+
 | Publisher | 95% HDI | Contains Zero? | Credible Bias? | Direction |
 |-----------|---------|----------------|----------------|-----------|
 | Publisher C | [-0.62, -0.34] | No | Yes | **Liberal** |
@@ -587,6 +614,8 @@ A publisher has **statistically credible bias** if the 95% HDI excludes zero:
 ### 8.3 Effect Size Interpretation
 
 Using the bias scale [-2, +2]:
+
+**Table 14.** Effect size interpretation thresholds on the bias scale.
 
 | Effect Size | Interpretation |
 |-------------|---------------|
@@ -604,6 +633,8 @@ Using the bias scale [-2, +2]:
 
 Textbook-level standard deviations within each publisher:
 
+**Table 15.** Within-publisher textbook-level bias variability.
+
 | Publisher | Mean Textbook Bias | Textbook SD | Range |
 |-----------|-------------------|-------------|-------|
 | Publisher A | -0.29 | 0.21 | [-0.68, +0.12] |
@@ -620,7 +651,7 @@ Textbook-level standard deviations within each publisher:
 
 ### 8a.1 Motivation
 
-Beyond publisher-level averages, understanding how bias patterns correlate across publishers and vary by topic provides deeper actionable insights for content auditing. Two publishers may show the same average bias for different reasons—correlated (systematic industry-wide trend) or independent (publisher-specific editorial stance).
+Beyond publisher-level averages, how bias patterns correlate across publishers and vary by topic yields deeper, actionable insights for content auditing. Two publishers may show the same average bias for different reasons—correlated (a systematic industry-wide trend) or independent (a publisher-specific editorial stance).
 
 ### 8a.2 Inter-Publisher Bias Correlation
 
@@ -641,6 +672,8 @@ corr_matrix = pivot_bias.corr(method='spearman')
 ```
 
 **Spearman Correlation Matrix (Publisher Bias by Topic):**
+
+**Table 16.** Spearman correlation matrix of publisher bias across topics.
 
 | | Pub A | Pub B | Pub C | Pub D | Pub E |
 |---|-------|-------|-------|-------|-------|
@@ -673,6 +706,8 @@ topic_bias = (
 
 **Topic-Level Bias Heatmap (Mean Bias Score, [-2 = Liberal, +2 = Conservative]):**
 
+**Table 17.** Topic-level mean bias scores by publisher with divergence range.
+
 | Topic | Pub A | Pub B | Pub C | Pub D | Pub E | Δ Range |
 |-------|-------|-------|-------|-------|-------|---------|
 | Political Systems | -0.41 | +0.12 | -0.61 | +0.52 | +0.04 | 1.13 |
@@ -685,7 +720,7 @@ topic_bias = (
 
 ### 8a.4 Passage-Level Uncertainty Quantification
 
-For individual educational content decisions, passage-level confidence intervals provide granular risk assessment:
+For individual content decisions, passage-level confidence intervals provide granular risk assessment:
 
 ```python
 # Bootstrap passage-level confidence intervals
@@ -707,6 +742,8 @@ df['high_uncertainty'] = df['ci_width'] > 0.5  # > 0.5 point spread
 
 **Passage Uncertainty Distribution:**
 
+**Table 18.** Passage-level uncertainty distribution by confidence-interval width.
+
 | CI Width | Interpretation | Passage Count | % of Corpus |
 |----------|---------------|---------------|-------------|
 | [0.00, 0.10] | High consensus | 1,247 | 27.7% |
@@ -722,6 +759,8 @@ df['high_uncertainty'] = df['ci_width'] > 0.5  # > 0.5 point spread
 ## 9. Model Diagnostics and Convergence
 
 ### 9.1 MCMC Convergence Diagnostics
+
+**Table 19.** MCMC convergence diagnostics per model parameter.
 
 | Parameter | R-hat | ESS Bulk | ESS Tail | Convergence |
 |-----------|-------|----------|----------|-------------|
@@ -752,6 +791,9 @@ Posterior predictive distribution aligns with observed data:
 Per 2026 AI governance standards (IEEE 2830-2025, EU AI Act):
 
 **Model Transparency:**
+
+**Table 20.** Model transparency aspects and their implementation.
+
 | Aspect | Implementation |
 |--------|----------------|
 | **Prompt Versioning** | All prompts version-controlled with SHA hashes |
@@ -770,6 +812,8 @@ LLMs may themselves exhibit political bias in their assessments. We address this
 4. **Calibration Studies:** Comparison with human expert panel on 500-passage subset
 
 ### 10.3 Ethical Use Guidelines
+
+**Table 21.** Ethical use guidelines by use case and permitted conditions.
 
 | Use Case | Permitted | Conditions |
 |----------|-----------|------------|
@@ -806,6 +850,8 @@ LLMs may themselves exhibit political bias in their assessments. We address this
 
 ### 11.2 Comparison: Frequentist vs. Bayesian
 
+**Table 22.** Comparison of frequentist and Bayesian inference approaches.
+
 | Aspect | Frequentist | Bayesian |
 |--------|-------------|----------|
 | **Point Estimate** | Sample mean | Posterior mean |
@@ -830,6 +876,8 @@ LLMs may themselves exhibit political bias in their assessments. We address this
 ## 12. Production Framework and MLOps
 
 ### 12.1 API Processing Summary (2026 Architecture)
+
+**Table 23.** API processing summary for the 2026 production architecture.
 
 | Component | Specification |
 |-----------|--------------|
@@ -902,6 +950,8 @@ async def robust_api_call(prompt: str, model: str) -> float:
 ```
 
 ### 12.4 Deliverables (MLflow Registry)
+
+**Table 24.** Project deliverables and their locations in the MLflow registry.
 
 | Artifact | Description | Location |
 |----------|-------------|----------|
@@ -1105,6 +1155,8 @@ structlog: 24.1+
 
 **Convergence Assessment:**
 
+**Table 25.** MCMC convergence diagnostics against acceptance thresholds.
+
 | Diagnostic | Threshold | All Parameters | Status |
 |------------|-----------|----------------|--------|
 | **R-hat (Gelman-Rubin)** | < 1.01 | 1.000 - 1.003 | [Yes] Pass |
@@ -1119,6 +1171,9 @@ structlog: 24.1+
 - Geweke diagnostic: z-scores within [-2, +2] for all parameters
 
 **Prior-Posterior Comparison:**
+
+**Table 26.** Prior-to-posterior comparison and shrinkage for key parameters.
+
 | Parameter | Prior Mean | Prior SD | Posterior Mean | Posterior SD | Shrinkage |
 |-----------|------------|----------|----------------|--------------|-----------|
 | μ_global | 0.0 | 1.0 | -0.06 | 0.04 | 96% |
@@ -1131,6 +1186,8 @@ structlog: 24.1+
 **Sensitivity to Prompt Wording:**
 
 We tested 5 prompt variations to assess stability of bias ratings:
+
+**Table 27.** Prompt variation sensitivity analysis relative to baseline.
 
 | Variation | Description | α with Baseline | Mean Δ |
 |-----------|-------------|-----------------|--------|
@@ -1146,6 +1203,8 @@ We tested 5 prompt variations to assess stability of bias ratings:
 
 **API Cost Breakdown:**
 
+**Table 28.** Per-model API cost breakdown across the full corpus.
+
 | Model | Tokens/Sample | Cost/1K Tokens | Cost/Sample | Total (67.5K) |
 |-------|---------------|----------------|-------------|---------------|
 | GPT-4o | ~1,200 | $0.0075 | $0.009 | $607.50 |
@@ -1157,6 +1216,8 @@ We tested 5 prompt variations to assess stability of bias ratings:
 
 **Scalability Projections:**
 
+**Table 29.** Scalability projections across corpus sizes and processing costs.
+
 | Corpus Size | Passages | API Cost | Processing Time | Human Equivalent |
 |-------------|----------|----------|-----------------|------------------|
 | Small | 1,000 | ~$85 | 2 hours | 4 weeks |
@@ -1167,6 +1228,9 @@ We tested 5 prompt variations to assess stability of bias ratings:
 ### Appendix H: Bias Detection Model Card
 
 **Model Identification:**
+
+**Table 30.** Model identification metadata for the bias detector.
+
 | Field | Value |
 |-------|-------|
 | **System Name** | LLM Ensemble Textbook Bias Detector |
@@ -1175,6 +1239,9 @@ We tested 5 prompt variations to assess stability of bias ratings:
 | **Primary Use** | Educational content bias assessment |
 
 **Component Models:**
+
+**Table 31.** Component LLMs, their organizations, versions, and roles.
+
 | LLM | Organization | Version | Role |
 |-----|-------------|---------|------|
 | GPT-4o | OpenAI | 2025-12 | Primary annotator |
@@ -1182,6 +1249,9 @@ We tested 5 prompt variations to assess stability of bias ratings:
 | Llama-3.2-90B | Meta | 2025-09 | Open-source validation |
 
 **Performance Metrics:**
+
+**Table 32.** Model card performance metrics for the bias-detection system.
+
 | Metric | Value | Interpretation |
 |--------|-------|----------------|
 | Krippendorff's α | 0.84 | Excellent inter-rater reliability |
@@ -1202,6 +1272,8 @@ We tested 5 prompt variations to assess stability of bias ratings:
 - Temporal limitation: Models trained before some textbooks published
 
 ### Appendix I: Glossary of Terms
+
+**Table 33.** Glossary of key statistical and machine-learning terms.
 
 | Term | Definition |
 |------|------------|
@@ -1224,6 +1296,8 @@ We tested 5 prompt variations to assess stability of bias ratings:
 
 **Full Publisher Effect Posterior Summary:**
 
+**Table 34.** Full publisher effect posterior summary across HDI quantiles.
+
 | Publisher | Mean | SD | HDI 2.5% | HDI 25% | HDI 50% | HDI 75% | HDI 97.5% |
 |-----------|------|-----|----------|---------|---------|---------|-----------|
 | Publisher A | -0.29 | 0.06 | -0.41 | -0.33 | -0.29 | -0.25 | -0.17 |
@@ -1233,6 +1307,8 @@ We tested 5 prompt variations to assess stability of bias ratings:
 | Publisher E | +0.02 | 0.06 | -0.10 | -0.02 | +0.02 | +0.06 | +0.14 |
 
 **Pairwise Publisher Contrasts:**
+
+**Table 35.** Pairwise publisher contrasts with posterior probabilities and significance.
 
 | Contrast | Mean | SD | P(> 0) | Significant? |
 |----------|------|-----|--------|--------------|
@@ -1252,31 +1328,33 @@ We tested 5 prompt variations to assess stability of bias ratings:
 ## About the Author
 
 ### Derek Lankeaux, MS Applied Statistics
-**Machine Learning Research Engineer | LLM Evaluation Specialist | Bayesian Inference Expert**
+**Data Scientist | Applied Statistician | Bayesian Inference Specialist**
 
 #### Professional Focus (2026)
-Seeking **Machine Learning Research Engineer** and **Applied Research Scientist** roles at foundation model companies, AI research labs, and technology companies. Specialized in building multi-model LLM evaluation frameworks, Bayesian uncertainty quantification, and production-scale NLP systems.
+Seeking **Data Scientist** and **Applied Statistician** roles at technology companies, foundation model companies, and research institutions. Specialized in experimentation, Bayesian hierarchical inference, GenAI evaluation, and responsible-AI practice.
 
-#### Core Research Engineering Competencies Demonstrated
+#### Core Data Science Competencies Demonstrated
+
+**Table 36.** Core data science competencies demonstrated and their industry relevance.
 
 | Competency Area | This Project | Industry Relevance (2026) |
 |-----------------|--------------|---------------------------|
-| **Multi-Model LLM Evaluation** | GPT-4o, Claude-3.5-Sonnet, Llama-3.2 ensemble with 92% correlation | Essential for foundation model benchmarking |
-| **Bayesian Hierarchical Modeling** | PyMC MCMC with full posterior inference, R-hat < 1.01 | Critical for uncertainty-aware ML systems |
-| **Inter-Rater Reliability** | Krippendorff's α = 0.84 (excellent agreement validation) | Foundational for annotation quality assurance |
-| **Production NLP Pipelines** | 67,500 API calls with circuit breakers and rate limiting | Required for scalable LLM applications |
-| **Statistical Hypothesis Testing** | Friedman χ², Wilcoxon, Bonferroni correction, HDI intervals | Core research methodology skill |
-| **Responsible AI** | EU AI Act compliance, transparency reporting, bias documentation | Standard for ethical AI deployment |
+| **GenAI / LLM Evaluation** | GPT-4o, Claude-3.5-Sonnet, Llama-3.2 ensemble with 92% correlation | Essential for foundation model benchmarking and evaluation |
+| **Bayesian Inference** | PyMC hierarchical model, MCMC, R-hat < 1.01, 95% HDI | Critical for uncertainty quantification and decision-grade outputs |
+| **Experimentation & Statistics** | Krippendorff's α = 0.84, Friedman χ², Bonferroni correction | Foundational for A/B testing, inter-rater reliability, and inference |
+| **Data Engineering at Scale** | 67,500 API calls with circuit breakers, rate limiting, error handling | Required for production data science pipelines |
+| **Causal & Hierarchical Modeling** | Partial pooling, publisher-level effects, posterior decision rules | Core skill for grouped-data inference and experimentation |
+| **Responsible AI** | EU AI Act compliance, IEEE 2830-2025, bias documentation | Standard for ethical AI deployment and stakeholder trust |
 
 #### Technical Stack Expertise
 
 ```
-LLM APIs:        GPT-4o • Claude-3.5-Sonnet • Llama-3.2 • OpenAI • Anthropic • Together AI
-Bayesian:        PyMC 5.15+ • ArviZ 0.18+ • MCMC Diagnostics • Posterior Inference
-NLP:             LangChain 0.3+ • Prompt Engineering • Token Management • RAG
-Statistics:      Krippendorff's Alpha • Friedman Test • Hierarchical Models • HDI
+Statistics:      Krippendorff's α • Friedman Test • Bonferroni Correction • Effect Sizes • HDI
+Bayesian:        PyMC 5.15+ • ArviZ 0.18+ • MCMC Diagnostics • Hierarchical Models
+GenAI / LLM:     GPT-4o • Claude-3.5-Sonnet • Llama-3.2 • LangChain • Prompt Engineering
+Data Stack:      SQL • Pandas 2.2+ • NumPy 2.0+ • Polars • Apache Arrow
 MLOps:           MLflow 2.15+ • FastAPI 0.110+ • Circuit Breakers • Rate Limiting
-Production:      async/await • Retry Logic • Error Handling • Logging (structlog)
+Explainability:  SHAP • Model Cards • IEEE 2830-2025 • EU AI Act • ISO/IEC 23894
 ```
 
 #### Key Achievements from This Research
@@ -1289,10 +1367,10 @@ Production:      async/await • Retry Logic • Error Handling • Logging (str
 
 #### Career Objectives
 
-1. **LLM Evaluation Engineer** at foundation model companies developing benchmarking frameworks
-2. **Research Engineer** building multi-model AI systems for content analysis and safety
-3. **Applied Research Scientist** advancing Bayesian methods for LLM uncertainty quantification
-4. **ML Systems Engineer** scaling NLP pipelines for production workloads
+1. **Data Scientist** at technology companies owning end-to-end experimentation and Bayesian inference
+2. **Applied Statistician** building hierarchical models and uncertainty quantification frameworks
+3. **GenAI Data Scientist** developing LLM evaluation and benchmarking methodologies
+4. **Senior Data Scientist** leading responsible-AI practice and stakeholder-facing analytics
 
 #### Contact Information
 
@@ -1305,6 +1383,6 @@ Production:      async/await • Retry Logic • Error Handling • Logging (str
 ---
 
 *Report generated from analysis in LLM_Ensemble_Textbook_Bias_Detection.ipynb*  
-*Technical Review: Bayesian Hierarchical Analysis with LLM Ensemble per 2026 Standards*  
+*Technical Review: Bayesian Hierarchical Analysis with LLM Ensemble per 2026 Data Scientist Standards*  
 *Compliant with IEEE 2830-2025, ISO/IEC 23894:2025, and EU AI Act*  
 *© 2026 Derek Lankeaux. All rights reserved.*
