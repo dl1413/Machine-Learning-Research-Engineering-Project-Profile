@@ -104,25 +104,31 @@ body {
 
 /* ── Abstract ── */
 .abstract {
-    margin: 0 0.3in 18pt 0.3in;
-    padding: 0;
+    margin: 0 0.3in 14pt 0.3in;
+    padding: 10pt 0 2pt 0;
+    border-top: 0.5pt solid #bbb;
+    border-bottom: 0.5pt solid #bbb;
 }
 
 .abstract h2 {
     font-size: 11pt;
     text-align: center;
-    margin-bottom: 6pt;
+    margin: 0 0 6pt 0;
+    border-bottom: none;
+    padding-bottom: 0;
 }
 
 .abstract p {
     font-size: 9.5pt;
-    line-height: 1.35;
+    line-height: 1.4;
+    text-align: justify;
     text-indent: 0;
 }
 
 .keywords {
     font-size: 9pt;
-    margin: 8pt 0.3in 18pt 0.3in;
+    margin: 0 0.3in 18pt 0.3in;
+    line-height: 1.4;
     color: #333;
 }
 
@@ -183,20 +189,26 @@ tr {
 }
 
 thead th {
-    background-color: #f0f0f0;
+    background-color: #ececec;
     border-top: 1.5pt solid #333;
     border-bottom: 1pt solid #333;
-    padding: 5pt 6pt;
+    padding: 5pt 7pt;
     text-align: left;
     font-weight: bold;
     font-size: 8.5pt;
 }
 
 tbody td {
-    border-bottom: 0.5pt solid #ccc;
-    padding: 4pt 6pt;
+    border-bottom: 0.5pt solid #d9d9d9;
+    padding: 4pt 7pt;
     vertical-align: top;
     font-size: 8.5pt;
+    line-height: 1.3;
+}
+
+/* Subtle zebra striping improves legibility of the dense metric tables. */
+tbody tr:nth-child(even) td {
+    background-color: #f7f7f7;
 }
 
 tbody tr:last-child td {

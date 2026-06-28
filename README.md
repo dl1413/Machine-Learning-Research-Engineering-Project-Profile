@@ -122,7 +122,7 @@
 
 **Domain Expertise:**
 - AI Safety & Red-Teaming
-- Educational Content Analysis  
+- Educational Content Analysis
 - Clinical Decision Support
 - Responsible AI Governance
 - Production MLOps at Scale
