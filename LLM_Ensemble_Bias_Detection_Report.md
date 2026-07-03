@@ -15,31 +15,9 @@
 
 ## Abstract
 
-This technical report presents a novel computational framework for detecting and quantifying political bias in educational textbooks using an ensemble of three frontier Large Language Models (LLMs)—GPT-4, Claude-3-Opus, and Llama-3-70B—combined with Bayesian hierarchical modeling for robust statistical inference. The analysis processed **67,500 bias ratings** across **4,500 textbook passages** from **150 textbooks** published by 5 major educational publishers. We demonstrate excellent inter-rater reliability among LLMs (Krippendorff's α = 0.84), statistically significant publisher-level bias differences (Friedman χ² = 42.73, p < 0.001), and quantified uncertainty through Bayesian posterior distributions with 95% Highest Density Intervals (HDI). Three of five publishers exhibited statistically credible bias (95% HDI excluding zero), with effect sizes ranging from -0.48 (liberal) to +0.38 (conservative) on a [-2, +2] scale. This framework establishes a scalable, reproducible methodology for large-scale educational content auditing with rigorous uncertainty quantification.
+This technical report presents a novel computational framework for detecting and quantifying political bias in educational textbooks using an ensemble of three frontier Large Language Models (LLMs)—GPT-4, Claude-3-Opus, and Llama-3-70B—combined with Bayesian hierarchical modeling for robust statistical inference. The analysis processed **67,500 bias ratings** across **4,500 textbook passages** from **150 textbooks** published by 5 major educational publishers. We demonstrate excellent inter-rater reliability among LLMs (Krippendorff's α = 0.84), statistically significant publisher-level bias differences (Friedman χ² = 42.73, p < 0.001), and quantified uncertainty through Bayesian posterior distributions with 95% HDI. Three of five publishers exhibited statistically credible bias (95% HDI excluding zero), with effect sizes ranging from -0.48 (liberal) to +0.38 (conservative) on a [-2, +2] scale. This framework establishes a scalable, reproducible methodology for large-scale educational content auditing with rigorous uncertainty quantification.
 
-**Keywords:** Large Language Models, GPT-4o, Claude-3.5-Sonnet, Llama-3.2, Ensemble Methods, Bayesian Hierarchical Modeling, Krippendorff's Alpha, Inter-Rater Reliability, Political Bias Detection, Textbook Analysis, Educational Content, MCMC Sampling, PyMC, Responsible AI, LLM Governance, Prompt Engineering
-
----
-
-## Table of Contents
-
-1. [Executive Summary](#executive-summary)
-2. [Introduction](#1-introduction)
-3. [LLM Architecture and Capabilities](#2-llm-architecture-and-capabilities)
-4. [Dataset and Corpus Construction](#3-dataset-and-corpus-construction)
-5. [Methodology](#4-methodology)
-6. [Inter-Rater Reliability Analysis](#5-inter-rater-reliability-analysis)
-7. [Bayesian Hierarchical Modeling](#6-bayesian-hierarchical-modeling)
-8. [Statistical Hypothesis Testing](#7-statistical-hypothesis-testing)
-9. [Publisher-Level Results](#8-publisher-level-results)
-10. [Inter-Publisher Correlation and Cross-Topic Bias Analysis](#8a-inter-publisher-correlation-and-cross-topic-bias-analysis)
-11. [Model Diagnostics and Convergence](#9-model-diagnostics-and-convergence)
-12. [Responsible AI and Ethical Considerations](#10-responsible-ai-and-ethical-considerations)
-13. [Discussion](#11-discussion)
-14. [Production Framework and MLOps](#12-production-framework-and-mlops)
-15. [Conclusions](#13-conclusions)
-16. [References](#references)
-17. [Appendices](#appendices)
+**Keywords:** Large Language Models, GPT-4o, Claude-3.5-Sonnet, Llama-3.2, Ensemble Methods, Bayesian Hierarchical Modeling, Krippendorff's α, Inter-Rater Reliability, Political Bias Detection, Textbook Analysis, Educational Content, MCMC Sampling, PyMC, Responsible AI, LLM Governance, Prompt Engineering
 
 ---
 
@@ -49,7 +27,7 @@ This technical report presents a novel computational framework for detecting and
 
 | Metric | Value | Interpretation |
 |--------|-------|----------------|
-| **Krippendorff's Alpha** | 0.84 | Excellent inter-rater reliability (≥0.80 threshold) |
+| **Krippendorff's α** | 0.84 | Excellent inter-rater reliability (≥0.80 threshold) |
 | **Pairwise Correlation (GPT-4 ↔ Claude-3)** | r = 0.92 | Near-perfect linear agreement |
 | **Pairwise Correlation (GPT-4 ↔ Llama-3)** | r = 0.89 | Excellent agreement |
 | **Pairwise Correlation (Claude-3 ↔ Llama-3)** | r = 0.87 | Excellent agreement |
@@ -302,7 +280,7 @@ df['ensemble_std'] = df[['gpt4_rating', 'claude3_rating', 'llama3_rating']].std(
 
 ## 5. Inter-Rater Reliability Analysis
 
-### 5.1 Krippendorff's Alpha
+### 5.1 Krippendorff's α
 
 **Definition:**
 Krippendorff's α is a reliability coefficient for content analysis that generalizes across data types, sample sizes, and number of raters.
@@ -543,14 +521,14 @@ stat, p_value = friedmanchisquare(*publisher_groups)
 |-----------|-------|
 | χ² | 42.73 |
 | df | 4 |
-| p-value | < 0.001 |
+| p | < 0.001 |
 | **Decision** | **Reject H₀** — significant publisher differences |
 
 ### 7.2 Post-Hoc Pairwise Comparisons (Wilcoxon Signed-Rank)
 
 **Bonferroni-Corrected α:** 0.05 / 10 = 0.005
 
-| Comparison | W Statistic | p-value | Significant? |
+| Comparison | W Statistic | p | Significant? |
 |------------|-------------|---------|--------------|
 | Publisher C vs D | 12,847 | < 0.001 | Yes |
 | Publisher C vs B | 8,923 | 0.003 | Yes |
@@ -1201,110 +1179,4 @@ We tested 5 prompt variations to assess stability of bias ratings:
 - May not generalize to non-educational content
 - Temporal limitation: Models trained before some textbooks published
 
-### Appendix I: Glossary of Terms
-
-| Term | Definition |
-|------|------------|
-| **Bayesian Inference** | Statistical approach using prior beliefs and data likelihood |
-| **Constitutional AI** | LLM training using explicit principles for safety and accuracy |
-| **Credible Interval** | Bayesian interval with specified probability of containing parameter |
-| **Friedman Test** | Non-parametric test for differences among related groups |
-| **Hierarchical Model** | Statistical model with parameters at multiple levels |
-| **HDI** | Highest Density Interval - narrowest credible interval |
-| **Krippendorff's Alpha** | Reliability coefficient for multiple raters on same items |
-| **MCMC** | Markov Chain Monte Carlo - algorithm for Bayesian sampling |
-| **Partial Pooling** | Bayesian technique balancing individual and group estimates |
-| **Posterior Distribution** | Updated probability distribution after observing data |
-| **Prior Distribution** | Initial probability distribution before observing data |
-| **R-hat** | Convergence diagnostic comparing within-chain and between-chain variance |
-| **Temperature** | LLM parameter controlling output randomness |
-| **Wilcoxon Test** | Non-parametric test for paired samples |
-
-### Appendix J: Extended Statistical Tables
-
-**Full Publisher Effect Posterior Summary:**
-
-| Publisher | Mean | SD | HDI 2.5% | HDI 25% | HDI 50% | HDI 75% | HDI 97.5% |
-|-----------|------|-----|----------|---------|---------|---------|-----------|
-| Publisher A | -0.29 | 0.06 | -0.41 | -0.33 | -0.29 | -0.25 | -0.17 |
-| Publisher B | +0.08 | 0.06 | -0.04 | +0.04 | +0.08 | +0.12 | +0.20 |
-| Publisher C | -0.48 | 0.07 | -0.62 | -0.53 | -0.48 | -0.43 | -0.34 |
-| Publisher D | +0.38 | 0.06 | +0.26 | +0.34 | +0.38 | +0.42 | +0.50 |
-| Publisher E | +0.02 | 0.06 | -0.10 | -0.02 | +0.02 | +0.06 | +0.14 |
-
-**Pairwise Publisher Contrasts:**
-
-| Contrast | Mean | SD | P(> 0) | Significant? |
-|----------|------|-----|--------|--------------|
-| C - D | -0.86 | 0.09 | 0.000 | [Yes] |
-| C - B | -0.56 | 0.09 | 0.000 | [Yes] |
-| A - D | -0.67 | 0.08 | 0.000 | [Yes] |
-| C - A | -0.19 | 0.09 | 0.016 | [Yes] |
-| A - B | -0.37 | 0.08 | 0.000 | [Yes] |
-| D - B | +0.30 | 0.08 | 1.000 | [Yes] |
-| E - D | -0.36 | 0.08 | 0.000 | [Yes] |
-| E - C | +0.50 | 0.09 | 1.000 | [Yes] |
-| E - A | +0.31 | 0.08 | 1.000 | [Yes] |
-| E - B | -0.06 | 0.08 | 0.239 | [No] |
-
 ---
-
-## About the Author
-
-### Derek Lankeaux, MS Applied Statistics
-**Machine Learning Research Engineer | LLM Evaluation Specialist | Bayesian Inference Expert**
-
-#### Professional Focus (2026)
-Seeking **Machine Learning Research Engineer** and **Applied Research Scientist** roles at foundation model companies, AI research labs, and technology companies. Specialized in building multi-model LLM evaluation frameworks, Bayesian uncertainty quantification, and production-scale NLP systems.
-
-#### Core Research Engineering Competencies Demonstrated
-
-| Competency Area | This Project | Industry Relevance (2026) |
-|-----------------|--------------|---------------------------|
-| **Multi-Model LLM Evaluation** | GPT-4o, Claude-3.5-Sonnet, Llama-3.2 ensemble with 92% correlation | Essential for foundation model benchmarking |
-| **Bayesian Hierarchical Modeling** | PyMC MCMC with full posterior inference, R-hat < 1.01 | Critical for uncertainty-aware ML systems |
-| **Inter-Rater Reliability** | Krippendorff's α = 0.84 (excellent agreement validation) | Foundational for annotation quality assurance |
-| **Production NLP Pipelines** | 67,500 API calls with circuit breakers and rate limiting | Required for scalable LLM applications |
-| **Statistical Hypothesis Testing** | Friedman χ², Wilcoxon, Bonferroni correction, HDI intervals | Core research methodology skill |
-| **Responsible AI** | EU AI Act compliance, transparency reporting, bias documentation | Standard for ethical AI deployment |
-
-#### Technical Stack Expertise
-
-```
-LLM APIs:        GPT-4o • Claude-3.5-Sonnet • Llama-3.2 • OpenAI • Anthropic • Together AI
-Bayesian:        PyMC 5.15+ • ArviZ 0.18+ • MCMC Diagnostics • Posterior Inference
-NLP:             LangChain 0.3+ • Prompt Engineering • Token Management • RAG
-Statistics:      Krippendorff's Alpha • Friedman Test • Hierarchical Models • HDI
-MLOps:           MLflow 2.15+ • FastAPI 0.110+ • Circuit Breakers • Rate Limiting
-Production:      async/await • Retry Logic • Error Handling • Logging (structlog)
-```
-
-#### Key Achievements from This Research
-
-- **Production-Scale LLM Processing**: 67,500 API calls with robust error handling and rate limiting
-- **Research-Grade Reliability**: Krippendorff's α = 0.84 demonstrating excellent LLM ensemble agreement
-- **Bayesian Uncertainty Quantification**: Full posterior distributions with 95% HDI for all parameters
-- **Statistical Significance**: p < 0.001 findings with proper multiple testing correction
-- **Scalable Architecture**: Circuit breakers, exponential backoff, and MLflow experiment tracking
-
-#### Career Objectives
-
-1. **LLM Evaluation Engineer** at foundation model companies developing benchmarking frameworks
-2. **Research Engineer** building multi-model AI systems for content analysis and safety
-3. **Applied Research Scientist** advancing Bayesian methods for LLM uncertainty quantification
-4. **ML Systems Engineer** scaling NLP pipelines for production workloads
-
-#### Contact Information
-
-- **LinkedIn**: [linkedin.com/in/derek-lankeaux](https://linkedin.com/in/derek-lankeaux)
-- **GitHub**: [github.com/dl1413](https://github.com/dl1413)
-- **Portfolio**: [dl1413.github.io/LLM-Portfolio](https://dl1413.github.io/LLM-Portfolio)
-- **Location**: Available for remote/hybrid positions in the United States
-- **Timeline**: Actively seeking 2026 opportunities
-
----
-
-*Report generated from analysis in LLM_Ensemble_Textbook_Bias_Detection.ipynb*  
-*Technical Review: Bayesian Hierarchical Analysis with LLM Ensemble per 2026 Standards*  
-*Compliant with IEEE 2830-2025, ISO/IEC 23894:2025, and EU AI Act*  
-*© 2026 Derek Lankeaux. All rights reserved.*
