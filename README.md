@@ -11,7 +11,7 @@
 
 **Core Competencies:** Experimentation & Causal Inference • Bayesian Statistics • GenAI / LLM Evaluation • Predictive Modeling & MLOps • Stakeholder Communication
 
-> **Data Scientist with an Applied Statistics MS** who turns ambiguous business and research questions into measurable outcomes using experimentation, Bayesian inference, and modern ML. I have shipped end-to-end projects spanning **GenAI evaluation, predictive modeling, and risk analytics** — delivering **96.8–99.12% model performance** with rigorous statistical validation (Krippendorff's α ≥ 0.81, MCMC R-hat < 1.01, p < 0.001). Comfortable owning the full DS workflow: framing the problem, designing the experiment, writing the SQL, building the model, quantifying uncertainty, and communicating impact to non-technical partners. 3 published technical reports aligned with IEEE 2830-2025, ISO/IEC 23894:2025, and the EU AI Act.
+> **Data Scientist with an Applied Statistics MS** who turns ambiguous business and research questions into measurable outcomes using experimentation, Bayesian inference, and modern ML. I have shipped end-to-end projects spanning **GenAI evaluation, predictive modeling, risk analytics, and retrieval-augmented systems** — delivering **96.8–99.12% model performance** with rigorous statistical validation (Krippendorff's α ≥ 0.81, MCMC R-hat < 1.01, p < 0.001). Comfortable owning the full DS workflow: framing the problem, designing the experiment, writing the SQL, building the model, quantifying uncertainty, and communicating impact to non-technical partners. 4 published technical reports aligned with IEEE 2830-2025, ISO/IEC 23894:2025, and the EU AI Act.
 
 ### 🏆 Highlights for 2026 Data Science Roles
 
@@ -19,7 +19,7 @@
 - 🧪 **Causal & Statistical Rigor**: Friedman χ² = 42.73 (p < 0.001), Bayesian hierarchical models with 95% HDI, multiple-testing correction (Bonferroni / FDR), bootstrap CIs, and power analysis — the toolkit DS teams actually use to defend a result
 - 🏥 **High-Stakes Predictive Modeling**: 99.12% accuracy, 100% precision, Platt-calibrated probabilities (ECE 0.0089) and threshold tuning for context-specific decision policies (e.g., 100% sensitivity for screening)
 - 📊 **Production Data Pipelines**: 80K+ API calls / 2.5M tokens processed with circuit breakers, exponential backoff, and MLflow tracking — repeatable, audited, and monitored
-- 🗣️ **Communication & Reproducibility**: 3 publication-grade reports with model cards, calibration plots, and SHAP-based explanations written for both technical reviewers and business stakeholders
+- 🗣️ **Communication & Reproducibility**: 4 publication-grade reports with model cards, calibration plots, and stakeholder-ready technical narratives
 - 🧭 **Responsible AI by Default**: IEEE 2830-2025, ISO/IEC 23894:2025, and EU AI Act-aligned artifacts — increasingly required for DS work touching regulated data (healthcare, finance, education)
 
 ---
@@ -114,7 +114,7 @@
 ### 📊 Research Impact Summary
 
 **Cross-Project Synthesis:**
-- **3 production ML systems** deployed across AI safety, bias detection, and healthcare
+- **4 production ML systems** deployed across AI safety, bias detection, healthcare, and RAG knowledge retrieval
 - **80,000+ annotations** processed via LLM ensembles with validated reliability
 - **340× cost efficiency** gain in AI safety evaluation vs human baseline
 - **Consistent statistical rigor**: Krippendorff's α ≥ 0.81, MCMC R-hat < 1.01, p < 0.001
@@ -343,7 +343,7 @@ Rochester Institute of Technology | Expected 2026
 ✅ **GenAI Fluency**: Production LLM-ensemble pipelines (GPT-4o, Claude, Llama) with measurable cost-to-quality tradeoffs  
 ✅ **Modeling Range**: From XGBoost/LightGBM classifiers (99.12% acc) to Bayesian hierarchical models (R-hat < 1.01)  
 ✅ **Engineering Hygiene**: SQL, Python (Pandas/Polars), MLflow, FastAPI, Docker, Git — ships and maintains pipelines, not just notebooks  
-✅ **Communication**: 3 publication-grade reports with model cards, calibration plots, and SHAP-based explanations for non-technical readers  
+✅ **Communication**: 4 publication-grade reports with model cards, calibration plots, and stakeholder-ready explanations for non-technical readers  
 ✅ **Domain Versatility**: Healthcare, education, and AI-safety case studies — comfortable in regulated, high-stakes settings
 
 ---
@@ -355,6 +355,7 @@ Rochester Institute of Technology | Expected 2026
 | **AI Safety Red-Team Evaluation** | Technical Report v2.0.0 | Apr 2026 | [Report](./AI%20Safety%20Red-Team%20Evaluation_%20Technical%20Analysis%20Report.md) • [PDF](./AI_Safety_RedTeam_Evaluation_Publication.pdf) |
 | **LLM Ensemble Textbook Bias Detection** | Technical Report v4.0.0 | Apr 2026 | [Report](./LLM_Ensemble_Bias_Detection_Report.md) • [PDF](./LLM_Bias_Detection_Publication.pdf) |
 | **Breast Cancer Classification** | Technical Report v4.0.0 | Apr 2026 | [Report](./Breast_Cancer_Classification_Report.md) • [PDF](./Breast_Cancer_Classification_Publication.pdf) |
+| **RAG System Engineering** | Technical Report v1.0.0 | Jul 2026 | [Report](./RAG_System_Engineering_Report.md) • [PDF](./RAG_System_Engineering_Publication.pdf) |
 
 ---
 

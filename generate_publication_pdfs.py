@@ -613,6 +613,10 @@ REPORTS = [
         'md': 'LLM_Ensemble_Bias_Detection_Report.md',
         'pdf': 'LLM_Bias_Detection_Publication.pdf',
     },
+    {
+        'md': 'RAG_System_Engineering_Report.md',
+        'pdf': 'RAG_System_Engineering_Publication.pdf',
+    },
 ]
 
 

@@ -1,17 +1,14 @@
 # Projects — Final Publication Documents
 
-Two final data-science projects, each delivered as a single journal-style
+Four final data-science projects, each delivered as a single journal-style
 publication PDF rendered through the repository's publication pipeline.
 
 | # | Project | Scope | Document |
 |---|---------|-------|----------|
 | 01 | AI Safety Red-Team Evaluation | LLM-ensemble harm annotation + Bayesian ML classification | [PDF](./01_AI_Safety_RedTeam_Evaluation.pdf) |
-| 02 | Bayesian Methods in Applied Classification | Two case studies — WBCD calibrated classifier + LLM-ensemble textbook bias detection | [PDF](./02_Bayesian_Methods_in_Applied_Classification.pdf) |
-
-Project 02 unifies the Wisconsin Diagnostic Breast Cancer case study and the
-LLM-ensemble Textbook Bias Detection case study under a shared
-Bayesian-methodology frame (priors, partial pooling, MCMC diagnostics,
-calibration, decision policy), presented as Part A and Part B of one document.
+| 02 | Breast Cancer Classification | Ensemble-learning classification + calibration for diagnostic support | [PDF](./02_Breast_Cancer_Classification.pdf) |
+| 03 | LLM Ensemble Bias Detection | Bayesian hierarchical publisher-level bias detection | [PDF](./03_LLM_Ensemble_Bias_Detection.pdf) |
+| 04 | RAG System Engineering | Retrieval-augmented generation with grounding, guardrails, and evaluation | [PDF](./04_RAG_System_Engineering.pdf) |
 
 ## Regenerating
 

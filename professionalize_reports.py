@@ -1,16 +1,12 @@
 #!/usr/bin/env python3
 """
-Build two final project documents under projects/, one publication-formatted
+Build four final project documents under projects/, one publication-formatted
 PDF per project:
 
   01_AI_Safety_RedTeam_Evaluation.pdf
-       Standalone: automated harm detection via LLM-ensemble annotation +
-       Bayesian ML classification.
-
-  02_Bayesian_Methods_in_Applied_Classification.pdf
-       Combined two-case-study portfolio:
-         Part A — Calibrated Predictive Modeling (WBCD)
-         Part B — LLM-Ensemble Textbook Bias Detection
+  02_Breast_Cancer_Classification.pdf
+  03_LLM_Ensemble_Bias_Detection.pdf
+  04_RAG_System_Engineering.pdf
 
 Each project is delivered as a single final document. The intermediate
 markdown is assembled in a temporary build directory and rendered with the
@@ -36,6 +32,7 @@ OUT.mkdir(exist_ok=True)
 SRC_AI_SAFETY = ROOT / "AI Safety Red-Team Evaluation_ Technical Analysis Report.md"
 SRC_BIAS      = ROOT / "LLM_Ensemble_Bias_Detection_Report.md"
 SRC_WBCD      = ROOT / "Breast_Cancer_Classification_Report.md"
+SRC_RAG       = ROOT / "RAG_System_Engineering_Report.md"
 
 # ─── Shared header template ──────────────────────────────────────────────────
 # NOTE: "AI Standards Compliance" is the key build_title_block() reads, so the
@@ -309,7 +306,7 @@ def render_final(out_name: str, md_text: str) -> None:
 
 def main() -> int:
     print("=" * 70)
-    print("Building 2 final project documents -> projects/")
+    print("Building 4 final project documents -> projects/")
     print("=" * 70)
 
     # Project 1 — AI Safety (standalone).
@@ -322,11 +319,38 @@ def main() -> int:
     )
     render_final("01_AI_Safety_RedTeam_Evaluation", ai_md)
 
-    # Project 2 — Bayesian Methods (WBCD + LLM-bias, combined).
-    render_final("02_Bayesian_Methods_in_Applied_Classification", build_combined())
+    # Project 2 — Breast Cancer classification (standalone).
+    wbcd_md = normalize_simple(
+        SRC_WBCD,
+        title="Breast Cancer Classification: Technical Analysis Report",
+        subtitle="Enhanced Ensemble Methods for Wisconsin Breast Cancer Classification",
+        version="4.0.0",
+    )
+    render_final("02_Breast_Cancer_Classification", wbcd_md)
+
+    # Project 3 — LLM bias detection (standalone).
+    bias_md = normalize_simple(
+        SRC_BIAS,
+        title="LLM Ensemble Textbook Bias Detection: Technical Analysis Report",
+        subtitle="Detecting Publisher Bias Using LLM Ensemble and Bayesian Hierarchical Methods",
+        version="4.0.0",
+    )
+    render_final("03_LLM_Ensemble_Bias_Detection", bias_md)
+
+    # Project 4 — RAG system engineering (standalone).
+    rag_md = normalize_simple(
+        SRC_RAG,
+        title="RAG System Engineering: Technical Analysis Report",
+        subtitle=(
+            "Production Retrieval-Augmented Generation with Evaluation, "
+            "Guardrails, and Cost-Latency Optimization"
+        ),
+        version="1.0.0",
+    )
+    render_final("04_RAG_System_Engineering", rag_md)
 
     print("=" * 70)
-    print("Done. 2 final documents rendered.")
+    print("Done. 4 final documents rendered.")
     print("=" * 70)
     return 0
 
