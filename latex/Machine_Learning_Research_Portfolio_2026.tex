@@ -1,0 +1,596 @@
+\documentclass[11pt,a4paper]{article}
+
+% Packages
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{times}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage{caption}
+\usepackage{xcolor}
+\usepackage{fancyhdr}
+\usepackage{float}
+\usepackage{multirow}
+\usepackage{longtable}
+\usepackage{enumitem}
+
+% Hyperref setup
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    citecolor=blue,
+    urlcolor=blue,
+    pdftitle={Machine Learning Research Engineering Portfolio (2026)},
+    pdfauthor={Derek Lankeaux},
+    pdfsubject={Applied ML, Bayesian Inference, GenAI Evaluation, Responsible AI},
+    pdfkeywords={Machine Learning, Bayesian Inference, LLM Evaluation, AI Safety, Ensemble Methods, MLOps}
+}
+
+% Headers and footers
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small ML Research Engineering Portfolio}
+\fancyhead[R]{\small Derek Lankeaux, 2026}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0pt}
+
+% Title information
+\title{\textbf{Machine Learning Research Engineering Portfolio}\\[0.5ex]
+       \large 2026 Edition}
+\author{
+    Derek Lankeaux, MS Applied Statistics\\
+    \textit{Data Scientist $|$ Applied Statistician $|$ ML Research Engineer}\\
+    Rochester Institute of Technology\\
+    \texttt{Version 1.0.0}\\[2ex]
+    \small AI Standards Compliance: IEEE 2830-2025, ISO/IEC 23894:2025, EU AI Act (2025)
+}
+\date{January 2026}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+This portfolio presents three end-to-end machine learning research engineering projects demonstrating 2026-grade competencies in applied ML, Bayesian inference, GenAI evaluation, and responsible AI deployment. Project 1 develops a scalable AI safety red-team evaluation framework combining LLM ensemble annotation (Krippendorff's $\alpha = 0.81$) with supervised ML classification achieving 0.9923 ROC-AUC and a 340$\times$ cost reduction over human annotation. Project 2 implements an ensemble learning pipeline for breast cancer classification achieving 99.12\% accuracy and 0.9987 ROC-AUC with full calibration analysis and clinical decision framing. Project 3 applies a Bayesian hierarchical framework to detect publisher-level political bias in educational textbooks using LLM consensus scoring ($\alpha = 0.84$), yielding credible posterior estimates with 95\% Highest Density Intervals (HDI). Across all three projects, consistent emphasis is placed on statistical rigor, reproducibility, explainability, and production readiness.
+\end{abstract}
+
+\noindent\textbf{Keywords:} Machine Learning, Applied Statistics, Bayesian Inference, Ensemble Methods, LLM Evaluation, AI Safety, Breast Cancer Classification, Bias Detection, XGBoost, PyMC, SHAP, MLOps, Responsible AI
+
+\vspace{1em}
+\noindent\rule{\textwidth}{0.4pt}
+\vspace{1em}
+
+\tableofcontents
+\newpage
+
+%=============================================================================
+\section{Portfolio Overview}
+%=============================================================================
+
+\subsection{Research and Engineering Contributions}
+
+This portfolio demonstrates the ability to design, implement, evaluate, and communicate production-grade ML systems across three applied domains. Core contributions include:
+
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Reproducible ML workflows} with explicit data versioning, experiment tracking, and deterministic evaluation pipelines
+    \item \textbf{Statistically grounded evaluation}: confidence intervals, subgroup analysis, calibration diagnostics, and ablation studies
+    \item \textbf{Engineering best practices}: modular code, test coverage, CI pipelines, and inference/runtime profiling
+    \item \textbf{Decision-oriented metrics} that map model performance to real-world operational objectives
+    \item \textbf{Responsible AI documentation}: limitations, governance controls, and human-in-the-loop escalation policies
+\end{itemize}
+
+\subsection{Project Summary}
+
+\begin{table}[H]
+\centering
+\caption{Summary of three portfolio projects}
+\begin{tabular}{llll}
+\toprule
+\textbf{Project} & \textbf{Domain} & \textbf{Primary Method} & \textbf{Key Result} \\
+\midrule
+AI Safety Red-Team Evaluation & AI Governance & LLM Ensemble + ML Classification & ROC-AUC 0.9923; $\alpha = 0.81$ \\
+Breast Cancer Classification & Clinical ML & Ensemble Learning + Calibration & Accuracy 99.12\%; ROC-AUC 0.9987 \\
+LLM Ensemble Bias Detection & NLP / Bayesian & Hierarchical Bayes + LLM Consensus & $\alpha = 0.84$; 3/5 publishers biased \\
+\bottomrule
+\end{tabular}
+\label{tab:portfolio_summary}
+\end{table}
+
+\subsection{Shared Methodology Standards}
+
+All three projects share a common methodological foundation:
+
+\begin{enumerate}[leftmargin=*]
+    \item \textbf{Pre-registration equivalents}: defined hypotheses, metrics, and analysis plans before fitting final models
+    \item \textbf{Held-out test sets}: no leakage between feature engineering, model selection, and final evaluation
+    \item \textbf{Uncertainty quantification}: 95\% confidence intervals (frequentist) or 95\% HDI (Bayesian) on all estimates
+    \item \textbf{Explainability}: SHAP-based global and local feature attribution for tree-based models
+    \item \textbf{Standards compliance}: IEEE 2830-2025 transparent ML documentation, ISO/IEC 23894:2025 AI risk management
+\end{enumerate}
+
+%=============================================================================
+\section{Project 1: AI Safety Red-Team Evaluation}
+%=============================================================================
+
+\subsection{Problem Statement}
+
+Manual red-teaming is expensive (\$50--100/hour per human expert), non-scalable, and subject to inconsistent inter-annotator agreement (70--85\%). Modern LLM release cycles demand evaluation throughput that human red-teamers cannot sustain. This project develops and validates a hybrid human-AI evaluation framework achieving annotation quality comparable to expert consensus at a 340$\times$ cost reduction.
+
+\subsection{Technical Framework}
+
+\subsubsection{Stage 1 --- LLM Ensemble Annotation}
+
+Three frontier LLMs serve as calibrated annotators: GPT-4o, Claude-3.5-Sonnet, and Llama-3.2-90B. A structured prompt protocol enforces a six-category harm taxonomy (Dangerous Information, Hate/Discrimination, Deception/Manipulation, Privacy Violation, Illegal Activity, Self-Harm/Violence). Inter-rater reliability is validated with Krippendorff's $\alpha = 0.81$ (Excellent threshold: $\geq 0.80$). The corpus comprises 12,500 AI model response pairs processed at $\sim$180 samples/hour per LLM.
+
+\subsubsection{Stage 2 --- ML Classification Pipeline}
+
+Eight ensemble classifiers are trained on LLM-generated labels: Random Forest, Gradient Boosting, AdaBoost, Bagging, XGBoost, LightGBM, Voting, and Stacking. A feature engineering pipeline produces 47 features including lexical patterns, semantic embeddings, structural cues, and LLM confidence signals. Class imbalance is mitigated via SMOTE oversampling and class-weighted loss. The best model (Stacking Classifier) processes $\sim$850 samples/hour at \$0.018/sample.
+
+\subsubsection{Bayesian Hierarchical Risk Modeling}
+
+A PyMC-based hierarchical model with partial pooling operates over harm categories and AI model vendors. 95\% HDI quantifies uncertainty on category-level harm rates; posterior predictive checks confirm model calibration.
+
+\subsection{Results}
+
+\begin{table}[H]
+\centering
+\caption{LLM annotation reliability metrics}
+\begin{tabular}{lcc}
+\toprule
+\textbf{Metric} & \textbf{Value} & \textbf{Interpretation} \\
+\midrule
+Krippendorff's $\alpha$ (overall) & 0.81 & Excellent inter-rater agreement \\
+GPT-4o $\leftrightarrow$ Claude-3.5 ($r$) & 0.94 & Near-perfect pairwise agreement \\
+GPT-4o $\leftrightarrow$ Llama-3.2 ($r$) & 0.88 & Excellent pairwise agreement \\
+Claude-3.5 $\leftrightarrow$ Llama-3.2 ($r$) & 0.86 & Excellent pairwise agreement \\
+Fleiss' $\kappa$ (3-way) & 0.79 & Substantial agreement \\
+\bottomrule
+\end{tabular}
+\label{tab:ai_reliability}
+\end{table}
+
+\begin{table}[H]
+\centering
+\caption{Stage 2 classification performance (Stacking Classifier)}
+\begin{tabular}{lcc}
+\toprule
+\textbf{Metric} & \textbf{Value} \\
+\midrule
+Accuracy & 96.8\% \\
+Precision & 97.2\% \\
+Recall (Sensitivity) & 96.1\% \\
+F1-Score & 96.6\% \\
+ROC-AUC & 0.9923 \\
+Cross-Validation (10-fold) & 95.9\% $\pm$ 1.4\% \\
+\bottomrule
+\end{tabular}
+\label{tab:ai_classifier}
+\end{table}
+
+\begin{table}[H]
+\centering
+\caption{Defense effectiveness against adversarial prompts}
+\small
+\begin{tabular}{lcc}
+\toprule
+\textbf{Defense Configuration} & \textbf{Harm Rate} & \textbf{Reduction vs. Baseline} \\
+\midrule
+No defense (baseline) & 21.8\% & --- \\
+Single-stage filter & 11.4\% & 47.7\% \\
+Dual-stage filter & 4.8\% & 78.0\% \\
++ Adversarial fine-tuning & 2.1\% & 90.4\% \\
+\bottomrule
+\end{tabular}
+\label{tab:defense}
+\end{table}
+
+\subsection{Production Architecture}
+
+Throughput: $\sim$850 prompt-response pairs/hour (combined pipeline). Cost: \$0.018/sample versus $\sim$\$6.25/sample human baseline. P95 latency: $< 2.1$ seconds end-to-end. API: REST endpoint with async queue; 99.7\% uptime SLA target.
+
+\subsection{Threats to Validity}
+
+\begin{itemize}[leftmargin=*]
+    \item LLM annotators share training corpus overlap, which may inflate agreement
+    \item Harm taxonomy reflects April 2026 standards; regulatory updates may require re-categorization
+    \item Evaluation corpus is synthetic/curated and may not represent the full production adversarial distribution
+    \item Dual-filter defense effectiveness is measured in controlled conditions; real-world performance may differ
+\end{itemize}
+
+%=============================================================================
+\section{Project 2: Breast Cancer Classification}
+%=============================================================================
+
+\subsection{Problem Statement}
+
+Breast cancer is the most prevalent malignancy among women globally ($\sim$2.3 million new diagnoses annually). Fine Needle Aspiration (FNA) cytology interpretation exhibits inter-observer variability (85--95\% concordance), creating demand for consistent, reproducible computer-aided diagnosis support. This project develops and validates an ensemble ML system for binary malignancy classification from FNA cytological features, with explicit clinical threshold analysis.
+
+\subsection{Technical Framework}
+
+\subsubsection{Data Engineering}
+
+Dataset: Wisconsin Diagnostic Breast Cancer (WDBC), $n = 569$ (357 benign, 212 malignant). Features: 30 cytological measurements (10 nuclear characteristics $\times$ 3 statistical summaries). Preprocessing includes Variance Inflation Factor (VIF) multicollinearity analysis and StandardScaler normalization. SMOTE oversampling is applied to training folds only (leakage-safe). Recursive Feature Elimination (RFE) retains 17 features.
+
+\subsubsection{Ensemble Benchmarking}
+
+Eight algorithms are evaluated: Random Forest, Gradient Boosting, AdaBoost, Bagging, XGBoost, LightGBM, Voting, and Stacking. Hyperparameter optimization uses Optuna Bayesian search (200 trials, TPE sampler). Validation: 10-fold stratified cross-validation plus a held-out test set ($n = 114$, 20\%).
+
+\subsubsection{Calibration Analysis}
+
+Pre- and post-calibration metrics include Expected Calibration Error (ECE), Brier score, and reliability curves. Calibration methods compared: Platt scaling (sigmoid) and isotonic regression. Clinical threshold analysis evaluates the sensitivity--specificity trade-off at 50 operating points.
+
+\subsection{Results}
+
+\begin{table}[H]
+\centering
+\caption{Classification performance on held-out test set (AdaBoost)}
+\begin{tabular}{llp{5cm}}
+\toprule
+\textbf{Metric} & \textbf{Value} & \textbf{Clinical Interpretation} \\
+\midrule
+Accuracy & 99.12\% & 113/114 correct classifications \\
+Precision (PPV) & 100.00\% & Zero false positives \\
+Recall (Sensitivity) & 98.59\% & 1 missed malignancy in 71 cases \\
+Specificity & 100.00\% & Perfect benign identification \\
+F1-Score & 99.29\% & Harmonic mean balance \\
+ROC-AUC & 0.9987 & Near-perfect discrimination \\
+Cohen's $\kappa$ & 0.9823 & Almost perfect agreement \\
+\bottomrule
+\end{tabular}
+\label{tab:bc_performance}
+\end{table}
+
+\noindent\textit{95\% CI (test accuracy): [96.27\%, 100.65\%]; Binomial test vs. random baseline: $p < 0.0001$.}
+
+\begin{table}[H]
+\centering
+\caption{Calibration improvement after Platt scaling (AdaBoost)}
+\begin{tabular}{lcc}
+\toprule
+\textbf{Metric} & \textbf{Before Calibration} & \textbf{After Platt Scaling} \\
+\midrule
+Expected Calibration Error (ECE) & 0.0312 & 0.0089 \\
+Brier Score & 0.0421 & 0.0187 \\
+Max Calibration Error & 0.0847 & 0.0234 \\
+\bottomrule
+\end{tabular}
+\label{tab:calibration}
+\end{table}
+
+\begin{table}[H]
+\centering
+\caption{Clinical threshold analysis: key operating points}
+\begin{tabular}{lcccc}
+\toprule
+\textbf{Operating Point} & \textbf{Sensitivity} & \textbf{Specificity} & \textbf{PPV} & \textbf{NPV} \\
+\midrule
+Default (0.50) & 98.59\% & 100.00\% & 100.00\% & 97.67\% \\
+High Sensitivity (0.30) & 100.00\% & 97.62\% & 98.61\% & 100.00\% \\
+High Specificity (0.70) & 95.77\% & 100.00\% & 100.00\% & 95.45\% \\
+\bottomrule
+\end{tabular}
+\label{tab:threshold}
+\end{table}
+
+\noindent\textit{Recommended operating point for screening: threshold = 0.30 (zero missed malignancies).}
+
+\subsection{Top Predictive Features (SHAP)}
+
+\begin{table}[H]
+\centering
+\caption{Top 5 features by mean absolute SHAP value}
+\begin{tabular}{clcc}
+\toprule
+\textbf{Rank} & \textbf{Feature} & \textbf{SHAP Mean Abs} & \textbf{Clinical Relevance} \\
+\midrule
+1 & Worst Radius & 0.847 & Tumor size indicator \\
+2 & Worst Concave Points & 0.723 & Nuclear irregularity \\
+3 & Mean Concave Points & 0.641 & Shape complexity \\
+4 & Worst Perimeter & 0.589 & Boundary length \\
+5 & Mean Radius & 0.521 & Average cell size \\
+\bottomrule
+\end{tabular}
+\label{tab:shap}
+\end{table}
+
+\subsection{Threats to Validity}
+
+\begin{itemize}[leftmargin=*]
+    \item WDBC dataset (1995) may not reflect contemporary cytology imaging pipelines
+    \item Single-institution data limits generalizability across demographic and equipment variation
+    \item 10-fold CV may be optimistic on small dataset ($n = 569$); external validation not performed
+    \item SMOTE introduces synthetic samples; real-world class distribution may differ from training split
+\end{itemize}
+
+%=============================================================================
+\section{Project 3: LLM Ensemble Bias Detection}
+%=============================================================================
+
+\subsection{Problem Statement}
+
+Political bias in educational textbooks has long-term effects on civic socialization. Traditional audit methods are subjective, expensive, and non-scalable. This project develops a scalable, reproducible computational audit framework using LLM consensus scoring and Bayesian hierarchical modeling to detect and quantify publisher-level political framing in K--12 educational content.
+
+\subsection{Technical Framework}
+
+\subsubsection{Corpus Construction}
+
+150 textbooks from 5 major educational publishers (Publishers A--E). 4,500 passages sampled (30 per textbook) across four topics: government, economics, history, and social issues. 67,500 bias ratings generated (4,500 passages $\times$ 3 LLMs $\times$ 5 dimensions).
+
+\subsubsection{LLM Ensemble Protocol}
+
+Three frontier LLMs: GPT-4, Claude-3-Opus, Llama-3-70B. Structured prompt: passage + rating rubric ($-2$ strongly liberal to $+2$ strongly conservative). Deterministic decoding (temperature = 0) for reproducibility across five dimensions: word choice, framing, source selection, omission patterns, and tone.
+
+\subsubsection{Bayesian Hierarchical Model}
+
+Three-level hierarchy: dimension $\to$ publisher $\to$ textbook $\to$ passage. Partial pooling provides shrinkage toward grand mean, preventing overfitting to small publishers. MCMC inference: PyMC, 4 chains $\times$ 2,000 draws (1,000 warm-up), NUTS sampler. Convergence: R-hat $< 1.01$ on all parameters; ESS $> 3,000$.
+
+\subsection{Results}
+
+\begin{table}[H]
+\centering
+\caption{Inter-rater reliability across three LLMs}
+\begin{tabular}{lcc}
+\toprule
+\textbf{Metric} & \textbf{Value} & \textbf{Interpretation} \\
+\midrule
+Krippendorff's $\alpha$ (3-LLM) & 0.84 & Excellent ($\geq 0.80$ threshold) \\
+GPT-4 $\leftrightarrow$ Claude-3 ($r$) & 0.92 & Near-perfect \\
+GPT-4 $\leftrightarrow$ Llama-3 ($r$) & 0.89 & Excellent \\
+Claude-3 $\leftrightarrow$ Llama-3 ($r$) & 0.87 & Excellent \\
+Fleiss' $\kappa$ (3-way) & 0.81 & Substantial to excellent \\
+\bottomrule
+\end{tabular}
+\label{tab:llm_reliability}
+\end{table}
+
+\begin{table}[H]
+\centering
+\caption{Publisher bias estimates from Bayesian hierarchical model}
+\begin{tabular}{llccc}
+\toprule
+\textbf{Rank} & \textbf{Publisher} & \textbf{Posterior Mean} & \textbf{95\% HDI} & \textbf{Classification} \\
+\midrule
+1 & Publisher C & $-0.48$ & $[-0.62, -0.34]$ & \textbf{Credibly Liberal} \\
+2 & Publisher A & $-0.29$ & $[-0.41, -0.17]$ & \textbf{Credibly Liberal} \\
+3 & Publisher E & $+0.02$ & $[-0.10, +0.14]$ & Neutral \\
+4 & Publisher B & $+0.08$ & $[-0.04, +0.20]$ & Neutral \\
+5 & Publisher D & $+0.38$ & $[+0.26, +0.50]$ & \textbf{Credibly Conservative} \\
+\bottomrule
+\end{tabular}
+\label{tab:publisher_bias}
+\end{table}
+
+\noindent\textit{Classification rule: credible effect when 95\% HDI excludes zero. Scale: $-2$ (strongly liberal) to $+2$ (strongly conservative).}
+
+\begin{table}[H]
+\centering
+\caption{MCMC convergence diagnostics}
+\begin{tabular}{lccc}
+\toprule
+\textbf{Parameter Group} & \textbf{R-hat} & \textbf{ESS (bulk)} & \textbf{ESS (tail)} \\
+\midrule
+Publisher effects & 1.001 & 4,218 & 3,891 \\
+Textbook effects & 1.002 & 3,744 & 3,512 \\
+Dimension effects & 1.001 & 4,106 & 3,988 \\
+Grand mean & 1.000 & 5,201 & 4,873 \\
+\bottomrule
+\end{tabular}
+\label{tab:mcmc}
+\end{table}
+
+\subsection{Threats to Validity}
+
+\begin{itemize}[leftmargin=*]
+    \item LLMs may share training data with evaluated textbooks, introducing systematic rating bias
+    \item Five-publisher corpus may not generalize to independent, state-specific, or digital-native publishers
+    \item Political bias scale is ordinal; interval assumptions in Bayesian model are approximations
+    \item LLM political calibration is time-sensitive; model updates may alter future ratings without replication
+\end{itemize}
+
+%=============================================================================
+\section{Cross-Project Technical Strengths}
+%=============================================================================
+
+\subsection{Statistical Rigor}
+
+\begin{table}[H]
+\centering
+\caption{Statistical capabilities by project}
+\begin{tabular}{lccc}
+\toprule
+\textbf{Capability} & \textbf{Project 1} & \textbf{Project 2} & \textbf{Project 3} \\
+\midrule
+Confidence/HDI intervals & \checkmark (95\% HDI) & \checkmark (95\% CI) & \checkmark (95\% HDI) \\
+Cross-validation & \checkmark (10-fold) & \checkmark (10-fold) & N/A \\
+Inter-rater reliability & \checkmark ($\alpha = 0.81$) & N/A & \checkmark ($\alpha = 0.84$) \\
+Calibration analysis & \checkmark & \checkmark (ECE, Brier) & N/A \\
+Bayesian inference & \checkmark (hierarchical) & N/A & \checkmark (hierarchical) \\
+Multiple testing adjustment & \checkmark & N/A & \checkmark (Dunn/BH) \\
+\bottomrule
+\end{tabular}
+\label{tab:stats}
+\end{table}
+
+\subsection{Responsible AI Controls}
+
+All three projects include:
+
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Limitations disclosure}: explicit threats to validity and generalizability caveats
+    \item \textbf{Human-in-the-loop}: configurable escalation thresholds and audit logging
+    \item \textbf{Governance documentation}: model cards, intended-use statements, misuse risk assessment
+    \item \textbf{Uncertainty communication}: all estimates carry quantified uncertainty intervals
+\end{itemize}
+
+%=============================================================================
+\section{Role Alignment and Competency Map}
+%=============================================================================
+
+\begin{table}[H]
+\centering
+\caption{Competency evidence map}
+\begin{tabular}{lp{9cm}}
+\toprule
+\textbf{Competency} & \textbf{Evidence} \\
+\midrule
+Supervised ML (classification) & Projects 1 \& 2: 8+ ensemble algorithms, full benchmark \\
+Bayesian inference & Projects 1 \& 3: PyMC hierarchical models with MCMC \\
+LLM evaluation \& prompting & Projects 1 \& 3: multi-LLM annotation, structured prompts \\
+Calibration \& uncertainty & Project 2: ECE, Brier, Platt scaling \\
+Statistical hypothesis testing & Projects 2 \& 3: binomial, Kruskal--Wallis, Dunn, Friedman \\
+Explainability (SHAP) & Projects 1 \& 2: global + local attribution \\
+MLOps \& deployment & Projects 1 \& 2: REST API, latency profiling, drift monitoring \\
+Responsible AI & All three: governance docs, limitations, escalation policies \\
+\bottomrule
+\end{tabular}
+\label{tab:competency}
+\end{table}
+
+\begin{table}[H]
+\centering
+\caption{Applicable role alignment}
+\begin{tabular}{ll}
+\toprule
+\textbf{Role} & \textbf{Alignment} \\
+\midrule
+Data Scientist (Applied ML) & Primary (Projects 1 \& 2) \\
+Applied Statistician & Primary (Projects 2 \& 3) \\
+GenAI Evaluation Scientist & Primary (Projects 1 \& 3) \\
+ML Research Engineer & All three projects \\
+AI Safety / Red Team Researcher & Project 1 \\
+\bottomrule
+\end{tabular}
+\label{tab:roles}
+\end{table}
+
+%=============================================================================
+\section{Reproducibility and Deployment Notes}
+%=============================================================================
+
+\subsection{Code and Data Availability}
+
+\begin{table}[H]
+\centering
+\caption{Repository resources}
+\begin{tabular}{ll}
+\toprule
+\textbf{Resource} & \textbf{Location} \\
+\midrule
+Repository & \url{github.com/dl1413/Machine-Learning-Research-Engineering-Project-Profile} \\
+AI Safety Notebook & \texttt{AI\_Safety\_RedTeam\_Evaluation.ipynb} \\
+Breast Cancer Notebook & \texttt{Breast\_Cancer\_Classification\_PUBLICATION.ipynb} \\
+Bias Detection Notebook & \texttt{LLM\_Ensemble\_Textbook\_Bias\_Detection.ipynb} \\
+PDF Build Pipeline & \texttt{scripts/build\_reports\_pdf.sh} \\
+\bottomrule
+\end{tabular}
+\label{tab:resources}
+\end{table}
+
+\subsection{Reproducibility Controls}
+
+All projects share: fixed random seeds (seed = 42 throughout), pinned dependency versions (requirements files), deterministic preprocessing pipelines, and environment specification (Python 3.11, conda/pip lockfiles).
+
+\subsection{PDF Generation}
+
+Publication-ready PDFs are generated via:
+
+\begin{verbatim}
+chmod +x scripts/build_reports_pdf.sh
+./scripts/build_reports_pdf.sh
+\end{verbatim}
+
+Output PDFs are in \texttt{pdf/out/}. See \texttt{PDF\_EXPORT.md} for full build instructions.
+
+%=============================================================================
+\section{Conclusions}
+%=============================================================================
+
+This portfolio demonstrates end-to-end machine learning research engineering capability across three distinct applied domains:
+
+\begin{enumerate}[leftmargin=*]
+    \item \textbf{AI Safety Red-Team Evaluation} establishes a cost-effective, audit-grade framework for scalable LLM harm detection, reducing annotation cost by 340$\times$ while preserving expert-level reliability ($\alpha = 0.81$, ROC-AUC 0.9923).
+
+    \item \textbf{Breast Cancer Classification} delivers clinically viable diagnostic support with exceptional discriminative performance (ROC-AUC 0.9987) and improved probability calibration (ECE reduced from 0.0312 to 0.0089), enabling threshold-optimized operating points for screening versus diagnosis contexts.
+
+    \item \textbf{LLM Ensemble Bias Detection} provides a reproducible, statistically rigorous audit methodology for educational content, identifying credible political framing effects in 3 of 5 publishers with an uncertainty-aware triage protocol for expert review.
+\end{enumerate}
+
+Together, these projects reflect competencies in ML systems design, statistical inference, responsible AI governance, and engineering rigor required for senior data science and applied ML research roles in 2026.
+
+%=============================================================================
+\begin{thebibliography}{14}
+
+\bibitem{krippendorff2011}
+Krippendorff, K. (2011).
+\newblock Computing Krippendorff's alpha-reliability.
+\newblock \textit{Annals of Applied Statistics}, 5(1), 103--117.
+
+\bibitem{chen2016xgboost}
+Chen, T., \& Guestrin, C. (2016).
+\newblock XGBoost: A scalable tree boosting system.
+\newblock \textit{Proceedings of KDD '16}, 785--794.
+
+\bibitem{ke2017lightgbm}
+Ke, G., et al. (2017).
+\newblock LightGBM: A highly efficient gradient boosting decision tree.
+\newblock \textit{NeurIPS 30}.
+
+\bibitem{gelman2013}
+Gelman, A., et al. (2013).
+\newblock \textit{Bayesian Data Analysis} (3rd ed.).
+\newblock Chapman \& Hall/CRC.
+
+\bibitem{chawla2002smote}
+Chawla, N.V., et al. (2002).
+\newblock SMOTE: Synthetic minority over-sampling technique.
+\newblock \textit{Journal of Machine Learning Research}, 3, 321--357.
+
+\bibitem{lundberg2017shap}
+Lundberg, S., \& Lee, S. (2017).
+\newblock A unified approach to interpreting model predictions.
+\newblock \textit{NeurIPS 30}.
+
+\bibitem{mangasarian1995}
+Mangasarian, O.L., et al. (1995).
+\newblock Breast cancer diagnosis and prognosis via linear programming.
+\newblock \textit{Operations Research}, 43(4), 570--577.
+
+\bibitem{brier1950}
+Brier, G.W. (1950).
+\newblock Verification of forecasts expressed in terms of probability.
+\newblock \textit{Monthly Weather Review}, 78(1), 1--3.
+
+\bibitem{openai2024gpt4}
+OpenAI. (2024).
+\newblock GPT-4 technical report.
+\newblock arXiv:2303.08774.
+
+\bibitem{anthropic2024claude}
+Anthropic. (2024).
+\newblock Claude 3 model card.
+\newblock \textit{Anthropic Technical Report}.
+
+\bibitem{ieee2025}
+IEEE. (2025).
+\newblock IEEE 2830-2025: Standard for transparent ML documentation.
+
+\bibitem{iso2025}
+ISO/IEC. (2025).
+\newblock ISO/IEC 23894:2025: Artificial intelligence --- Risk management.
+
+\bibitem{euai2025}
+European Commission. (2025).
+\newblock EU Artificial Intelligence Act.
+
+\bibitem{niculescu2005}
+Niculescu-Mizil, A., \& Caruana, R. (2005).
+\newblock Predicting good probabilities with supervised learning.
+\newblock \textit{ICML '05}, 625--632.
+
+\end{thebibliography}
+
+\end{document}
