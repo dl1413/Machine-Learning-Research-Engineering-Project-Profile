@@ -31,7 +31,7 @@
 <td width="50%" valign="top">
 
 ### 🛡️ AI Safety Red-Team Evaluation
-**[📄 Technical Report](./AI%20Safety%20Red-Team%20Evaluation_%20Technical%20Analysis%20Report.md)** | **[📊 Publication](./AI_Safety_RedTeam_Evaluation_Publication.pdf)**
+**[📄 Technical Report](./AI%20Safety%20Red-Team%20Evaluation_%20Technical%20Analysis%20Report.md)** | **[📊 Publication](./projects/01_AI_Safety_RedTeam_Evaluation.pdf)**
 
 **Automated harm detection using dual-stage LLM ensemble + ML classification**
 
@@ -58,7 +58,7 @@
 <td width="50%" valign="top">
 
 ### 🔬 LLM Ensemble Bias Detection
-**[📄 Technical Report](./LLM_Ensemble_Bias_Detection_Report.md)** | **[📊 Publication](./LLM_Bias_Detection_Publication.pdf)**
+**[📄 Technical Report](./LLM_Ensemble_Bias_Detection_Report.md)** | **[📊 Publication](./projects/02_Bayesian_Methods_in_Applied_Classification.pdf)**
 
 **Multi-LLM framework for bias detection using Bayesian hierarchical modeling**
 
@@ -86,7 +86,7 @@
 <td width="50%" valign="top">
 
 ### 🏥 Breast Cancer ML Classification
-**[📄 Technical Report](./Breast_Cancer_Classification_Report.md)** | **[📊 Publication](./Breast_Cancer_Classification_Publication.pdf)**
+**[📄 Technical Report](./Breast_Cancer_Classification_Report.md)** | **[📊 Publication](./projects/02_Bayesian_Methods_in_Applied_Classification.pdf)**
 
 **Clinical-grade ensemble system exceeding human expert performance**
 
@@ -352,9 +352,9 @@ Rochester Institute of Technology | Expected 2026
 
 | Title | Type | Date | Links |
 |-------|------|------|-------|
-| **AI Safety Red-Team Evaluation** | Technical Report v2.0.0 | Apr 2026 | [Report](./AI%20Safety%20Red-Team%20Evaluation_%20Technical%20Analysis%20Report.md) • [PDF](./AI_Safety_RedTeam_Evaluation_Publication.pdf) |
-| **LLM Ensemble Textbook Bias Detection** | Technical Report v4.0.0 | Apr 2026 | [Report](./LLM_Ensemble_Bias_Detection_Report.md) • [PDF](./LLM_Bias_Detection_Publication.pdf) |
-| **Breast Cancer Classification** | Technical Report v4.0.0 | Apr 2026 | [Report](./Breast_Cancer_Classification_Report.md) • [PDF](./Breast_Cancer_Classification_Publication.pdf) |
+| **AI Safety Red-Team Evaluation** | Technical Report v2.0.0 | Apr 2026 | [Report](./AI%20Safety%20Red-Team%20Evaluation_%20Technical%20Analysis%20Report.md) • [PDF](./projects/01_AI_Safety_RedTeam_Evaluation.pdf) |
+| **LLM Ensemble Textbook Bias Detection** | Technical Report v4.0.0 | Apr 2026 | [Report](./LLM_Ensemble_Bias_Detection_Report.md) • [PDF](./projects/02_Bayesian_Methods_in_Applied_Classification.pdf) |
+| **Breast Cancer Classification** | Technical Report v4.0.0 | Apr 2026 | [Report](./Breast_Cancer_Classification_Report.md) • [PDF](./projects/02_Bayesian_Methods_in_Applied_Classification.pdf) |
 
 ---
 
@@ -388,11 +388,11 @@ LLM-Portfolio/
 ├── 🌐 index.html                                          # Interactive portfolio site
 ├── 🎨 styles.css                                          # Portfolio styling
 ├── 🛡️ AI Safety Red-Team Evaluation_ Technical...md       # AI safety report
-├── 📑 AI_Safety_RedTeam_Evaluation_Publication.pdf             # Publication PDF
+├── 📁 projects/                                            # Final project deliverables
+│   ├── 📑 01_AI_Safety_RedTeam_Evaluation.pdf              # Project 01 publication
+│   └── 📑 02_Bayesian_Methods_in_Applied_Classification.pdf # Project 02 publication
 ├── 📊 Breast_Cancer_Classification_Report.md              # ML technical report
-├── 📑 Breast_Cancer_Classification_Publication.pdf        # Publication PDF
 ├── 🔬 LLM_Ensemble_Bias_Detection_Report.md               # LLM research report
-├── 📑 LLM_Bias_Detection_Publication.pdf                  # Publication PDF
 └── 📁 reports/                                            # Additional documentation
 ```
 

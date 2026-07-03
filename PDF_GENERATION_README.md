@@ -56,19 +56,15 @@ The script will:
 
 ## Output
 
-The script generates three publication-ready PDFs:
+The latest workflow produces two final project PDFs:
 
-1. **AI_Safety_RedTeam_Evaluation_Publication.pdf**
+1. **projects/01_AI_Safety_RedTeam_Evaluation.pdf**
    - AI Safety Red-Team technical report
    - ~120 KB optimized file size
 
-2. **Breast_Cancer_Classification_Publication.pdf**
-   - Breast cancer ML classification report
-   - ~110 KB optimized file size
-
-3. **LLM_Bias_Detection_Publication.pdf**
-   - LLM ensemble bias detection report
-   - ~96 KB optimized file size
+2. **projects/02_Bayesian_Methods_in_Applied_Classification.pdf**
+   - Combined Bayesian methods project (Breast Cancer ML + LLM bias detection)
+   - ~110-120 KB optimized file size
 
 All PDFs include:
 - Complete metadata for academic indexing

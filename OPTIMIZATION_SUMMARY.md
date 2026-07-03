@@ -77,22 +77,17 @@ Comprehensive documentation covering:
 
 ## Publication PDFs
 
-The 3 optimized PDFs for 2026 publication:
+The latest two optimized project PDFs for 2026 publication:
 
-### 1. AI_Safety_RedTeam_Evaluation_Publication.pdf (~120 KB)
+### 1. projects/01_AI_Safety_RedTeam_Evaluation.pdf (~120 KB)
 - **Title**: AI Safety Red-Team Evaluation: Technical Analysis Report
 - **Subject**: Automated Harm Detection Using LLM Ensemble Annotation
 - **Keywords**: AI Safety, Red-Teaming, Large Language Models, Harm Detection...
 
-### 2. Breast_Cancer_Classification_Publication.pdf (~110 KB)
-- **Title**: Breast Cancer ML Classification
-- **Subject**: Clinical-grade ensemble system exceeding human expert performance
-- **Keywords**: Breast Cancer, Machine Learning, Ensemble Methods...
-
-### 3. LLM_Bias_Detection_Publication.pdf (~96 KB)
-- **Title**: LLM Ensemble Bias Detection
-- **Subject**: Multi-LLM framework for bias detection
-- **Keywords**: LLM, Bias Detection, Bayesian Methods...
+### 2. projects/02_Bayesian_Methods_in_Applied_Classification.pdf (~110-120 KB)
+- **Title**: Bayesian Methods in Applied Classification
+- **Subject**: Combined calibrated WBCD modeling + LLM ensemble textbook bias detection
+- **Keywords**: Bayesian Methods, Breast Cancer, LLM Bias Detection...
 
 ## Key Improvements for 2026
 
@@ -156,9 +151,8 @@ ls -lh *.pdf
 
 Expected output:
 ```
-AI_Safety_RedTeam_Evaluation_Publication.pdf    (~120 KB)
-Breast_Cancer_Classification_Publication.pdf    (~110 KB)
-LLM_Bias_Detection_Publication.pdf              (~96 KB)
+projects/01_AI_Safety_RedTeam_Evaluation.pdf    (~120 KB)
+projects/02_Bayesian_Methods_in_Applied_Classification.pdf    (~110-120 KB)
 ```
 
 ## Metadata Verification
@@ -167,12 +161,12 @@ The PDFs now contain complete metadata that can be verified using:
 
 ```bash
 # Using pdfinfo (if available)
-pdfinfo AI_Safety_RedTeam_Evaluation_Publication.pdf
+pdfinfo projects/01_AI_Safety_RedTeam_Evaluation.pdf
 
 # Or using Python
 python -c "
 from pypdf import PdfReader
-reader = PdfReader('AI_Safety_RedTeam_Evaluation_Publication.pdf')
+reader = PdfReader('projects/01_AI_Safety_RedTeam_Evaluation.pdf')
 print(reader.metadata)
 "
 ```

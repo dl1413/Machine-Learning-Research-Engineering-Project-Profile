@@ -76,7 +76,7 @@ All three machine learning research projects have been successfully prepared for
 - **References:** 23 properly cited sources
 - **Version:** 1.0.0
 
-**Publication PDF:** `AI_Safety_RedTeam_Evaluation_Publication.pdf`
+**Publication PDF:** `projects/01_AI_Safety_RedTeam_Evaluation.pdf`
 - **Size:** 136.4 KB (increased from 119 KB with new content)
 - **Pages:** ~50 pages
 - **Format:** PDF/1.7 with metadata
@@ -112,7 +112,7 @@ All three machine learning research projects have been successfully prepared for
 - **References:** 14 properly cited sources
 - **Version:** 3.0.0
 
-**Publication PDF:** `LLM_Bias_Detection_Publication.pdf`
+**Publication PDF:** `projects/02_Bayesian_Methods_in_Applied_Classification.pdf`
 - **Size:** 105.4 KB (increased from 96 KB with new content)
 - **Pages:** ~45 pages
 - **Format:** PDF/1.7 with metadata
@@ -148,7 +148,7 @@ All three machine learning research projects have been successfully prepared for
 - **References:** 15 properly cited sources
 - **Version:** 3.0.0
 
-**Publication PDF:** `Breast_Cancer_Classification_Publication.pdf`
+**Publication PDF:** `projects/02_Bayesian_Methods_in_Applied_Classification.pdf`
 - **Size:** 119.8 KB (increased from 110 KB with new content)
 - **Pages:** ~40 pages
 - **Format:** PDF/1.7 with metadata
@@ -236,17 +236,13 @@ All three projects comply with:
 
 ### Regenerated Files (April 4, 2026)
 
-6. **AI_Safety_RedTeam_Evaluation_Publication.pdf**
+6. **projects/01_AI_Safety_RedTeam_Evaluation.pdf**
    - Updated size: 136.4 KB
    - Includes code/data section
 
-7. **Breast_Cancer_Classification_Publication.pdf**
-   - Updated size: 119.8 KB
-   - Includes code/data section
-
-8. **LLM_Bias_Detection_Publication.pdf**
-   - Updated size: 105.4 KB
-   - Includes code/data section and fixed reference
+7. **projects/02_Bayesian_Methods_in_Applied_Classification.pdf**
+   - Updated size: ~110-120 KB
+   - Includes both Breast Cancer ML and LLM bias sections in one deliverable
 
 ---
 
