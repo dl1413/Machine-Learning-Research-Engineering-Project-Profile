@@ -8,14 +8,21 @@ This directory contains LaTeX source files and compiled PDFs for the three machi
 1. **AI_Safety_RedTeam_Evaluation.tex** - AI Safety Red-Team Evaluation technical report
 2. **Breast_Cancer_Classification.tex** - Breast Cancer ML Classification technical report
 3. **LLM_Bias_Detection.tex** - LLM Ensemble Textbook Bias Detection technical report
+4. **Machine_Learning_Research_Portfolio_2026.tex** - Combined portfolio document (all three projects)
 
-### PDF Documents (.pdf)
-1. **AI_Safety_RedTeam_Evaluation.pdf** (137 KB) - Compiled publication-ready PDF
-2. **Breast_Cancer_Classification.pdf** (190 KB) - Compiled publication-ready PDF
-3. **LLM_Bias_Detection.pdf** (179 KB) - Compiled publication-ready PDF
+### Compiled PDFs
+Publication-ready PDFs are output to **`../pdf/out/`** by the unified build pipeline:
+
+```
+pdf/out/AI_Safety_RedTeam_Report.pdf
+pdf/out/Breast_Cancer_Classification_Report.pdf
+pdf/out/LLM_Ensemble_Bias_Detection_Report.pdf
+pdf/out/Machine_Learning_Research_Portfolio_2026.pdf
+```
 
 ### Scripts
-- **compile_latex.sh** - Bash script to compile LaTeX files to PDF
+- **compile_latex.sh** - Compile individual `.tex` files in this directory
+- **../scripts/build_reports_pdf.sh** - Unified pipeline: compile all 4 PDFs into `pdf/out/`
 
 ## Quick Start
 
@@ -36,7 +43,16 @@ brew install --cask mactex
 
 ### Compiling PDFs
 
-#### Option 1: Use the compilation script (recommended)
+#### Option 1: Unified build pipeline (recommended — all 4 PDFs to `pdf/out/`)
+
+```bash
+chmod +x scripts/build_reports_pdf.sh
+./scripts/build_reports_pdf.sh
+```
+
+See [`PDF_EXPORT.md`](../PDF_EXPORT.md) for full instructions and prerequisites.
+
+#### Option 2: Use the LaTeX-directory script (compiles into this directory)
 
 ```bash
 # Make script executable (first time only)
@@ -49,7 +65,7 @@ chmod +x compile_latex.sh
 ./compile_latex.sh AI_Safety_RedTeam_Evaluation.tex
 ```
 
-#### Option 2: Manual compilation
+#### Option 3: Manual compilation
 
 ```bash
 # Compile a single file
