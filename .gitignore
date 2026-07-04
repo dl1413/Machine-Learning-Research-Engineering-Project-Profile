@@ -1,2 +1,39 @@
+# Generated PDFs
+pdf/out/*.pdf
+
+# Python
 __pycache__/
 *.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+.venv
+*.egg-info/
+dist/
+build/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Data
+*.csv
+*.parquet
+*.arrow
+*.npz
+
+# Secrets
+.env
+.env.local
+*.key
+*.pem
+
+# Cache
+.cache/
+*.cache
