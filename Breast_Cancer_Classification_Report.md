@@ -21,28 +21,6 @@ This technical report presents a comprehensive machine learning pipeline for bin
 
 ---
 
-## Table of Contents
-
-1. [Executive Summary](#executive-summary)
-2. [Introduction](#1-introduction)
-3. [Technical Framework](#2-technical-framework)
-4. [Data Engineering Pipeline](#3-data-engineering-pipeline)
-5. [Ensemble Learning Algorithms](#4-ensemble-learning-algorithms)
-6. [Experimental Results](#5-experimental-results)
-7. [Bayesian Hyperparameter Optimization (Optuna)](#5a-bayesian-hyperparameter-optimization-optuna)
-8. [Model Calibration Analysis](#5b-model-calibration-analysis)
-9. [Model Diagnostics and Validation](#6-model-diagnostics-and-validation)
-10. [Feature Engineering Analysis](#7-feature-engineering-analysis)
-11. [Clinical Performance Evaluation](#8-clinical-performance-evaluation)
-12. [Explainability and Responsible AI](#9-explainability-and-responsible-ai)
-13. [Discussion and Interpretation](#10-discussion-and-interpretation)
-14. [Production Deployment and MLOps](#11-production-deployment-and-mlops)
-15. [Conclusions](#12-conclusions)
-16. [References](#references)
-17. [Appendices](#appendices)
-
----
-
 ## Executive Summary
 
 ### Performance Overview
@@ -61,7 +39,7 @@ This technical report presents a comprehensive machine learning pipeline for bin
 ### Statistical Validation
 
 - **10-Fold Cross-Validation:** 98.46% ± 1.12%
-- **95% Confidence Interval:** [96.27%, 100.65%]
+- **95% CI:** [96.27%, 100.65%]
 - **Binomial Test:** p < 0.0001 (vs. random baseline)
 - **Variance Ratio (F-test):** Model variance significantly lower than baseline
 
@@ -821,7 +799,7 @@ print(f"Optimal threshold (F2): {optimal_threshold:.3f}")
 **Summary Statistics:**
 - **Mean:** 98.46%
 - **Standard Deviation:** ±1.12%
-- **95% Confidence Interval:** [96.27%, 100.65%]
+- **95% CI:** [96.27%, 100.65%]
 - **Coefficient of Variation:** 1.14%
 
 ### 6.2 Learning Curve Analysis
@@ -835,7 +813,7 @@ Learning curves demonstrate:
 
 **Paired t-test (AdaBoost vs. Runner-up Stacking):**
 - t-statistic: 2.31
-- p-value: 0.046
+- p: 0.046
 - **Conclusion:** AdaBoost significantly outperforms at α = 0.05
 
 ---
@@ -1405,101 +1383,4 @@ Computer-aided detection (CAD) system intended to assist pathologists in the cla
 3. Not validated for inflammatory or rare breast cancer subtypes
 4. Requires standardized FNA preparation protocols
 
-### Appendix H: Reproducibility Checklist
-
-| Requirement | Implementation | Status |
-|-------------|---------------|--------|
-| **Random Seed** | RANDOM_STATE = 42 globally set | [Yes] |
-| **Data Versioning** | SHA-256 hash of dataset stored | [Yes] |
-| **Code Version** | Git commit SHA logged | [Yes] |
-| **Library Versions** | requirements.txt with pinned versions | [Yes] |
-| **Hardware Specs** | CPU/RAM/GPU logged in MLflow | [Yes] |
-| **Cross-Validation** | 10-fold stratified, fixed random state | [Yes] |
-| **Train/Test Split** | 80/20 stratified split, fixed seed | [Yes] |
-| **SMOTE** | k=5, random_state=42 | [Yes] |
-| **Model Artifacts** | Serialized with joblib, versioned | [Yes] |
-| **Experiment Tracking** | MLflow with full parameter logging | [Yes] |
-
-### Appendix I: Glossary of Medical and Technical Terms
-
-| Term | Definition |
-|------|------------|
-| **AdaBoost** | Adaptive Boosting - ensemble method that combines weak learners |
-| **Benign** | Non-cancerous tumor that does not spread to other tissues |
-| **CAD** | Computer-Aided Detection - AI system assisting human diagnosis |
-| **Cytology** | Study of cells, typically from tissue samples |
-| **FNA** | Fine Needle Aspiration - minimally invasive biopsy technique |
-| **Gini Importance** | Feature importance measure based on impurity reduction |
-| **Malignant** | Cancerous tumor with potential to spread |
-| **NPV** | Negative Predictive Value - probability of no disease given negative test |
-| **PPV** | Positive Predictive Value - probability of disease given positive test |
-| **RFE** | Recursive Feature Elimination - feature selection technique |
-| **ROC-AUC** | Area Under Receiver Operating Characteristic Curve |
-| **Sensitivity** | True Positive Rate - ability to detect disease when present |
-| **SHAP** | SHapley Additive exPlanations - model interpretability method |
-| **SMOTE** | Synthetic Minority Over-sampling Technique |
-| **Specificity** | True Negative Rate - ability to correctly identify non-disease |
-| **VIF** | Variance Inflation Factor - multicollinearity measure |
-
 ---
-
-## About the Author
-
-### Derek Lankeaux, MS Applied Statistics
-**Machine Learning Research Engineer | Clinical ML Specialist | Ensemble Methods Expert**
-
-#### Professional Focus (2026)
-Seeking **Machine Learning Research Engineer** and **Applied Research Scientist** roles at healthcare technology companies, AI research labs, and medical device firms. Specialized in building production-grade clinical ML systems with rigorous statistical validation and regulatory compliance.
-
-#### Core Research Engineering Competencies Demonstrated
-
-| Competency Area | This Project | Industry Relevance (2026) |
-|-----------------|--------------|---------------------------|
-| **Ensemble ML Systems** | 8-algorithm comparative benchmark (RF, XGBoost, LightGBM, AdaBoost, Stacking) | Core skill for production ML optimization |
-| **Clinical ML Performance** | 99.12% accuracy, 100% precision, exceeds human expert baseline | Critical for healthcare AI deployment |
-| **Feature Engineering** | VIF analysis, SMOTE balancing, RFE selection | Essential for robust model development |
-| **Statistical Validation** | 10-fold CV, bootstrap CI, multiple hypothesis testing | Foundational for research rigor |
-| **Explainable AI (XAI)** | SHAP values, fairness auditing, clinical interpretability | Required for FDA-regulated AI systems |
-| **Production MLOps** | MLflow registry, FastAPI deployment, <100ms latency | Standard for ML systems engineering |
-
-#### Technical Stack Expertise
-
-```
-ML Frameworks:   scikit-learn 1.5+ • XGBoost 2.1+ • LightGBM 4.5+ • CatBoost
-Ensemble:        AdaBoost • Stacking • Voting • Bagging • Gradient Boosting
-Statistics:      SciPy • statsmodels • Bootstrap • Permutation Testing
-Preprocessing:   SMOTE • RFE • StandardScaler • VIF Analysis
-MLOps:           MLflow 2.15+ • FastAPI 0.110+ • Docker • Model Registry
-Explainability:  SHAP • LIME • Feature Importance • Model Cards
-Deployment:      FastAPI • uvicorn • Redis • Prometheus Monitoring
-```
-
-#### Key Achievements from This Research
-
-- **Clinical-Grade Performance**: 99.12% accuracy exceeding human pathologist inter-observer agreement (90-95%)
-- **Zero False Positives (Test Set)**: 100% precision on held-out test data, eliminating false positives that could lead to unnecessary procedures
-- **Comprehensive Benchmarking**: Systematic evaluation of 8 ensemble algorithms with rigorous CV
-- **Production-Ready**: MLflow-tracked models with FastAPI deployment at <100ms p95 latency
-- **Regulatory Compliance**: IEEE 2830-2025 documentation for FDA AI/ML guidance alignment
-
-#### Career Objectives
-
-1. **ML Research Engineer** at healthcare AI companies developing clinical decision support systems
-2. **Applied Research Scientist** advancing ensemble methods for medical imaging and diagnostics
-3. **ML Systems Engineer** building scalable inference pipelines for real-time clinical applications
-4. **Technical Lead** for FDA-regulated AI/ML product development teams
-
-#### Contact Information
-
-- **LinkedIn**: [linkedin.com/in/derek-lankeaux](https://linkedin.com/in/derek-lankeaux)
-- **GitHub**: [github.com/dl1413](https://github.com/dl1413)
-- **Portfolio**: [dl1413.github.io/LLM-Portfolio](https://dl1413.github.io/LLM-Portfolio)
-- **Location**: Available for remote/hybrid positions in the United States
-- **Timeline**: Actively seeking 2026 opportunities
-
----
-
-*Report generated from analysis in Breast_Cancer_Classification_PUBLICATION.ipynb*  
-*Technical Review: Machine Learning Pipeline Analysis per 2026 AI Data Analyst Standards*  
-*Compliant with IEEE 2830-2025 and ISO/IEC 23894:2025*  
-*© 2026 Derek Lankeaux. All rights reserved.*

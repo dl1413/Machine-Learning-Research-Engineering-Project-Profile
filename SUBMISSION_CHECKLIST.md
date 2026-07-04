@@ -36,9 +36,8 @@ This document tracks the publication readiness and submission status for three m
 
 ### ✅ Publication PDFs
 
-- [x] AI_Safety_RedTeam_Evaluation_Publication.pdf (119 KB)
-- [x] Breast_Cancer_Classification_Publication.pdf (110 KB)
-- [x] LLM_Bias_Detection_Publication.pdf (96 KB)
+- [x] projects/01_AI_Safety_RedTeam_Evaluation.pdf (119 KB)
+- [x] projects/02_Bayesian_Methods_in_Applied_Classification.pdf (110-120 KB)
 - [x] All PDFs optimized with PDF/1.7 compression
 - [x] Complete metadata embedded (Title, Author, Subject, Keywords)
 - [x] Dublin Core metadata for academic indexing

@@ -15,31 +15,9 @@
 
 ## Abstract
 
-This technical report presents a novel dual-stage framework for automated AI safety evaluation combining Large Language Model (LLM) ensemble annotation with production-grade machine learning classification. Stage 1 employs an ensemble of three frontier LLMs—GPT-4o, Claude-3.5-Sonnet, and Llama-3.2-90B—to generate multi-dimensional harm annotations across **12,500 AI model response pairs**, achieving excellent inter-rater reliability (Krippendorff's α = 0.81). Stage 2 trains eight ensemble classifiers on LLM-generated labels augmented with engineered features, with the best-performing model (Stacking Classifier) achieving **96.8% accuracy**, **97.2% precision**, **96.1% recall**, and **0.9923 ROC-AUC** for harm detection. Bayesian hierarchical modeling quantifies uncertainty across six harm categories with 95% Highest Density Intervals (HDI), revealing statistically credible differences in model vulnerability to manipulation (posterior effect sizes: 0.12–0.67). The framework enables scalable red-team evaluation processing **~850 prompt-response pairs per hour** at **$0.018/sample**—a 340× cost reduction versus human annotation—while maintaining audit-grade reliability for AI governance compliance.
+This technical report presents a novel dual-stage framework for automated AI safety evaluation combining Large Language Model (LLM) ensemble annotation with production-grade machine learning classification. Stage 1 employs an ensemble of three frontier LLMs—GPT-4o, Claude-3.5-Sonnet, and Llama-3.2-90B—to generate multi-dimensional harm annotations across **12,500 AI model response pairs**, achieving excellent inter-rater reliability (Krippendorff's α = 0.81). Stage 2 trains eight ensemble classifiers on LLM-generated labels augmented with engineered features, with the best-performing model (Stacking Classifier) achieving **96.8% accuracy**, **97.2% precision**, **96.1% recall**, and **0.9923 ROC-AUC** for harm detection. Bayesian hierarchical modeling quantifies uncertainty across six harm categories with 95% HDI, revealing statistically credible differences in model vulnerability to manipulation (posterior effect sizes: 0.12–0.67). The framework enables scalable red-team evaluation processing **~850 prompt-response pairs per hour** at **$0.018/sample**—a 340× cost reduction versus human annotation—while maintaining audit-grade reliability for AI governance compliance.
 
-**Keywords:** AI Safety, Red-Teaming, Large Language Models, Harm Detection, Ensemble Learning, Bayesian Hierarchical Modeling, Constitutional AI, LLM Evaluation, RLHF, Krippendorff's Alpha, XGBoost, SHAP, MLOps, Responsible AI, Model Governance, Prompt Injection
-
----
-
-## Table of Contents
-
-1. [Executive Summary](#executive-summary)
-2. [Introduction](#1-introduction)
-3. [Safety Taxonomy and Harm Categories](#2-safety-taxonomy-and-harm-categories)
-4. [Adversarial Attack Taxonomy and Defense Analysis](#2a-adversarial-attack-taxonomy-and-defense-analysis)
-5. [LLM Ensemble Annotation Framework](#3-llm-ensemble-annotation-framework)
-6. [Dataset Construction and Feature Engineering](#4-dataset-construction-and-feature-engineering)
-7. [Stage 1: Inter-Rater Reliability Analysis](#5-stage-1-inter-rater-reliability-analysis)
-8. [Stage 2: ML Classification Pipeline](#6-stage-2-ml-classification-pipeline)
-9. [Bayesian Hierarchical Risk Modeling](#7-bayesian-hierarchical-risk-modeling)
-10. [Model Performance and Validation](#8-model-performance-and-validation)
-11. [Explainability and Feature Attribution](#9-explainability-and-feature-attribution)
-12. [Production Deployment and MLOps](#10-production-deployment-and-mlops)
-13. [Responsible AI and Governance](#11-responsible-ai-and-governance)
-14. [Discussion](#12-discussion)
-15. [Conclusions](#13-conclusions)
-16. [References](#references)
-17. [Appendices](#appendices)
+**Keywords:** AI Safety, Red-Teaming, Large Language Models, Harm Detection, Ensemble Learning, Bayesian Hierarchical Modeling, Constitutional AI, LLM Evaluation, RLHF, Krippendorff's α, XGBoost, SHAP, MLOps, Responsible AI, Model Governance, Prompt Injection
 
 ---
 
@@ -558,7 +536,7 @@ class SafetyFeatureExtractor:
 
 ## 5. Stage 1: Inter-Rater Reliability Analysis
 
-### 5.1 Krippendorff's Alpha Calculation
+### 5.1 Krippendorff's α Calculation
 
 **Overall Harm Classification (Binary):**
 
@@ -1595,137 +1573,4 @@ Where:
 
 **Conclusion:** Results are robust to reasonable hyperparameter variations, with accuracy changes < 1% across all sensitivity tests.
 
-### Appendix H: Model Card (Full Specification)
-
-**Model Details:**
-| Field | Specification |
-|-------|--------------|
-| **Model Name** | AI Safety Red-Team Evaluator v1.0.0 |
-| **Model Type** | Stacking Ensemble Classifier |
-| **Base Learners** | Random Forest, Gradient Boosting, XGBoost, LightGBM |
-| **Meta-Learner** | Logistic Regression (balanced) |
-| **Input Format** | 25-dimensional feature vector (engineered from text) |
-| **Output Format** | Binary classification + probability + per-category scores |
-| **Training Data** | 12,500 prompt-response pairs from 5 AI models |
-| **Annotation Source** | LLM ensemble (GPT-4o, Claude-3.5, Llama-3.2) |
-
-**Intended Use:**
-- Primary: Automated pre-deployment safety screening
-- Secondary: Research on AI safety patterns
-- Tertiary: Training data generation for safety classifiers
-
-**Out-of-Scope Uses:**
-- Sole arbiter for deployment decisions
-- Medical or legal safety assessments
-- Non-English content evaluation
-- Real-time production filtering without human oversight
-
-**Metrics:**
-| Metric | Value | Confidence Interval |
-|--------|-------|---------------------|
-| Accuracy | 96.8% | [93.2%, 98.6%] |
-| Precision | 97.2% | [95.1%, 98.9%] |
-| Recall | 96.1% | [93.8%, 97.9%] |
-| F1-Score | 96.6% | [94.5%, 98.3%] |
-| ROC-AUC | 0.9923 | [0.9876, 0.9958] |
-| FNR (Critical) | 3.9% | [2.1%, 6.2%] |
-
-**Ethical Considerations:**
-- Human review required for borderline cases (confidence < 0.7)
-- Model may inherit biases from LLM annotators
-- Regular retraining recommended as attack patterns evolve
-- Carbon footprint: ~0.8 kg CO2e (training), ~0.001 kg CO2e/1000 predictions
-
-**Caveats and Recommendations:**
-- English-only evaluation; multilingual attacks may evade detection
-- Novel jailbreak techniques may not be detected
-- Recommend ensemble with human review for high-stakes decisions
-- Monthly monitoring for distribution drift
-
-### Appendix I: Glossary of Terms
-
-| Term | Definition |
-|------|------------|
-| **Adversarial Prompt** | Input designed to manipulate AI model behavior beyond intended boundaries |
-| **Constitutional AI** | Training methodology using AI-generated feedback based on explicit principles |
-| **FNR (False Negative Rate)** | Proportion of harmful content incorrectly classified as safe |
-| **Harm Taxonomy** | Hierarchical classification system for types of AI-generated harm |
-| **HDI (Highest Density Interval)** | Bayesian credible interval containing highest posterior probability |
-| **Jailbreak** | Technique to bypass AI safety measures through prompt manipulation |
-| **Krippendorff's Alpha** | Reliability coefficient for agreement among multiple raters |
-| **MCMC** | Markov Chain Monte Carlo - sampling algorithm for Bayesian inference |
-| **Partial Pooling** | Bayesian technique sharing information across hierarchical groups |
-| **Red-Teaming** | Adversarial testing to identify security vulnerabilities |
-| **RLHF** | Reinforcement Learning from Human Feedback |
-| **ROC-AUC** | Area Under Receiver Operating Characteristic curve |
-| **SHAP** | SHapley Additive exPlanations for model interpretability |
-| **SMOTE** | Synthetic Minority Over-sampling Technique |
-| **Stacking** | Ensemble method combining predictions from multiple base models |
-
 ---
-
-## About the Author
-
-### Derek Lankeaux, MS Applied Statistics
-**Machine Learning Research Engineer | AI Safety Specialist | LLM Evaluation Expert**
-
-#### Professional Focus (2026)
-Seeking **Machine Learning Research Engineer** and **AI Safety Researcher** roles at leading AI labs, technology companies, and research institutions. Specialized in building production-grade AI safety evaluation systems, multi-model LLM ensembles, and Bayesian uncertainty quantification frameworks.
-
-#### Core Research Engineering Competencies Demonstrated
-
-| Competency Area | This Project | Industry Relevance (2026) |
-|-----------------|--------------|---------------------------|
-| **LLM Ensemble Systems** | 3-model evaluation pipeline (GPT-4o, Claude-3.5, Llama-3.2) | Critical for foundation model evaluation and benchmarking |
-| **AI Safety & Red-Teaming** | 6-category harm taxonomy, 12,500 adversarial samples | Essential for responsible AI deployment and compliance |
-| **Production ML Pipelines** | 850 samples/hr at $0.018/sample, FastAPI deployment | Required for scalable ML systems engineering |
-| **Statistical Rigor** | Krippendorff's α = 0.81, Bayesian HDI quantification | Foundational for research methodology and validation |
-| **MLOps & Reproducibility** | MLflow tracking, IEEE 2830-2025 compliance, model versioning | Standard for production ML teams |
-| **Explainable AI (XAI)** | SHAP feature attribution, audit-ready documentation | Required for AI governance and stakeholder trust |
-
-#### Technical Stack Expertise
-
-```
-LLM APIs:        GPT-4o • Claude-3.5-Sonnet • Llama-3.2 • HuggingFace Transformers
-ML Frameworks:   PyTorch 2.0+ • scikit-learn 1.5+ • XGBoost 2.1+ • LightGBM
-Bayesian:        PyMC 5.15+ • ArviZ 0.18+ • NumPyro • Stan
-MLOps:           MLflow 2.15+ • FastAPI 0.110+ • Docker • Kubernetes
-Explainability:  SHAP • LIME • InterpretML • Model Cards
-Safety Tools:    Constitutional AI • RLHF Evaluation • Harm Classifiers
-```
-
-#### Key Achievements from This Research
-
-- **340× Cost Reduction**: Automated AI safety evaluation at $0.018/sample vs. $6.12 human annotation
-- **Production-Scale**: Processing 850 adversarial prompt-response pairs per hour
-- **Research-Grade Reliability**: Krippendorff's α = 0.81 (excellent inter-rater agreement)
-- **Uncertainty Quantification**: Full Bayesian posteriors with 95% HDI for all risk estimates
-- **Compliance-Ready**: IEEE 2830-2025 and EU AI Act documentation standards
-
-#### Career Objectives
-
-1. **Research Engineer** at AI labs developing next-generation safety evaluation frameworks
-2. **ML Systems Engineer** building scalable LLM evaluation and monitoring infrastructure
-3. **AI Safety Researcher** advancing red-team methodologies for foundation models
-4. **Applied Research Scientist** combining Bayesian methods with production ML systems
-
-#### Contact Information
-
-- **LinkedIn**: [linkedin.com/in/derek-lankeaux](https://linkedin.com/in/derek-lankeaux)
-- **GitHub**: [github.com/dl1413](https://github.com/dl1413)
-- **Portfolio**: [dl1413.github.io/LLM-Portfolio](https://dl1413.github.io/LLM-Portfolio)
-- **Location**: Available for remote/hybrid positions in the United States
-- **Timeline**: Actively seeking 2026 opportunities
-
----
-
-*Report generated from analysis in AI_Safety_RedTeam_Evaluation.ipynb*  
-*Technical Review: Dual-Stage AI Safety Evaluation per 2026 Industry Standards*  
-*Compliant with IEEE 2830-2025, ISO/IEC 23894:2025, and EU AI Act*  
-*© 2026 Derek Lankeaux. All rights reserved.*
-
-
-
-
-
-

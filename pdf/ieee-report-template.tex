@@ -1,0 +1,51 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{fontspec}
+\setmainfont{TeX Gyre Termes}
+\usepackage{geometry}
+\usepackage{setspace}
+\usepackage{titlesec}
+\usepackage{booktabs,longtable,array}
+\usepackage{calc}
+\usepackage{caption}
+\captionsetup[table]{labelfont=bf,labelsep=period,name=Table}
+\captionsetup[figure]{labelfont=bf,labelsep=period,name=Figure}
+\usepackage{fancyhdr}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{enumitem}
+\usepackage{amsmath,amssymb}
+\usepackage{etoolbox}
+\setstretch{1.08}
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{0pt}
+\titleformat{\section}{\normalfont\bfseries\large}{\thesection.}{0.5em}{}
+\titleformat{\subsection}{\normalfont\bfseries}{\thesubsection}{0.5em}{}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Publication Technical Report}
+\fancyhead[R]{\small \nouppercase{\leftmark}}
+\fancyfoot[C]{\thepage}
+\hypersetup{colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue}
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+
+$if(title)$\title{\textbf{$title$}}$endif$
+$if(author)$\author{$for(author)$$author$$sep$ \\ $endfor$}$endif$
+$if(date)$\date{$date$}$endif$
+
+\begin{document}
+$if(title)$\maketitle$endif$
+$if(abstract)$
+\begin{abstract}
+$abstract$
+\end{abstract}
+$endif$
+$if(toc)$
+{\hypersetup{linkcolor=black}\tableofcontents}
+\newpage
+$endif$
+
+$body$
+
+\end{document}
