@@ -14,12 +14,13 @@ other two as supporting evidence.
 
 | Role Family | Lead Project | Supporting Projects | Example Titles |
 |---|---|---|---|
-| **AI Safety / Red-Team / Alignment** | AI Safety Red-Team Evaluation | LLM Bias Detection, Breast Cancer (rigor) | AI Safety Engineer, Red-Team Engineer, Alignment Researcher, Policy Research Engineer |
-| **LLM Evaluation / Eval Engineering** | AI Safety Red-Team Evaluation | LLM Bias Detection | LLM Evaluation Engineer, Model Behavior Engineer, Eval Infra Engineer |
-| **ML Research Engineer** | AI Safety Red-Team Evaluation | LLM Bias Detection, Breast Cancer | ML Research Engineer, Research Engineer, Applied Research |
-| **Applied ML Engineer / MLE** | Breast Cancer Classification | AI Safety Red-Team, LLM Bias Detection | ML Engineer, Applied ML, MLE II |
+| **AI Safety / Red-Team / Alignment** | AI Safety Red-Team Evaluation | LLM Bias Detection, Evaluation-First RAG, Breast Cancer (rigor) | AI Safety Engineer, Red-Team Engineer, Alignment Researcher, Policy Research Engineer |
+| **LLM Evaluation / Eval Engineering** | Evaluation-First RAG | AI Safety Red-Team Evaluation, LLM Bias Detection | LLM Evaluation Engineer, Model Behavior Engineer, Eval Infra Engineer |
+| **RAG / GenAI Applied Engineer** | Evaluation-First RAG | AI Safety Red-Team Evaluation, LLM Bias Detection | GenAI Engineer, LLM Applications Engineer, RAG Engineer |
+| **ML Research Engineer** | AI Safety Red-Team Evaluation | Evaluation-First RAG, LLM Bias Detection, Breast Cancer | ML Research Engineer, Research Engineer, Applied Research |
+| **Applied ML Engineer / MLE** | Breast Cancer Classification | Evaluation-First RAG, AI Safety Red-Team, LLM Bias Detection | ML Engineer, Applied ML, MLE II |
 | **Healthcare / Clinical ML** | Breast Cancer Classification | AI Safety Red-Team (rigor) | Clinical ML Engineer, Healthcare AI, Computational Pathology |
-| **Data Scientist (Bayesian/Causal)** | LLM Bias Detection | Breast Cancer, AI Safety Red-Team | DS — Inference, Statistician, Causal DS |
+| **Data Scientist (Bayesian/Causal)** | LLM Bias Detection | Breast Cancer, AI Safety Red-Team, Evaluation-First RAG | DS — Inference, Statistician, Causal DS |
 | **Trust & Safety / Policy ML** | AI Safety Red-Team Evaluation | LLM Bias Detection | T&S Engineer, Integrity ML, Content Policy |
 
 ---
@@ -92,6 +93,11 @@ is backed by your existing work.
 classification, Constitutional AI, inter-rater reliability, Krippendorff's alpha,
 prompt engineering, LLM-as-judge, eval harness, RLHF data quality.
 
+**RAG / GenAI:** retrieval-augmented generation, hybrid retrieval, BM25,
+reciprocal rank fusion, cross-encoder reranking, dense embeddings, HNSW, FAISS,
+vector database, faithfulness, hallucination rate, grounding, citation
+enforcement, abstention, RAGAS, LLMOps.
+
 **ML Eng:** ensemble methods, stacking classifier, XGBoost, LightGBM, gradient
 boosting, feature engineering, SMOTE, RFE, hyperparameter tuning, cross-validation,
 production ML pipeline, MLOps, MLflow, model registry, drift monitoring.
@@ -114,7 +120,7 @@ SHAP explainability, fairness auditing, audit trails, model cards.
 Before hitting submit, every app should pass:
 
 - [ ] Resume bullet order rearranged so lead project sits at top of Projects section
-- [ ] Cover letter opens with a metric hook (340x cost reduction / 99.12% accuracy / Krippendorff alpha = 0.84)
+- [ ] Cover letter opens with a metric hook (340x cost reduction / 99.12% accuracy / Krippendorff alpha = 0.84 / 8.9x hallucination reduction)
 - [ ] At least 3 phrases from the JD appear verbatim in resume + cover letter
 - [ ] LinkedIn URL, GitHub URL, Portfolio URL all live and current
 - [ ] If JD lists a specific framework (PyTorch / JAX / Ray / vLLM), it appears in skills

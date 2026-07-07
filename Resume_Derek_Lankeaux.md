@@ -8,7 +8,7 @@
 
 ## Summary
 
-Data Scientist with an Applied Statistics MS focused on experimentation, Bayesian inference, and applied machine learning. Ship end-to-end projects spanning GenAI evaluation, predictive modeling, and risk analytics — delivering 96.8-99.12% model performance with rigorous statistical validation (Krippendorff's alpha >= 0.81, MCMC R-hat < 1.01, p < 0.001). Comfortable owning the full data science workflow: framing the question, designing the experiment, writing the SQL, building the model, quantifying uncertainty, and communicating impact to non-technical stakeholders. Published 3 technical reports aligned with IEEE 2830-2025, ISO/IEC 23894:2025, and the EU AI Act.
+Data Scientist with an Applied Statistics MS focused on experimentation, Bayesian inference, and applied machine learning. Ship end-to-end projects spanning GenAI evaluation, retrieval-augmented generation, predictive modeling, and risk analytics — delivering 96.8-99.12% model performance with rigorous statistical validation (Krippendorff's alpha >= 0.81, MCMC R-hat < 1.01, p < 0.001). Comfortable owning the full data science workflow: framing the question, designing the experiment, writing the SQL, building the model, quantifying uncertainty, and communicating impact to non-technical stakeholders. Published 4 technical reports aligned with IEEE 2830-2025, ISO/IEC 23894:2025, and the EU AI Act.
 
 ---
 
@@ -86,6 +86,20 @@ Rochester Institute of Technology | Expected 2026
 
 ---
 
+### Evaluation-First Retrieval-Augmented Generation (RAG) System
+*Independent Research Project | February 2026*
+
+- Built an evaluation-first RAG system over 12,480 passages from 500 scientific/clinical documents, cutting hallucination 18.7% to 2.1% (8.9x reduction) versus a non-retrieval LLM baseline on identical questions
+- Engineered hybrid retrieval (BM25 + 1024-d dense embeddings via reciprocal rank fusion) with cross-encoder reranking, lifting context recall to 0.94 and precision to 0.88 in controlled ablations
+- Validated a 3-model LLM-as-judge ensemble for faithfulness scoring (Krippendorff's alpha = 0.82, pairwise rho >= 0.86) with atomic-claim entailment checking
+- Quantified faithfulness uncertainty across 5 query types with a PyMC partial-pooling Bayesian hierarchical model (95% HDI, R-hat < 1.01, ESS > 3,000)
+- Enforced grounding via inline-citation guardrails and fail-closed abstention (96% correct abstention on out-of-corpus queries)
+- Deployed a FastAPI service with semantic caching, drift monitoring, and token-cost accounting at 1.9s p95 latency and $0.0038/query amortized
+
+**Tech Stack:** GPT-4o, Claude, Llama, sentence-transformers, HNSW/FAISS, BM25, cross-encoders, PyMC, ArviZ, FastAPI, MLflow
+
+---
+
 ## Key Achievements
 
 - Built LLM Red-Team Framework with 3-model ensemble achieving 340x cost reduction ($0.018/sample) and audit-grade reliability (alpha = 0.81)
@@ -101,9 +115,10 @@ Rochester Institute of Technology | Expected 2026
 
 | Title | Type | Date |
 |-------|------|------|
-| AI Safety Red-Team Evaluation | Technical Report v1.0.0 | January 2026 |
-| LLM Ensemble Textbook Bias Detection | Technical Report v3.0.0 | January 2026 |
-| Breast Cancer Classification | Technical Report v3.0.0 | January 2026 |
+| AI Safety Red-Team Evaluation | Technical Report v2.0.0 | April 2026 |
+| LLM Ensemble Textbook Bias Detection | Technical Report v4.0.0 | April 2026 |
+| Breast Cancer Classification | Technical Report v4.0.0 | April 2026 |
+| Evaluation-First Retrieval-Augmented Generation | Technical Report v1.0.0 | April 2026 |
 
 ---
 

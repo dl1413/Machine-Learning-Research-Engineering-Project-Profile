@@ -1,8 +1,8 @@
 # Application Snippets — Project-Keyed, Paste-Ready
 
-Three projects, three sets of snippets each: **resume bullets**, **one-liner
+Four projects, three sets of snippets each: **resume bullets**, **one-liner
 hook**, **cover letter paragraph**. Pick the version that matches the role
-family (Safety / MLE / Research / Healthcare / DS).
+family (Safety / MLE / Research / Healthcare / DS / RAG-GenAI).
 
 ---
 
@@ -169,11 +169,67 @@ family (Safety / MLE / Research / Healthcare / DS).
 
 ---
 
+## Project 4 — Evaluation-First Retrieval-Augmented Generation (RAG)
+
+### One-liner hook
+
+> *Built an evaluation-first RAG system over 12,480 scientific/clinical
+> passages that cut hallucination **18.7% to 2.1% (8.9x reduction)** versus
+> a non-retrieval LLM baseline, with faithfulness 0.93 and a validated
+> LLM-judge ensemble (Krippendorff's alpha = 0.82).*
+
+### Resume bullets — RAG / GenAI Applications / LLM Platform roles
+
+- Engineered hybrid retrieval (BM25 + 1024-d dense embeddings via reciprocal rank fusion) with cross-encoder reranking, lifting context recall to 0.94 and precision to 0.88 over dense-only retrieval
+- Cut hallucination rate 8.9x (18.7% to 2.1%) versus a non-retrieval LLM baseline on identical questions via grounded generation with enforced citation and fail-closed abstention
+- Shipped a FastAPI service with semantic caching and drift monitoring at 1.9s p95 latency and $0.0038/query amortized cost
+
+### Resume bullets — LLM Evaluation / Eval Infra roles
+
+- Validated a 3-model LLM-as-judge ensemble for RAG faithfulness scoring (Krippendorff's alpha = 0.82, pairwise rho >= 0.86) using atomic-claim entailment decomposition
+- Quantified faithfulness uncertainty across 5 query types with a PyMC partial-pooling Bayesian hierarchical model (95% HDI, R-hat < 1.01, ESS > 3,000)
+- Built a regression evaluation harness (retrieval + generation metrics) that regenerates every benchmark from a fixed gold set of 650 query/answer/evidence triples
+
+### Resume bullets — ML Research Engineer / Applied Research
+
+- Ran controlled ablations isolating hybrid retrieval and reranking contributions (context recall 0.83 to 0.94, precision 0.74 to 0.88) and chunk-size tradeoffs (256/512/1024 tokens)
+- Designed fail-closed abstention behavior achieving 96% correct refusal on out-of-corpus queries (95% HDI [0.92, 0.99]), treating abstention as a first-class success metric
+- Documented results in a research-grade technical report with reproducible evaluation harness and pinned environment
+
+### Cover letter paragraph — RAG / LLM platform (LangChain / LlamaIndex / Pinecone / Weaviate)
+
+> The project most relevant to [Company] is an evaluation-first RAG system I
+> built over 12,480 passages from 500 scientific and clinical documents. I
+> fused BM25 and 1024-d dense retrieval via reciprocal rank fusion, added a
+> cross-encoder reranker, and measured every stage independently rather than
+> eyeballing outputs — the ablations show +7 points of context precision and
+> +5 of context recall from reranking alone. On identical questions, grounded
+> generation with enforced citation and fail-closed abstention cut
+> hallucination from 18.7% to 2.1%, an 8.9x reduction, while a validated
+> 3-judge LLM ensemble (Krippendorff's alpha = 0.82) scored faithfulness at
+> 0.93 with a PyMC hierarchical model producing 95% HDIs per query type. I'd
+> like to bring that same measure-first discipline to [Company]'s retrieval
+> stack.
+
+### Cover letter paragraph — AI Safety / Eval-native lab
+
+> Beyond scoring model outputs, I've redirected the same evaluation
+> machinery — LLM-judge ensembles validated by Krippendorff's alpha,
+> Bayesian hierarchical uncertainty quantification — toward scoring a
+> retrieval system's grounding. The result was an evaluation-first RAG
+> pipeline that reduced hallucination 8.9x (18.7% to 2.1%) versus an
+> ungrounded baseline, with faithfulness 0.93 (95% HDI localized by query
+> type) and 96% correct abstention on out-of-corpus questions. That's the
+> same rigor I applied to my AI Safety Red-Team and LLM Bias Detection work,
+> now applied to making generation itself auditable.
+
+---
+
 ## Universal Cover Letter Closer
 
 > I'm based in / available for New York City and open to remote, targeting
 > a 2026 start once I wrap my MS in Applied Statistics at RIT. Portfolio,
-> code, and the three technical reports referenced above are on my GitHub
+> code, and the four technical reports referenced above are on my GitHub
 > (dl1413). Happy to walk through any of them — the red-team eval is
 > probably the fastest way to see how I think about [Company's problem].
 >
@@ -193,3 +249,6 @@ family (Safety / MLE / Research / Healthcare / DS).
 | "clinical", "healthcare", "diagnostic", "EHR" | Project 3 | Healthcare ML |
 | "ML engineer", "applied ML", "production model" | Project 3 | Applied ML / MLE |
 | "research engineer", "applied research" (generic) | Project 1 | ML Research Engineer |
+| "RAG", "retrieval-augmented generation", "vector database", "hybrid search" | Project 4 | RAG / LLM Platform |
+| "hallucination", "faithfulness", "grounding", "citation" | Project 4 | RAG / LLM Platform |
+| "GenAI engineer", "LLM applications", "LLMOps" | Project 4 | RAG / LLM Platform |

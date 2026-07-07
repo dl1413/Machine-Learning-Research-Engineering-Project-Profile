@@ -3,7 +3,7 @@
 **Project:** Automated Harm Detection Using LLM Ensemble Annotation and Bayesian ML Classification  
 **Date:** April 2026  
 **Author:** Derek Lankeaux, MS Applied Statistics  
-**Role:** Data Scientist | Applied Statistician
+**Role:** Data Scientist | Applied Statistician  
 **Institution:** Rochester Institute of Technology  
 **Source:** AI_Safety_RedTeam_Evaluation.ipynb  
 **Version:** 2.0.0  

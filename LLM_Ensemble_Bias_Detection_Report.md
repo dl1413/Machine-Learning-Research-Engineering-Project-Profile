@@ -3,7 +3,7 @@
 **Project:** Detecting Publisher Bias Using LLM Ensemble and Bayesian Hierarchical Methods  
 **Date:** April 2026  
 **Author:** Derek Lankeaux, MS Applied Statistics  
-**Role:** Data Scientist | Applied Statistician
+**Role:** Data Scientist | Applied Statistician  
 **Institution:** Rochester Institute of Technology  
 **Source:** LLM_Ensemble_Textbook_Bias_Detection.ipynb  
 **Version:** 4.0.0  

@@ -11,15 +11,16 @@
 
 **Core Competencies:** Experimentation & Causal Inference • Bayesian Statistics • GenAI / LLM Evaluation • Predictive Modeling & MLOps • Stakeholder Communication
 
-> **Data Scientist with an Applied Statistics MS** who turns ambiguous business and research questions into measurable outcomes using experimentation, Bayesian inference, and modern ML. I have shipped end-to-end projects spanning **GenAI evaluation, predictive modeling, and risk analytics** — delivering **96.8–99.12% model performance** with rigorous statistical validation (Krippendorff's α ≥ 0.81, MCMC R-hat < 1.01, p < 0.001). Comfortable owning the full DS workflow: framing the problem, designing the experiment, writing the SQL, building the model, quantifying uncertainty, and communicating impact to non-technical partners. 3 published technical reports aligned with IEEE 2830-2025, ISO/IEC 23894:2025, and the EU AI Act.
+> **Data Scientist with an Applied Statistics MS** who turns ambiguous business and research questions into measurable outcomes using experimentation, Bayesian inference, and modern ML. I have shipped end-to-end projects spanning **GenAI evaluation, retrieval-augmented generation, predictive modeling, and risk analytics** — delivering **96.8–99.12% model performance** with rigorous statistical validation (Krippendorff's α ≥ 0.81, MCMC R-hat < 1.01, p < 0.001). Comfortable owning the full DS workflow: framing the problem, designing the experiment, writing the SQL, building the model, quantifying uncertainty, and communicating impact to non-technical partners. 4 published technical reports aligned with IEEE 2830-2025, ISO/IEC 23894:2025, and the EU AI Act.
 
 ### 🏆 Highlights for 2026 Data Science Roles
 
 - 💸 **340× Cost Reduction via GenAI**: Replaced $6.12 human annotation with $0.018/sample LLM-ensemble pipeline that preserved audit-grade reliability (Krippendorff's α = 0.81) across 12,500 evaluations — a reusable pattern for any team scaling human-in-the-loop labeling
 - 🧪 **Causal & Statistical Rigor**: Friedman χ² = 42.73 (p < 0.001), Bayesian hierarchical models with 95% HDI, multiple-testing correction (Bonferroni / FDR), bootstrap CIs, and power analysis — the toolkit DS teams actually use to defend a result
 - 🏥 **High-Stakes Predictive Modeling**: 99.12% accuracy, 100% precision, Platt-calibrated probabilities (ECE 0.0089) and threshold tuning for context-specific decision policies (e.g., 100% sensitivity for screening)
+- 🔎 **Grounded GenAI (RAG)**: Evaluation-first retrieval pipeline (hybrid BM25 + dense, cross-encoder rerank) that cut hallucination **18.7% → 2.1% (8.9× reduction)** with faithfulness 0.93 and validated LLM-judge reliability (α = 0.82) — auditable QA with stated uncertainty
 - 📊 **Production Data Pipelines**: 80K+ API calls / 2.5M tokens processed with circuit breakers, exponential backoff, and MLflow tracking — repeatable, audited, and monitored
-- 🗣️ **Communication & Reproducibility**: 3 publication-grade reports with model cards, calibration plots, and SHAP-based explanations written for both technical reviewers and business stakeholders
+- 🗣️ **Communication & Reproducibility**: 4 publication-grade reports with model cards, calibration plots, and SHAP-based explanations written for both technical reviewers and business stakeholders
 - 🧭 **Responsible AI by Default**: IEEE 2830-2025, ISO/IEC 23894:2025, and EU AI Act-aligned artifacts — increasingly required for DS work touching regulated data (healthcare, finance, education)
 
 ---
@@ -111,21 +112,58 @@
 </td>
 <td width="50%" valign="top">
 
-### 📊 Research Impact Summary
+### 🔎 Evaluation-First RAG System
+**[📄 Technical Report](./Evaluation_First_RAG_Report.md)** | **[📊 Publication](./Evaluation_First_RAG_Publication.pdf)**
+
+**Grounded QA over scientific literature with a first-class evaluation harness**
+
+#### Impact Metrics
+- 🎯 **8.9× fewer hallucinations**: 18.7% → 2.1% vs non-retrieval LLM baseline
+- 📊 **Faithfulness 0.93** with citation accuracy 0.95 and context recall 0.94
+- 🔬 **Krippendorff's α = 0.82** (validated LLM-as-judge ensemble reliability)
+- ⚡ **1.9 s p95 latency** at **$0.0038/query** amortized (34% cache hit rate)
+- 🚫 **96% correct abstention** on out-of-corpus queries (95% HDI [0.92, 0.99])
+
+#### Technical Innovation
+- **Hybrid Retrieval**: BM25 + 1024-d dense embeddings fused via Reciprocal Rank Fusion, then cross-encoder reranking (+7 precision, +5 recall)
+- **Grounded Generation**: Enforced inline citation with fail-closed abstention below a confidence threshold
+- **Validated Judge Ensemble**: 3-model faithfulness/relevance scoring with atomic-claim entailment checking
+- **Bayesian Faithfulness Model**: PyMC partial-pooling hierarchy yielding 95% HDIs per query type (R-hat < 1.01)
+- **Controlled Ablations**: Retrieval configuration and chunk-size sweeps isolating each stage's contribution
+- **Production LLMOps**: FastAPI service, semantic caching, guardrails, token-cost accounting, drift monitoring
+
+#### Tech Stack
+`GPT-4o` `Claude` `Llama` `sentence-transformers` `HNSW/FAISS` `BM25` `PyMC` `FastAPI` `MLflow`
+
+</td>
+</tr>
+</table>
+
+---
+
+## 📊 Research Impact Summary
+
+<table>
+<tr>
+<td width="50%" valign="top">
 
 **Cross-Project Synthesis:**
-- **3 production ML systems** deployed across AI safety, bias detection, and healthcare
+- **4 production ML/GenAI systems** across AI safety, bias detection, healthcare, and retrieval-augmented generation
 - **80,000+ annotations** processed via LLM ensembles with validated reliability
-- **340× cost efficiency** gain in AI safety evaluation vs human baseline
+- **340× cost efficiency** gain in AI safety evaluation vs human baseline; **8.9× hallucination reduction** in grounded RAG
 - **Consistent statistical rigor**: Krippendorff's α ≥ 0.81, MCMC R-hat < 1.01, p < 0.001
 - **Reproducible pipelines**: MLflow tracking, versioned artifacts, IEEE 2830-2025 compliance
 
+</td>
+<td width="50%" valign="top">
+
 **Domain Expertise:**
 - AI Safety & Red-Teaming
-- Educational Content Analysis  
+- Educational Content Analysis
 - Clinical Decision Support
+- Retrieval-Augmented Generation & LLM Evaluation
 - Responsible AI Governance
-- Production MLOps at Scale
+- Production MLOps / LLMOps at Scale
 
 </td>
 </tr>
@@ -169,13 +207,14 @@
 
 #### 🤖 GenAI & Production DS
 - LLM evaluation & benchmarking (GPT-4o, Claude, Llama)
+- Retrieval-Augmented Generation (hybrid retrieval, reranking)
 - Prompt engineering & multi-model ensembling
 - LLM-as-judge & human-in-the-loop labeling
-- Model deployment (FastAPI) & monitoring
+- Model deployment (FastAPI) & monitoring / drift
 - Experiment tracking (MLflow) & reproducibility
 - Stakeholder reporting & model cards
 
-**Tools:** OpenAI, Anthropic, HuggingFace, LangChain, MLflow, FastAPI, Docker
+**Tools:** OpenAI, Anthropic, HuggingFace, LangChain, sentence-transformers, HNSW/FAISS, MLflow, FastAPI, Docker
 
 </td>
 </tr>
@@ -262,6 +301,21 @@ Version Control:  Git • GitHub Actions • GitLab CI/CD
 | **Recall** | 98.59% | Minimal misses |
 | **ROC-AUC** | 0.9987 | Near-perfect |
 | **CV Stability** | 98.46% ± 1.12% | Robust |
+
+</td>
+</tr>
+<tr>
+<td width="33%" valign="top">
+
+### Evaluation-First RAG
+| Metric | Value | Benchmark |
+|--------|-------|-----------|
+| **Faithfulness** | 0.93 | vs 0.71 baseline |
+| **Hallucination Rate** | 2.1% | 8.9× reduction |
+| **Context Recall** | 0.94 | Hybrid + rerank |
+| **Citation Accuracy** | 0.95 | Fully traceable |
+| **Judge Reliability** | α = 0.82 | Excellent (≥0.80) |
+| **p95 Latency** | 1.9 s | $0.0038/query |
 
 </td>
 </tr>
@@ -355,6 +409,7 @@ Rochester Institute of Technology | Expected 2026
 | **AI Safety Red-Team Evaluation** | Technical Report v2.0.0 | Apr 2026 | [Report](./AI%20Safety%20Red-Team%20Evaluation_%20Technical%20Analysis%20Report.md) • [PDF](./AI_Safety_RedTeam_Evaluation_Publication.pdf) |
 | **LLM Ensemble Textbook Bias Detection** | Technical Report v4.0.0 | Apr 2026 | [Report](./LLM_Ensemble_Bias_Detection_Report.md) • [PDF](./LLM_Bias_Detection_Publication.pdf) |
 | **Breast Cancer Classification** | Technical Report v4.0.0 | Apr 2026 | [Report](./Breast_Cancer_Classification_Report.md) • [PDF](./Breast_Cancer_Classification_Publication.pdf) |
+| **Evaluation-First Retrieval-Augmented Generation** | Technical Report v1.0.0 | Apr 2026 | [Report](./Evaluation_First_RAG_Report.md) • [PDF](./Evaluation_First_RAG_Publication.pdf) |
 
 ---
 
@@ -393,7 +448,9 @@ LLM-Portfolio/
 ├── 📑 Breast_Cancer_Classification_Publication.pdf        # Publication PDF
 ├── 🔬 LLM_Ensemble_Bias_Detection_Report.md               # LLM research report
 ├── 📑 LLM_Bias_Detection_Publication.pdf                  # Publication PDF
-└── 📁 reports/                                            # Additional documentation
+├── 🔎 Evaluation_First_RAG_Report.md                      # RAG evaluation report
+├── 📑 Evaluation_First_RAG_Publication.pdf                # Publication PDF
+└── 📁 latex/                                              # LaTeX sources for publication PDFs
 ```
 
 ---
@@ -407,6 +464,8 @@ LLM-Portfolio/
 **Machine Learning:** Deep Learning • Neural Networks • Ensemble Methods • Random Forest • XGBoost • LightGBM • AdaBoost • Gradient Boosting • Stacking • Bagging • Feature Engineering • Model Calibration • Threshold Tuning
 
 **Large Language Models:** GPT-4 • GPT-4o • Claude-3.5-Sonnet • Llama-3.2 • BERT • Transformers • Prompt Engineering • Few-Shot Learning • Zero-Shot Learning • In-Context Learning • Constitutional AI
+
+**Retrieval-Augmented Generation:** RAG • Hybrid Retrieval • Dense/Sparse Retrieval • BM25 • Reciprocal Rank Fusion • Cross-Encoder Reranking • Vector Databases • HNSW • FAISS • pgvector • Embeddings • Semantic Search • Faithfulness • Hallucination Detection • Grounding • Citation • RAGAS • LLMOps
 
 **AI Safety & Red-Teaming:** Harm Detection • Adversarial Testing • Safety Evaluation • Red Team • Jailbreak Detection • Model Alignment • RLHF • Constitutional AI • Safety Benchmarking • Vulnerability Assessment
 
