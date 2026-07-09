@@ -23,7 +23,7 @@ Retrieval-Augmented Generation (RAG) combines large language models with externa
 4. **Hallucination Detection:** Statistical confidence intervals and citation grounding
 5. **Responsible AI & Monitoring:** Drift detection, performance monitoring, and governance
 
-Evaluated on benchmark datasets (FEVER, NQ, TriviaQA), the system achieves 94.2% citation precision and 91.8% answer relevance with <200ms latency at 1,240 req/sec throughput. Hallucination rates of 2.4% — well below the 5% operational threshold — are achieved through a three-stage detection pipeline combining citation grounding, semantic consistency, and Bayesian confidence estimation.
+Evaluated on standard benchmark datasets (FEVER, Natural Questions, TriviaQA, HotpotQA, and MS MARCO), the system achieves 94.2% citation precision and 91.8% answer relevance with <200ms median latency at 1,240 req/sec throughput. Hallucination rates of 2.4% — well below the 5% operational threshold — are achieved through a three-stage detection pipeline combining citation grounding, semantic consistency, and Bayesian confidence estimation.
 
 **Keywords:** Retrieval-Augmented Generation, Vector Embeddings, Semantic Search, Large Language Models, LLM Orchestration, Hallucination Mitigation, Dense Passage Retrieval, Qdrant, ColBERT, MLOps, Production ML, Responsible AI, Knowledge Grounding, BM25, Hybrid Search
 
@@ -163,7 +163,7 @@ Standard LLMs generate responses from parametric memory — knowledge encoded du
 
 ### 1.3 Contributions
 
-1. **Hybrid Embedding Architecture:** Multi-model ensemble (OpenAI + BGE-M3) achieving 96.3% Recall@10 — a 4.1 percentage point improvement over single-model baselines
+1. **Hybrid Embedding Architecture:** Multi-model ensemble (OpenAI + BGE-M3) achieving 96.3% Recall@10 on MS MARCO — a 2.2 percentage point improvement over the strongest single-model baseline (OpenAI, 94.1%), and a 2.4 pp gain averaged across benchmarks
 2. **LLM Orchestration Framework:** Parallel async generation with BLEU-based consistency voting, reducing latency vs. sequential generation by 58%
 3. **Statistical Hallucination Detection:** Three-stage pipeline (citation grounding + semantic consistency + Bayesian CI) achieving 91.1% F1 on hallucination classification benchmarks
 4. **Production MLOps:** Real-time Prometheus/Grafana monitoring, population stability index drift detection, and Kubernetes auto-scaling
@@ -954,7 +954,9 @@ class HallucinationDetector:
 | RRF Merge + Re-rank (ColBERT) | 22ms | 48ms | 50ms | ✓ Under |
 | LLM Ensemble (parallel async) | 78ms | 180ms | 150ms | ~At budget |
 | Hallucination Detection | 16ms | 32ms | 25ms | ~At budget |
-| **Total End-to-End** | **187ms** | **408ms** | 400ms | ✓ Pass |
+| **Total End-to-End** | **187ms** | **312ms** | 400ms | ✓ Pass |
+
+The end-to-end p99 (312ms) is the value measured directly under 1,000-user load (Table 13), not the arithmetic sum of the per-stage p99 columns (which totals 408ms). Percentiles are not additive: a request rarely hits the 99th-percentile latency of every stage simultaneously, so the sum of per-stage p99s is a loose upper bound rather than the observed end-to-end p99.
 
 ### 8.3 Throughput Scaling
 
@@ -1319,7 +1321,7 @@ Above 2,000 concurrent users, latency degradation accelerates (p99 > 400ms) and 
 
 This RAG system demonstrates the feasibility of building production-grade retrieval-augmented LLM applications that meet enterprise SLAs for accuracy, latency, and uptime. Key contributions include:
 
-1. **Hybrid Embedding Ensemble:** Two-model architecture (OpenAI + BGE-M3) achieves 96.3% Recall@10, a 2.4 pp improvement over the best single model, with resilience to individual model failure
+1. **Hybrid Embedding Ensemble:** Two-model architecture (OpenAI + BGE-M3) achieves 96.3% Recall@10 on MS MARCO — a 2.2 pp improvement over the strongest single model (2.4 pp averaged across benchmarks) — with resilience to individual model failure
 2. **Parallel LLM Orchestration:** Async generation from three frontier models (GPT-4o, Claude-3.5-Sonnet, Llama-3.2-90B) reduces ensemble latency by 58% vs. sequential calls
 3. **Three-Stage Hallucination Detection:** Citation grounding + semantic consistency + Bayesian CI achieves 91.1% F1 on hallucination classification, reducing production hallucination rate to 2.4%
 4. **Production MLOps:** Kubernetes auto-scaling, Prometheus monitoring, PSI drift detection, and MLflow experiment tracking constitute an enterprise-ready deployment framework
@@ -1338,8 +1340,14 @@ The framework is deployable, reproducible, and ready for enterprise knowledge sy
 6. Anthropic. (2025). Claude 3.5 Model Card. *Technical Documentation*. Anthropic.
 7. Xiao, S., et al. (2024). C-Pack: Packaged Resources to Advance General Chinese Embedding. *SIGIR 2024*. (BGE-M3)
 8. Gao, Y., et al. (2024). Retrieval-Augmented Generation for Large Language Models: A Survey. *arXiv preprint arXiv:2312.10997*.
-9. Min, S., et al. (2023). FActScoring: Fine-grained Atomic Evaluation of Factual Precision in Long-Form Text Generation. *ACL 2023*.
+9. Min, S., et al. (2023). FActScore: Fine-grained Atomic Evaluation of Factual Precision in Long-Form Text Generation. *EMNLP 2023*, 12076–12100.
 10. Thorne, J., et al. (2018). FEVER: A Large-scale Dataset for Fact Extraction and VERification. *NAACL 2018*, 809–819.
+11. Robertson, S., & Zaragoza, H. (2009). The Probabilistic Relevance Framework: BM25 and Beyond. *Foundations and Trends in Information Retrieval*, 3(4), 333–389. https://doi.org/10.1561/1500000019
+12. Cormack, G. V., Clarke, C. L. A., & Büttcher, S. (2009). Reciprocal Rank Fusion Outperforms Condorcet and Individual Rank Learning Methods. *SIGIR 2009*, 758–759. https://doi.org/10.1145/1571941.1572114
+13. Malkov, Y. A., & Yashunin, D. A. (2020). Efficient and Robust Approximate Nearest Neighbor Search Using Hierarchical Navigable Small World Graphs. *IEEE Transactions on Pattern Analysis and Machine Intelligence*, 42(4), 824–836. https://doi.org/10.1109/TPAMI.2018.2889473
+14. Guo, C., Pleiss, G., Sun, Y., & Weinberger, K. Q. (2017). On Calibration of Modern Neural Networks. *ICML 2017*, 1321–1330.
+15. Wang, X., et al. (2023). Self-Consistency Improves Chain-of-Thought Reasoning in Language Models. *ICLR 2023*. https://arxiv.org/abs/2203.11171
+16. Siddiqi, N. (2006). *Credit Risk Scorecards: Developing and Implementing Intelligent Credit Scoring*. Wiley. (Population Stability Index)
 
 ---
 

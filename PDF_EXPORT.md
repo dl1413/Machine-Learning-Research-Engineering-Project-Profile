@@ -7,6 +7,16 @@ chmod +x scripts/build_reports_pdf.sh
 ./scripts/build_reports_pdf.sh
 ```
 
+## Offline / Zero-Dependency Fallback
+
+When Pandoc/TeX or WeasyPrint cannot be installed (e.g., no network access),
+use the pure-Python stdlib renderer, which embeds system TrueType fonts and
+requires no third-party packages:
+
+```bash
+python3 generate_pdf_stdlib.py RAG_Project_Report.md RAG_Project_Publication.pdf
+```
+
 ## Prerequisites
 
 ### macOS (Recommended)
