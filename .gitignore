@@ -27,6 +27,7 @@ build/
 *.parquet
 *.arrow
 *.npz
+!application_tracker.csv
 
 # Secrets
 .env
