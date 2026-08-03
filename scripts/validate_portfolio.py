@@ -55,8 +55,11 @@ def validate_required_artifacts(errors: list[str]) -> None:
                 fail(f"{name}: empty {relative}", errors)
 
         publication_path = ROOT / publication
-        if publication_path.is_file() and publication_path.read_bytes()[:4] != b"%PDF":
-            fail(f"{name}: {publication} is not a PDF", errors)
+        if publication_path.is_file():
+            with publication_path.open("rb") as handle:
+                header = handle.read(4)
+            if header != b"%PDF":
+                fail(f"{name}: {publication} is not a PDF", errors)
 
 
 def validate_readme_inventory(errors: list[str]) -> None:
