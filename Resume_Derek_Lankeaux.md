@@ -8,7 +8,7 @@
 
 ## Summary
 
-Data Scientist with an Applied Statistics MS focused on experimentation, Bayesian inference, and applied machine learning. Ship end-to-end projects spanning GenAI evaluation, predictive modeling, and risk analytics — delivering 96.8-99.12% model performance with rigorous statistical validation (Krippendorff's alpha >= 0.81, MCMC R-hat < 1.01, p < 0.001). Comfortable owning the full data science workflow: framing the question, designing the experiment, writing the SQL, building the model, quantifying uncertainty, and communicating impact to non-technical stakeholders. Published 3 technical reports aligned with IEEE 2830-2025, ISO/IEC 23894:2025, and the EU AI Act.
+Data Scientist with an Applied Statistics MS focused on experimentation, Bayesian inference, and applied machine learning. Ship end-to-end projects spanning GenAI evaluation, predictive modeling, risk analytics, and production RAG — delivering 96.8-99.12% model performance with rigorous statistical validation (Krippendorff's alpha >= 0.81, MCMC R-hat < 1.01, p < 0.001). Comfortable owning the full data science workflow: framing the question, designing the experiment, writing the SQL, building the model, quantifying uncertainty, and communicating impact to non-technical stakeholders. Published 4 technical reports aligned with IEEE 2830-2025, ISO/IEC 23894:2025, and the EU AI Act.
 
 ---
 
@@ -86,6 +86,18 @@ Rochester Institute of Technology | Expected 2026
 
 ---
 
+### RAG Production Pipeline with Hybrid Retrieval
+*Independent Engineering Research Project | April 2026*
+
+- Designed a production RAG architecture combining OpenAI embeddings, BGE-M3, BM25, Qdrant, and ColBERT re-ranking to achieve 96.3% Recall@10
+- Improved grounded-response quality to 94.2% citation precision versus a 71.8% LLM-only baseline, a 22.4 percentage-point gain
+- Built a three-stage hallucination detection layer using citation grounding, semantic consistency, and Bayesian confidence calibration; measured a 2.4% production hallucination rate
+- Documented operational readiness with Kubernetes autoscaling, Prometheus/PSI monitoring, MLflow tracking, privacy controls, and rollback procedures
+
+**Tech Stack:** OpenAI, Qdrant, ColBERT, BM25, Kafka, Kubernetes, Prometheus, MLflow
+
+---
+
 ## Key Achievements
 
 - Built LLM Red-Team Framework with 3-model ensemble achieving 340x cost reduction ($0.018/sample) and audit-grade reliability (alpha = 0.81)
@@ -93,7 +105,7 @@ Rochester Institute of Technology | Expected 2026
 - Deployed Clinical-Grade ML System achieving 99.12% accuracy exceeding human expert performance (90-95%)
 - Scaled Production NLP Pipelines processing 80K+ API calls with circuit breakers, rate limiting, and MLflow experiment tracking
 - Engineered Low-Latency Inference with FastAPI deployments achieving <100ms p95 latency with real-time monitoring
-- Published 3 Research-Quality Technical Reports with p < 0.001 significance, 95% HDI intervals, and SHAP explainability
+- Published 4 Research-Quality Technical Reports with p < 0.001 significance, 95% HDI intervals, and SHAP explainability
 
 ---
 
@@ -104,6 +116,7 @@ Rochester Institute of Technology | Expected 2026
 | AI Safety Red-Team Evaluation | Technical Report v2.0.0 | April 2026 |
 | LLM Ensemble Textbook Bias Detection | Technical Report v4.0.0 | April 2026 |
 | Breast Cancer Classification | Technical Report v4.0.0 | April 2026 |
+| RAG Production Pipeline | Technical Report v3.0.0 | April 2026 |
 
 ---
 

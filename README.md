@@ -4,6 +4,7 @@
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect-0077B5?style=for-the-badge&logo=linkedin)](https://linkedin.com/in/derek-lankeaux)
 [![GitHub](https://img.shields.io/badge/GitHub-Follow-181717?style=for-the-badge&logo=github)](https://github.com/dl1413)
 [![Portfolio](https://img.shields.io/badge/Portfolio-Visit-00C7B7?style=for-the-badge)](https://dl1413.github.io/LLM-Portfolio/)
+[![Portfolio validation](https://github.com/dl1413/Machine-Learning-Research-Engineering-Project-Profile/actions/workflows/validate-portfolio.yml/badge.svg)](https://github.com/dl1413/Machine-Learning-Research-Engineering-Project-Profile/actions/workflows/validate-portfolio.yml)
 
 ---
 
@@ -11,7 +12,7 @@
 
 **Core Competencies:** Experimentation & Causal Inference • Bayesian Statistics • GenAI / LLM Evaluation • Predictive Modeling & MLOps • Stakeholder Communication
 
-> **Data Scientist with an Applied Statistics MS** who turns ambiguous business and research questions into measurable outcomes using experimentation, Bayesian inference, and modern ML. I have shipped end-to-end projects spanning **GenAI evaluation, predictive modeling, and risk analytics** — delivering **96.8–99.12% model performance** with rigorous statistical validation (Krippendorff's α ≥ 0.81, MCMC R-hat < 1.01, p < 0.001). Comfortable owning the full DS workflow: framing the problem, designing the experiment, writing the SQL, building the model, quantifying uncertainty, and communicating impact to non-technical partners. 3 published technical reports aligned with IEEE 2830-2025, ISO/IEC 23894:2025, and the EU AI Act.
+> **Data Scientist with an Applied Statistics MS** who turns ambiguous business and research questions into measurable outcomes using experimentation, Bayesian inference, and modern ML. I have shipped end-to-end projects spanning **GenAI evaluation, predictive modeling, risk analytics, and production RAG** — delivering **96.8–99.12% model performance** with rigorous statistical validation (Krippendorff's α ≥ 0.81, MCMC R-hat < 1.01, p < 0.001). Comfortable owning the full DS workflow: framing the problem, designing the experiment, writing the SQL, building the model, quantifying uncertainty, and communicating impact to non-technical partners. 4 published technical reports aligned with IEEE 2830-2025, ISO/IEC 23894:2025, and the EU AI Act.
 
 ### 🏆 Highlights for 2026 Data Science Roles
 
@@ -19,12 +20,19 @@
 - 🧪 **Causal & Statistical Rigor**: Friedman χ² = 42.73 (p < 0.001), Bayesian hierarchical models with 95% HDI, multiple-testing correction (Bonferroni / FDR), bootstrap CIs, and power analysis — the toolkit DS teams actually use to defend a result
 - 🏥 **High-Stakes Predictive Modeling**: 99.12% accuracy, 100% precision, Platt-calibrated probabilities (ECE 0.0089) and threshold tuning for context-specific decision policies (e.g., 100% sensitivity for screening)
 - 📊 **Production Data Pipelines**: 80K+ API calls / 2.5M tokens processed with circuit breakers, exponential backoff, and MLflow tracking — repeatable, audited, and monitored
-- 🗣️ **Communication & Reproducibility**: 3 publication-grade reports with model cards, calibration plots, and SHAP-based explanations written for both technical reviewers and business stakeholders
+- 🗣️ **Communication & Reproducibility**: 4 publication-grade reports with model cards, calibration plots, and SHAP-based explanations written for both technical reviewers and business stakeholders
 - 🧭 **Responsible AI by Default**: IEEE 2830-2025, ISO/IEC 23894:2025, and EU AI Act-aligned artifacts — increasingly required for DS work touching regulated data (healthcare, finance, education)
 
 ---
 
 ## 🚀 Featured Research Projects
+
+| Project | Focus | Evidence |
+|---------|-------|----------|
+| **AI Safety Red-Team Evaluation** | LLM safety evaluation and harm detection | [Report](./AI%20Safety%20Red-Team%20Evaluation_%20Technical%20Analysis%20Report.md) · [PDF](./AI_Safety_RedTeam_Evaluation_Publication.pdf) · [Package](./project_packages/01_AI_Safety_RedTeam_Evaluation/) |
+| **Breast Cancer Classification** | Calibrated clinical ML and explainability | [Report](./Breast_Cancer_Classification_Report.md) · [PDF](./Breast_Cancer_Classification_Publication.pdf) · [Package](./project_packages/02_Breast_Cancer_Classification/) |
+| **LLM Ensemble Bias Detection** | Bayesian LLM evaluation and uncertainty | [Report](./LLM_Ensemble_Bias_Detection_Report.md) · [PDF](./LLM_Bias_Detection_Publication.pdf) · [Package](./project_packages/03_LLM_Ensemble_Bias_Detection/) |
+| **RAG Production Pipeline** | Hybrid retrieval, grounding, and production LLM orchestration | [Report](./RAG_Project_Report.md) · [PDF](./RAG_Project_Publication.pdf) · [Package](./project_packages/04_RAG_Production_Pipeline/) |
 
 <table>
 <tr>
@@ -111,10 +119,32 @@
 </td>
 <td width="50%" valign="top">
 
+### 🤖 RAG Production Pipeline
+**[📄 Technical Report](./RAG_Project_Report.md)** | **[📊 Publication](./RAG_Project_Publication.pdf)**
+
+**Production-grade retrieval-augmented generation with hybrid search, ensemble orchestration, and statistical hallucination detection**
+
+#### Impact Metrics
+- 📈 **94.2% citation precision** vs. 71.8% LLM-only baseline (+22.4 pp)
+- 🛡️ **2.4% hallucination rate**, below the 5% operational threshold
+- ⚡ **<200ms p50 latency** at 1,240 requests/second
+- 🎯 **96.3% Recall@10** with a hybrid embedding ensemble
+- 📊 **99.97% uptime** over a 30-day production window
+
+#### Technical Innovation
+- **Hybrid Retrieval:** OpenAI embeddings, BGE-M3, BM25, Qdrant, and ColBERT re-ranking
+- **Statistical Guardrails:** Citation grounding, semantic consistency, and Bayesian confidence calibration
+- **Production MLOps:** Kubernetes autoscaling, Prometheus monitoring, PSI drift detection, and MLflow tracking
+
+#### Tech Stack
+`OpenAI` `Qdrant` `ColBERT` `BM25` `Kafka` `Kubernetes` `Prometheus` `MLflow`
+
+---
+
 ### 📊 Research Impact Summary
 
 **Cross-Project Synthesis:**
-- **3 production ML systems** deployed across AI safety, bias detection, and healthcare
+- **4 production ML systems** deployed across AI safety, bias detection, healthcare, and enterprise search
 - **80,000+ annotations** processed via LLM ensembles with validated reliability
 - **340× cost efficiency** gain in AI safety evaluation vs human baseline
 - **Consistent statistical rigor**: Krippendorff's α ≥ 0.81, MCMC R-hat < 1.01, p < 0.001
@@ -343,7 +373,7 @@ Rochester Institute of Technology | Expected 2026
 ✅ **GenAI Fluency**: Production LLM-ensemble pipelines (GPT-4o, Claude, Llama) with measurable cost-to-quality tradeoffs  
 ✅ **Modeling Range**: From XGBoost/LightGBM classifiers (99.12% acc) to Bayesian hierarchical models (R-hat < 1.01)  
 ✅ **Engineering Hygiene**: SQL, Python (Pandas/Polars), MLflow, FastAPI, Docker, Git — ships and maintains pipelines, not just notebooks  
-✅ **Communication**: 3 publication-grade reports with model cards, calibration plots, and SHAP-based explanations for non-technical readers  
+✅ **Communication**: 4 publication-grade reports with model cards, calibration plots, and SHAP-based explanations for non-technical readers
 ✅ **Domain Versatility**: Healthcare, education, and AI-safety case studies — comfortable in regulated, high-stakes settings
 
 ---
@@ -355,6 +385,7 @@ Rochester Institute of Technology | Expected 2026
 | **AI Safety Red-Team Evaluation** | Technical Report v2.0.0 | Apr 2026 | [Report](./AI%20Safety%20Red-Team%20Evaluation_%20Technical%20Analysis%20Report.md) • [PDF](./AI_Safety_RedTeam_Evaluation_Publication.pdf) |
 | **LLM Ensemble Textbook Bias Detection** | Technical Report v4.0.0 | Apr 2026 | [Report](./LLM_Ensemble_Bias_Detection_Report.md) • [PDF](./LLM_Bias_Detection_Publication.pdf) |
 | **Breast Cancer Classification** | Technical Report v4.0.0 | Apr 2026 | [Report](./Breast_Cancer_Classification_Report.md) • [PDF](./Breast_Cancer_Classification_Publication.pdf) |
+| **RAG Production Pipeline** | Technical Report v3.0.0 | Apr 2026 | [Report](./RAG_Project_Report.md) • [PDF](./RAG_Project_Publication.pdf) |
 
 ---
 
@@ -392,6 +423,12 @@ LLM-Portfolio/
 ├── 📑 Breast_Cancer_Classification_Publication.pdf        # Publication PDF
 ├── 🔬 LLM_Ensemble_Bias_Detection_Report.md               # LLM research report
 ├── 📑 LLM_Bias_Detection_Publication.pdf                  # Publication PDF
+├── 🚀 RAG_Project_Report.md                                # RAG engineering report
+├── 📑 RAG_Project_Publication.pdf                           # Publication PDF
+├── 📚 PDF_EXPORT.md                                          # Reproducible PDF build instructions
+├── 📦 project_packages/                                      # Per-project PDF indexes and deliverables
+├── 🧪 scripts/validate_portfolio.py                        # CI-safe inventory/link validator
+├── ⚙️ .github/workflows/validate-portfolio.yml             # GitHub Actions quality gate
 ├── ⚙️ generate_publication_pdfs.py                        # PDF build pipeline
 └── 📦 requirements-pdf.txt                                # Build dependencies
 ```
@@ -430,7 +467,7 @@ LLM-Portfolio/
 
 <div align="center">
 
-**📌 Last Updated:** April 2026  
+**📌 Last Updated:** August 2026
 **✅ Compliance:** IEEE 2830-2025 (Transparent ML) • ISO/IEC 23894:2025 (AI Risk Management) • EU AI Act (2025)  
 **🔒 License:** Portfolio content © 2026 Derek Lankeaux. Code samples available under MIT License.
 
