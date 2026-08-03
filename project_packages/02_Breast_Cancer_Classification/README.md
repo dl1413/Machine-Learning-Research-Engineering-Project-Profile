@@ -1,24 +1,35 @@
-# Project 02 — Breast Cancer ML Classification
+# Breast Cancer Classification Benchmark
 
-**Author:** Derek Lankeaux, MS Applied Statistics
-**Date:** 2026
-**Compliance:** IEEE 2830-2025 · ISO/IEC 23894:2025 · EU AI Act 2025
+**Type:** Independent technical case study
+**Focus:** Ensemble-learning evaluation on diagnostic benchmark data
+**Report version:** 4.0.0 · April 2026
 
-## Publication
+| Read | Link |
+|---|---|
+| Full technical report | [Markdown](../../Breast_Cancer_Classification_Report.md) |
+| Publication-formatted report | [PDF](./Breast_Cancer_Classification_Publication.pdf) |
+| Portfolio overview | [README](../../README.md) |
 
-| Document | File |
-|----------|------|
-| Technical Report (PDF) | [`Breast_Cancer_Classification_Publication.pdf`](./Breast_Cancer_Classification_Publication.pdf) |
+## Project at a glance
 
-## Summary
+| Problem | Approach | Reported evidence |
+|---|---|---|
+| Compare ensemble methods for binary classification using the WDBC benchmark. | Preprocessing, feature selection, calibration, threshold analysis, and eight-model benchmarking. | 569 samples; 99.12% held-out accuracy; 0.9987 ROC-AUC; 10-fold cross-validation. |
 
-Clinical-grade ensemble ML system benchmarked on the Wisconsin Diagnostic Breast Cancer dataset, exceeding human expert performance on all primary metrics.
+## What this demonstrates
 
-**Key Results:**
-- 99.12% accuracy (AdaBoost, best-in-class)
-- 100% precision — zero false positives
-- 98.59% recall — minimal missed cases
-- ROC-AUC: 0.9987 (near-perfect discrimination)
-- Platt calibration reduces ECE by 71.5% (0.0312 → 0.0089)
+- A disciplined supervised-learning workflow from dataset inspection through
+  cross-validation, calibration, and explainability.
+- Why diagnostic metrics, thresholds, and uncertainty need to be considered
+  alongside headline accuracy.
+- A transparent basis for discussing model limitations and decision support.
 
-**Tech Stack:** `scikit-learn` `XGBoost` `LightGBM` `AdaBoost` `Optuna` `SMOTE` `SHAP` `MLflow` `FastAPI`
+## Scope
+
+This is an educational benchmark on the Wisconsin Diagnostic Breast Cancer
+dataset. It is not a clinical device, a patient-validation study, medical
+advice, or evidence for independent clinical use.
+
+## Methods
+
+`scikit-learn` · `XGBoost` · `LightGBM` · `AdaBoost` · `Optuna` · `SMOTE` · `SHAP`

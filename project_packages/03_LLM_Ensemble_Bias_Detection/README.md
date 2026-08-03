@@ -1,24 +1,36 @@
-# Project 03 — LLM Ensemble Textbook Bias Detection
+# LLM Ensemble Textbook Bias Detection
 
-**Author:** Derek Lankeaux, MS Applied Statistics
-**Date:** 2026
-**Compliance:** IEEE 2830-2025 · ISO/IEC 23894:2025 · EU AI Act 2025
+**Type:** Independent technical case study
+**Focus:** Uncertainty-aware LLM evaluation for educational-content review
+**Report version:** 4.0.0 · April 2026
 
-## Publication
+| Read | Link |
+|---|---|
+| Full technical report | [Markdown](../../LLM_Ensemble_Bias_Detection_Report.md) |
+| Publication-formatted report | [PDF](./LLM_Bias_Detection_Publication.pdf) |
+| Portfolio overview | [README](../../README.md) |
 
-| Document | File |
-|----------|------|
-| Technical Report (PDF) | [`LLM_Bias_Detection_Publication.pdf`](./LLM_Bias_Detection_Publication.pdf) |
+## Project at a glance
 
-## Summary
+| Problem | Approach | Reported evidence |
+|---|---|---|
+| Evaluate whether multiple LLM judges can support large-scale content review. | Rubric-based rating, inter-rater reliability, Bayesian hierarchical modeling, and uncertainty triage. | 4,500 passages; 67,500 ratings; α = 0.84; MCMC R-hat < 1.01. |
 
-Multi-LLM framework for detecting and quantifying political bias in educational textbooks, using a three-model ensemble and Bayesian hierarchical modeling for robust inference.
+## What this demonstrates
 
-**Key Results:**
-- 67,500 bias ratings across 4,500 textbook passages from 150 textbooks
-- Krippendorff's α = 0.84 (excellent inter-rater reliability)
-- Statistically significant publisher differences: Friedman χ² = 42.73, p < 0.001
-- 3 of 5 publishers exhibit credible bias (95% HDI excluding zero)
-- MCMC convergence: R-hat < 1.01, ESS > 3,000
+- How to measure agreement before aggregating LLM judgments.
+- How partial pooling and posterior intervals can make uncertainty visible in
+  group-level comparisons.
+- A review workflow that routes disagreement and high-uncertainty material for
+  expert inspection.
 
-**Tech Stack:** `GPT-4o` `Claude-3.5` `Llama-3.2` `PyMC` `ArviZ` `MLflow` `FastAPI` `LangChain`
+## Scope
+
+The analysis is a research framework based on the report's corpus, rubric, and
+model prompts. Its findings require expert human review and should not be read
+as a general claim about publishers, textbooks, or political bias outside that
+study design.
+
+## Methods
+
+`LLM-as-judge` · `Krippendorff's alpha` · `PyMC` · `ArviZ` · `FastAPI` · `MLflow`
