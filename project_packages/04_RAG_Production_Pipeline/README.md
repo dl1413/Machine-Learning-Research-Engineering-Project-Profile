@@ -1,25 +1,37 @@
-# Project 04 — RAG: Production Pipeline with Vector Embeddings & LLM Ensemble
+# RAG Production Pipeline
 
-**Author:** Derek Lankeaux, MS Applied Statistics
-**Date:** 2026
-**Compliance:** IEEE 2830-2025 · ISO/IEC 23894:2025 · EU AI Act 2025
+**Type:** Independent systems-design case study
+**Focus:** Hybrid retrieval, grounding, confidence calibration, and observability
+**Report version:** 3.0.0 · April 2026
 
-## Publication
+| Read | Link |
+|---|---|
+| Full technical report | [Markdown](../../RAG_Project_Report.md) |
+| Publication-formatted report | [PDF](./RAG_Project_Publication.pdf) |
+| Portfolio overview | [README](../../README.md) |
 
-| Document | File |
-|----------|------|
-| Technical Report (PDF) | [`RAG_Project_Publication.pdf`](./RAG_Project_Publication.pdf) |
+## Project at a glance
 
-## Summary
+| Problem | Approach | Reported evidence |
+|---|---|---|
+| Improve retrieval quality and grounding in a RAG system design. | Dense and lexical retrieval, re-ranking, citation checks, Bayesian confidence calibration, and monitoring design. | 96.3% Recall@10; 94.2% citation precision; 2.4% reported hallucination rate. |
 
-Production-grade Retrieval-Augmented Generation system combining hybrid vector embeddings, multi-model LLM orchestration, and statistical hallucination detection for enterprise knowledge retrieval.
+## What this demonstrates
 
-**Key Results:**
-- 94.2% citation precision (vs. 71.8% LLM-only baseline: +22.4 pp)
-- 2.4% hallucination rate — below the 5% operational threshold
-- <200ms end-to-end latency (p50) at 1,240 req/sec throughput
-- 96.3% Recall@10 (hybrid embedding ensemble vs. 94.1% single-model)
-- 99.97% uptime over 30-day production window
-- Expected Calibration Error (ECE): 0.011 (1.1%)
+- An end-to-end view of RAG quality: retrieval, answer grounding, latency,
+  confidence, and failure modes.
+- How hybrid retrieval and re-ranking can be evaluated separately from
+  generation.
+- The deployment controls—monitoring, privacy safeguards, rollback, and drift
+  detection—that need to accompany a production implementation.
 
-**Tech Stack:** `OpenAI` `Anthropic` `Llama-3.2` `Qdrant` `ColBERT` `BM25` `Kafka` `Kubernetes` `Prometheus` `MLflow`
+## Scope
+
+This is a systems-design and evaluation case study. Its metrics are reported
+from the documented evaluation, not from a live production service. A real
+deployment would require security review, workload testing, data governance,
+and ongoing operational validation.
+
+## Methods
+
+`Qdrant` · `BM25` · `ColBERT` · `OpenAI` · `Kafka` · `Kubernetes` · `Prometheus` · `MLflow`

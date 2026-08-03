@@ -1,23 +1,35 @@
-# Project 01 — AI Safety Red-Team Evaluation
+# AI Safety Red-Team Evaluation
 
-**Author:** Derek Lankeaux, MS Applied Statistics
-**Date:** 2026
-**Compliance:** IEEE 2830-2025 · ISO/IEC 23894:2025 · EU AI Act 2025
+**Type:** Independent technical case study
+**Focus:** Scalable harm evaluation for LLM responses
+**Report version:** 2.0.0 · April 2026
 
-## Publication
+| Read | Link |
+|---|---|
+| Full technical report | [Markdown](../../AI%20Safety%20Red-Team%20Evaluation_%20Technical%20Analysis%20Report.md) |
+| Publication-formatted report | [PDF](./AI_Safety_RedTeam_Evaluation_Publication.pdf) |
+| Portfolio overview | [README](../../README.md) |
 
-| Document | File |
-|----------|------|
-| Technical Report (PDF) | [`AI_Safety_RedTeam_Evaluation_Publication.pdf`](./AI_Safety_RedTeam_Evaluation_Publication.pdf) |
+## Project at a glance
 
-## Summary
+| Problem | Approach | Reported evidence |
+|---|---|---|
+| Manual safety review is costly and difficult to scale. | LLM ensemble annotation followed by supervised classification and Bayesian risk analysis. | 12,500 response pairs; α = 0.81 inter-rater reliability; 96.8% held-out classifier accuracy. |
 
-Automated harm-detection framework using a dual-stage LLM ensemble and ML classification pipeline evaluated on 12,500 AI response pairs across 6 harm categories.
+## What this demonstrates
 
-**Key Results:**
-- 96.8% accuracy (Stacking Classifier: 97.2% precision, 96.1% recall)
-- 340× cost reduction: $0.018/sample vs. $6.12 human annotation
-- Krippendorff's α = 0.81 (excellent ensemble reliability)
-- Dual-filter reduces harm rate from 21.8% → 4.8% (78% reduction)
+- A two-stage evaluation design that separates annotation quality from
+  downstream classification performance.
+- Reliability analysis, uncertainty quantification, and feature attribution as
+  complements to an accuracy metric.
+- A structure for audit-oriented safety evaluation and human-review workflows.
 
-**Tech Stack:** `GPT-4o` `Claude-3.5` `Llama-3.2` `XGBoost` `Stacking` `PyMC` `SHAP` `MLflow`
+## Scope
+
+The reported results apply to the project's experimental setup and annotation
+rubric. This work is not a substitute for expert red-teaming, human safety
+review, or a complete deployment-readiness assessment.
+
+## Methods
+
+`LLM evaluation` · `stacking classifier` · `XGBoost` · `PyMC` · `SHAP` · `MLflow`
