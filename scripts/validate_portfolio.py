@@ -87,7 +87,13 @@ def validate_local_links(errors: list[str]) -> None:
             relative = unquote(parsed.path)
             if not relative:
                 continue
+            if relative.startswith("/"):
+                fail(f"{index.relative_to(ROOT)}: local link must be relative {raw_target}", errors)
+                continue
             resolved = (index.parent / relative).resolve()
+            if not resolved.is_relative_to(ROOT):
+                fail(f"{index.relative_to(ROOT)}: local link escapes repository root {raw_target}", errors)
+                continue
             if not resolved.exists():
                 fail(f"{index.relative_to(ROOT)}: broken local link {raw_target}", errors)
 
