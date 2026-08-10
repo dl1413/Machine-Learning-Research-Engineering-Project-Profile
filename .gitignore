@@ -24,6 +24,7 @@ build/
 
 # Data
 *.csv
+!application_tracker.csv
 *.parquet
 *.arrow
 *.npz
