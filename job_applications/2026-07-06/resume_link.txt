@@ -1,0 +1,4 @@
+Attach: /Resume_Derek_Lankeaux.md (repo root)
+Portfolio: https://dl1413.github.io/LLM-Portfolio/
+GitHub: https://github.com/dl1413
+LinkedIn: https://linkedin.com/in/derek-lankeaux
