@@ -1,0 +1,6 @@
+date,company,role,location,link,lead_project,submitted_at,response,notes
+2026-07-30,Anthropic,"Research Engineer, Model Evaluations","San Francisco / New York, NY",https://www.anthropic.com/careers,AI Safety Red-Team Evaluation,,,Stretch — frontier lab; lead with red-team + Bayesian judge disagreement
+2026-07-30,Bloomberg,"Senior LLM Research Engineer, AI","New York, NY",https://bloomberg.avature.net/careers/JobDetail/Senior-LLM-Research-Engineer-Artificial-Intelligence/17486,LLM Ensemble Bias Detection,,,Stretch — Senior title + Ph.D. preferred; Bayesian + MCMC framing
+2026-07-30,Flatiron Health,Senior Applied AI Data Scientist,"New York, NY (hybrid)",https://www.builtinnyc.com/job/senior-applied-ai-data-scientist/8615163,Breast Cancer Classification,,,Stretch — Senior title; clinical ML + GenAI on unstructured notes
+2026-07-30,Point72 (Cubist),Data Scientist,"New York, NY",https://careers.point72.com/,LLM Ensemble Bias Detection,,,Systematic strategies feature engineering; lead with Bayesian + hypothesis-testing rigor
+2026-07-30,Hugging Face,Multimodal Research Engineer,US Remote,https://startup.jobs/multimodal-research-engineer-us-remote-hugging-face-5298815,AI Safety Red-Team Evaluation,,,Eval pipelines + adversarial taxonomy; multimodal expansion
