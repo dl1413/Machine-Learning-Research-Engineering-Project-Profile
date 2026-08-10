@@ -37,3 +37,6 @@ build/
 # Cache
 .cache/
 *.cache
+
+# Session scratchpad (ephemeral working files)
+scratchpad/
