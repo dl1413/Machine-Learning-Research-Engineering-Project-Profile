@@ -1,0 +1,212 @@
+================================================================================
+FIVE PhD-LEVEL LOGIC & SET THEORY PROMPTS (KaTeX)
+Subdomain: Mathematics — Mathematical Logic & Set Theory
+Each prompt is fully specified, requires graduate-level expertise, and has
+EXACTLY ONE verifiable answer. A common wrong answer ("trap") is noted.
+Math is written in KaTeX; prose is plain text so this file copies cleanly.
+================================================================================
+
+
+--------------------------------------------------------------------------------
+PROMPT 1 — Singular Cardinal Exponentiation under GCH
+--------------------------------------------------------------------------------
+PROMPT:
+Work in $\mathsf{ZFC}$ and assume the Generalized Continuum Hypothesis
+($\mathsf{GCH}$). Evaluate the cardinal exponential
+
+$$
+\aleph_{\omega}^{\,\aleph_{0}}
+$$
+
+and express the answer as a single aleph.
+
+SOLUTION:
+Because $\operatorname{cf}(\aleph_{\omega}) = \operatorname{cf}(\omega) = \aleph_0
+\le \aleph_0 < \aleph_\omega$, König's theorem forces strict growth:
+
+$$
+\aleph_{\omega}^{\,\aleph_0} > \aleph_{\omega}.
+$$
+
+Hence $\aleph_{\omega}^{\aleph_0} \ge \aleph_{\omega+1}$. For the upper bound, use the
+Hausdorff/GCH computation for a cardinal $\kappa$ with
+$\operatorname{cf}(\kappa)\le\aleph_0<\kappa$: under $\mathsf{GCH}$,
+$\kappa^{\aleph_0}=\kappa^{+}$. Concretely, cover the sup:
+
+$$
+\aleph_{\omega}^{\aleph_0}
+= \Big(\sup_{n}\aleph_n\Big)^{\aleph_0}
+\le \prod_{n<\omega}\aleph_n^{\aleph_0}
+\le \prod_{n<\omega}\aleph_{n+1}
+\le \aleph_{\omega}^{\aleph_0},
+$$
+
+and under $\mathsf{GCH}$ each $\aleph_n^{\aleph_0}=\aleph_{n+1}$, giving
+$\prod_{n<\omega}\aleph_{n+1}=\aleph_{\omega}^{\aleph_0}=\aleph_{\omega+1}$.
+Both bounds meet.
+
+ANSWER:
+$$
+\aleph_{\omega}^{\,\aleph_{0}} = \aleph_{\omega+1}.
+$$
+
+TRAP: Answering $\aleph_\omega$ (treating it like a regular cardinal / naive
+"$\kappa^{\aleph_0}=\kappa$"), or $2^{\aleph_0}=\aleph_1$. König's theorem rules
+$\aleph_\omega$ out.
+
+
+--------------------------------------------------------------------------------
+PROMPT 2 — Vaught's "Never Two" Theorem
+--------------------------------------------------------------------------------
+PROMPT:
+Let $T$ be a complete first-order theory in a countable language with an
+infinite model. Let $I(T,\aleph_0)$ denote the number of pairwise
+non-isomorphic countable models of $T$. It is a theorem that $I(T,\aleph_0)$
+can take any value in $\{1,3,4,5,\dots\}\cup\{\aleph_0,\,2^{\aleph_0}\}$ but is
+forbidden from being exactly one particular finite value. State that forbidden
+value.
+
+SOLUTION:
+Suppose toward contradiction $T$ has exactly two countable models up to
+isomorphism. Every complete theory has a countable model realizing only
+principal (isolated) types — the prime/atomic model $\mathfrak{A}$ — and, if $T$
+is not $\aleph_0$-categorical, a countable model realizing a non-isolated type.
+The omitting-types theorem lets one build a countable model omitting any single
+non-isolated type. A careful analysis (the Ryll-Nardzewski / Vaught argument)
+shows: if $T$ is not $\aleph_0$-categorical it has a prime model and a countably
+saturated model, and if these are its only two models one can construct a third,
+intermediate model realizing some but not all non-principal types — contradicting
+"exactly two." Thus $I(T,\aleph_0)\neq 2$.
+
+ANSWER:
+$$
+I(T,\aleph_0) \neq 2 \qquad\text{(the forbidden value is } 2\text{).}
+$$
+
+TRAP: Guessing $1$ (that is allowed — $\aleph_0$-categoricity) or $3$ (allowed —
+the classic $\mathbb{Q}$ with countably many constants "$c_n\to\infty$" example
+realizes exactly $3$). Only $2$ is impossible.
+
+
+--------------------------------------------------------------------------------
+PROMPT 3 — Complexity of the Index Set of Total Functions
+--------------------------------------------------------------------------------
+PROMPT:
+Fix a standard enumeration $(\varphi_e)_{e\in\omega}$ of the partial computable
+functions. Consider the index set
+
+$$
+\mathrm{Tot} = \{\, e \in \omega : \varphi_e \text{ is total} \,\}.
+$$
+
+Determine the exact position of $\mathrm{Tot}$ in the arithmetical hierarchy:
+give the lightface pointclass $\Gamma$ for which $\mathrm{Tot}$ is
+$\Gamma$-complete.
+
+SOLUTION:
+Membership is expressed by
+$e\in\mathrm{Tot}\iff \forall x\,\exists s\,[\varphi_{e,s}(x)\!\downarrow]$.
+The matrix $\varphi_{e,s}(x)\!\downarrow$ is decidable, the inner $\exists s$ is
+$\Sigma^0_1$, and the outer universal quantifier puts the predicate at
+$\Pi^0_2$. Hence $\mathrm{Tot}\in\Pi^0_2$.
+
+For hardness, reduce a known $\Pi^0_2$-complete set. Given a $\Pi^0_2$ predicate
+$R(n)\equiv\forall x\,\exists y\,S(n,x,y)$ with $S$ decidable, uniformly build a
+machine $g_n$ that on input $x$ searches for the least $y$ with $S(n,x,y)$ and
+halts. Then $\varphi_{g_n}$ is total $\iff \forall x\,\exists y\,S(n,x,y)\iff
+R(n)$, an $m$-reduction $R\le_m \mathrm{Tot}$. Since every $\Pi^0_2$ set reduces
+to it, $\mathrm{Tot}$ is $\Pi^0_2$-complete (in particular $\mathrm{Tot}
+\equiv_T \emptyset''$).
+
+ANSWER:
+$$
+\mathrm{Tot} \text{ is } \Pi^0_2\text{-complete}.
+$$
+
+TRAP: Answering $\Sigma^0_2$ or $\Pi^0_1$. $\mathrm{Tot}$ is not $\Sigma^0_2$
+(it is properly $\Pi^0_2$), and the single "$\forall x\exists s$" alternation
+already exceeds $\Pi^0_1$.
+
+
+--------------------------------------------------------------------------------
+PROMPT 4 — Natural (Hessenberg) Sum in Cantor Normal Form
+--------------------------------------------------------------------------------
+PROMPT:
+Let $\oplus$ denote the natural (Hessenberg) sum of ordinals. Compute
+
+$$
+\big(\omega^{\omega} + \omega^{2} + 1\big)\ \oplus\ \big(\omega^{\omega}\cdot 2 + \omega\big)
+$$
+
+and write the result in Cantor normal form.
+
+SOLUTION:
+The natural sum is computed by writing both ordinals in Cantor normal form as
+polynomials in $\omega$ and adding coefficients of equal exponents (regardless of
+order), then reassembling in strictly decreasing exponents. Collecting terms by
+exponent:
+
+$$
+\begin{aligned}
+\omega^{\omega}: &\quad 1 + 2 = 3,\\
+\omega^{2}: &\quad 1 + 0 = 1,\\
+\omega^{1}: &\quad 0 + 1 = 1,\\
+\omega^{0}: &\quad 1 + 0 = 1.
+\end{aligned}
+$$
+
+ANSWER:
+$$
+\omega^{\omega}\cdot 3 \;+\; \omega^{2} \;+\; \omega \;+\; 1.
+$$
+
+TRAP: Using ordinary (non-commutative) ordinal addition, where the left summand's
+lower terms are absorbed:
+$(\omega^{\omega}+\omega^2+1)+(\omega^{\omega}\cdot2+\omega)
+=\omega^{\omega}\cdot 3+\omega$, dropping the $\omega^2$ and $1$. The natural sum
+keeps every term.
+
+
+--------------------------------------------------------------------------------
+PROMPT 5 — Erdős–Rado and the Partition Relation for Pairs
+--------------------------------------------------------------------------------
+PROMPT:
+Recall the Erdős–Rado theorem: for every $n<\omega$,
+$\beth_n^{+}\to(\aleph_1)^{n+1}_{\aleph_0}$, and this is optimal at each level.
+Using $n=1$, identify the least cardinal $\kappa$ that Erdős–Rado guarantees to
+satisfy the partition relation
+
+$$
+\kappa \to (\aleph_1)^{2}_{\aleph_0},
+$$
+
+and express $\kappa$ in terms of the continuum $2^{\aleph_0}$.
+
+SOLUTION:
+For $n=1$ the theorem reads $\beth_1^{+}\to(\aleph_1)^{2}_{\aleph_0}$, where
+$\beth_1 = 2^{\aleph_0}$, so $\beth_1^{+}=(2^{\aleph_0})^{+}$. This value is
+optimal: by the Sierpiński coloring there is a partition of the pairs of
+$2^{\aleph_0}$ witnessing
+$2^{\aleph_0}\not\to(\aleph_1)^{2}_{2}$, hence a fortiori
+$2^{\aleph_0}\not\to(\aleph_1)^{2}_{\aleph_0}$. Therefore the continuum itself
+fails the relation and the successor is the least guaranteed value.
+
+ANSWER:
+$$
+\kappa = \beth_1^{+} = \big(2^{\aleph_0}\big)^{+}.
+$$
+
+TRAP: Answering $\aleph_1$ or $2^{\aleph_0}$. Sierpiński's coloring shows
+$2^{\aleph_0}\not\to(\aleph_1)^2_2$, so nothing at or below the continuum works;
+one must pass to $(2^{\aleph_0})^+$.
+
+
+================================================================================
+ANSWER KEY (one verifiable value each)
+================================================================================
+1.  $\aleph_{\omega}^{\aleph_0} = \aleph_{\omega+1}$        (under GCH)
+2.  Forbidden number of countable models: $2$              (Vaught)
+3.  $\mathrm{Tot}$ is $\Pi^0_2$-complete
+4.  $\omega^{\omega}\cdot 3 + \omega^{2} + \omega + 1$      (natural sum)
+5.  $\kappa = (2^{\aleph_0})^{+} = \beth_1^{+}$             (Erdős–Rado)
+================================================================================

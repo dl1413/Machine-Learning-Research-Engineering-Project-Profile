@@ -1,0 +1,164 @@
+================================================================================
+FIVE RESEARCH-TIER LOGIC & SET THEORY PROMPTS (KaTeX)
+Subdomain: Mathematics — Mathematical Logic & Set Theory (frontier / qual level)
+Each prompt is fully specified, requires research-level expertise, and has
+EXACTLY ONE verifiable answer. A common wrong answer ("trap") is noted.
+Math is written in KaTeX; prose is plain text so this file copies cleanly.
+================================================================================
+
+
+--------------------------------------------------------------------------------
+PROMPT 1 — Shelah's pcf Bound on the Power of a Singular
+--------------------------------------------------------------------------------
+PROMPT:
+Work in $\mathsf{ZFC}$. Suppose $\aleph_{\omega}$ is a strong limit cardinal
+(equivalently $2^{\aleph_n}<\aleph_\omega$ for all $n<\omega$). Shelah's pcf theory
+provides an ABSOLUTE ZFC upper bound of the form $2^{\aleph_{\omega}} < \aleph_{\gamma}$
+for a fixed countable ordinal index $\gamma$ that does not depend on the model.
+State the sharp index $\gamma$ delivered by Shelah's theorem.
+
+SOLUTION:
+The naive expectation "$2^{\aleph_\omega}$ can be anything above $\aleph_\omega$ of
+uncountable cofinality" is false for strong-limit singulars of cofinality $\omega$.
+Shelah's pcf machinery bounds the pseudopowers: for the interval
+$\{\aleph_n : n<\omega\}$ one has
+$\operatorname{pcf}(\{\aleph_n : n<\omega\})$ has cardinality $<\aleph_{\omega_4}$,
+and since $\aleph_\omega$ strong limit gives
+$2^{\aleph_\omega}=\aleph_\omega^{\aleph_0}=\max\operatorname{pcf}(\{\aleph_n\})$,
+one obtains
+
+$$\aleph_{\omega} \text{ strong limit} \ \Longrightarrow\ 2^{\aleph_{\omega}} < \aleph_{\omega_4}.$$
+
+ANSWER:
+$$\gamma = \omega_4, \qquad\text{i.e.}\qquad 2^{\aleph_{\omega}} < \aleph_{\omega_4}.$$
+
+TRAP: Answering $\omega_1$ (only the cofinality constraint
+$\operatorname{cf}(2^{\aleph_\omega})>\aleph_0$, from König) or "$2^{\aleph_\omega}$
+is unbounded." The whole surprise of pcf theory is the finite index $4$ on
+$\omega$; $\aleph_{\omega_4}$ is the sharp published bound.
+
+
+--------------------------------------------------------------------------------
+PROMPT 2 — Kunen's Inconsistency: the Sharp Rank Level
+--------------------------------------------------------------------------------
+PROMPT:
+Let $j : V \to M$ be a nontrivial elementary embedding with critical point
+$\kappa_0$, and let $\lambda = \sup_{n<\omega}\kappa_n$ be the supremum of the
+critical sequence $\kappa_{n+1}=j(\kappa_n)$. The rank-into-rank axioms assert the
+existence of a nontrivial elementary embedding $j : V_{\lambda+m}\to V_{\lambda+m}$.
+Kunen's theorem proves that such an embedding is INCONSISTENT with $\mathsf{ZFC}$
+starting at a least value of $m$. State that least $m$.
+
+SOLUTION:
+The embeddings $j:V_\lambda\to V_\lambda$ (axiom I3) and $j:V_{\lambda+1}\to
+V_{\lambda+1}$ (axiom I1) are not refuted by Kunen's argument and are studied as
+strong large-cardinal hypotheses. Kunen's proof — via a Ramsey-type
+$\omega$-Jónsson function / the existence of an $\omega$-sequence
+$\langle \lambda_n\rangle$ moved by $j$ contradicting a combinatorial partition
+(Solovay's stationary splitting / the Erdős–Hajnal function on
+$[\lambda]^{\omega}$) — uses a subset of $V_{\lambda+2}$ (a function on
+$[\lambda]^\omega$). Hence it rules out $j:V_{\lambda+2}\to V_{\lambda+2}$:
+
+$$\nexists\ \text{nontrivial elementary } j : V_{\lambda+2} \to V_{\lambda+2}.$$
+
+ANSWER:
+$$m = 2.$$
+
+TRAP: Answering $m=1$ (that is axiom I1, consistent as far as is known) or $m=0$
+(axiom I3). The inconsistency first bites at rank $\lambda+2$, because the killing
+combinatorial object lives one power set above $V_{\lambda+1}$.
+
+
+--------------------------------------------------------------------------------
+PROMPT 3 — Proof-Theoretic Ordinal of ATR_0
+--------------------------------------------------------------------------------
+PROMPT:
+In the reverse-mathematics / ordinal-analysis setting, let $|T|_{\mathrm{PTO}}$
+denote the proof-theoretic (supremum-of-provable-well-orderings) ordinal of a
+theory $T$. It is classical that $|\mathsf{PA}|_{\mathrm{PTO}} = \varepsilon_0$ and
+$|\mathsf{ACA}_0|_{\mathrm{PTO}} = \varepsilon_0$. Determine
+$|\mathsf{ATR}_0|_{\mathrm{PTO}}$, the proof-theoretic ordinal of
+$\mathsf{ATR}_0$ (arithmetical transfinite recursion).
+
+SOLUTION:
+$\mathsf{ATR}_0$ calibrates predicative provability: it proves transfinite recursion
+of arithmetical operators along any well-ordering. Its proof-theoretic ordinal is
+the Feferman–Schütte ordinal $\Gamma_0$ — the least ordinal $\alpha$ closed under
+the Veblen function, i.e. $\Gamma_0 = \varphi_{\Gamma_0}(0)$, the least fixed point
+of $\xi\mapsto\varphi_\xi(0)$. This is precisely the ordinal marking the limit of
+predicativity (Feferman–Schütte analysis).
+
+ANSWER:
+$$|\mathsf{ATR}_0|_{\mathrm{PTO}} = \Gamma_0 = \varphi_{\Gamma_0}(0).$$
+
+TRAP: Answering $\varepsilon_0$ (that is $\mathsf{PA}$ / $\mathsf{ACA}_0$, one Big
+Five level below) or the Bachmann–Howard ordinal
+$\psi_\Omega(\varepsilon_{\Omega+1})$ (that is $\mathsf{ID}_1$; and
+$\Pi^1_1\text{-}\mathsf{CA}_0$ is even larger). $\mathsf{ATR}_0$ sits exactly at
+$\Gamma_0$.
+
+
+--------------------------------------------------------------------------------
+PROMPT 4 — Martin Axiom Collapses Cichoń's Diagram
+--------------------------------------------------------------------------------
+PROMPT:
+Assume $\mathsf{MA} + \neg\mathsf{CH}$ (Martin's Axiom with the negation of the
+Continuum Hypothesis). Consider Cichoń's diagram of cardinal characteristics of the
+continuum: $\operatorname{add}(\mathcal N)$, $\operatorname{add}(\mathcal M)$,
+$\operatorname{cov}(\mathcal N)$, $\operatorname{cov}(\mathcal M)$, $\mathfrak b$,
+$\mathfrak d$, $\operatorname{non}(\mathcal N)$, $\operatorname{non}(\mathcal M)$,
+$\operatorname{cof}(\mathcal M)$, $\operatorname{cof}(\mathcal N)$. Give the common
+value that ALL ten of these characteristics take under $\mathsf{MA}+\neg\mathsf{CH}$.
+
+SOLUTION:
+$\mathsf{MA}$ implies that the union of fewer than $\mathfrak c$ meager (resp. null)
+sets is meager (resp. null), which forces the bottom of the diagram up:
+$\operatorname{add}(\mathcal N)=\mathfrak c$. Since $\operatorname{add}(\mathcal N)$
+is the provable minimum and $\operatorname{cof}(\mathcal N)$ the provable maximum of
+the diagram, and both equal $\mathfrak c$, every entry is squeezed:
+
+$$\operatorname{add}(\mathcal N)=\cdots=\operatorname{cof}(\mathcal N)=\mathfrak c = 2^{\aleph_0}.$$
+
+ANSWER:
+$$\text{Every characteristic } = \mathfrak c = 2^{\aleph_0}.$$
+
+TRAP: Answering $\aleph_1$ (that is what $\neg\mathsf{CH}$ makes them NOT — under
+$\mathsf{CH}$ everything is trivially $\aleph_1=\mathfrak c$, but with $\neg$CH the
+content is that $\mathsf{MA}$ still pins them all to $\mathfrak c>\aleph_1$), or
+naming a proper subset that collapses.
+
+
+--------------------------------------------------------------------------------
+PROMPT 5 — Martin–Steel: Woodin Cardinals and Projective Determinacy
+--------------------------------------------------------------------------------
+PROMPT:
+By the Martin–Steel theorem, the existence of $n$ Woodin cardinals with a
+measurable cardinal above them all implies the determinacy of a specific level of
+the projective hierarchy. For a given $n\ge 1$, state the exact projective
+pointclass $\Pi^1_{k}$ whose determinacy is proved, i.e. give $k$ as a function of
+$n$.
+
+SOLUTION:
+Martin and Steel (building on the tree/iterability analysis of homogeneously Suslin
+sets) proved: if there exist $n$ Woodin cardinals with a measurable above, then
+every $\boldsymbol\Pi^1_{n+1}$ set of reals is determined. Equivalently $n$ Woodins
+$\Rightarrow \boldsymbol\Pi^1_{n+1}$-determinacy; letting $n\to\infty$ (infinitely
+many Woodins) yields full Projective Determinacy. The base case $n=1$ gives
+$\boldsymbol\Pi^1_2$-determinacy from one Woodin (plus a measurable above).
+
+ANSWER:
+$$k = n+1, \qquad\text{i.e.}\qquad n \text{ Woodins} \ \Rightarrow\ \boldsymbol\Pi^1_{n+1}\text{-determinacy}.$$
+
+TRAP: Answering $k=n$ (off by one — one Woodin already gives $\Pi^1_2$, not
+$\Pi^1_1$; $\Pi^1_1$-determinacy needs only a measurable, by Martin) or $k=2n$.
+
+
+================================================================================
+ANSWER KEY (one verifiable value each)
+================================================================================
+1.  $2^{\aleph_\omega} < \aleph_{\omega_4}$  (strong-limit $\aleph_\omega$; Shelah)   →  $\gamma=\omega_4$
+2.  Kunen inconsistency first at $j:V_{\lambda+2}\to V_{\lambda+2}$                    →  $m=2$
+3.  $|\mathsf{ATR}_0|_{\mathrm{PTO}} = \Gamma_0 = \varphi_{\Gamma_0}(0)$
+4.  Under $\mathsf{MA}+\neg\mathsf{CH}$, all Cichoń entries $= 2^{\aleph_0}$
+5.  Martin–Steel: $n$ Woodins $\Rightarrow \boldsymbol\Pi^1_{n+1}$-determinacy         →  $k=n+1$
+================================================================================
