@@ -1,0 +1,29 @@
+{
+  "agent": {
+    "backend": "scripted",
+    "endpoint": "http://localhost:11434/api/chat",
+    "max_steps": 10,
+    "max_tools": 7,
+    "model": null,
+    "timeout_seconds": 30
+  },
+  "bootstrap_replicates": 1000,
+  "length": 128,
+  "samples_per_family": 72,
+  "seed": 20260905,
+  "splits": {
+    "calibration": [
+      "linear_sine",
+      "linear_dual"
+    ],
+    "development": [
+      "linear_sine",
+      "linear_dual"
+    ],
+    "test": [
+      "curved_chirp",
+      "piecewise_heavytail",
+      "amplitude_ar"
+    ]
+  }
+}

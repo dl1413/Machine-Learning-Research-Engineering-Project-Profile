@@ -1,0 +1,37 @@
+name: Synthetic time-series benchmark
+on:
+  push:
+    paths:
+      - 'benchmarks/synthetic-ts-benchmark/**'
+      - '.github/workflows/synthetic-ts-benchmark.yml'
+  pull_request:
+    paths:
+      - 'benchmarks/synthetic-ts-benchmark/**'
+      - '.github/workflows/synthetic-ts-benchmark.yml'
+permissions:
+  contents: read
+jobs:
+  tests:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        python: ['3.11', '3.12']
+    runs-on: ${{ matrix.os }}
+    defaults:
+      run:
+        working-directory: benchmarks/synthetic-ts-benchmark
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+          cache: pip
+          cache-dependency-path: benchmarks/synthetic-ts-benchmark/requirements.txt
+      - run: python -m pip install -r requirements.txt
+      - run: python -m unittest discover -s tests -v
+      - run: python -m tsbench.cli --config configs/smoke.json --out runs/ci
+      - uses: actions/upload-artifact@v4
+        with:
+          name: synthetic-ts-smoke-${{ matrix.os }}-${{ matrix.python }}
+          path: benchmarks/synthetic-ts-benchmark/runs/ci

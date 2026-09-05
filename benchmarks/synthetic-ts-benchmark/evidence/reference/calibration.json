@@ -1,0 +1,34 @@
+{
+  "agent": {
+    "calibration_nll": 0.03279171079787673,
+    "grid_max": 4.0,
+    "grid_min": 0.25,
+    "n_valid": 144,
+    "status": "fit",
+    "temperature": 0.47193715634084676
+  },
+  "agent_verified": {
+    "calibration_nll": 0.016452937587896448,
+    "grid_max": 4.0,
+    "grid_min": 0.25,
+    "n_valid": 144,
+    "status": "fit",
+    "temperature": 0.25
+  },
+  "fixed": {
+    "calibration_nll": 0.13863941117470174,
+    "grid_max": 4.0,
+    "grid_min": 0.25,
+    "n_valid": 144,
+    "status": "fit",
+    "temperature": 1.0
+  },
+  "fixed_full_tools": {
+    "calibration_nll": 0.0187986595089467,
+    "grid_max": 4.0,
+    "grid_min": 0.25,
+    "n_valid": 144,
+    "status": "fit",
+    "temperature": 0.25
+  }
+}

@@ -20,6 +20,18 @@ below is intended to make the evidence and the scope easy to evaluate.
 | **LLM Ensemble Bias Detection** | Can multiple LLM judges support uncertainty-aware content review? | Rubric-based LLM evaluation, reliability analysis, Bayesian hierarchical modeling | [Report](./LLM_Ensemble_Bias_Detection_Report.md) · [PDF](./LLM_Bias_Detection_Publication.pdf) · [Project page](./project_packages/03_LLM_Ensemble_Bias_Detection/) |
 | **RAG Production Pipeline** | How can retrieval, grounding, and monitoring improve RAG system design? | Hybrid retrieval, re-ranking, confidence calibration, observability design | [Report](./RAG_Project_Report.md) · [PDF](./RAG_Project_Publication.pdf) · [Project page](./project_packages/04_RAG_Production_Pipeline/) |
 
+## Runnable research prototype
+
+[Synthetic time-series agent benchmark](./benchmarks/synthetic-ts-benchmark/)
+compares a fixed statistical workflow, an adaptive scripted agent, the same
+agent with numerical verification, and a full-tool fixed control. It includes
+seeded scenario-family holdouts, calibration, cost/failure reporting, 42 tests,
+and archived reference results with source hashes.
+
+The current experiment uses a **scripted agent, not an LLM**. It is exploratory,
+AI-assisted work, not a peer-reviewed publication or a claim of LLM superiority.
+See the [results and limitations](./benchmarks/synthetic-ts-benchmark/evidence/reference_v0_1_1/REPORT.md).
+
 ## What to review
 
 - **Problem framing and evaluation design:** Each report documents a defined problem, data/evaluation setup, and methodological choices.

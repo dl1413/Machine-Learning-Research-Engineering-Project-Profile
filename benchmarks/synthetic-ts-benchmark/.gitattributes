@@ -1,0 +1,3 @@
+# Preserve source and evidence bytes used by SHA256 provenance across platforms.
+* -text
+**/* -text

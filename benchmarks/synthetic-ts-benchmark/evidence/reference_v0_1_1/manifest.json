@@ -1,0 +1,40 @@
+{
+  "backend": "scripted",
+  "calibration_sha256": "0ee81acb43957ec23582c7f31cdfa3eca2504362f528b7b5389dc39257022034",
+  "config_sha256": "20cc7f83f22d531f27e405d6795b71ab8c00dca91ccd972a5f848a18ae4ab4f7",
+  "dataset_hashes": {
+    "calibration": {
+      "count": 144,
+      "labels": "eba7fa003ba01429b2ebfdc8f9884fd2cab4b2943d498d7fa52a7f4af43ca875",
+      "observations": "d4004c9e55e7fdb7e65039347efca15b1558510f9023068d5d466fa82465b105"
+    },
+    "development": {
+      "count": 144,
+      "labels": "45e04c6071f756f7ac1e0b97cecb76fce35f2b462c911e82ab5251f4898dbad7",
+      "observations": "d84d0ed60ba8a38045dcfb85c0ff5402feb84eb6cc13479aaa00552077222ec8"
+    },
+    "test": {
+      "count": 216,
+      "labels": "0a5ecbed5d53fd8018e0bb7bbb44d562929aeb2474b23537c214732516005f90",
+      "observations": "ea8227db4d660e1e9ed0474f8184fc28fe8355f8a0648cc645ff2348f1b8e4bd"
+    }
+  },
+  "model": null,
+  "numpy": "2.3.5",
+  "platform": "Windows-11-10.0.28020-SP0",
+  "protocol": "v1.1 selective verifier frozen before test evaluation",
+  "python": "3.12.14",
+  "semantic_result_sha256": "f54a070bf918217971dab5a419bb52f3cdc16d98f1b1987dd42e1b8feb482545",
+  "source_files": {
+    "__init__.py": "3ddc701a533df4b7f9e8c98331f4a7fb99a75f3ee7da696ea014a7280f1d729a",
+    "agents.py": "6c12621814dd501a5b7642bc628c6e032c8c1b75572b2ce88ffa84a2435e4cd7",
+    "cli.py": "789e5ee9a87aa7db1cd74091ab0a28d1e94c523aeb9d3e609c3ed62b84328508",
+    "generate.py": "5416c73927e4afe304e7abfe9bcdcf20492ceb9a4e9225ae9d20b30263a7b776",
+    "metrics.py": "065337f81e8588832ad8f5d6d7aff0478e7c435f6a5759694abea0eccc2f690b",
+    "schema.py": "f9ae1627d60930870575dc746cd88a2d61fcb2df531c4f7e77e2905bec75ccb0",
+    "tools.py": "5ffac82c6781a4d1330bce312e66b077faa9f89c5e0f743c8705f11ff3fd0f04"
+  },
+  "source_sha256": "450e2fd43ffd3dd5c8e34e3bfa168b15b8826cf83bf587fb60075018be1dde19",
+  "status": "complete",
+  "version": "0.1.1"
+}

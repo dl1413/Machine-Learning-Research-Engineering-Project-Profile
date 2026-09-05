@@ -1,0 +1,22 @@
+name: Benchmark tests
+on: [push, pull_request]
+jobs:
+  tests:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        python: ['3.11', '3.12']
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+          cache: pip
+      - run: python -m pip install -r requirements.txt
+      - run: python -m unittest discover -s tests -v
+      - run: python -m tsbench.cli --config configs/smoke.json --out runs/ci
+      - uses: actions/upload-artifact@v4
+        with:
+          name: smoke-${{ matrix.os }}-${{ matrix.python }}
+          path: runs/ci
