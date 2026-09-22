@@ -3,7 +3,7 @@
 Data Scientist and Applied Statistics M.S. candidate focused on experimental
 design, Bayesian inference, machine learning, and LLM evaluation.
 
-[LinkedIn](https://linkedin.com/in/derek-lankeaux) · [GitHub](https://github.com/dl1413) · [Portfolio](https://dl1413.github.io/LLM-Portfolio/) · [Résumé](./Resume_Derek_Lankeaux.md)
+[LinkedIn](https://linkedin.com/in/derek-lankeaux) · [GitHub](https://github.com/dl1413) · [Portfolio](https://dl1413.github.io/LLM-Portfolio/) · [Résumé (PDF)](./Resume_Derek_Lankeaux.pdf) · [Résumé source](./Resume_Derek_Lankeaux.md)
 
 [![Portfolio validation](https://github.com/dl1413/Machine-Learning-Research-Engineering-Project-Profile/actions/workflows/validate-portfolio.yml/badge.svg)](https://github.com/dl1413/Machine-Learning-Research-Engineering-Project-Profile/actions/workflows/validate-portfolio.yml)
 
@@ -49,6 +49,8 @@ performance guarantees, or evidence of a live service.
 ```text
 README.md                                      Portfolio overview
 Resume_Derek_Lankeaux.md                       Résumé source
+Resume_Derek_Lankeaux.pdf                      Downloadable résumé
+generate_resume_pdf.py                         Résumé PDF generator
 *_Report.md                                    Four technical reports
 *_Publication.pdf                              Corresponding publication PDFs
 project_packages/                              Per-project reader guides and PDFs

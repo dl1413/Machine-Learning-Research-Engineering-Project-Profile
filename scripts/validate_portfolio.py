@@ -38,6 +38,11 @@ PROJECTS = (
     ),
 )
 
+RESUME_ARTIFACTS = (
+    "Resume_Derek_Lankeaux.md",
+    "Resume_Derek_Lankeaux.pdf",
+)
+
 LOCAL_LINK_RE = re.compile(r"(?<!!)\[[^\]]+\]\(([^)]+)\)")
 
 
@@ -60,6 +65,19 @@ def validate_required_artifacts(errors: list[str]) -> None:
                 header = handle.read(4)
             if header != b"%PDF":
                 fail(f"{name}: {publication} is not a PDF", errors)
+
+    for relative in RESUME_ARTIFACTS:
+        path = ROOT / relative
+        if not path.is_file():
+            fail(f"Résumé: missing {relative}", errors)
+        elif path.stat().st_size == 0:
+            fail(f"Résumé: empty {relative}", errors)
+
+    resume_pdf = ROOT / RESUME_ARTIFACTS[1]
+    if resume_pdf.is_file():
+        with resume_pdf.open("rb") as handle:
+            if handle.read(4) != b"%PDF":
+                fail(f"Résumé: {resume_pdf.name} is not a PDF", errors)
 
 
 def validate_readme_inventory(errors: list[str]) -> None:
@@ -110,7 +128,7 @@ def main() -> int:
             print(f"- {error}")
         return 1
 
-    print(f"Portfolio validation passed: {len(PROJECTS)} projects and all index links are valid.")
+    print(f"Portfolio validation passed: {len(PROJECTS)} projects, résumé artifacts, and all index links are valid.")
     return 0
 
 

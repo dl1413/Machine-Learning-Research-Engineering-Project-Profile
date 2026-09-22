@@ -31,6 +31,16 @@ python scripts/validate_portfolio.py
 The committed PDFs are the portfolio deliverables. Rebuilding them is only
 needed after changing a report or the publication renderer.
 
+## Résumé PDF
+
+The tailored résumé is available as
+[`Resume_Derek_Lankeaux.pdf`](./Resume_Derek_Lankeaux.pdf). Regenerate it after
+editing `Resume_Derek_Lankeaux.md`:
+
+```bash
+python generate_resume_pdf.py
+```
+
 ## Troubleshooting
 
 - If `weasyprint` cannot import, reinstall `requirements-pdf.txt` in a clean
