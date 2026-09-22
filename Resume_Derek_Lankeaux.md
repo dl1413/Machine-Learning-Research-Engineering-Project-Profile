@@ -1,17 +1,18 @@
 # Derek Lankeaux
 
-**Data Scientist | Applied Statistician | LLM Evaluation & Applied ML**
+**Data Scientist | Applied Statistics | Healthcare AI, LLM Evaluation & Applied ML**
 
 [LinkedIn](https://linkedin.com/in/derek-lankeaux) · [GitHub](https://github.com/dl1413) · [Portfolio](https://dl1413.github.io/LLM-Portfolio/)
 
 ## Summary
 
-Applied Statistics M.S. candidate focused on experimental design, Bayesian
-inference, and practical machine-learning evaluation. Built four independent
-technical case studies spanning AI-safety evaluation, uncertainty-aware LLM
-review, diagnostic-ML benchmarking, and retrieval-augmented generation. Strong
-at framing questions, designing evaluations, quantifying uncertainty, and
-communicating results and limitations to technical and non-technical audiences.
+Applied Statistics M.S. candidate focused on applying Python, SQL, experimental
+design, and machine learning to healthcare-relevant and operational data
+problems. Built four independent technical case studies spanning diagnostic-ML
+benchmarking, LLM evaluation, retrieval-augmented generation, and AI-safety
+evaluation. Strong at framing questions, building reproducible evaluation
+workflows, quantifying uncertainty, and communicating results and limitations
+to technical and non-technical stakeholders.
 
 ## Technical skills
 
@@ -19,7 +20,7 @@ communicating results and limitations to technical and non-technical audiences.
 
 **Machine learning:** scikit-learn, XGBoost, LightGBM, AdaBoost, Optuna, SMOTE, SHAP; feature engineering, model selection, cross-validation, threshold analysis, explainability
 
-**LLM and systems:** OpenAI, Anthropic, Hugging Face, LangChain, FastAPI, MLflow, Qdrant, BM25, ColBERT, Docker, Kubernetes; LLM evaluation, retrieval quality, observability design, cost/latency trade-offs
+**LLM, APIs, and systems:** OpenAI, Anthropic, Hugging Face, LangChain, FastAPI, MLflow, Qdrant, BM25, ColBERT, Docker, Kubernetes, Git/GitHub; LLM evaluation, retrieval-augmented generation, API-based development, retrieval quality, observability design, cost/latency trade-offs
 
 ## Education
 
@@ -33,7 +34,7 @@ learning, statistical learning theory, and computational statistics.
 
 Independent research case study · April 2026
 
-- Designed a two-stage evaluation workflow that combines LLM ensemble labels with supervised harm classification across 12,500 response pairs and six harm categories.
+- Designed a two-stage LLM evaluation workflow that combines ensemble labels with supervised harm classification across 12,500 response pairs and six harm categories.
 - Reported α = 0.81 inter-rater reliability and 96.8% held-out classification accuracy; separated agreement, model performance, and uncertainty analysis in the evaluation.
 - Used Bayesian hierarchical modeling and feature attribution to support risk review and audit-oriented reporting.
 
@@ -53,7 +54,7 @@ Independent research case study · April 2026
 
 Independent research case study · April 2026
 
-- Benchmarked eight ensemble classifiers on the Wisconsin Diagnostic Breast Cancer dataset with preprocessing, feature selection, calibration, and cross-validation.
+- Benchmarked eight ensemble classifiers on the Wisconsin Diagnostic Breast Cancer dataset using preprocessing, feature selection, calibration, and cross-validation.
 - Reported 99.12% held-out accuracy and 0.9987 ROC-AUC for the best configuration, together with calibration and threshold analyses.
 - Framed the work as a diagnostic decision-support benchmark; it is not a clinical device or patient-validation study.
 
