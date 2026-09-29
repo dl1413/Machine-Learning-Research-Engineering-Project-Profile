@@ -36,9 +36,11 @@ below is intended to make the evidence and the scope easy to evaluate.
 | LLM Bias Detection | 67,500 ratings; Krippendorff's α = 0.84 | Demonstrates an uncertainty-aware workflow for large-scale content review. |
 | RAG | 94.2% citation precision; 96.3% Recall@10 | Connects retrieval quality, grounding, and operational metrics in one systems design. |
 
-All figures above are reported in the linked technical documents. They are
-project-evaluation results, not independent clinical validation, product
-performance guarantees, or evidence of a live service.
+All figures above are reported in the linked technical documents. The AI
+Safety, LLM Bias Detection, and RAG results come from simulated evaluations
+built to demonstrate each method; they are not measurements of real models,
+publishers, or a deployed service. The Breast Cancer results use the public
+WDBC benchmark and are not independent clinical validation.
 
 ## Technical focus
 

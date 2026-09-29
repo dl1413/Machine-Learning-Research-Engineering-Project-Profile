@@ -34,7 +34,7 @@ learning, statistical learning theory, and computational statistics.
 Independent research case study · April 2026
 
 - Designed a two-stage evaluation workflow that combines LLM ensemble labels with supervised harm classification across 12,500 response pairs and six harm categories.
-- Reported α = 0.81 inter-rater reliability and 96.8% held-out classification accuracy; separated agreement, model performance, and uncertainty analysis in the evaluation.
+- In a simulated evaluation, reported α = 0.81 inter-rater reliability and 96.8% held-out classification accuracy; separated agreement, model performance, and uncertainty analysis.
 - Used Bayesian hierarchical modeling and feature attribution to support risk review and audit-oriented reporting.
 
 **Methods:** LLM evaluation, XGBoost/stacking, PyMC, SHAP, MLflow
@@ -43,7 +43,7 @@ Independent research case study · April 2026
 
 Independent research case study · April 2026
 
-- Evaluated 4,500 textbook passages with a rubric-based LLM ensemble, generating 67,500 ratings for reliability and uncertainty analysis.
+- Designed a rubric-based LLM ensemble analysis and demonstrated it on a simulated corpus of 4,500 passages and 67,500 ratings for reliability and uncertainty analysis.
 - Reported Krippendorff's α = 0.84 and modeled publisher-level effects with Bayesian partial pooling and MCMC diagnostics.
 - Documented an expert-review-oriented workflow for interpreting disagreement and high-uncertainty passages.
 
@@ -64,7 +64,7 @@ Independent research case study · April 2026
 Independent systems-design case study · April 2026
 
 - Designed a hybrid RAG architecture using dense retrieval, BM25, re-ranking, grounding checks, and confidence calibration.
-- Reported 96.3% Recall@10 and 94.2% citation precision in the documented evaluation, with latency, throughput, drift, and failure-mode analysis.
+- Reported 96.3% Recall@10 and 94.2% citation precision in a simulated evaluation, with latency, throughput, drift, and failure-mode analysis.
 - Specified observability, privacy, and rollback considerations needed before a production deployment.
 
 **Methods:** Qdrant, BM25, ColBERT, OpenAI, Kafka, Kubernetes, Prometheus, MLflow

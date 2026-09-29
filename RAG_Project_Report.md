@@ -1,13 +1,12 @@
 # RAG: Retrieval-Augmented Generation with Vector Embeddings and LLM Ensemble
 
-**Project:** Building Production-Grade RAG Pipelines with Semantic Search and Hallucination Mitigation
+**Project:** Designing RAG Pipelines with Semantic Search and Hallucination Mitigation
 **Date:** April 2026
 **Author:** Derek Lankeaux, MS Applied Statistics
-**Role:** Data Scientist | Applied Statistician | GenAI Engineer
+**Role:** Machine Learning Engineer
 **Institution:** Rochester Institute of Technology
 **Source:** RAG_Production_Pipeline.ipynb
 **Version:** 3.0.0
-**AI Standards Compliance:** IEEE 2830-2025 (Transparent ML), ISO/IEC 23894:2025 (AI Risk Management), EU AI Act (2025)
 
 > **Data Science Focus:** This report documents an end-to-end machine learning engineering project for production Retrieval-Augmented Generation — combining vector databases, semantic search, LLM orchestration, and responsible AI practices for enterprise knowledge systems.
 
@@ -15,7 +14,7 @@
 
 ## Abstract
 
-Retrieval-Augmented Generation (RAG) combines large language models with external knowledge bases to reduce hallucinations and enable grounded, fact-based responses. This report presents a production-grade RAG system combining:
+Retrieval-Augmented Generation (RAG) combines large language models with external knowledge bases to reduce hallucinations and enable grounded, fact-based responses. This report presents a RAG system design, evaluated in simulation, combining:
 
 1. **Multi-Embedding Architecture:** Hybrid embeddings (OpenAI, Anthropic, open-source) for semantic robustness
 2. **Vector Database Engineering:** Optimized retrieval pipelines with Qdrant/Pinecone with real-time indexing
@@ -23,9 +22,15 @@ Retrieval-Augmented Generation (RAG) combines large language models with externa
 4. **Hallucination Detection:** Statistical confidence intervals and citation grounding
 5. **Responsible AI & Monitoring:** Drift detection, performance monitoring, and governance
 
-Evaluated on benchmark datasets (FEVER, NQ, TriviaQA), the system achieves 94.2% citation precision and 91.8% answer relevance with <200ms latency at 1,240 req/sec throughput. Hallucination rates of 2.4% — well below the 5% operational threshold — are achieved through a three-stage detection pipeline combining citation grounding, semantic consistency, and Bayesian confidence estimation.
+In a simulated evaluation modeled on standard benchmarks (FEVER, NQ, TriviaQA), the design reaches 94.2% citation precision and 91.8% answer relevance, with a 2.4% hallucination rate after a three-stage detection pipeline combining citation grounding, semantic consistency, and Bayesian confidence estimation. All results, including latency and throughput figures, are simulated to demonstrate the method (see the Data and Results Note); no live service was deployed.
 
 **Keywords:** Retrieval-Augmented Generation, Vector Embeddings, Semantic Search, Large Language Models, LLM Orchestration, Hallucination Mitigation, Dense Passage Retrieval, Qdrant, ColBERT, MLOps, Production ML, Responsible AI, Knowledge Grounding, BM25, Hybrid Search
+
+---
+
+## Data and Results Note
+
+This is a system-design case study evaluated on simulated data. The benchmark results, latency and throughput measurements, query traffic, drift metrics, and bias-audit figures were simulated to demonstrate the architecture and evaluation approach; they do not come from real runs on the named benchmarks or from a deployed service. The Kubernetes manifests and runbook describe the intended deployment, not a live system. Every metric in this report should be read as a worked example of the method, not as measured system performance.
 
 ---
 
@@ -54,17 +59,16 @@ Evaluated on benchmark datasets (FEVER, NQ, TriviaQA), the system achieves 94.2%
 
 ### Key Performance Metrics
 
-**Table 1.** Headline performance metrics for the production RAG system.
+**Table 1.** Headline metrics from the simulated evaluation against design targets.
 
 | Metric | Value | Threshold | Status |
 |--------|-------|-----------|--------|
 | **Citation Precision** | 94.2% | ≥90% | ✓ Pass |
 | **Answer Relevance** | 91.8% | ≥85% | ✓ Pass |
 | **Mean Latency** | 187ms | <200ms | ✓ Pass |
-| **Throughput (p99)** | 1,240 req/sec | ≥1,000 req/sec | ✓ Pass |
+| **Throughput (1,000 concurrent users)** | 1,240 req/sec | ≥1,000 req/sec | ✓ Pass |
 | **Hallucination Rate** | 2.4% | <5% | ✓ Pass |
-| **Embedding Recall@10** | 96.3% | ≥95% | ✓ Pass |
-| **Uptime (30-day)** | 99.97% | ≥99.9% | ✓ Pass |
+| **Embedding Recall@10 (MS MARCO)** | 96.3% | ≥95% | ✓ Pass |
 | **End-to-End Latency (p99)** | 312ms | <400ms | ✓ Pass |
 | **Model Drift (PSI)** | 0.04 | <0.10 | ✓ Pass |
 | **Re-ranking NDCG@10** | 0.777 | ≥0.75 | ✓ Pass |
@@ -103,7 +107,7 @@ Evaluated on benchmark datasets (FEVER, NQ, TriviaQA), the system achieves 94.2%
 │     HYBRID LEXICAL + SEMANTIC RE-RANKING                    │
 │     • BM25 lexical search (weight 0.30)                     │
 │     • Semantic dense retrieval (weight 0.70)                │
-│     • ColBERT v2 cross-encoder re-ranking                   │
+│     • ColBERTv2 late-interaction re-ranking                │
 │     • Citation chain construction                           │
 └─────────────┬───────────────────────────────────────────────┘
               │
@@ -143,7 +147,7 @@ Large Language Models (LLMs) are prone to **hallucinations** — confident asser
 - Enterprise knowledge systems
 - Regulatory documentation
 
-Standard LLMs generate responses from parametric memory — knowledge encoded during pre-training — which may be outdated, incomplete, or simply fabricated for plausible-sounding outputs. In high-stakes enterprise environments, this failure mode is costly. According to a 2025 IBM AI in Business Report, hallucination-related errors in enterprise LLM deployments cost organizations an estimated $1.2M annually in error remediation and trust erosion.
+Standard LLMs generate responses from parametric memory — knowledge encoded during pre-training — which may be outdated, incomplete, or simply fabricated for plausible-sounding outputs. In high-stakes enterprise environments, this failure mode is costly.
 
 **Traditional RAG Limitations:**
 - Single embedding model → semantic gaps for domain-specific queries
@@ -155,10 +159,10 @@ Standard LLMs generate responses from parametric memory — knowledge encoded du
 
 ### 1.2 Research Objectives
 
-1. Build a production-grade RAG pipeline that retrieves and grounds LLM responses in verifiable source passages
+1. Design a RAG pipeline that retrieves and grounds LLM responses in verifiable source passages
 2. Implement multi-model embedding ensemble for robust, domain-agnostic semantic search
 3. Develop multi-stage hallucination detection with Bayesian confidence quantification
-4. Achieve <200ms end-to-end latency at 1,000+ req/sec throughput with 99.9%+ uptime
+4. Target <200ms end-to-end latency at 1,000+ req/sec throughput with 99.9%+ uptime
 5. Establish comprehensive monitoring, drift detection, and governance suitable for enterprise deployment
 
 ### 1.3 Contributions
@@ -171,7 +175,7 @@ Standard LLMs generate responses from parametric memory — knowledge encoded du
 
 ### 1.4 System Scope and Deployment Context
 
-**Table 2.** System scope and operational parameters.
+**Table 2.** Target system scope and operational parameters (design).
 
 | Dimension | Specification |
 |-----------|--------------|
@@ -182,7 +186,6 @@ Standard LLMs generate responses from parametric memory — knowledge encoded du
 | **Deployment Platform** | Kubernetes (AWS EKS) |
 | **SLA Latency** | <200ms p50, <400ms p99 |
 | **SLA Uptime** | 99.9% monthly |
-| **Compliance Standards** | IEEE 2830-2025, ISO/IEC 23894, EU AI Act 2025 |
 
 ---
 
@@ -461,7 +464,7 @@ def hybrid_search(
         1. Encode query with ensemble embedder
         2. Parallel semantic (Qdrant) + lexical (BM25) retrieval
         3. Reciprocal Rank Fusion (RRF) merge
-        4. ColBERT v2 cross-encoder re-ranking
+        4. ColBERTv2 late-interaction re-ranking
     """
     # 1. Encode query
     query_embedding = encoder.encode(query)
@@ -504,7 +507,7 @@ def hybrid_search(
     # 5. Select top candidates for re-ranking
     top_candidates = sorted(fused, key=fused.get, reverse=True)[:over_retrieve]
 
-    # 6. ColBERT v2 cross-encoder re-ranking
+    # 6. ColBERTv2 late-interaction re-ranking
     reranked = colbert_reranker.rank(
         query=query,
         documents=[corpus[doc_id]['text'] for doc_id in top_candidates],
@@ -917,7 +920,7 @@ class HallucinationDetector:
 | TruthfulQA | 91.4% | 89.8% | 0.906 | 0.945 |
 | **Average** | **91.1%** | **91.8%** | **0.914** | **0.945** |
 
-**Table 10.** Risk level distribution across production traffic (30-day sample).
+**Table 10.** Risk level distribution across simulated query traffic.
 
 | Risk Level | Count | Share | Action |
 |------------|-------|-------|--------|
@@ -948,13 +951,15 @@ class HallucinationDetector:
 
 | Stage | Latency (p50) | Latency (p99) | Budget | Status |
 |-------|--------------|--------------|--------|--------|
-| Query Embedding | 18ms | 35ms | 25ms | ~At budget |
+| Query Embedding | 18ms | 35ms | 25ms | Over budget (p99) |
 | Vector Search (Qdrant) | 45ms | 95ms | 80ms | ✓ Under |
 | BM25 Lexical Search | 8ms | 18ms | 20ms | ✓ Under |
 | RRF Merge + Re-rank (ColBERT) | 22ms | 48ms | 50ms | ✓ Under |
-| LLM Ensemble (parallel async) | 78ms | 180ms | 150ms | ~At budget |
-| Hallucination Detection | 16ms | 32ms | 25ms | ~At budget |
-| **Total End-to-End** | **187ms** | **408ms** | 400ms | ✓ Pass |
+| LLM Ensemble (parallel async) | 78ms | 180ms | 150ms | Over budget (p99) |
+| Hallucination Detection | 16ms | 32ms | 25ms | Over budget (p99) |
+| **Total End-to-End** | **187ms** | **312ms** (measured end-to-end) | 400ms | ✓ Pass |
+
+Stage p99 latencies are not additive, so the end-to-end p99 is measured directly (Table 13, 1,000 concurrent users) rather than summed; adding the stage p99s (408ms) is not a valid estimate of end-to-end p99. Three stages exceed their p99 budgets and are the first targets for optimization. The simulated LLM stage latency (78ms p50) is also far below what hosted frontier-model APIs typically deliver for a full response, so a real deployment would need streaming, smaller models, or a larger latency budget.
 
 ### 8.3 Throughput Scaling
 
@@ -1001,7 +1006,7 @@ where $B_b$ are confidence bins, $\text{acc}(B_b)$ is empirical accuracy in bin 
 
 ### 8a.2 Calibration Results
 
-**Table 15.** Calibration results by confidence bin (1,000-sample evaluation set).
+**Table 15.** Calibration results by confidence bin (1,000-sample simulated evaluation set).
 
 | Confidence Bin | Sample Count | Avg. Confidence | Empirical Accuracy | Calibration Gap |
 |----------------|-------------|----------------|-------------------|-----------------|
@@ -1010,13 +1015,13 @@ where $B_b$ are confidence bins, $\text{acc}(B_b)$ is empirical accuracy in bin 
 | [0.70, 0.80) | 218 | 0.746 | 0.752 | -0.006 |
 | [0.80, 0.90) | 401 | 0.843 | 0.838 | +0.005 |
 | [0.90, 1.00] | 250 | 0.924 | 0.920 | +0.004 |
-| **Overall ECE** | — | — | — | **0.011** |
+| **Overall ECE** | — | — | — | **0.006** |
 
-An ECE of 0.011 (1.1%) indicates excellent calibration. By comparison, uncalibrated LLM-only baselines typically exhibit ECE of 0.12–0.25.
+An ECE of 0.006 (the sample-weighted mean of the bin gaps above) indicates close calibration. By comparison, uncalibrated LLM-only baselines typically exhibit ECE of 0.12–0.25.
 
 ---
 
-## 9. Production Deployment and MLOps
+## 9. Deployment Design and MLOps
 
 ### 9.1 Kubernetes Deployment Architecture
 
@@ -1030,7 +1035,6 @@ metadata:
   labels:
     app: rag-api
     version: "3.0.0"
-    compliance: ieee-2830-2025
 spec:
   replicas: 12
   selector:
@@ -1218,19 +1222,17 @@ def log_experiment(config: dict, metrics: dict, model_artifacts: dict):
 
 ### 10.1 Bias and Fairness Audit
 
-Fairness was evaluated across demographic proxies by examining whether retrieval quality and hallucination rates differ systematically across groups. All groups were evaluated on the FEVER fact-verification dataset with demographic metadata annotations.
+The benchmark datasets used here (FEVER, NQ, TriviaQA, HotpotQA, MS MARCO) do not include user demographic attributes, so demographic fairness cannot be assessed on them. The design calls for a fairness audit on real query logs with consented demographic metadata before any deployment. Performance differences that can be measured without demographics are tracked instead:
 
-**Table 17.** Bias audit results across demographic groups (FEVER dataset).
+**Table 17.** Performance variation across measurable query segments (simulated).
 
-| Group | Citation Precision | Recall | F1-Score | Fairness Status |
-|-------|-------------------|--------|----------|-----------------|
-| Overall | 94.2% | 91.8% | 0.930 | — |
-| By Gender | 93.8–94.6% | 91.2–92.4% | 0.924–0.936 | ✓ Fair (Δ < 1%) |
-| By Age Group | 92.1–95.8% | 90.1–93.2% | 0.910–0.945 | ✓ Fair (Δ < 4%) |
-| By Domain | 89.4–96.7% | 88.9–94.1% | 0.890–0.955 | ✓ Fair (domain range expected) |
-| By Language (En vs. multilingual) | 94.2% vs. 91.8% | — | — | Monitor (Δ 2.4%) |
+| Segment | Citation Precision | Status |
+|-------|-------------------|-----------------|
+| Overall | 94.2% | — |
+| By Domain | 89.4–96.7% | Expected; reflects corpus coverage |
+| By Language (English vs. multilingual) | 94.2% vs. 91.8% | Monitor (Δ 2.4 pp) |
 
-No statistically significant bias was detected across gender or age groups (all pairwise differences within 95% CI overlap). Domain variation is expected and reflects corpus coverage, not systemic bias. Multilingual performance gap (2.4%) is flagged for monitoring and addressed in v3.1 roadmap with multilingual fine-tuning of the embedding ensemble.
+The multilingual gap is flagged for follow-up with multilingual fine-tuning of the embedding ensemble.
 
 ### 10.2 Data Privacy and Security
 
@@ -1254,28 +1256,28 @@ class PrivacyLayer:
         return sanitized
 ```
 
-### 10.3 Model Governance and Compliance
+### 10.3 Model Governance
 
 - **Version Control:** Every model artifact versioned with SHA-256 hash and pinned dependency manifest
 - **Audit Trail:** Complete structured logging of all API calls, retrieved passages, LLM responses, and hallucination scores
 - **Transparency:** Model cards for each component (embedding models, LLMs, re-ranker) documenting training data, intended use, and known limitations
-- **Compliance:** IEEE 2830-2025 (Transparent ML), ISO/IEC 23894:2025 (AI Risk Management), EU AI Act (2025) — high-risk AI system classification with mandatory human oversight for high-risk decisions
+- **Human Oversight:** Mandatory human review for high-risk responses
 - **Data Minimization:** Only the minimum necessary context is included in LLM prompts; raw PII is never passed to external APIs
 
 ### 10.4 Governance Summary
 
-**Table 18.** Governance and compliance checklist.
+**Table 18.** Governance checklist for the deployment design.
 
 | Requirement | Status | Evidence |
 |-------------|--------|---------|
-| Model card documented | ✓ | `/docs/model_cards/` |
-| Data lineage tracked | ✓ | MLflow artifact provenance |
-| PII detection in ingestion | ✓ | `PrivacyLayer` (§10.2) |
-| Audit logging enabled | ✓ | Structured JSON logs → S3 |
-| Human review queue for HIGH risk | ✓ | 1.4% of queries (§7.2) |
-| Bias audit completed | ✓ | §10.1 |
-| PSI drift monitoring active | ✓ | §9.3 |
-| Rollback mechanism available | ✓ | K8s deployment versioning |
+| Model card documented | Designed | `/docs/model_cards/` |
+| Data lineage tracked | Designed | MLflow artifact provenance |
+| PII detection in ingestion | Designed | `PrivacyLayer` (§10.2) |
+| Audit logging enabled | Designed | Structured JSON logs → S3 |
+| Human review queue for HIGH risk | Designed | 1.4% of queries (§7.2) |
+| Segment performance audit | Designed | §10.1 |
+| PSI drift monitoring active | Designed | §9.3 |
+| Rollback mechanism available | Designed | K8s deployment versioning |
 
 ---
 
@@ -1283,13 +1285,12 @@ class PrivacyLayer:
 
 ### 11.1 Key Findings
 
-The RAG system achieves production-grade performance across all primary SLAs:
+In the simulated evaluation, the RAG design meets its primary targets:
 
 - **94.2% citation precision** for grounded, fact-verified responses — a 22.4 pp improvement over ungrounded LLM-only generation (71.8%)
-- **<200ms latency (p50)** enabling real-time user-facing applications, achieved through parallel async LLM generation and int8 vector quantization
+- **<200ms latency (p50)** in simulation, through parallel async LLM generation and int8 vector quantization (see §8.2 on real API latency)
 - **2.4% hallucination rate** through a three-stage statistical detection pipeline, well below the 5% operational threshold
-- **99.97% uptime** with Kubernetes rolling updates and automatic horizontal pod autoscaling
-- **Fair performance** across demographic groups (no statistically significant bias for gender or age)
+- **Deployment design** with Kubernetes rolling updates and automatic horizontal pod autoscaling
 
 ### 11.2 Limitations and Failure Modes
 
@@ -1317,14 +1318,14 @@ Above 2,000 concurrent users, latency degradation accelerates (p99 > 400ms) and 
 
 ## 12. Conclusions
 
-This RAG system demonstrates the feasibility of building production-grade retrieval-augmented LLM applications that meet enterprise SLAs for accuracy, latency, and uptime. Key contributions include:
+This report lays out a retrieval-augmented LLM system design and evaluates it in simulation against enterprise-style targets for accuracy and latency. Key contributions include:
 
-1. **Hybrid Embedding Ensemble:** Two-model architecture (OpenAI + BGE-M3) achieves 96.3% Recall@10, a 2.4 pp improvement over the best single model, with resilience to individual model failure
+1. **Hybrid Embedding Ensemble:** Two-model architecture (OpenAI + BGE-M3) reaching 95.4% average Recall@10 (96.3% on MS MARCO), 2.4 pp above the best single model on average, with resilience to individual model failure
 2. **Parallel LLM Orchestration:** Async generation from three frontier models (GPT-4o, Claude-3.5-Sonnet, Llama-3.2-90B) reduces ensemble latency by 58% vs. sequential calls
-3. **Three-Stage Hallucination Detection:** Citation grounding + semantic consistency + Bayesian CI achieves 91.1% F1 on hallucination classification, reducing production hallucination rate to 2.4%
-4. **Production MLOps:** Kubernetes auto-scaling, Prometheus monitoring, PSI drift detection, and MLflow experiment tracking constitute an enterprise-ready deployment framework
+3. **Three-Stage Hallucination Detection:** Citation grounding + semantic consistency + Bayesian CI reaching 0.914 F1 on hallucination classification and a 2.4% hallucination rate
+4. **MLOps Design:** Kubernetes auto-scaling, Prometheus monitoring, PSI drift detection, and MLflow experiment tracking
 
-The framework is deployable, reproducible, and ready for enterprise knowledge systems, Q&A platforms, compliance-critical applications, and other domains where LLM hallucinations carry significant operational risk.
+The next step is to run the pipeline on the real benchmarks and against live model APIs to replace the simulated figures with measured ones.
 
 ---
 
@@ -1334,11 +1335,11 @@ The framework is deployable, reproducible, and ready for enterprise knowledge sy
 2. Karpukhin, V., et al. (2020). Dense Passage Retrieval for Open-Domain Question Answering. *EMNLP 2020*, 6769–6781.
 3. Izacard, G., & Grave, É. (2021). Leveraging Passage Retrieval with Generative Models for Open Domain Question Answering. *EACL 2021*, 874–880.
 4. Khattab, O., & Zaharia, M. (2020). ColBERT: Efficient and Effective Passage Search via Contextualized Late Interaction over BERT. *SIGIR 2020*, 39–48.
-5. OpenAI. (2024). GPT-4 Technical Report. *arXiv preprint arXiv:2303.08774*.
-6. Anthropic. (2025). Claude 3.5 Model Card. *Technical Documentation*. Anthropic.
-7. Xiao, S., et al. (2024). C-Pack: Packaged Resources to Advance General Chinese Embedding. *SIGIR 2024*. (BGE-M3)
+5. OpenAI. (2023). GPT-4 Technical Report. *arXiv preprint arXiv:2303.08774*.
+6. Anthropic. (2024). Claude 3.5 Sonnet Model Card Addendum. *Technical Documentation*. Anthropic.
+7. Chen, J., et al. (2024). BGE M3-Embedding: Multi-Lingual, Multi-Functionality, Multi-Granularity Text Embeddings Through Self-Knowledge Distillation. *arXiv preprint arXiv:2402.03216*.
 8. Gao, Y., et al. (2024). Retrieval-Augmented Generation for Large Language Models: A Survey. *arXiv preprint arXiv:2312.10997*.
-9. Min, S., et al. (2023). FActScoring: Fine-grained Atomic Evaluation of Factual Precision in Long-Form Text Generation. *ACL 2023*.
+9. Min, S., et al. (2023). FActScore: Fine-grained Atomic Evaluation of Factual Precision in Long Form Text Generation. *EMNLP 2023*.
 10. Thorne, J., et al. (2018). FEVER: A Large-scale Dataset for Fact Extraction and VERification. *NAACL 2018*, 809–819.
 
 ---
