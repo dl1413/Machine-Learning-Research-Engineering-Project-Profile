@@ -7,7 +7,7 @@
 | Read | Link |
 |---|---|
 | Full technical report | [Markdown](../../AI%20Safety%20Red-Team%20Evaluation_%20Technical%20Analysis%20Report.md) |
-| Publication-formatted report | [PDF](./AI_Safety_RedTeam_Evaluation_Publication.pdf) |
+| Publication-formatted report | [PDF](../../AI_Safety_RedTeam_Evaluation_Publication.pdf) |
 | Portfolio overview | [README](../../README.md) |
 
 ## Project at a glance
