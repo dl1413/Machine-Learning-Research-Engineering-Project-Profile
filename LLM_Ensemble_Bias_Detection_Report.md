@@ -3,11 +3,10 @@
 **Project:** Detecting Publisher Bias Using LLM Ensemble and Bayesian Hierarchical Methods  
 **Date:** April 2026  
 **Author:** Derek Lankeaux, MS Applied Statistics  
-**Role:** Data Scientist | Applied Statistician  
+**Role:** Machine Learning Engineer  
 **Institution:** Rochester Institute of Technology  
 **Source:** LLM_Ensemble_Textbook_Bias_Detection.ipynb  
 **Version:** 4.0.0  
-**AI Standards Compliance:** IEEE 2830-2025 (Transparent ML), ISO/IEC 23894:2025 (AI Risk Management), EU AI Act (2025)
 
 > **Data Science Focus:** This report documents an end-to-end data science project — problem framing, statistical methodology, results with quantified uncertainty, and stakeholder-ready deliverables — relevant to 2026 Data Scientist roles (experimentation, Bayesian inference, predictive modeling, and responsible-AI practice).
 
@@ -15,9 +14,15 @@
 
 ## Abstract
 
-This report presents a computational framework for detecting and quantifying political bias in educational textbooks, combining an ensemble of three frontier Large Language Models (LLMs)—GPT-4, Claude-3-Opus, and Llama-3-70B—with Bayesian hierarchical modeling for robust inference. The analysis processed **67,500 bias ratings** across **4,500 textbook passages** from **150 textbooks** published by 5 major educational publishers. We demonstrate excellent inter-rater reliability among LLMs (Krippendorff's α = 0.84), statistically significant publisher-level bias differences (Friedman χ² = 42.73, p < 0.001), and quantified uncertainty via Bayesian posterior distributions with 95% Highest Density Intervals (HDI). Three of five publishers exhibited statistically credible bias (95% HDI excluding zero), with effect sizes from -0.48 (liberal) to +0.38 (conservative) on a [-2, +2] scale. The framework establishes a scalable, reproducible methodology for large-scale educational content auditing with rigorous uncertainty quantification.
+This report presents a computational framework for detecting and quantifying political bias in educational textbooks, combining an ensemble of three Large Language Models (LLMs)—GPT-4o, Claude-3.5-Sonnet, and Llama-3.2-90B—with Bayesian hierarchical modeling, demonstrated on a simulated corpus. The simulated analysis comprises **67,500 bias ratings** (3 LLMs × 5 bias dimensions) across **4,500 passages** from **150 textbooks** attributed to five anonymized publishers (A–E). The simulated ratings reach Krippendorff's α = 0.84, above the conventional 0.80 reliability threshold, with statistically significant publisher-level bias differences (Friedman χ² = 42.73, p < 0.001), and quantified uncertainty via Bayesian posterior distributions with 95% Highest Density Intervals (HDI). Three of five publishers exhibited statistically credible bias (95% HDI excluding zero), with effect sizes from -0.48 (liberal) to +0.38 (conservative) on a [-2, +2] scale. All data and results are simulated to demonstrate the method (see the Data and Results Note); they are not findings about real publishers or textbooks.
 
 **Keywords:** Large Language Models, GPT-4o, Claude-3.5-Sonnet, Llama-3.2, Ensemble Methods, Bayesian Hierarchical Modeling, Krippendorff's Alpha, Inter-Rater Reliability, Political Bias Detection, Textbook Analysis, Educational Content, MCMC Sampling, PyMC, Responsible AI, LLM Governance, Prompt Engineering
+
+---
+
+## Data and Results Note
+
+This is a methodology case study built on simulated data. The publishers, textbooks, passages, and LLM ratings were simulated to demonstrate the analysis design; no real textbooks were analyzed and the ratings do not come from real API runs. Publishers are anonymized placeholders (A–E) and do not correspond to real companies. Every reliability statistic, posterior estimate, test result, runtime, and cost in this report describes that simulation and should be read as a worked example of the method, not as an empirical finding about bias in real educational materials.
 
 ---
 
@@ -51,10 +56,10 @@ This report presents a computational framework for detecting and quantifying pol
 
 | Metric | Value | Interpretation |
 |--------|-------|----------------|
-| **Krippendorff's Alpha** | 0.84 | Excellent inter-rater reliability (≥0.80 threshold) |
-| **Pairwise Correlation (GPT-4 ↔ Claude-3)** | r = 0.92 | Near-perfect linear agreement |
-| **Pairwise Correlation (GPT-4 ↔ Llama-3)** | r = 0.89 | Excellent agreement |
-| **Pairwise Correlation (Claude-3 ↔ Llama-3)** | r = 0.87 | Excellent agreement |
+| **Krippendorff's Alpha** | 0.84 | Reliable (≥ 0.80 threshold) |
+| **Pairwise Correlation (GPT-4o ↔ Claude-3.5)** | r = 0.92 | Near-perfect linear agreement |
+| **Pairwise Correlation (GPT-4o ↔ Llama-3.2)** | r = 0.89 | Excellent agreement |
+| **Pairwise Correlation (Claude-3.5 ↔ Llama-3.2)** | r = 0.87 | Excellent agreement |
 | **Friedman Test χ²** | 42.73 | Highly significant (p < 0.001) |
 | **Publishers with Credible Bias** | 3/5 | 60% show statistically credible effects |
 | **MCMC R-hat (all parameters)** | < 1.01 | Excellent convergence |
@@ -96,11 +101,11 @@ This project introduces a new paradigm: frontier Large Language Models (LLMs) as
 
 ### 1.3 Contributions
 
-1. **Novel Framework:** First application of LLM ensemble + Bayesian hierarchical modeling to textbook bias detection
+1. **Framework:** An LLM ensemble combined with Bayesian hierarchical modeling for textbook bias detection
 2. **Validation Methodology:** Rigorous inter-rater reliability assessment using Krippendorff's α
 3. **Uncertainty Quantification:** Full posterior distributions with credible intervals for all parameters
-4. **Scalable Pipeline:** Production-ready code processing 67,500 API calls with error handling and rate limiting
-5. **Reproducible Results:** Open-source implementation with fixed random seeds
+4. **Scalable Pipeline Design:** A pipeline designed for 67,500 API calls with error handling and rate limiting
+5. **Reproducible Design:** Fixed random seeds and versioned prompts throughout
 
 ---
 
@@ -112,22 +117,20 @@ This project introduces a new paradigm: frontier Large Language Models (LLMs) as
 
 | Model | Parameters | Context Window | Training Cutoff | Architecture |
 |-------|------------|----------------|-----------------|--------------|
-| **GPT-4o** | ~2.5T (est.) | 256K tokens | Dec 2025 | MoE Transformer with Multimodal Fusion |
-| **Claude-3.5-Sonnet** | ~350B (est.) | 200K tokens | Oct 2025 | Constitutional AI v3 Transformer |
-| **Llama-3.2-90B** | 90B | 128K tokens | Sep 2025 | Dense Transformer with GQA |
+| **GPT-4o** | Not disclosed | 128K tokens | Oct 2023 | Multimodal transformer (details not disclosed) |
+| **Claude-3.5-Sonnet** | Not disclosed | 200K tokens | Apr 2024 | Transformer trained with Constitutional AI |
+| **Llama-3.2-90B** | 90B | 128K tokens | Dec 2023 | Dense transformer with GQA (open weights) |
 
 ### 2.2 Rationale for Model Selection
 
 **GPT-4o (OpenAI):**
 - State-of-the-art multimodal reasoning with reduced hallucination rates
-- Enhanced political nuance detection via Constitutional AI hybrid training
 - Native structured output generation for reliable JSON parsing
 - Industry-leading benchmark performance on reasoning tasks
 
 **Claude-3.5-Sonnet (Anthropic):**
-- Constitutional AI v3 methodology with enhanced safety guarantees
+- Trained with Anthropic's Constitutional AI methodology
 - Explicit chain-of-thought reasoning for transparent bias assessment
-- EU AI Act compliant with built-in transparency features
 - Strong performance on complex analytical and classification tasks
 
 **Llama-3.2-90B (Meta):**
@@ -226,11 +229,11 @@ class LLMEnsemble:
 
 | Dimension | Count | Description |
 |-----------|-------|-------------|
-| **Publishers** | 5 | Major U.S. educational publishers |
+| **Publishers** | 5 | Simulated, anonymized (A–E) |
 | **Textbooks per Publisher** | 30 | Stratified by subject area |
 | **Passages per Textbook** | 30 | Random sampling with coverage constraints |
 | **Total Passages** | 4,500 | Unit of analysis |
-| **Ratings per Passage** | 3 | One per LLM |
+| **Ratings per Passage** | 15 | 3 LLMs × 5 bias dimensions |
 | **Total Ratings** | 67,500 | Complete rating matrix |
 | **Tokens Analyzed** | ~2.5M | Across all passages |
 
@@ -350,12 +353,12 @@ alpha = krippendorff.alpha(
 
 | α Value | Interpretation | Recommendation |
 |---------|---------------|----------------|
-| ≥ 0.80 | **Excellent** | Reliable for drawing conclusions |
+| ≥ 0.80 | **Reliable** | Reliable for drawing conclusions |
 | 0.67–0.79 | Good | Acceptable for tentative conclusions |
 | 0.60–0.66 | Moderate | Use with caution |
 | < 0.60 | Poor | Do not use for conclusions |
 
-**Result:** α = 0.84 indicates **excellent reliability**, validating the LLM ensemble approach.
+**Result:** α = 0.84 clears the 0.80 reliability threshold in the simulation; real LLM ensembles would need to be tested against this threshold before their ratings are used.
 
 ### 5.3 Pairwise Correlation Analysis
 
@@ -363,9 +366,9 @@ alpha = krippendorff.alpha(
 
 | Model Pair | Pearson r | Spearman ρ | RMSE |
 |------------|-----------|------------|------|
-| GPT-4 ↔ Claude-3 | 0.92 | 0.91 | 0.23 |
-| GPT-4 ↔ Llama-3 | 0.89 | 0.88 | 0.28 |
-| Claude-3 ↔ Llama-3 | 0.87 | 0.86 | 0.31 |
+| GPT-4o ↔ Claude-3.5 | 0.92 | 0.91 | 0.23 |
+| GPT-4o ↔ Llama-3.2 | 0.89 | 0.88 | 0.28 |
+| Claude-3.5 ↔ Llama-3.2 | 0.87 | 0.86 | 0.31 |
 | **Average** | **0.89** | **0.88** | **0.27** |
 
 ### 5.4 Disagreement Analysis
@@ -788,7 +791,7 @@ Posterior predictive distribution aligns with observed data:
 
 ### 10.1 LLM Governance Framework
 
-Per 2026 AI governance standards (IEEE 2830-2025, EU AI Act):
+The design builds in the following governance practices:
 
 **Model Transparency:**
 
@@ -797,9 +800,9 @@ Per 2026 AI governance standards (IEEE 2830-2025, EU AI Act):
 | Aspect | Implementation |
 |--------|----------------|
 | **Prompt Versioning** | All prompts version-controlled with SHA hashes |
-| **Model Provenance** | API versions logged (GPT-4o-2025-12, Claude-3.5-sonnet-20251015) |
+| **Model Provenance** | Exact API model versions logged per run (e.g., gpt-4o-2024-08-06, claude-3-5-sonnet-20241022) |
 | **Reproducibility** | Temperature=0.0 for deterministic outputs |
-| **Audit Trail** | Full logging of all 67,500 API calls with timestamps |
+| **Audit Trail** | Logging of every API call with timestamps |
 
 ### 10.2 Bias-in-Bias Detection
 
@@ -809,7 +812,7 @@ LLMs may themselves exhibit political bias in their assessments. We address this
 1. **Ensemble Diversity:** Three models from different organizations (OpenAI, Anthropic, Meta)
 2. **Cross-Validation:** High inter-rater reliability (α = 0.84) indicates consistent assessments
 3. **Disagreement Flagging:** 12.3% high-disagreement passages flagged for human review
-4. **Calibration Studies:** Comparison with human expert panel on 500-passage subset
+4. **Calibration Studies (planned):** Comparison with a human expert panel on a 500-passage subset
 
 ### 10.3 Ethical Use Guidelines
 
@@ -826,8 +829,7 @@ LLMs may themselves exhibit political bias in their assessments. We address this
 ### 10.4 Data Privacy
 
 - No student data processed
-- Textbook content used under fair use for research
-- API calls do not retain passage content (per provider DPAs)
+- Simulated passages only; no copyrighted textbook content was processed
 - Aggregated results only; individual passages not publicly identified
 
 ---
@@ -839,14 +841,14 @@ LLMs may themselves exhibit political bias in their assessments. We address this
 **Strengths:**
 1. **High reliability (α = 0.84):** LLMs provide consistent, reproducible assessments
 2. **Model diversity:** Three architectures with different training paradigms reduce systematic bias
-3. **Scalability:** 67,500 ratings completed in ~12 hours (vs. months for human review)
+3. **Scalability:** 67,500 ratings estimated at ~8 hours of parallel processing (vs. months for human review)
 4. **Reproducibility:** Fixed prompts and temperatures enable replication
 
 **Limitations:**
 1. **Training bias:** LLMs may reflect biases in pre-training data
 2. **Temporal relevance:** Models trained on data predating some textbooks
 3. **Subjectivity of ground truth:** No objective "true" bias score exists
-4. **Cost:** ~$465 for full analysis (may prohibit frequent re-runs)
+4. **Cost:** ~$480 estimated for a full run at list prices (may limit frequent re-runs)
 
 ### 11.2 Comparison: Frequentist vs. Bayesian
 
@@ -873,22 +875,22 @@ LLMs may themselves exhibit political bias in their assessments. We address this
 
 ---
 
-## 12. Production Framework and MLOps
+## 12. Pipeline Design and MLOps
 
-### 12.1 API Processing Summary (2026 Architecture)
+### 12.1 Estimated API Processing Requirements
 
-**Table 23.** API processing summary for the 2026 production architecture.
+**Table 23.** Estimated API processing requirements for running the design at full scale.
 
 | Component | Specification |
 |-----------|--------------|
 | Total API Calls | 67,500 |
-| Tokens Processed | ~2.5 million |
+| Tokens Processed | ~81 million (67,500 calls × ~1,200 tokens) |
 | Rate Limiting | Adaptive (60-120 req/min per API) |
 | Error Handling | Exponential backoff with circuit breaker |
 | Caching | Redis + vector deduplication |
-| Runtime | ~8 hours (parallel processing) |
-| Cost | ~$380 ($180 GPT-4o + $170 Claude-3.5 + $30 Llama-3.2) |
-| Carbon Footprint | ~2.1 kg CO2e |
+| Runtime | ~8 hours (estimated, parallel processing) |
+| Cost | ~$480 at list prices ($202.50 GPT-4o + $247.50 Claude-3.5 + $31.50 Llama-3.2; Appendix G) |
+| Carbon Footprint | ~2.1 kg CO2e (estimated) |
 
 ### 12.2 LLMOps Pipeline
 
@@ -968,7 +970,7 @@ async def robust_api_call(prompt: str, model: str) -> float:
 
 ### 13.1 Summary of Findings
 
-1. **LLM Reliability Validated:** Krippendorff's α = 0.84 confirms frontier LLMs serve as reliable bias assessors
+1. **Reliability Analysis:** Krippendorff's α = 0.84 in the simulation, with a clear 0.80 threshold for deciding whether real ensemble ratings are usable
 2. **Publisher Differences Confirmed:** Friedman test (p < 0.001) rejects equal bias hypothesis
 3. **Bayesian Uncertainty Quantified:** 95% HDIs provide probabilistic bounds on effects
 4. **Credible Bias Identified:** 3/5 publishers show statistically credible bias
@@ -976,7 +978,7 @@ async def robust_api_call(prompt: str, model: str) -> float:
 6. **Inter-Publisher Correlation Revealed:** Publishers A & C strongly correlated (ρ = 0.74); D & C opposing (ρ = -0.71)
 7. **Social Issues Most Polarized:** Highest topic-level bias divergence (Δ = 1.36 points) across publishers
 8. **Passage Uncertainty Characterized:** 12.3% of passages flagged as high-uncertainty, enabling targeted expert review
-9. **Responsible AI Implemented:** Full governance framework per IEEE 2830-2025
+9. **Responsible AI Practices:** Prompt versioning, model provenance logging, disagreement flagging, and ethical-use limits
 
 ### 13.2 Recommendations for 2026+
 
@@ -998,53 +1000,13 @@ async def robust_api_call(prompt: str, model: str) -> float:
 
 ## Code and Data Availability
 
-### Code Availability
+This report is the public artifact for this project. The source notebook (`LLM_Ensemble_Textbook_Bias_Detection.ipynb`) and the simulated dataset are not distributed in this repository. Code excerpts in the report show the implementation approach.
 
-All code for this project is available in the author's public GitHub repository:
+The data are simulated: 4,500 passages from 150 textbooks attributed to five anonymized publishers (A–E), with 67,500 simulated ratings (3 LLMs × 5 bias dimensions × 4,500 passages). No real textbooks or real LLM API outputs were used.
 
 **Repository:** [https://github.com/dl1413/Machine-Learning-Research-Engineering-Project-Profile](https://github.com/dl1413/Machine-Learning-Research-Engineering-Project-Profile)
 
-The repository includes:
-- Complete Jupyter notebook implementation (`LLM_Ensemble_Bias_Detection.ipynb`)
-- Multi-LLM annotation framework (GPT-4o, Claude-3.5, Llama-3.2)
-- Bayesian hierarchical modeling code with PyMC
-- Inter-rater reliability analysis (Krippendorff's α calculations)
-- Statistical testing framework (Friedman test, Nemenyi post-hoc)
-- ArviZ visualization and convergence diagnostics
-- MLflow experiment tracking and model versioning
-- Requirements files with pinned dependency versions
-
-**License:** MIT License - Free to use for research and commercial applications with attribution.
-
-**DOI/Archive:** Code will be archived on Zenodo upon publication with permanent DOI.
-
-### Data Availability
-
-**Primary Dataset:** Textbook passages from 5 major publishers
-**Source:** Publicly available educational materials
-**Access:** Publisher-specific access via institutional libraries or public samples
-
-The dataset consists of:
-- 4,500 textbook passages from social studies curricula
-- 67,500 bias ratings (3 LLMs × 5 bias dimensions × 4,500 passages)
-- 15 statistical features per passage
-- Publisher and grade-level metadata
-
-**Processed Data:** Anonymized bias ratings and statistical summaries are available in the GitHub repository in CSV format. Original textbook passages are not included due to copyright restrictions but can be obtained through institutional access.
-
-**API Access:** The project uses commercially available LLM APIs:
-- OpenAI GPT-4o API (api.openai.com)
-- Anthropic Claude-3.5 API (api.anthropic.com)
-- Meta Llama-3.2 via HuggingFace Inference API
-
-**Reproducibility:** All random seeds, MCMC chains, and statistical test results are documented in Appendix E (Reproducibility Checklist). Complete Bayesian traces are stored in NetCDF format for full reproducibility.
-
-### Contact for Data/Code Issues
-
-For questions about code or data access, please contact:
-- **GitHub Issues:** [github.com/dl1413/Machine-Learning-Research-Engineering-Project-Profile/issues](https://github.com/dl1413/Machine-Learning-Research-Engineering-Project-Profile/issues)
-- **Email:** Available upon request
-- **LinkedIn:** [linkedin.com/in/derek-lankeaux](https://linkedin.com/in/derek-lankeaux)
+**Contact:** [linkedin.com/in/derek-lankeaux](https://linkedin.com/in/derek-lankeaux)
 
 ---
 
@@ -1072,17 +1034,11 @@ For questions about code or data access, please contact:
 
 8. Kumar, R., et al. (2019). ArviZ: Exploratory Analysis of Bayesian Models. *JOSS*, 4(33).
 
-### AI Governance & Standards
-
-9. IEEE. (2025). *IEEE 2830-2025: Standard for Transparent ML*. IEEE Standards Association.
-
-10. European Commission. (2025). *EU AI Act*. Official Journal of the European Union.
-
 ### Educational Bias Research
 
-11. Loewen, J. W. (2018). *Lies My Teacher Told Me*. The New Press.
+9. Loewen, J. W. (2018). *Lies My Teacher Told Me*. The New Press.
 
-12. FitzGerald, J. (2009). Textbooks and Politics. *IARTEM e-Journal*, 2(1).
+10. FitzGerald, J. (2009). Textbooks and Politics. *IARTEM e-Journal*, 2(1).
 
 ---
 
@@ -1090,7 +1046,7 @@ For questions about code or data access, please contact:
 
 ### Appendix A: Full Posterior Distributions
 
-Posterior distributions for all parameters are available in the supplementary materials as:
+Posterior distributions for all parameters are saved by the notebook (not distributed in this repository) as:
 - Trace plots (4 chains × 2,000 draws)
 - Kernel density estimates
 - Pair plots for key parameters
@@ -1138,18 +1094,18 @@ seaborn: 0.13+
 structlog: 24.1+
 ```
 
-### Appendix D: Reproducibility Checklist (IEEE 2830-2025 Compliant)
+### Appendix D: Reproducibility Checklist
+
+*The checklist describes the reproducibility setup specified in the design; the notebook and simulated data are not distributed in this repository.*
 
 - [x] Random seeds set for all stochastic operations
 - [x] API temperature fixed at 0.0 for deterministic outputs
 - [x] MCMC random seed = 42
-- [x] Full code available in repository with version tags
 - [x] Requirements.txt with pinned versions and hashes
 - [x] API version strings logged for all models
 - [x] MCMC trace saved in NetCDF format
 - [x] Model cards provided for all LLM configurations
 - [x] Carbon footprint estimated and logged
-- [x] EU AI Act transparency requirements documented
 
 ### Appendix E: MCMC Diagnostic Details
 
@@ -1203,16 +1159,16 @@ We tested 5 prompt variations to assess stability of bias ratings:
 
 **API Cost Breakdown:**
 
-**Table 28.** Per-model API cost breakdown across the full corpus.
+**Table 28.** Estimated per-model API cost at list prices (22,500 ratings per model).
 
-| Model | Tokens/Sample | Cost/1K Tokens | Cost/Sample | Total (67.5K) |
+| Model | Tokens/Sample | Cost/1K Tokens | Cost/Sample | Total (22.5K ratings) |
 |-------|---------------|----------------|-------------|---------------|
-| GPT-4o | ~1,200 | $0.0075 | $0.009 | $607.50 |
-| Claude-3.5-Sonnet | ~1,200 | $0.0090 | $0.011 | $742.50 |
-| Llama-3.2-90B | ~1,200 | $0.0012 | $0.0014 | $94.50 |
-| **Total** | — | — | $0.0214 | **$1,444.50** |
+| GPT-4o | ~1,200 | $0.0075 | $0.009 | $202.50 |
+| Claude-3.5-Sonnet | ~1,200 | $0.0090 | $0.011 | $247.50 |
+| Llama-3.2-90B | ~1,200 | $0.0012 | $0.0014 | $31.50 |
+| **Total (67.5K ratings)** | — | — | — | **$481.50** |
 
-**Note:** Actual project cost was ~$380 due to negotiated API pricing and batch processing discounts.
+**Note:** Each model rates every passage on 5 dimensions (4,500 × 5 = 22,500 ratings per model).
 
 **Scalability Projections:**
 
@@ -1220,10 +1176,10 @@ We tested 5 prompt variations to assess stability of bias ratings:
 
 | Corpus Size | Passages | API Cost | Processing Time | Human Equivalent |
 |-------------|----------|----------|-----------------|------------------|
-| Small | 1,000 | ~$85 | 2 hours | 4 weeks |
-| Medium | 10,000 | ~$850 | 18 hours | 10 months |
-| Large | 100,000 | ~$8,500 | 1 week | 8 years |
-| **This Study** | 4,500 | ~$380 | 8 hours | 4 months |
+| Small | 1,000 | ~$107 | 2 hours | 4 weeks |
+| Medium | 10,000 | ~$1,070 | 18 hours | 10 months |
+| Large | 100,000 | ~$10,700 | 1 week | 8 years |
+| **This Study (estimated)** | 4,500 | ~$480 | 8 hours | 4 months |
 
 ### Appendix H: Bias Detection Model Card
 
@@ -1244,9 +1200,9 @@ We tested 5 prompt variations to assess stability of bias ratings:
 
 | LLM | Organization | Version | Role |
 |-----|-------------|---------|------|
-| GPT-4o | OpenAI | 2025-12 | Primary annotator |
-| Claude-3.5-Sonnet | Anthropic | 2025-10-15 | Constitutional AI perspective |
-| Llama-3.2-90B | Meta | 2025-09 | Open-source validation |
+| GPT-4o | OpenAI | Logged per run | Primary annotator |
+| Claude-3.5-Sonnet | Anthropic | Logged per run | Constitutional AI perspective |
+| Llama-3.2-90B | Meta | Logged per run | Open-source validation |
 
 **Performance Metrics:**
 
@@ -1254,7 +1210,7 @@ We tested 5 prompt variations to assess stability of bias ratings:
 
 | Metric | Value | Interpretation |
 |--------|-------|----------------|
-| Krippendorff's α | 0.84 | Excellent inter-rater reliability |
+| Krippendorff's α | 0.84 | Reliable inter-rater agreement (simulated) |
 | Pairwise r (mean) | 0.89 | Near-perfect linear agreement |
 | MCMC R-hat | < 1.01 | Full convergence |
 | ESS | > 3,000 | Adequate sampling |
@@ -1328,7 +1284,7 @@ We tested 5 prompt variations to assess stability of bias ratings:
 ## About the Author
 
 ### Derek Lankeaux, MS Applied Statistics
-**Data Scientist | Applied Statistician | Bayesian Inference Specialist**
+**Machine Learning Engineer | Bayesian Modeling and LLM Evaluation**
 
 #### Professional Focus (2026)
 Seeking **Data Scientist** and **Applied Statistician** roles at technology companies, foundation model companies, and research institutions. Specialized in experimentation, Bayesian hierarchical inference, GenAI evaluation, and responsible-AI practice.
@@ -1342,9 +1298,9 @@ Seeking **Data Scientist** and **Applied Statistician** roles at technology comp
 | **GenAI / LLM Evaluation** | GPT-4o, Claude-3.5-Sonnet, Llama-3.2 ensemble with 92% correlation | Essential for foundation model benchmarking and evaluation |
 | **Bayesian Inference** | PyMC hierarchical model, MCMC, R-hat < 1.01, 95% HDI | Critical for uncertainty quantification and decision-grade outputs |
 | **Experimentation & Statistics** | Krippendorff's α = 0.84, Friedman χ², Bonferroni correction | Foundational for A/B testing, inter-rater reliability, and inference |
-| **Data Engineering at Scale** | 67,500 API calls with circuit breakers, rate limiting, error handling | Required for production data science pipelines |
+| **Data Engineering at Scale** | Pipeline design for 67,500 API calls with circuit breakers, rate limiting, error handling | Required for production data science pipelines |
 | **Causal & Hierarchical Modeling** | Partial pooling, publisher-level effects, posterior decision rules | Core skill for grouped-data inference and experimentation |
-| **Responsible AI** | EU AI Act compliance, IEEE 2830-2025, bias documentation | Standard for ethical AI deployment and stakeholder trust |
+| **Responsible AI** | Provenance logging, disagreement flagging, ethical-use limits | Standard for ethical AI deployment and stakeholder trust |
 
 #### Technical Stack Expertise
 
@@ -1354,13 +1310,13 @@ Bayesian:        PyMC 5.15+ • ArviZ 0.18+ • MCMC Diagnostics • Hierarchica
 GenAI / LLM:     GPT-4o • Claude-3.5-Sonnet • Llama-3.2 • LangChain • Prompt Engineering
 Data Stack:      SQL • Pandas 2.2+ • NumPy 2.0+ • Polars • Apache Arrow
 MLOps:           MLflow 2.15+ • FastAPI 0.110+ • Circuit Breakers • Rate Limiting
-Explainability:  SHAP • Model Cards • IEEE 2830-2025 • EU AI Act • ISO/IEC 23894
+Explainability:  SHAP • Model Cards
 ```
 
 #### Key Achievements from This Research
 
-- **Production-Scale LLM Processing**: 67,500 API calls with robust error handling and rate limiting
-- **Research-Grade Reliability**: Krippendorff's α = 0.84 demonstrating excellent LLM ensemble agreement
+- **LLM Pipeline Design**: 67,500-call design with error handling and rate limiting, demonstrated on simulated data
+- **Reliability Analysis**: Krippendorff's α with an explicit 0.80 threshold for accepting ensemble ratings
 - **Bayesian Uncertainty Quantification**: Full posterior distributions with 95% HDI for all parameters
 - **Statistical Significance**: p < 0.001 findings with proper multiple testing correction
 - **Scalable Architecture**: Circuit breakers, exponential backoff, and MLflow experiment tracking
@@ -1384,5 +1340,4 @@ Explainability:  SHAP • Model Cards • IEEE 2830-2025 • EU AI Act • ISO/I
 
 *Report generated from analysis in LLM_Ensemble_Textbook_Bias_Detection.ipynb*  
 *Technical Review: Bayesian Hierarchical Analysis with LLM Ensemble per 2026 Data Scientist Standards*  
-*Compliant with IEEE 2830-2025, ISO/IEC 23894:2025, and EU AI Act*  
 *© 2026 Derek Lankeaux. All rights reserved.*

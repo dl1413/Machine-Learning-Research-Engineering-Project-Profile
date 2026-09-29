@@ -14,7 +14,7 @@
 
 | Problem | Approach | Reported evidence |
 |---|---|---|
-| Evaluate whether multiple LLM judges can support large-scale content review. | Rubric-based rating, inter-rater reliability, Bayesian hierarchical modeling, and uncertainty triage. | 4,500 passages; 67,500 ratings; α = 0.84; MCMC R-hat < 1.01. |
+| Evaluate whether multiple LLM judges can support large-scale content review. | Rubric-based rating, inter-rater reliability, Bayesian hierarchical modeling, and uncertainty triage. | Simulated corpus: 4,500 passages; 67,500 ratings; α = 0.84; MCMC R-hat < 1.01. |
 
 ## What this demonstrates
 
@@ -26,8 +26,8 @@
 
 ## Scope
 
-The analysis is a research framework based on the report's corpus, rubric, and
-model prompts. Its findings require expert human review and should not be read
+All data and results are simulated to demonstrate the analysis design. The five
+publishers are anonymized placeholders, and no real textbooks were analyzed. Its findings require expert human review and should not be read
 as a general claim about publishers, textbooks, or political bias outside that
 study design.
 

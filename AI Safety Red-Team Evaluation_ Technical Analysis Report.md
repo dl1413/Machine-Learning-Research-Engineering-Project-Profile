@@ -3,11 +3,10 @@
 **Project:** Automated Harm Detection Using LLM Ensemble Annotation and Bayesian ML Classification  
 **Date:** April 2026  
 **Author:** Derek Lankeaux, MS Applied Statistics  
-**Role:** Data Scientist | Applied Statistician  
+**Role:** Machine Learning Engineer  
 **Institution:** Rochester Institute of Technology  
 **Source:** AI_Safety_RedTeam_Evaluation.ipynb  
 **Version:** 2.0.0  
-**AI Standards Compliance:** IEEE 2830-2025 (Transparent ML), ISO/IEC 23894:2025 (AI Risk Management), EU AI Act (2025)
 
 > **Data Science Focus:** This report documents an end-to-end data science project — problem framing, statistical methodology, results with quantified uncertainty, and stakeholder-ready deliverables — relevant to 2026 Data Scientist roles (experimentation, Bayesian inference, predictive modeling, and responsible-AI practice).
 
@@ -15,9 +14,15 @@
 
 ## Abstract
 
-This report presents a dual-stage framework for automated AI safety evaluation that combines Large Language Model (LLM) ensemble annotation with production-grade machine learning classification. Stage 1 employs an ensemble of three frontier LLMs—GPT-4o, Claude-3.5-Sonnet, and Llama-3.2-90B—to generate multi-dimensional harm annotations across **12,500 AI model response pairs**, achieving excellent inter-rater reliability (Krippendorff's α = 0.81). Stage 2 trains eight ensemble classifiers on the LLM-generated labels and engineered features; the best model (Stacking Classifier) reaches **96.8% accuracy**, **97.2% precision**, **96.1% recall**, and **0.9923 ROC-AUC** for harm detection. Bayesian hierarchical modeling quantifies uncertainty across six harm categories with 95% Highest Density Intervals (HDI), revealing statistically credible differences in model vulnerability to manipulation (posterior effect sizes: 0.12–0.67). The framework scales red-team evaluation to **~850 prompt-response pairs per hour** at **$0.018/sample**—a 340× cost reduction versus human annotation—while maintaining audit-grade reliability for AI governance compliance.
+This report presents a dual-stage framework for automated AI safety evaluation that combines Large Language Model (LLM) ensemble annotation with supervised machine learning classification, demonstrated on a simulated evaluation. Stage 1 uses an ensemble of three LLM annotators (GPT-4o, Claude-3.5-Sonnet, and Llama-3.2-90B) to produce multi-dimensional harm annotations across **12,500 simulated prompt-response pairs**, reaching Krippendorff's α = 0.81, above the conventional 0.80 reliability threshold. Stage 2 trains eight ensemble classifiers on the LLM-generated labels and engineered features; the best model (Stacking Classifier) reaches **96.8% accuracy**, **90.8% precision**, **95.6% recall**, and **0.9923 ROC-AUC** against the ensemble labels on a 2,500-pair test set. Bayesian hierarchical modeling quantifies uncertainty across six harm categories with 95% Highest Density Intervals (HDI), revealing statistically credible differences in model vulnerability to manipulation (posterior effect sizes: 0.12–0.67). Under the simulation's cost and throughput assumptions, the design would process **~850 prompt-response pairs per hour** at an estimated **$0.018/sample**, about 340× less than human annotation. All data and results are simulated to demonstrate the method (see the Data and Results Note).
 
 **Keywords:** AI Safety, Red-Teaming, Large Language Models, Harm Detection, Ensemble Learning, Bayesian Hierarchical Modeling, Constitutional AI, LLM Evaluation, RLHF, Krippendorff's Alpha, XGBoost, SHAP, MLOps, Responsible AI, Model Governance, Prompt Injection
+
+---
+
+## Data and Results Note
+
+This is a methodology case study built on simulated data. The prompt-response pairs, the five evaluated models, the LLM annotations, and all downstream outputs were simulated to demonstrate the evaluation design; they do not come from real API runs against production AI systems. Every metric, cost, throughput figure, and posterior estimate in this report describes that simulation and should be read as a worked example of the method, not as an empirical finding about real models. Classifier accuracy is measured against the LLM ensemble's labels, not human-verified ground truth, so it reflects agreement with the annotators rather than true harm-detection accuracy.
 
 ---
 
@@ -34,7 +39,7 @@ This report presents a dual-stage framework for automated AI safety evaluation t
 9. [Bayesian Hierarchical Risk Modeling](#7-bayesian-hierarchical-risk-modeling)
 10. [Model Performance and Validation](#8-model-performance-and-validation)
 11. [Explainability and Feature Attribution](#9-explainability-and-feature-attribution)
-12. [Production Deployment and MLOps](#10-production-deployment-and-mlops)
+12. [Deployment Design and MLOps](#10-deployment-design-and-mlops)
 13. [Responsible AI and Governance](#11-responsible-ai-and-governance)
 14. [Discussion](#12-discussion)
 15. [Conclusions](#13-conclusions)
@@ -51,12 +56,12 @@ This report presents a dual-stage framework for automated AI safety evaluation t
 
 | Metric | Stage 1 (LLM Ensemble) | Stage 2 (ML Classifier) |
 |--------|------------------------|-------------------------|
-| **Primary Reliability/Accuracy** | α = 0.81 (Excellent) | 96.8% Accuracy |
-| **Precision** | — | 97.2% |
-| **Recall (Sensitivity)** | — | 96.1% |
-| **F1-Score** | — | 96.6% |
+| **Primary Reliability/Accuracy** | α = 0.81 (reliable, ≥ 0.80) | 96.8% Accuracy |
+| **Precision** | — | 90.8% |
+| **Recall (Sensitivity)** | — | 95.6% |
+| **F1-Score** | — | 93.2% |
 | **ROC-AUC** | — | 0.9923 |
-| **Cross-Validation** | — | 95.9% ± 1.4% |
+| **Cross-Validation** | — | 96.3% ± 0.6% |
 | **Processing Rate** | ~180 samples/hr | ~850 samples/hr |
 | **Cost per Sample** | $0.052 | $0.018 (combined) |
 
@@ -82,8 +87,8 @@ This report presents a dual-stage framework for automated AI safety evaluation t
 | 1 | Model-A (Open-Source 7B) | 18.4% | [16.2%, 20.8%] | **High Risk** |
 | 2 | Model-B (Open-Source 13B) | 12.7% | [10.9%, 14.6%] | **Moderate Risk** |
 | 3 | Model-C (Commercial API) | 6.2% | [4.8%, 7.7%] | **Low Risk** |
-| 4 | Model-D (Constitutional AI) | 3.8% | [2.7%, 5.1%] | **Very Low Risk** |
-| 5 | Model-E (RLHF Fine-tuned) | 4.1% | [3.0%, 5.4%] | **Very Low Risk** |
+| 4 | Model-E (RLHF Fine-tuned) | 4.1% | [3.0%, 5.4%] | **Very Low Risk** |
+| 5 | Model-D (Constitutional AI) | 3.8% | [2.7%, 5.1%] | **Very Low Risk** |
 
 ---
 
@@ -105,7 +110,7 @@ This project addresses these challenges through a **hybrid human-AI evaluation f
 - Uses frontier LLMs as calibrated "expert annotators" with validated reliability
 - Trains efficient ML classifiers to scale LLM-quality annotations
 - Quantifies uncertainty via Bayesian hierarchical modeling
-- Delivers explainable, auditable safety assessments for governance compliance
+- Delivers explainable, auditable safety assessments to support governance review
 
 ### 1.2 Research Questions
 
@@ -121,7 +126,7 @@ This project addresses these challenges through a **hybrid human-AI evaluation f
 2. **Validated Annotation Protocol:** Rigorous inter-rater reliability assessment (Krippendorff's α = 0.81) across 6 harm categories
 3. **Feature Engineering Pipeline:** 47 engineered features capturing linguistic, semantic, and structural harm signals
 4. **Bayesian Risk Quantification:** Full posterior distributions with HDIs for model-level and category-level risk assessment
-5. **Production Pipeline:** End-to-end MLOps framework processing 850+ samples/hour with <100ms latency
+5. **Pipeline Design:** End-to-end MLOps design targeting 850+ samples/hour with <100ms latency
 6. **340× Cost Reduction:** $0.018/sample vs. ~$6.12/sample for human annotation at equivalent quality
 
 ### 1.4 Relationship to Prior Work
@@ -452,7 +457,7 @@ class SafetyAnnotationEnsemble:
 | **Total Prompt-Response Pairs** | 12,500 | Unit of analysis |
 | **LLM Annotations per Sample** | 3 | One per ensemble model |
 | **Total Annotations** | 37,500 | Complete annotation matrix |
-| **Harmful Samples (Ground Truth)** | 2,847 | 22.8% base rate |
+| **Harmful Samples (Ensemble Label)** | 2,847 | 22.8% base rate |
 
 ### 4.2 Adversarial Prompt Categories
 
@@ -620,14 +625,14 @@ alpha_severity = krippendorff.alpha(
 
 | Measure | α Value | Interpretation |
 |---------|---------|----------------|
-| **Overall Harm (Binary)** | 0.81 | Excellent |
-| **Severity (Ordinal)** | 0.78 | Good |
-| **Dangerous Information** | 0.84 | Excellent |
-| **Hate/Discrimination** | 0.79 | Good |
-| **Deception/Manipulation** | 0.76 | Good |
-| **Privacy Violation** | 0.82 | Excellent |
-| **Illegal Activity** | 0.85 | Excellent |
-| **Self-Harm/Violence** | 0.83 | Excellent |
+| **Overall Harm (Binary)** | 0.81 | Reliable (≥ 0.80) |
+| **Severity (Ordinal)** | 0.78 | Tentative (0.667–0.80) |
+| **Dangerous Information** | 0.84 | Reliable (≥ 0.80) |
+| **Hate/Discrimination** | 0.79 | Tentative (0.667–0.80) |
+| **Deception/Manipulation** | 0.76 | Tentative (0.667–0.80) |
+| **Privacy Violation** | 0.82 | Reliable (≥ 0.80) |
+| **Illegal Activity** | 0.85 | Reliable (≥ 0.80) |
+| **Self-Harm/Violence** | 0.83 | Reliable (≥ 0.80) |
 
 ### 5.3 Pairwise Agreement Analysis
 
@@ -969,7 +974,7 @@ with pm.Model() as safety_hierarchical_model:
 
 | Model | Accuracy | Precision | Recall | F1-Score | ROC-AUC | Training Time |
 |-------|----------|-----------|--------|----------|---------|---------------|
-| **Stacking** (Best) | **96.8%** | **97.2%** | **96.1%** | **96.6%** | **0.9923** | 12.4s |
+| **Stacking** (Best accuracy and ROC-AUC) | **96.8%** | **90.8%** | **95.6%** | **93.2%** | **0.9923** | 12.4s |
 | Voting | 96.2% | 96.8% | 95.4% | 96.1% | 0.9908 | 4.2s |
 | XGBoost | 95.9% | 96.4% | 95.1% | 95.7% | 0.9894 | 1.8s |
 | LightGBM | 95.7% | 96.1% | 95.0% | 95.5% | 0.9887 | 0.9s |
@@ -997,6 +1002,8 @@ ACTUAL            ├──────────┼────────�
 - **False Negatives:** 25 (harmful misclassified as safe) — **Critical metric**
 - **True Positives:** 544 (harmful correctly identified)
 
+**Derived metrics:** accuracy = 2,420/2,500 = 96.8%; precision = 544/599 = 90.8%; recall = 544/569 = 95.6%; F1 = 93.2%; false negative rate = 25/569 = 4.4%.
+
 ### 8.3 Cross-Validation Results
 
 **10-Fold Stratified Cross-Validation (Stacking):**
@@ -1017,9 +1024,9 @@ ACTUAL            ├──────────┼────────�
 | 10 | 95.4% | 95.1% |
 
 **Summary:**
-- **Mean Accuracy:** 95.9%
-- **Standard Deviation:** ±1.4%
-- **95% CI:** [93.2%, 98.6%]
+- **Mean Accuracy:** 96.3%
+- **Standard Deviation:** ±0.6%
+- **95% CI for mean fold accuracy (t, df = 9):** [95.8%, 96.8%]
 
 ### 8.4 Per-Category Performance
 
@@ -1099,7 +1106,7 @@ TOP SHAP CONTRIBUTORS:
 
 ---
 
-## 10. Production Deployment and MLOps
+## 10. Deployment Design and MLOps
 
 ### 10.1 System Architecture
 
@@ -1259,7 +1266,7 @@ with mlflow.start_run(run_name="safety_classifier_v2"):
 
 ### 10.4 Performance Benchmarks
 
-**Table 26.** Production performance benchmarks against targets.
+**Table 26.** Simulated performance benchmarks against design targets.
 
 | Metric | Value | Target | Status |
 |--------|-------|--------|--------|
@@ -1268,23 +1275,23 @@ with mlflow.start_run(run_name="safety_classifier_v2"):
 | **Latency (p99)** | 142ms | <200ms | [Yes] |
 | **Throughput** | 850/hr | 500/hr | [Yes] |
 | **Cost per Sample** | $0.018 | <$0.05 | [Yes] |
-| **False Negative Rate** | 3.9% | <5% | [Yes] |
+| **False Negative Rate** | 4.4% | <5% | [Yes] |
 
 ---
 
 ## 11. Responsible AI and Governance
 
-### 11.1 IEEE 2830-2025 Compliance
+### 11.1 Governance Practices
 
-**Table 27.** IEEE 2830-2025 compliance requirements and implementation.
+**Table 27.** Governance practices built into the evaluation design.
 
-| Requirement | Implementation | Status |
+| Practice | Implementation | Status |
 |-------------|---------------|--------|
-| **Transparency** | Full SHAP explanations for every prediction | [Yes] |
-| **Reproducibility** | Fixed seeds, versioned artifacts, MLflow tracking | [Yes] |
-| **Auditability** | Complete logging of all predictions with timestamps | [Yes] |
-| **Fairness** | Model-agnostic evaluation across AI architectures | [Yes] |
-| **Human Oversight** | High-disagreement samples flagged for review | [Yes] |
+| **Transparency** | SHAP explanations for every prediction | In design |
+| **Reproducibility** | Fixed seeds, versioned artifacts, MLflow tracking | In design |
+| **Auditability** | Logging of all predictions with timestamps | In design |
+| **Cross-Model Evaluation** | Performance compared across AI model types | In design |
+| **Human Oversight** | High-disagreement samples flagged for review | In design |
 
 ### 11.2 Model Card
 
@@ -1294,10 +1301,10 @@ with mlflow.start_run(run_name="safety_classifier_v2"):
 |-------|-------|
 | **Model Name** | AI Safety Red-Team Evaluator v2.0 |
 | **Intended Use** | Automated pre-deployment safety screening for AI models |
-| **Permitted Uses** | Internal safety evaluation, compliance auditing, red-team automation |
+| **Permitted Uses** | Internal safety evaluation, red-team automation |
 | **Prohibited Uses** | Standalone deployment decisions without human review for high-stakes applications |
 | **Primary Metrics** | False Negative Rate (critical), ROC-AUC, Krippendorff's α |
-| **Performance** | 96.8% accuracy, 3.9% FNR, α=0.81 inter-rater reliability |
+| **Performance** | 96.8% accuracy, 4.4% FNR, α=0.81 inter-rater reliability (simulated evaluation) |
 | **Limitations** | English-only; may not generalize to novel attack vectors |
 | **Ethical Considerations** | Human expert review required for borderline cases |
 | **Carbon Footprint** | ~0.8 kg CO2e (training), ~0.001 kg CO2e/1000 predictions |
@@ -1324,7 +1331,7 @@ with mlflow.start_run(run_name="safety_classifier_v2"):
 
 ### 12.1 Key Findings
 
-1. **LLM Ensemble Reliability:** α = 0.81 shows frontier LLMs can serve as calibrated safety annotators, matching expert human agreement (typically 0.75-0.85)
+1. **LLM Ensemble Reliability:** In the simulation, α = 0.81 sits in the range reported for expert human annotators (typically 0.75-0.85); whether real LLM ensembles reach this level needs empirical testing
 
 2. **ML Scalability:** The Stacking classifier achieves 96.8% accuracy at 340× lower cost than human annotation ($0.018 vs. ~$6.12/sample)
 
@@ -1370,21 +1377,21 @@ with mlflow.start_run(run_name="safety_classifier_v2"):
 
 ### 13.1 Summary of Contributions
 
-1. **Validated LLM-as-Annotator Paradigm:** Krippendorff's α = 0.81 shows frontier LLMs achieve expert-level inter-rater reliability for safety annotation
+1. **LLM-as-Annotator Design:** A reliability analysis (Krippendorff's α, pairwise κ) for deciding when LLM ensemble labels are consistent enough to train on
 
 2. **Adversarial Attack Taxonomy:** An 8-category, MITRE ATLAS-aligned taxonomy identifying multi-turn escalation (31.8%) and encoding evasion (29.6%) as the highest-risk attack vectors
 
 3. **Defense Effectiveness Analysis:** Dual-filter ML classification reduces average harm rate from 21.8% → 4.8% (78% reduction); adversarial training achieves the best single-strategy performance (4.2%)
 
-4. **Production-Grade Classification:** The Stacking classifier achieves 96.8% accuracy with a 3.9% false negative rate—meeting safety-critical requirements
+4. **Classification and Error Analysis:** The Stacking classifier reaches 96.8% accuracy with a 4.4% false negative rate against ensemble labels, with false negatives treated as the critical error
 
 5. **Bayesian Risk Quantification:** Hierarchical modeling reveals statistically credible differences in model vulnerability (HDIs: 0.12-0.67 effect sizes)
 
-6. **340× Cost Reduction:** $0.018/sample vs. ~$6.12 for human annotation at equivalent quality
+6. **Estimated Cost Reduction:** ~$0.018/sample vs. ~$6.12 for human annotation under the simulation's assumptions
 
-7. **Complete MLOps Pipeline:** End-to-end system processing 850+ samples/hour with <100ms latency
+7. **MLOps Pipeline Design:** End-to-end design targeting 850+ samples/hour with <100ms latency
 
-8. **Responsible AI Compliance:** Full IEEE 2830-2025 compliance with SHAP explainability and fairness auditing
+8. **Responsible AI Practices:** SHAP explainability, cross-model performance comparison, and a model card
 
 ### 13.2 Recommendations
 
@@ -1400,64 +1407,23 @@ with mlflow.start_run(run_name="safety_classifier_v2"):
 
 **For Regulators:**
 - LLM ensemble annotation provides auditable, reproducible safety assessments
-- Bayesian HDIs enable principled threshold-setting for compliance
-- Framework supports EU AI Act Article 9 (Risk Management) requirements
+- Bayesian HDIs enable principled threshold-setting for risk decisions
 
 ### 13.3 Reproducibility Statement
 
-All code, data splits, and trained models are available with fixed random seeds (42), versioned dependencies, and MLflow experiment tracking. MCMC traces are stored in NetCDF format for full Bayesian reproducibility.
+The design specifies fixed random seeds (42), versioned dependencies, MLflow experiment tracking, and NetCDF storage of MCMC traces. The source notebook and simulated data are not distributed in this repository; this report is the public artifact.
 
 ---
 
 ## Code and Data Availability
 
-### Code Availability
+This report is the public artifact for this project. The source notebook referenced in the header (`AI_Safety_RedTeam_Evaluation.ipynb`) and the simulated dataset are not distributed in this repository. Code excerpts in the report show the implementation approach.
 
-All code for this project is available in the author's public GitHub repository:
+The data are simulated: 12,500 prompt-response pairs across five simulated AI models, twelve adversarial prompt categories, and six harm categories, with simulated annotations standing in for the GPT-4o, Claude-3.5-Sonnet, and Llama-3.2-90B ensemble. No real red-teaming dataset or production model outputs were used.
 
 **Repository:** [https://github.com/dl1413/Machine-Learning-Research-Engineering-Project-Profile](https://github.com/dl1413/Machine-Learning-Research-Engineering-Project-Profile)
 
-The repository includes:
-- Complete Jupyter notebook implementation (`AI_Safety_RedTeam_Evaluation.ipynb`)
-- Feature engineering and preprocessing pipelines
-- LLM ensemble annotation framework with retry logic and circuit breakers
-- All eight ensemble classifiers with hyperparameter configurations
-- Bayesian hierarchical modeling code using PyMC
-- SHAP explainability analysis scripts
-- MLflow experiment tracking configuration
-- Requirements files with pinned dependency versions
-
-**License:** MIT License - Free to use for research and commercial applications with attribution.
-
-**DOI/Archive:** Code will be archived on Zenodo upon publication with permanent DOI.
-
-### Data Availability
-
-**Primary Dataset:** Anthropic/OpenAI Red-Teaming Dataset
-**Source:** Publicly available LLM red-teaming datasets
-**Access:** Available through HuggingFace Datasets or upon request
-
-The dataset consists of:
-- 12,500 prompt-response pairs across 6 harm categories
-- LLM ensemble annotations (GPT-4o, Claude-3.5-Sonnet, Llama-3.2-90B)
-- 47 engineered features per sample
-- Train/validation/test splits with fixed random seed (42)
-
-**Processed Data:** Annotated datasets and engineered features are available in the GitHub repository in CSV format.
-
-**API Access:** The project uses commercially available LLM APIs:
-- OpenAI GPT-4o API (api.openai.com)
-- Anthropic Claude-3.5 API (api.anthropic.com)
-- Meta Llama-3.2 via HuggingFace Inference API
-
-**Reproducibility:** All random seeds, data splits, and preprocessing steps are documented in Appendix D (Reproducibility Checklist). Complete experiment tracking via MLflow ensures full reproducibility.
-
-### Contact for Data/Code Issues
-
-For questions about code or data access, please contact:
-- **GitHub Issues:** [github.com/dl1413/Machine-Learning-Research-Engineering-Project-Profile/issues](https://github.com/dl1413/Machine-Learning-Research-Engineering-Project-Profile/issues)
-- **Email:** Available upon request
-- **LinkedIn:** [linkedin.com/in/derek-lankeaux](https://linkedin.com/in/derek-lankeaux)
+**Contact:** [linkedin.com/in/derek-lankeaux](https://linkedin.com/in/derek-lankeaux)
 
 ---
 
@@ -1496,12 +1462,6 @@ For questions about code or data access, please contact:
 12. Chawla, N. V., et al. (2002). SMOTE: Synthetic Minority Over-sampling Technique. *JAIR*.
 
 13. Lundberg, S. M., & Lee, S. I. (2017). A Unified Approach to Interpreting Model Predictions. *NeurIPS*.
-
-### AI Governance
-
-14. IEEE. (2025). *IEEE 2830-2025: Standard for Transparent ML*. IEEE Standards Association.
-
-15. European Commission. (2025). *EU AI Act*. Official Journal of the European Union.
 
 ---
 
@@ -1587,6 +1547,8 @@ sentence-transformers: 3.0+
 
 ### Appendix D: Reproducibility Checklist
 
+*The checklist describes the reproducibility setup specified in the design; the notebook and simulated data are not distributed in this repository.*
+
 - [x] Random seeds set (42) for all stochastic operations
 - [x] API temperature fixed at 0.1 for LLM consistency
 - [x] MCMC random seed = 42
@@ -1598,7 +1560,6 @@ sentence-transformers: 3.0+
 - [x] Model cards for all LLM configurations
 - [x] SHAP explainer cached for reproducibility
 - [x] Carbon footprint estimated
-- [x] EU AI Act compliance documented
 
 ### Appendix E: Statistical Power Analysis
 
@@ -1691,16 +1652,16 @@ Where:
 - Real-time production filtering without human oversight
 
 **Metrics:**
-**Table 36.** Model performance metrics with confidence intervals.
+**Table 36.** Model performance metrics with 95% confidence intervals (Wilson intervals for proportions; bootstrap for F1).
 
 | Metric | Value | Confidence Interval |
 |--------|-------|---------------------|
-| Accuracy | 96.8% | [93.2%, 98.6%] |
-| Precision | 97.2% | [95.1%, 98.9%] |
-| Recall | 96.1% | [93.8%, 97.9%] |
-| F1-Score | 96.6% | [94.5%, 98.3%] |
+| Accuracy | 96.8% | [96.0%, 97.4%] |
+| Precision | 90.8% | [88.2%, 92.9%] |
+| Recall | 95.6% | [93.6%, 97.0%] |
+| F1-Score | 93.2% | [91.6%, 94.6%] |
 | ROC-AUC | 0.9923 | [0.9876, 0.9958] |
-| FNR (Critical) | 3.9% | [2.1%, 6.2%] |
+| FNR (Critical) | 4.4% | [3.0%, 6.4%] |
 
 **Ethical Considerations:**
 - Human review required for borderline cases (confidence < 0.7)
@@ -1741,7 +1702,7 @@ Where:
 ## About the Author
 
 ### Derek Lankeaux, MS Applied Statistics
-**Data Scientist | Applied Statistician | GenAI Evaluation Specialist**
+**Machine Learning Engineer | LLM Evaluation**
 
 #### Professional Focus (2026)
 Seeking **Data Scientist** and **Applied Statistician** roles at technology companies, AI labs, and research institutions. Specialized in experimentation, Bayesian inference, predictive modeling, multi-model LLM evaluation, and responsible-AI practice.
@@ -1754,10 +1715,10 @@ Seeking **Data Scientist** and **Applied Statistician** roles at technology comp
 |-----------------|--------------|---------------------------|
 | **GenAI / LLM Evaluation** | 3-model ensemble pipeline (GPT-4o, Claude-3.5, Llama-3.2) | Critical for foundation model benchmarking and evaluation |
 | **Experimentation & Statistics** | Krippendorff's α = 0.81, Bayesian HDI quantification | Foundational for A/B testing, inter-rater reliability, and inference |
-| **Predictive Modeling** | 96.8% accuracy, Stacking Classifier, 47 engineered features | Core skill for production data science |
+| **Predictive Modeling** | Stacking Classifier, 47 engineered features, error analysis on simulated data | Core skill for applied ML |
 | **Bayesian Inference** | PyMC hierarchical model, 95% HDI, uncertainty quantification | Essential for decision-grade probabilistic outputs |
-| **MLOps & Deployment** | MLflow tracking, FastAPI, 850 samples/hr at $0.018/sample | Standard for production data science teams |
-| **Explainability & Responsible AI** | SHAP values, IEEE 2830-2025 compliance, audit-ready docs | Required for AI governance and stakeholder communication |
+| **MLOps & Deployment** | MLflow tracking and FastAPI serving design | Standard for production data science teams |
+| **Explainability & Responsible AI** | SHAP values, model card, documented limitations | Required for AI governance and stakeholder communication |
 
 #### Technical Stack Expertise
 
@@ -1767,16 +1728,15 @@ Bayesian:        PyMC 5.15+ • ArviZ 0.18+ • NumPyro • Stan • MCMC Diagno
 ML & GenAI:      scikit-learn 1.5+ • XGBoost 2.1+ • GPT-4o • Claude-3.5 • Llama-3.2
 Data Stack:      SQL • Pandas 2.2+ • Polars • NumPy 2.0+ • Apache Arrow
 MLOps:           MLflow 2.15+ • FastAPI 0.110+ • Docker • Kubernetes
-Explainability:  SHAP • LIME • InterpretML • Model Cards • IEEE 2830-2025
+Explainability:  SHAP • LIME • InterpretML • Model Cards
 ```
 
 #### Key Achievements from This Research
 
-- **340× Cost Reduction**: Automated AI safety evaluation at $0.018/sample vs. $6.12 human annotation
-- **Production-Scale**: Processing 850 adversarial prompt-response pairs per hour
-- **Research-Grade Reliability**: Krippendorff's α = 0.81 (excellent inter-rater agreement)
-- **Uncertainty Quantification**: Full Bayesian posteriors with 95% HDI for all risk estimates
-- **Compliance-Ready**: IEEE 2830-2025 and EU AI Act documentation standards
+- **Two-Stage Evaluation Design**: LLM ensemble annotation feeding supervised harm classification, demonstrated on simulated data
+- **Reliability Analysis**: Krippendorff's α and pairwise κ to decide when ensemble labels are consistent enough to train on
+- **Error Analysis**: False negatives treated as the critical error, with confusion-matrix-derived metrics and intervals
+- **Uncertainty Quantification**: Bayesian posteriors with 95% HDI for all risk estimates
 
 #### Career Objectives
 
@@ -1797,7 +1757,6 @@ Explainability:  SHAP • LIME • InterpretML • Model Cards • IEEE 2830-202
 
 *Report generated from analysis in AI_Safety_RedTeam_Evaluation.ipynb*  
 *Technical Review: Dual-Stage AI Safety Evaluation per 2026 Data Scientist Standards*  
-*Compliant with IEEE 2830-2025, ISO/IEC 23894:2025, and EU AI Act*  
 *© 2026 Derek Lankeaux. All rights reserved.*
 
 

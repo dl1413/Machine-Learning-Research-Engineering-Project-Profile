@@ -14,7 +14,7 @@
 
 | Problem | Approach | Reported evidence |
 |---|---|---|
-| Manual safety review is costly and difficult to scale. | LLM ensemble annotation followed by supervised classification and Bayesian risk analysis. | 12,500 response pairs; α = 0.81 inter-rater reliability; 96.8% held-out classifier accuracy. |
+| Manual safety review is costly and difficult to scale. | LLM ensemble annotation followed by supervised classification and Bayesian risk analysis. | Simulated evaluation: 12,500 response pairs; α = 0.81 inter-rater reliability; 96.8% held-out classifier accuracy against ensemble labels. |
 
 ## What this demonstrates
 
@@ -26,8 +26,9 @@
 
 ## Scope
 
-The reported results apply to the project's experimental setup and annotation
-rubric. This work is not a substitute for expert red-teaming, human safety
+All data and results are simulated to demonstrate the evaluation design; they
+are not measurements of real AI systems. Classifier accuracy is measured
+against the LLM ensemble's labels, not human-verified ground truth. This work is not a substitute for expert red-teaming, human safety
 review, or a complete deployment-readiness assessment.
 
 ## Methods
