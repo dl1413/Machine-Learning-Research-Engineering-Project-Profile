@@ -1,15 +1,17 @@
 # Derek Lankeaux
 
-**Data Scientist | Applied Statistician | LLM Evaluation & Applied ML**
+**Machine Learning Engineer | Model Evaluation & Applied ML**
 
-[LinkedIn](https://linkedin.com/in/derek-lankeaux) · [GitHub](https://github.com/dl1413) · [Portfolio](https://dl1413.github.io/LLM-Portfolio/)
+[LinkedIn](https://linkedin.com/in/derek-lankeaux) · [GitHub](https://github.com/dl1413) · [Portfolio](https://github.com/dl1413/Machine-Learning-Research-Engineering-Project-Profile)
 
 ## Summary
 
-Applied Statistics M.S. candidate focused on experimental design, Bayesian
-inference, and practical machine-learning evaluation. Built four independent
-technical case studies spanning AI-safety evaluation, uncertainty-aware LLM
-review, diagnostic-ML benchmarking, and retrieval-augmented generation. Strong
+Machine learning engineer with graduate training in applied statistics,
+focused on model evaluation, error analysis, and diagnostic ML. Built five
+independent technical case studies: two on real clinical data (breast cancer
+diagnosis and hospital re-identification risk) and three simulated
+evaluation designs for AI safety, LLM review, and retrieval-augmented
+generation. Strong
 at framing questions, designing evaluations, quantifying uncertainty, and
 communicating results and limitations to technical and non-technical audiences.
 
@@ -17,7 +19,7 @@ communicating results and limitations to technical and non-technical audiences.
 
 **Data and statistics:** Python, R, SQL, Pandas, Polars, NumPy, SciPy, statsmodels; experimental design, power analysis, hypothesis testing, bootstrap confidence intervals, inter-rater reliability, Bayesian hierarchical modeling, MCMC diagnostics, calibration
 
-**Machine learning:** scikit-learn, XGBoost, LightGBM, AdaBoost, Optuna, SMOTE, SHAP; feature engineering, model selection, cross-validation, threshold analysis, explainability
+**Machine learning:** PyTorch, scikit-learn, XGBoost, LightGBM, AdaBoost, Optuna, SMOTE, SHAP; feature engineering, model selection, cross-validation, threshold analysis, explainability
 
 **LLM and systems:** OpenAI, Anthropic, Hugging Face, LangChain, FastAPI, MLflow, Qdrant, BM25, ColBERT, Docker, Kubernetes; LLM evaluation, retrieval quality, observability design, cost/latency trade-offs
 
@@ -28,6 +30,26 @@ Coursework: Bayesian methods, machine learning, experimental design, deep
 learning, statistical learning theory, and computational statistics.
 
 ## Selected technical projects
+
+### Breast Cancer Classification (two-semester RIT capstone, extended)
+
+Independent research case study · April 2026
+
+- Benchmarked eight ensemble classifiers on the Wisconsin Diagnostic Breast Cancer dataset, whose features are cell-nucleus measurements from digitized fine needle aspirate images.
+- Reached 99.12% held-out accuracy (113/114) and 0.9987 ROC-AUC; traced the single error (a benign tumor flagged as malignant) and confirmed no malignant case was missed.
+- Added probability calibration, threshold analysis, and per-prediction SHAP explanations; documented why a curated single-center benchmark is not clinical validation.
+
+**Methods:** scikit-learn, XGBoost, LightGBM, AdaBoost, Optuna, SMOTE, SHAP, MLflow, FastAPI
+
+### Clinical Privacy vs. Predictive Utility
+
+Independent research case study · 2026
+
+- Measured re-identification risk on 101,766 real hospital encounters (Diabetes 130-US) with k-anonymity, l-diversity, t-closeness, and a differential-privacy utility curve.
+- Showed generalization halves unique-record risk (15.4% → 7.6%) for a 0.3-point AUC cost in 30-day readmission prediction; suppression costs 31% of records and 2.2 points.
+- Found the model's AUC falls to 0.515 for patients aged 90+ despite 0.672 overall, and that the default threshold gives 0.2% recall; used patient-level splits to prevent leakage.
+
+**Methods:** scikit-learn, HistGradientBoosting, permutation importance, privacy metrics, Zerve
 
 ### AI Safety Red-Team Evaluation
 
@@ -49,16 +71,6 @@ Independent research case study · April 2026
 
 **Methods:** LLM-as-judge, PyMC, ArviZ, FastAPI, MLflow
 
-### Breast Cancer Classification Benchmark
-
-Independent research case study · April 2026
-
-- Benchmarked eight ensemble classifiers on the Wisconsin Diagnostic Breast Cancer dataset with preprocessing, feature selection, calibration, and cross-validation.
-- Reported 99.12% held-out accuracy and 0.9987 ROC-AUC for the best configuration, together with calibration and threshold analyses.
-- Framed the work as a diagnostic decision-support benchmark; it is not a clinical device or patient-validation study.
-
-**Methods:** scikit-learn, XGBoost, LightGBM, AdaBoost, Optuna, SMOTE, SHAP
-
 ### RAG Production Pipeline
 
 Independent systems-design case study · April 2026
@@ -69,7 +81,7 @@ Independent systems-design case study · April 2026
 
 **Methods:** Qdrant, BM25, ColBERT, OpenAI, Kafka, Kubernetes, Prometheus, MLflow
 
-## Publications
+## Technical reports
 
 | Technical report | Version | Date |
 |---|---:|---|
@@ -78,4 +90,4 @@ Independent systems-design case study · April 2026
 | [Breast Cancer Classification](./Breast_Cancer_Classification_Report.md) | 4.0.0 | April 2026 |
 | [RAG Production Pipeline](./RAG_Project_Report.md) | 3.0.0 | April 2026 |
 
-**Availability:** Remote/hybrid · Seeking 2026 opportunities · Authorized to work in the United States
+**Availability:** Long Island, NY · On-site, hybrid, or remote · Authorized to work in the United States

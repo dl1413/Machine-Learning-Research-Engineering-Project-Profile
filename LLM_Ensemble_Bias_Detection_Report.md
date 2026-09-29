@@ -1332,7 +1332,7 @@ Explainability:  SHAP • Model Cards
 
 - **LinkedIn**: [linkedin.com/in/derek-lankeaux](https://linkedin.com/in/derek-lankeaux)
 - **GitHub**: [github.com/dl1413](https://github.com/dl1413)
-- **Portfolio**: [dl1413.github.io/LLM-Portfolio](https://dl1413.github.io/LLM-Portfolio)
+- **Portfolio**: [github.com/dl1413/Machine-Learning-Research-Engineering-Project-Profile](https://github.com/dl1413/Machine-Learning-Research-Engineering-Project-Profile)
 - **Location**: Available for remote/hybrid positions in the United States
 - **Timeline**: Actively seeking 2026 opportunities
 

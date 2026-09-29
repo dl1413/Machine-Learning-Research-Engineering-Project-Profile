@@ -1,50 +1,52 @@
 # Derek Lankeaux
 
-Data Scientist and Applied Statistics M.S. candidate focused on experimental
-design, Bayesian inference, machine learning, and LLM evaluation.
+Machine learning engineer focused on model evaluation, error analysis, and
+diagnostic ML, with graduate training in applied statistics at RIT.
 
-[LinkedIn](https://linkedin.com/in/derek-lankeaux) · [GitHub](https://github.com/dl1413) · [Portfolio](https://dl1413.github.io/LLM-Portfolio/) · [Résumé](./Resume_Derek_Lankeaux.md)
+[LinkedIn](https://linkedin.com/in/derek-lankeaux) · [GitHub](https://github.com/dl1413) · [Résumé](./Resume_Derek_Lankeaux.md)
 
 [![Portfolio validation](https://github.com/dl1413/Machine-Learning-Research-Engineering-Project-Profile/actions/workflows/validate-portfolio.yml/badge.svg)](https://github.com/dl1413/Machine-Learning-Research-Engineering-Project-Profile/actions/workflows/validate-portfolio.yml)
 
 ## Portfolio
 
-This repository contains four independent technical case studies. Each project
-links to a full Markdown report and a publication-formatted PDF; the summary
-below is intended to make the evidence and the scope easy to evaluate.
+Five independent technical case studies. Two use real data; three are
+methodology case studies built on simulated data to work out an evaluation
+design before running it for real. Each project page states which, along with
+the limits of the work.
 
-| Project | Question | Methods | Evidence |
+| Project | Question | Data | Evidence |
 |---|---|---|---|
-| **AI Safety Red-Team Evaluation** | How can safety evaluation scale beyond manual review? | LLM ensemble annotation, supervised classification, Bayesian risk analysis | [Report](./AI%20Safety%20Red-Team%20Evaluation_%20Technical%20Analysis%20Report.md) · [PDF](./AI_Safety_RedTeam_Evaluation_Publication.pdf) · [Project page](./project_packages/01_AI_Safety_RedTeam_Evaluation/) |
-| **Breast Cancer Classification** | Which ensemble methods perform well on WDBC diagnostic features? | Benchmarking, calibration, feature selection, explainability | [Report](./Breast_Cancer_Classification_Report.md) · [PDF](./Breast_Cancer_Classification_Publication.pdf) · [Project page](./project_packages/02_Breast_Cancer_Classification/) |
-| **LLM Ensemble Bias Detection** | Can multiple LLM judges support uncertainty-aware content review? | Rubric-based LLM evaluation, reliability analysis, Bayesian hierarchical modeling | [Report](./LLM_Ensemble_Bias_Detection_Report.md) · [PDF](./LLM_Bias_Detection_Publication.pdf) · [Project page](./project_packages/03_LLM_Ensemble_Bias_Detection/) |
-| **RAG Production Pipeline** | How can retrieval, grounding, and monitoring improve RAG system design? | Hybrid retrieval, re-ranking, confidence calibration, observability design | [Report](./RAG_Project_Report.md) · [PDF](./RAG_Project_Publication.pdf) · [Project page](./project_packages/04_RAG_Production_Pipeline/) |
-
-## What to review
-
-- **Problem framing and evaluation design:** Each report documents a defined problem, data/evaluation setup, and methodological choices.
-- **Statistical rigor:** The projects use cross-validation, inter-rater reliability, confidence intervals, Bayesian inference, or calibration as appropriate to the task.
-- **Decision relevance:** The work connects model results to practical review, triage, or monitoring decisions rather than treating a headline metric as sufficient on its own.
-- **Responsible use:** Each package page states the limits of the project and the validation needed before any real-world use.
+| **Breast Cancer Classification** | Which ensemble methods perform well on WDBC diagnostic features, and where do they fail? | Real (WDBC benchmark) | [Report](./Breast_Cancer_Classification_Report.md) · [PDF](./Breast_Cancer_Classification_Publication.pdf) · [Project page](./project_packages/02_Breast_Cancer_Classification/) |
+| **Clinical Privacy vs. Predictive Utility** | How much model performance does each de-identification strategy cost on hospital data? | Real (Diabetes 130-US, 101,766 encounters) | [Project page](./project_packages/05_Clinical_Privacy_Utility/) |
+| **AI Safety Red-Team Evaluation** | How can safety evaluation scale beyond manual review? | Simulated | [Report](./AI%20Safety%20Red-Team%20Evaluation_%20Technical%20Analysis%20Report.md) · [PDF](./AI_Safety_RedTeam_Evaluation_Publication.pdf) · [Project page](./project_packages/01_AI_Safety_RedTeam_Evaluation/) |
+| **LLM Ensemble Bias Detection** | Can multiple LLM judges support uncertainty-aware content review? | Simulated | [Report](./LLM_Ensemble_Bias_Detection_Report.md) · [PDF](./LLM_Bias_Detection_Publication.pdf) · [Project page](./project_packages/03_LLM_Ensemble_Bias_Detection/) |
+| **RAG Production Pipeline** | How can retrieval, grounding, and monitoring improve RAG system design? | Simulated | [Report](./RAG_Project_Report.md) · [PDF](./RAG_Project_Publication.pdf) · [Project page](./project_packages/04_RAG_Production_Pipeline/) |
 
 ## Selected results
 
-| Project | Reported result | Why it matters |
+| Project | Result | Why it matters |
 |---|---|---|
-| AI Safety | 96.8% classification accuracy; Krippendorff's α = 0.81 | Separates annotation reliability from downstream classifier performance. |
-| Breast Cancer | 99.12% held-out accuracy; ROC-AUC 0.9987 | Illustrates calibrated supervised-learning evaluation on the WDBC benchmark. |
-| LLM Bias Detection | 67,500 ratings; Krippendorff's α = 0.84 | Demonstrates an uncertainty-aware workflow for large-scale content review. |
-| RAG | 94.2% citation precision; 96.3% Recall@10 | Connects retrieval quality, grounding, and operational metrics in one systems design. |
+| Breast Cancer | 99.12% held-out accuracy (113/114); all 43 malignant test cases detected; the single error was a benign tumor flagged as malignant | Error analysis at the level of individual cases, not just an aggregate metric. |
+| Clinical Privacy | Generalization halved unique-record re-identification risk (15.4% → 7.6%) for a 0.3-point AUC cost; AUC fell to 0.515 for patients aged 90+ | Quantifies a privacy–utility trade-off and surfaces a subgroup failure the overall AUC (0.672) hides. |
+| AI Safety (simulated) | Krippendorff's α = 0.81; 96.8% accuracy, 95.6% recall against ensemble labels | Separates annotation reliability from downstream classifier performance. |
+| LLM Bias Detection (simulated) | 67,500 ratings; Krippendorff's α = 0.84 | An uncertainty-aware workflow for large-scale content review. |
+| RAG (simulated) | 94.2% citation precision; 95.4% average Recall@10 | Connects retrieval quality, grounding, and latency in one systems design. |
 
-All figures above are reported in the linked technical documents. The AI
-Safety, LLM Bias Detection, and RAG results come from simulated evaluations
-built to demonstrate each method; they are not measurements of real models,
-publishers, or a deployed service. The Breast Cancer results use the public
-WDBC benchmark and are not independent clinical validation.
+The Breast Cancer results use the public WDBC benchmark and are not clinical
+validation. The Clinical Privacy results use the public Diabetes 130-US
+Hospitals dataset. The AI Safety, LLM Bias Detection, and RAG results come
+from simulated evaluations; they are not measurements of real models,
+publishers, or a deployed service.
+
+## What to review
+
+- **Error and failure analysis:** Each project looks past the headline metric to individual errors, subgroups, thresholds, or failure modes.
+- **Evaluation design:** Train/test separation, cross-validation, inter-rater reliability, calibration, and confidence intervals where they apply.
+- **Honest scope:** Each project page states what the evidence does and does not support.
 
 ## Technical focus
 
-`Python` · `SQL` · `R` · `scikit-learn` · `XGBoost` · `LightGBM` · `PyMC` · `ArviZ` · `FastAPI` · `MLflow` · `SHAP` · `OpenAI` · `Anthropic` · `Qdrant` · `Docker` · `Kubernetes`
+`Python` · `PyTorch` · `scikit-learn` · `XGBoost` · `LightGBM` · `SHAP` · `PyMC` · `ArviZ` · `SQL` · `R` · `FastAPI` · `MLflow` · `Docker` · `Kubernetes` · `OpenAI` · `Anthropic` · `Qdrant`
 
 ## Repository guide
 
@@ -67,5 +69,6 @@ repository; the reports and PDFs are the public portfolio artifacts.
 
 ## Contact
 
-Open to 2026 data science, applied ML, and LLM-evaluation opportunities. The
-best way to connect is on [LinkedIn](https://linkedin.com/in/derek-lankeaux).
+Open to machine learning engineering, applied ML, and model-evaluation roles,
+including medical imaging. The best way to connect is on
+[LinkedIn](https://linkedin.com/in/derek-lankeaux).
