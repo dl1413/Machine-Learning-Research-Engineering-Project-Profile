@@ -1,7 +1,9 @@
 # Derek Lankeaux
 
-Data Scientist and Applied Statistics M.S. candidate focused on experimental
-design, Bayesian inference, machine learning, and LLM evaluation.
+Data scientist and Applied Statistics M.S. candidate focused on rigorous
+evaluation of machine-learning and LLM systems. I use experimental design,
+Bayesian inference, and applied statistics to turn model results into
+decision-relevant evidence.
 
 [LinkedIn](https://linkedin.com/in/derek-lankeaux) · [GitHub](https://github.com/dl1413) · [Portfolio](https://dl1413.github.io/LLM-Portfolio/) · [Résumé](./Resume_Derek_Lankeaux.md)
 
@@ -9,23 +11,24 @@ design, Bayesian inference, machine learning, and LLM evaluation.
 
 ## Portfolio
 
-This repository contains four independent technical case studies. Each project
-links to a full Markdown report and a publication-formatted PDF; the summary
-below is intended to make the evidence and the scope easy to evaluate.
+Explore four independent case studies in AI safety evaluation, applied
+classification, LLM review, and retrieval-augmented generation. Each project
+links to its full technical report and publication-formatted PDF, with evidence
+and limitations made explicit.
 
 | Project | Question | Methods | Evidence |
 |---|---|---|---|
-| **AI Safety Red-Team Evaluation** | How can safety evaluation scale beyond manual review? | LLM ensemble annotation, supervised classification, Bayesian risk analysis | [Report](./AI%20Safety%20Red-Team%20Evaluation_%20Technical%20Analysis%20Report.md) · [PDF](./AI_Safety_RedTeam_Evaluation_Publication.pdf) · [Project page](./project_packages/01_AI_Safety_RedTeam_Evaluation/) |
-| **Breast Cancer Classification** | Which ensemble methods perform well on WDBC diagnostic features? | Benchmarking, calibration, feature selection, explainability | [Report](./Breast_Cancer_Classification_Report.md) · [PDF](./Breast_Cancer_Classification_Publication.pdf) · [Project page](./project_packages/02_Breast_Cancer_Classification/) |
-| **LLM Ensemble Bias Detection** | Can multiple LLM judges support uncertainty-aware content review? | Rubric-based LLM evaluation, reliability analysis, Bayesian hierarchical modeling | [Report](./LLM_Ensemble_Bias_Detection_Report.md) · [PDF](./LLM_Bias_Detection_Publication.pdf) · [Project page](./project_packages/03_LLM_Ensemble_Bias_Detection/) |
-| **RAG Production Pipeline** | How can retrieval, grounding, and monitoring improve RAG system design? | Hybrid retrieval, re-ranking, confidence calibration, observability design | [Report](./RAG_Project_Report.md) · [PDF](./RAG_Project_Publication.pdf) · [Project page](./project_packages/04_RAG_Production_Pipeline/) |
+| **AI Safety Red-Team Evaluation** | How can LLM safety review scale without confusing model agreement with verified ground truth? | Ensemble annotation, supervised classification, Bayesian risk analysis | [Report](./AI%20Safety%20Red-Team%20Evaluation_%20Technical%20Analysis%20Report.md) · [PDF](./AI_Safety_RedTeam_Evaluation_Publication.pdf) · [Project page](./project_packages/01_AI_Safety_RedTeam_Evaluation/) |
+| **Breast Cancer Classification** | How do ensemble models compare across discrimination, calibration, and decision thresholds? | Benchmarking, calibration, feature selection, explainability | [Report](./Breast_Cancer_Classification_Report.md) · [PDF](./Breast_Cancer_Classification_Publication.pdf) · [Project page](./project_packages/02_Breast_Cancer_Classification/) |
+| **LLM Ensemble Bias Detection** | How can multi-judge LLM review quantify disagreement and uncertainty at scale? | Rubric-based evaluation, reliability analysis, Bayesian hierarchical modeling | [Report](./LLM_Ensemble_Bias_Detection_Report.md) · [PDF](./LLM_Bias_Detection_Publication.pdf) · [Project page](./project_packages/03_LLM_Ensemble_Bias_Detection/) |
+| **RAG Production Pipeline** | How should retrieval, grounding, confidence, and operational quality be evaluated together? | Hybrid retrieval, re-ranking, confidence calibration, observability design | [Report](./RAG_Project_Report.md) · [PDF](./RAG_Project_Publication.pdf) · [Project page](./project_packages/04_RAG_Production_Pipeline/) |
 
 ## What to review
 
-- **Problem framing and evaluation design:** Each report documents a defined problem, data/evaluation setup, and methodological choices.
-- **Statistical rigor:** The projects use cross-validation, inter-rater reliability, confidence intervals, Bayesian inference, or calibration as appropriate to the task.
-- **Decision relevance:** The work connects model results to practical review, triage, or monitoring decisions rather than treating a headline metric as sufficient on its own.
-- **Responsible use:** Each package page states the limits of the project and the validation needed before any real-world use.
+- **Evaluation design:** Clear questions, defined evaluation setups, and methods matched to each problem.
+- **Evidence quality:** Reliability, calibration, uncertainty, and validation are reported alongside headline metrics.
+- **Operational relevance:** Results connect to review, triage, or monitoring decisions, with deployment considerations made explicit.
+- **Responsible use:** Scope limits and further validation needs are stated for every project.
 
 ## Selected results
 

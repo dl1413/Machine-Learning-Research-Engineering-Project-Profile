@@ -6,12 +6,12 @@
 
 ## Summary
 
-Applied Statistics M.S. candidate focused on experimental design, Bayesian
-inference, and practical machine-learning evaluation. Built four independent
-technical case studies spanning AI-safety evaluation, uncertainty-aware LLM
-review, diagnostic-ML benchmarking, and retrieval-augmented generation. Strong
-at framing questions, designing evaluations, quantifying uncertainty, and
-communicating results and limitations to technical and non-technical audiences.
+Applied Statistics M.S. candidate specializing in experimental design, Bayesian
+inference, and rigorous evaluation of machine-learning and LLM systems. Applies
+statistical methods across four independent case studies in AI-safety
+evaluation, uncertainty-aware LLM review, diagnostic-model benchmarking, and
+retrieval-augmented generation. Turns open-ended questions into measurable
+evaluations and communicates results, uncertainty, and limitations clearly.
 
 ## Technical skills
 
