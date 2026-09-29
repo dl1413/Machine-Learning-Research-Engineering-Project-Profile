@@ -53,7 +53,7 @@ README.md                                      Portfolio overview
 Resume_Derek_Lankeaux.md                       Résumé source
 *_Report.md                                    Four technical reports
 *_Publication.pdf                              Corresponding publication PDFs
-project_packages/                              Per-project reader guides and PDFs
+project_packages/                              Per-project reader guides
 generate_publication_pdfs.py                   Canonical PDF generator
 requirements-pdf.txt                           PDF-generation dependencies
 PDF_EXPORT.md                                  Build and validation instructions

@@ -7,7 +7,7 @@
 | Read | Link |
 |---|---|
 | Full technical report | [Markdown](../../LLM_Ensemble_Bias_Detection_Report.md) |
-| Publication-formatted report | [PDF](./LLM_Bias_Detection_Publication.pdf) |
+| Publication-formatted report | [PDF](../../LLM_Bias_Detection_Publication.pdf) |
 | Portfolio overview | [README](../../README.md) |
 
 ## Project at a glance

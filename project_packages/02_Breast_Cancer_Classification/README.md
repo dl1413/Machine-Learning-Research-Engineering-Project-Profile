@@ -7,7 +7,7 @@
 | Read | Link |
 |---|---|
 | Full technical report | [Markdown](../../Breast_Cancer_Classification_Report.md) |
-| Publication-formatted report | [PDF](./Breast_Cancer_Classification_Publication.pdf) |
+| Publication-formatted report | [PDF](../../Breast_Cancer_Classification_Publication.pdf) |
 | Portfolio overview | [README](../../README.md) |
 
 ## Project at a glance

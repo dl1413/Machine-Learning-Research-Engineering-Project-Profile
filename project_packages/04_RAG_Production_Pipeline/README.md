@@ -7,7 +7,7 @@
 | Read | Link |
 |---|---|
 | Full technical report | [Markdown](../../RAG_Project_Report.md) |
-| Publication-formatted report | [PDF](./RAG_Project_Publication.pdf) |
+| Publication-formatted report | [PDF](../../RAG_Project_Publication.pdf) |
 | Portfolio overview | [README](../../README.md) |
 
 ## Project at a glance
