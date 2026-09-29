@@ -3,11 +3,10 @@
 **Project:** Enhanced Ensemble Methods for Wisconsin Breast Cancer Classification  
 **Date:** April 2026  
 **Author:** Derek Lankeaux, MS Applied Statistics  
-**Role:** Data Scientist | Applied Statistician  
+**Role:** Machine Learning Engineer  
 **Institution:** Rochester Institute of Technology  
 **Source:** Breast_Cancer_Classification_PUBLICATION.ipynb  
 **Version:** 4.0.0  
-**AI Standards Compliance:** IEEE 2830-2025 (Transparent ML), ISO/IEC 23894:2025 (AI Risk Management), EU AI Act (2025)
 
 > **Data Science Focus:** This report documents an end-to-end data science project — problem framing, statistical methodology, results with quantified uncertainty, and stakeholder-ready deliverables — relevant to 2026 Data Scientist roles (experimentation, Bayesian inference, predictive modeling, and responsible-AI practice).
 
@@ -15,7 +14,7 @@
 
 ## Abstract
 
-This report presents a machine learning pipeline for binary classification of breast cancer tumors using the Wisconsin Diagnostic Breast Cancer (WDBC) dataset. We implement and rigorously evaluate eight ensemble learning algorithms: Random Forest, Gradient Boosting, AdaBoost, Bagging, XGBoost, LightGBM, Voting, and Stacking classifiers. The preprocessing pipeline combines Variance Inflation Factor (VIF) analysis for multicollinearity detection, Synthetic Minority Over-sampling Technique (SMOTE) for class imbalance correction, and Recursive Feature Elimination (RFE) for feature subset selection. The best model (AdaBoost) achieved **99.12% accuracy**, **100% precision**, **98.59% recall**, and **0.9987 ROC-AUC** on the held-out test set, with 10-fold stratified cross-validation confirming robust generalization (98.46% ± 1.12%). This performance exceeds reported human inter-observer agreement in cytopathology (90-95%), demonstrating clinical viability for computer-aided diagnosis.
+This report presents a machine learning pipeline for binary classification of breast cancer tumors using the Wisconsin Diagnostic Breast Cancer (WDBC) dataset. We implement and rigorously evaluate eight ensemble learning algorithms: Random Forest, Gradient Boosting, AdaBoost, Bagging, XGBoost, LightGBM, Voting, and Stacking classifiers. The preprocessing pipeline combines Variance Inflation Factor (VIF) analysis for multicollinearity detection, Synthetic Minority Over-sampling Technique (SMOTE) for class imbalance correction, and Recursive Feature Elimination (RFE) for feature subset selection. The best model (AdaBoost) achieved **99.12% accuracy** (113/114) and **0.9987 ROC-AUC** on the held-out test set. Treating malignancy as the positive class, it identified all 43 malignant tumors (**100% sensitivity**) with **98.59% specificity**; the single error was one benign tumor flagged as malignant. Ten-fold stratified cross-validation gave a mean accuracy of 98.46% (± 1.12%). Because WDBC is a small, curated, single-center benchmark of pre-extracted morphometric features, these results establish a methodological baseline for error analysis, calibration, and explainability rather than evidence of clinical readiness. This work extends the author's two-semester graduate capstone at Rochester Institute of Technology on the same dataset.
 
 **Keywords:** Breast Cancer Classification, Ensemble Learning, AdaBoost, SMOTE, Recursive Feature Elimination, Machine Learning, Computer-Aided Diagnosis, Wisconsin Breast Cancer Dataset, Gradient Boosting, XGBoost, LightGBM, Explainable AI (XAI), MLOps, Responsible AI, Model Governance
 
@@ -51,19 +50,21 @@ This report presents a machine learning pipeline for binary classification of br
 
 | Metric | Value | Formula | Clinical Interpretation |
 |--------|-------|---------|------------------------|
-| **Accuracy** | 99.12% | (TP+TN)/(TP+TN+FP+FN) = 113/114 | Exceptional diagnostic performance |
-| **Precision (PPV)** | 100.00% | TP/(TP+FP) = 71/71 | Zero false positives—no unnecessary biopsies |
-| **Recall (Sensitivity)** | 98.59% | TP/(TP+FN) = 70/71 | Minimal missed malignancies (1 case) |
-| **Specificity** | 100.00% | TN/(TN+FP) = 42/42 | Perfect identification of malignant cases |
-| **F1-Score** | 99.29% | 2×(Prec×Rec)/(Prec+Rec) | Harmonic mean balance |
-| **ROC-AUC** | 0.9987 | ∫₀¹ TPR d(FPR) | Near-perfect discrimination |
-| **Cohen's Kappa** | 0.9823 | (p₀ - pₑ)/(1 - pₑ) | Almost perfect agreement |
-| **Matthews Correlation** | 0.9825 | (TP×TN - FP×FN)/√[(TP+FP)(TP+FN)(TN+FP)(TN+FN)] | Robust binary metric |
+| **Accuracy** | 99.12% | (TP+TN)/N = (43+70)/114 | 113 of 114 test cases correct |
+| **Sensitivity (Recall)** | 100.00% | TP/(TP+FN) = 43/43 | No malignant tumors missed |
+| **Specificity** | 98.59% | TN/(TN+FP) = 70/71 | One benign tumor flagged as malignant |
+| **Precision (PPV)** | 97.73% | TP/(TP+FP) = 43/44 | 43 of 44 malignant calls correct |
+| **NPV** | 100.00% | TN/(TN+FN) = 70/70 | Every benign call correct |
+| **ROC-AUC** | 0.9987 | ∫₀¹ TPR d(FPR) | Near-perfect ranking on this benchmark |
+| **Cohen's Kappa** | 0.9814 | (p₀ - pₑ)/(1 - pₑ) | Almost perfect agreement |
+| **Matthews Correlation** | 0.9816 | (TP×TN - FP×FN)/√[(TP+FP)(TP+FN)(TN+FP)(TN+FN)] | Robust binary metric |
+
+*Malignant is treated as the positive class here, following clinical convention. Per-model comparison tables in Section 5 use the WDBC native encoding (benign = 1).*
 
 ### Statistical Validation
 
 - **10-Fold Cross-Validation:** 98.46% ± 1.12%
-- **95% Confidence Interval:** [96.27%, 100.65%]
+- **95% CI for mean fold accuracy (t, df = 9):** [97.61%, 99.31%]
 - **Binomial Test:** p < 0.0001 (vs. random baseline)
 - **Variance Ratio (F-test):** Model variance significantly lower than baseline
 
@@ -169,7 +170,7 @@ from sklearn.ensemble import (
     BaggingClassifier,                 # Bootstrap aggregation
     VotingClassifier,                  # Ensemble voting
     StackingClassifier,                # Meta-learning ensemble
-    HistGradientBoostingClassifier     # GPU-accelerated boosting
+    HistGradientBoostingClassifier     # Histogram-based gradient boosting
 )
 from xgboost import XGBClassifier      # Extreme gradient boosting v2.1+
 from lightgbm import LGBMClassifier    # Light gradient boosting v4.5+
@@ -589,20 +590,20 @@ StackingClassifier(
                         PREDICTED
                    Malignant    Benign
                   ┌──────────┬──────────┐
-      Malignant   │    42    │    0     │   42
+      Malignant   │    43    │    0     │   43
 ACTUAL            ├──────────┼──────────┤
       Benign      │    1     │    70    │   71
                   └──────────┴──────────┘
-                       43         70        114
+                       44         70        114
 ```
 
-**Confusion Matrix Metrics:**
-- **True Negatives (TN):** 42 — Malignant correctly classified as malignant
-- **False Positives (FP):** 0 — No malignant misclassified as benign
-- **False Negatives (FN):** 1 — One benign misclassified as malignant
-- **True Positives (TP):** 70 — Benign correctly classified as benign
+**Confusion Matrix Metrics (malignant = positive class):**
+- **True Positives (TP):** 43 — Malignant correctly classified as malignant
+- **False Negatives (FN):** 0 — No malignant tumor misclassified as benign
+- **False Positives (FP):** 1 — One benign tumor misclassified as malignant
+- **True Negatives (TN):** 70 — Benign correctly classified as benign
 
-*Note: In the WDBC dataset encoding, class 1 = Benign (positive class for model prediction). Clinical interpretation focuses on malignancy detection where sensitivity/recall for detecting malignant cases is critical.*
+*Note: The WDBC native encoding uses class 1 = Benign, which is the positive class in the per-model tables of Section 5. In that encoding, precision = 70/70 = 100% and recall = 70/71 = 98.59%. Clinical interpretation in this report uses malignant as the positive class.*
 
 ### 5.3 ROC Curve Analysis
 
@@ -817,12 +818,12 @@ print(f"Optimal threshold (F2): {optimal_threshold:.3f}")
 # Optimal threshold (F2): 0.312
 ```
 
-**Table 16.** Clinical operating metrics at different decision thresholds.
+**Table 16.** Operating metrics at different decision thresholds on P(benign) (WDBC native encoding, benign = positive class).
 
 | Decision Threshold | Sensitivity | Specificity | PPV | NPV | Clinical Use |
 |-------------------|------------|-------------|-----|-----|-------------|
 | 0.30 | 100.0% | 95.2% | 93.3% | 100.0% | Mass screening (maximize recall) |
-| **0.50 (default)** | **98.59%** | **100.0%** | **100.0%** | **97.67%** | Standard clinical |
+| **0.50 (default)** | **98.59%** | **100.0%** | **100.0%** | **97.73%** | Standard clinical |
 | 0.70 | 95.8% | 100.0% | 100.0% | 95.2% | High-confidence only |
 
 ---
@@ -856,7 +857,7 @@ print(f"Optimal threshold (F2): {optimal_threshold:.3f}")
 **Summary Statistics:**
 - **Mean:** 98.46%
 - **Standard Deviation:** ±1.12%
-- **95% Confidence Interval:** [96.27%, 100.65%]
+- **95% CI for mean fold accuracy (t, df = 9):** [97.61%, 99.31%]
 - **Coefficient of Variation:** 1.14%
 
 ### 6.2 Learning Curve Analysis
@@ -919,12 +920,14 @@ Permutation importance gives model-agnostic feature rankings by measuring the ac
 
 | Metric | Value | Formula | Clinical Interpretation |
 |--------|-------|---------|------------------------|
-| **Sensitivity (TPR)** | 98.59% | TP/(TP+FN) | Probability of detecting malignancy given disease present |
-| **Specificity (TNR)** | 100.00% | TN/(TN+FP) | Probability of benign classification given no disease |
-| **Positive Predictive Value** | 100.00% | TP/(TP+FP) | Probability patient has cancer given positive test |
-| **Negative Predictive Value** | 97.67% | TN/(TN+FN) | Probability patient is cancer-free given negative test |
-| **Positive Likelihood Ratio** | ∞ | Sensitivity/(1-Specificity) | Strong evidence for disease when positive |
-| **Negative Likelihood Ratio** | 0.014 | (1-Sensitivity)/Specificity | Very low probability of disease when negative |
+| **Sensitivity (TPR)** | 100.00% | TP/(TP+FN) = 43/43 | Probability of detecting malignancy given disease present |
+| **Specificity (TNR)** | 98.59% | TN/(TN+FP) = 70/71 | Probability of benign classification given no disease |
+| **Positive Predictive Value** | 97.73% | TP/(TP+FP) = 43/44 | Probability of malignancy given a malignant call |
+| **Negative Predictive Value** | 100.00% | TN/(TN+FN) = 70/70 | Probability of no malignancy given a benign call |
+| **Positive Likelihood Ratio** | 71.0 | Sensitivity/(1-Specificity) | Strong evidence for disease when positive |
+| **Negative Likelihood Ratio** | 0.00 | (1-Sensitivity)/Specificity | No malignant cases missed on this test set |
+
+*Malignant = positive class. With only 43 malignant test cases, the 95% Clopper-Pearson interval for sensitivity is [91.8%, 100%].*
 
 ### 8.2 Clinical Decision Analysis
 
@@ -934,13 +937,11 @@ Permutation importance gives model-agnostic feature rankings by measuring the ac
 
 | Error Type | Count | Clinical Impact | Mitigation |
 |------------|-------|-----------------|------------|
-| **False Positive** | 0 | Unnecessary biopsy, patient anxiety | N/A (perfect) |
-| **False Negative** | 1 | Delayed diagnosis, potential disease progression | Clinical follow-up protocol |
+| **False Positive** (benign called malignant) | 1 | Unnecessary follow-up or biopsy, patient anxiety | Pathologist review of all malignant calls |
+| **False Negative** (malignant called benign) | 0 | Delayed diagnosis, potential disease progression | None observed on this test set; requires larger validation |
 
 **Comparison to Human Performance:**
-- Inter-observer agreement in cytopathology: 85-95%
-- Model accuracy: 99.12%
-- **Conclusion:** Model exceeds typical human diagnostic concordance
+Published inter-observer agreement in FNA cytopathology (85-95%) is not directly comparable to this result. Pathologists interpret raw slides across the full range of case difficulty, while this model classifies pre-extracted morphometric features from a curated, single-center benchmark. A fair comparison would require the same cases, raw images, and an external test set.
 
 ---
 
@@ -948,7 +949,7 @@ Permutation importance gives model-agnostic feature rankings by measuring the ac
 
 ### 9.1 SHAP (SHapley Additive exPlanations) Analysis
 
-Per 2026 AI data analyst standards and IEEE 2830-2025 requirements, we implement full model explainability:
+We implement global and per-prediction model explainability:
 
 ```python
 import shap
@@ -996,19 +997,7 @@ shap.force_plot(
 
 ### 9.3 Fairness Auditing
 
-Per IEEE 2830-2025 requirements:
-
-```python
-from fairlearn.metrics import MetricFrame
-
-metric_frame = MetricFrame(
-    metrics={'accuracy': accuracy_score, 'fnr': false_negative_rate},
-    y_true=y_test, y_pred=predictions,
-    sensitive_features=demographic_features
-)
-```
-
-**Fairness Assessment:** All demographic subgroup disparity ratios within acceptable bounds (0.8-1.25).
+WDBC contains no patient demographic attributes (age, race, ethnicity, or site), so subgroup fairness cannot be assessed on this dataset. Auditing performance across demographic subgroups (for example with `fairlearn.MetricFrame`) is a prerequisite for any use beyond benchmarking and is listed as future work.
 
 ### 9.4 Model Card (Google Framework)
 
@@ -1019,7 +1008,7 @@ metric_frame = MetricFrame(
 | **Model Name** | AdaBoost Breast Cancer Classifier v3.0 |
 | **Intended Use** | Clinical decision support for FNA analysis |
 | **Prohibited Uses** | Standalone diagnosis without physician review |
-| **Performance** | 99.12% accuracy, 100% precision, 98.59% recall |
+| **Performance** | 99.12% accuracy; 100% sensitivity and 98.59% specificity for malignancy |
 | **Limitations** | Single-center data; requires validation |
 | **Ethical Considerations** | Human oversight required |
 | **Carbon Footprint** | ~0.02 kg CO2e (training) |
@@ -1127,7 +1116,7 @@ feature_names = joblib.load("models/selected_features.pkl")
 
 @app.post("/predict", response_model=DiagnosisResponse)
 async def predict(features: list[float]):
-    """EU AI Act Article 13 compliant inference with explainability."""
+    """Inference with per-prediction SHAP explanations."""
     prediction = model.predict([features])[0]
     shap_values = explainer.shap_values([features])
     
@@ -1159,17 +1148,17 @@ async def predict(features: list[float]):
 2. **Bayesian Hyperparameter Optimization:** Optuna TPE finds the optimal AdaBoost configuration in 5× fewer trials than grid search
 3. **Optimal Pipeline:** SMOTE + RFE + AdaBoost achieves 99.12% accuracy with full explainability
 4. **Calibrated Probability Output:** Platt scaling cuts ECE by 71.5% (0.0312 → 0.0089) for clinically reliable confidence estimates
-5. **Clinical Viability:** Performance exceeds human inter-observer agreement (85-95%)
+5. **Error Analysis:** The single test error is a benign tumor flagged as malignant; no malignant cases were missed
 6. **Production Readiness:** MLOps deployment with monitoring and drift detection
-7. **Responsible AI:** Full SHAP explainability, fairness auditing, and IEEE 2830-2025 compliance
+7. **Responsible AI:** Full SHAP explainability, a model card, and explicit documentation of limitations
 8. **Reproducibility:** MLflow tracking with versioned artifacts
 
 ### 12.2 Key Findings
 
-- The AdaBoost classifier achieves the best overall performance (99.12% accuracy, 100% precision)
+- The AdaBoost classifier achieves the best overall performance (99.12% accuracy, 100% malignancy sensitivity)
 - Bayesian optimization (Optuna TPE) converges in ~45 trials vs. 240 for exhaustive grid search
 - The Platt-calibrated model achieves a Brier score of 0.0127, a 30.6% improvement over uncalibrated
-- Threshold optimization (0.31 vs. default 0.50) enables 100% sensitivity for mass-screening contexts
+- Calibrated probabilities let the decision threshold be set for the clinical context (Table 16)
 - SMOTE improves minority class recall by 3-7%
 - RFE reduces dimensionality 50% without accuracy loss
 - "Worst" features (extreme values) are most discriminative
@@ -1260,17 +1249,15 @@ For questions about code or data access, please contact:
 
 7. Mitchell, M., et al. (2019). Model Cards for Model Reporting. *FAT* 2019*.
 
-8. IEEE. (2025). *IEEE 2830-2025: Standard for Transparent ML*. IEEE Standards Association.
-
 ### MLOps
 
-9. Zaharia, M., et al. (2018). Accelerating the ML Lifecycle with MLflow. *IEEE Data Eng. Bulletin*.
+8. Zaharia, M., et al. (2018). Accelerating the ML Lifecycle with MLflow. *IEEE Data Eng. Bulletin*.
 
 ### Domain-Specific
 
-10. Wolberg, W. H., et al. (1995). Breast Cancer Wisconsin (Diagnostic) Data Set. *UCI ML Repository*.
+9. Wolberg, W. H., et al. (1995). Breast Cancer Wisconsin (Diagnostic) Data Set. *UCI ML Repository*.
 
-11. Pedregosa, F., et al. (2011). Scikit-learn: Machine Learning in Python. *JMLR*, 12.
+10. Pedregosa, F., et al. (2011). Scikit-learn: Machine Learning in Python. *JMLR*, 12.
 
 ---
 
@@ -1455,10 +1442,10 @@ Computer-aided detection (CAD) system intended to assist pathologists in the cla
 
 | Metric | Clinical Threshold | Achieved | Margin |
 |--------|-------------------|----------|--------|
-| Sensitivity | ≥ 95% | 98.59% | +3.59% |
-| Specificity | ≥ 90% | 100.00% | +10.00% |
-| PPV | ≥ 85% | 100.00% | +15.00% |
-| NPV | ≥ 90% | 97.67% | +7.67% |
+| Sensitivity | ≥ 95% | 100.00% | +5.00% |
+| Specificity | ≥ 90% | 98.59% | +8.59% |
+| PPV | ≥ 85% | 97.73% | +12.73% |
+| NPV | ≥ 90% | 100.00% | +10.00% |
 
 **Contraindications:**
 - Samples with insufficient cellularity
@@ -1532,7 +1519,7 @@ Seeking **Data Scientist** and **Applied Statistician** roles at technology comp
 | **Bayesian Optimization** | Optuna TPE hyperparameter search, Platt calibration (ECE 0.0089) | Essential for decision-grade probabilistic outputs |
 | **Feature Engineering** | VIF multicollinearity analysis, SMOTE balancing, RFE selection | Foundational for robust model development |
 | **Experimentation & Statistics** | 10-fold CV, bootstrap CI, multiple hypothesis testing | Foundational for A/B testing and statistical rigor |
-| **Explainability & Responsible AI** | SHAP values, fairness auditing, clinical interpretability | Required for regulated AI and stakeholder trust |
+| **Explainability & Responsible AI** | SHAP values, model card, documented limitations | Required for regulated AI and stakeholder trust |
 | **MLOps & Deployment** | MLflow registry, FastAPI deployment, <100ms p95 latency | Standard for production data science teams |
 
 #### Technical Stack Expertise
@@ -1543,16 +1530,15 @@ Bayesian:        Optuna TPE • Platt Calibration • Isotonic Regression • EC
 ML Frameworks:   scikit-learn 1.5+ • XGBoost 2.1+ • LightGBM 4.5+ • CatBoost • AdaBoost
 Data Stack:      SQL • Pandas 2.2+ • NumPy 2.0+ • SMOTE • RFE • VIF Analysis
 MLOps:           MLflow 2.15+ • FastAPI 0.110+ • Docker • Model Registry
-Explainability:  SHAP • LIME • Feature Importance • Model Cards • IEEE 2830-2025
+Explainability:  SHAP • LIME • Feature Importance • Model Cards
 ```
 
 #### Key Achievements from This Research
 
-- **Clinical-Grade Performance**: 99.12% accuracy exceeding human pathologist inter-observer agreement (90-95%)
-- **Zero False Positives (Test Set)**: 100% precision on held-out test data, eliminating false positives that could lead to unnecessary procedures
+- **Benchmark Performance**: 99.12% held-out accuracy (113/114) on the WDBC benchmark
+- **No Missed Malignancies (Test Set)**: 100% sensitivity for malignancy; the single error was a benign tumor flagged as malignant
 - **Comprehensive Benchmarking**: Systematic evaluation of 8 ensemble algorithms with rigorous CV
 - **Production-Ready**: MLflow-tracked models with FastAPI deployment at <100ms p95 latency
-- **Regulatory Compliance**: IEEE 2830-2025 documentation for FDA AI/ML guidance alignment
 
 #### Career Objectives
 
@@ -1573,5 +1559,4 @@ Explainability:  SHAP • LIME • Feature Importance • Model Cards • IEEE 2
 
 *Report generated from analysis in Breast_Cancer_Classification_PUBLICATION.ipynb*  
 *Technical Review: Machine Learning Pipeline Analysis per 2026 Data Scientist Standards*  
-*Compliant with IEEE 2830-2025 and ISO/IEC 23894:2025*  
 *© 2026 Derek Lankeaux. All rights reserved.*
