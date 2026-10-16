@@ -46,6 +46,13 @@ WDBC benchmark and are not independent clinical validation.
 
 `Python` · `SQL` · `R` · `scikit-learn` · `XGBoost` · `LightGBM` · `PyMC` · `ArviZ` · `FastAPI` · `MLflow` · `SHAP` · `OpenAI` · `Anthropic` · `Qdrant` · `Docker` · `Kubernetes`
 
+## Research workflow agent
+
+The repository also includes **Research Radar**, a least-privilege daily agent
+that turns current ML research into a source-linked brief and a small proposed
+experiment. See the [agent definition, tools, and end-to-end test
+workflow](./agents/README.md).
+
 ## Repository guide
 
 ```text
@@ -58,6 +65,8 @@ generate_publication_pdfs.py                   Canonical PDF generator
 requirements-pdf.txt                           PDF-generation dependencies
 PDF_EXPORT.md                                  Build and validation instructions
 scripts/validate_portfolio.py                  Artifact and local-link validation
+agents/research_radar.py                       Daily ML research brief agent
+agents/README.md                               Agent instructions, tools, and test workflow
 .github/workflows/validate-portfolio.yml       GitHub Actions quality check
 ```
 
