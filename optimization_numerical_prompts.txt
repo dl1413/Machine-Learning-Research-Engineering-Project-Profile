@@ -1,0 +1,101 @@
+================================================================================
+THREE HARD/TRICKY PROMPTS TO STUMP AN LLM
+Subdomain: Mathematics — Optimization & Numerical Mathematics (KaTeX)
+Chosen as the EASIEST domain to stump an LLM: it rewards precise procedural
+execution (iterations, relaxation parameters, quadrature) where a single slip or a
+memorized-but-wrong rate/formula flips the answer. Each prompt is fully specified
+and has EXACTLY ONE verifiable answer (all three checked by exact-arithmetic code).
+The common wrong answer ("trap") is noted.
+================================================================================
+
+
+--------------------------------------------------------------------------------
+PROMPT 1 — Newton's Method That Never Converges (a 2-Cycle)
+--------------------------------------------------------------------------------
+PROMPT:
+Apply Newton's method $x_{n+1}=x_n-\dfrac{f(x_n)}{f'(x_n)}$ to
+$$f(x)=x^{3}-2x+2,\qquad x_0=0.$$
+Compute the iterate $x_{2024}$ exactly.
+
+SOLUTION:
+With $f'(x)=3x^{2}-2$:
+$$x_1=0-\frac{f(0)}{f'(0)}=0-\frac{2}{-2}=1,\qquad
+x_2=1-\frac{f(1)}{f'(1)}=1-\frac{1}{1}=0.$$
+So the iteration enters the exact period-$2$ cycle $0\to 1\to 0\to 1\to\cdots$ and
+never approaches the real root (which is near $x\approx-1.7693$). Indexing:
+even $n\Rightarrow x_n=0$, odd $n\Rightarrow x_n=1$. Since $2024$ is even,
+
+$$x_{2024}=0.$$
+
+ANSWER:
+$$\boxed{\,x_{2024}=0\,.}$$
+
+TRAP: Assuming Newton converges and reporting the real root $\approx-1.769$ (or
+"it converges quadratically"). The initial point sits in a superattracting
+$2$-cycle of the Newton map, so the sequence is periodic, not convergent — this is
+the classic Newton-fractal cycling example.
+
+
+--------------------------------------------------------------------------------
+PROMPT 2 — Optimal SOR Relaxation Parameter and Its Spectral Radius
+--------------------------------------------------------------------------------
+PROMPT:
+A consistently ordered matrix has a Jacobi iteration matrix with spectral radius
+$\rho(T_J)=\tfrac{3}{5}$. Using Young's SOR theory, compute the optimal relaxation
+parameter $\omega^{\*}$ and the resulting Gauss–Seidel/SOR spectral radius
+$\rho(T_{\mathrm{SOR}}(\omega^{\*}))$.
+
+SOLUTION:
+Young's formula for the optimal over-relaxation parameter is
+$$\omega^{\*}=\frac{2}{1+\sqrt{1-\rho(T_J)^{2}}}.$$
+Here $\rho(T_J)^2=\tfrac{9}{25}$, so $1-\rho(T_J)^2=\tfrac{16}{25}$ and
+$\sqrt{1-\rho(T_J)^2}=\tfrac{4}{5}$. Hence
+$$\omega^{\*}=\frac{2}{1+\tfrac45}=\frac{2}{\tfrac95}=\frac{10}{9}.$$
+At the optimum the spectral radius satisfies $\rho(T_{\mathrm{SOR}}(\omega^{\*}))=\omega^{\*}-1$:
+$$\rho(T_{\mathrm{SOR}}(\omega^{\*}))=\frac{10}{9}-1=\frac{1}{9}.$$
+(Contrast: Gauss–Seidel with $\omega=1$ gives $\rho=\rho(T_J)^2=\tfrac{9}{25}=0.36$;
+optimal SOR drops it to $\tfrac19\approx0.111$.)
+
+ANSWER:
+$$\boxed{\,\omega^{\*}=\tfrac{10}{9},\qquad \rho(T_{\mathrm{SOR}}(\omega^{\*}))=\tfrac19\,.}$$
+
+TRAP: Reporting $\rho=\rho(T_J)^2=\tfrac{9}{25}$ (that is plain Gauss–Seidel, not
+OPTIMAL SOR), or misremembering the formula as $\omega^{\*}=\tfrac{2}{1+\rho}$
+(missing the square root), which would give $\tfrac{2}{1+3/5}=\tfrac{5}{4}$ — wrong.
+
+
+--------------------------------------------------------------------------------
+PROMPT 3 — Exact Error of 2-Point Gauss–Legendre Quadrature
+--------------------------------------------------------------------------------
+PROMPT:
+The $2$-point Gauss–Legendre rule on $[-1,1]$ uses nodes $\pm\tfrac{1}{\sqrt3}$ with
+weights $1,1$. Use it to approximate
+$$I=\int_{-1}^{1}\bigl(x^{4}+3x^{2}\bigr)\,dx,$$
+and report the EXACT signed error $I-Q$, where $Q$ is the quadrature estimate.
+
+SOLUTION:
+Exact integral:
+$$I=\int_{-1}^{1}x^4\,dx+3\int_{-1}^{1}x^2\,dx=\frac{2}{5}+3\cdot\frac{2}{3}=\frac{2}{5}+2=\frac{12}{5}.$$
+Quadrature: at each node $x^2=\tfrac13$ and $x^4=\tfrac19$, so the integrand value is
+$\tfrac19+3\cdot\tfrac13=\tfrac19+1=\tfrac{10}{9}$, and
+$$Q=1\cdot\frac{10}{9}+1\cdot\frac{10}{9}=\frac{20}{9}.$$
+The rule has degree of exactness $2n-1=3$, so it integrates the $3x^2$ term exactly;
+ALL of the error comes from the degree-$4$ term $x^4$:
+$$I-Q=\frac{12}{5}-\frac{20}{9}=\frac{108-100}{45}=\frac{8}{45}.$$
+
+ANSWER:
+$$\boxed{\,I-Q=\tfrac{8}{45}\,.}$$
+
+TRAP: Claiming the answer is $0$ because "Gauss quadrature is exact." The $2$-point
+rule is exact only up to degree $2n-1=3$; the $x^4$ term (degree $4$) is beyond it,
+so the rule UNDERSHOOTS by $\tfrac{8}{45}$. A second trap is forgetting the nodes
+carry $x^4=(1/\sqrt3)^4=\tfrac19$, not $\tfrac{1}{\sqrt3}$.
+
+
+================================================================================
+ANSWER KEY (one verifiable value each — all confirmed by exact arithmetic)
+================================================================================
+1.  Newton 2-cycle on $x^3-2x+2$ from $0$:   $x_{2024}=0$
+2.  Optimal SOR with $\rho(T_J)=\tfrac35$:     $\omega^{\*}=\tfrac{10}{9},\ \rho=\tfrac19$
+3.  2-pt Gauss error on $x^4+3x^2$:            $I-Q=\tfrac{8}{45}$
+================================================================================
