@@ -61,6 +61,8 @@ Resume_Derek_Lankeaux.md                       Résumé source
 *_Report.md                                    Four technical reports
 *_Publication.pdf                              Corresponding publication PDFs
 project_packages/                              Per-project reader guides
+docs/index.html                                GitHub Pages portfolio site
+github-profile/README.md                       Draft profile README for github.com/dl1413
 generate_publication_pdfs.py                   Canonical PDF generator
 requirements-pdf.txt                           PDF-generation dependencies
 PDF_EXPORT.md                                  Build and validation instructions
@@ -71,6 +73,12 @@ agents/README.md                               Agent instructions, tools, and te
 ```
 
 For PDF regeneration and validation, see [PDF export instructions](./PDF_EXPORT.md).
+
+To publish the portfolio site, enable GitHub Pages under **Settings → Pages**
+with source **Deploy from a branch**, branch `main`, folder `/docs`. The site
+then serves at `https://dl1413.github.io/Machine-Learning-Research-Engineering-Project-Profile/`.
+To use the profile README, copy `github-profile/README.md` into a public
+repository named `dl1413`.
 The source notebooks referenced in the reports are not distributed in this
 repository; the reports and PDFs are the public portfolio artifacts.
 

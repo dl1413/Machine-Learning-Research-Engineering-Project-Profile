@@ -1,0 +1,345 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Derek Lankeaux · Evaluation Portfolio</title>
+<meta name="description" content="Four technical case studies in LLM evaluation, Bayesian inference, and applied machine learning by Derek Lankeaux, Applied Statistics M.S. candidate.">
+<meta property="og:title" content="Derek Lankeaux · Evaluation Portfolio">
+<meta property="og:description" content="Four technical case studies in LLM evaluation, Bayesian inference, and applied machine learning.">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=IBM+Plex+Mono:wght@400;500&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
+<style>
+/* Layout: a single left-aligned reading column, laid out like a methods report —
+   claim, evidence ledger, then one section per study with its data provenance. */
+:root {
+  --paper: #f2f3ef;
+  --sheet: #fbfbf8;
+  --ink: #1b2321;
+  --muted: #59625e;
+  --rule: #d5d9d2;
+  --accent: #1d5a66;
+  --accent-soft: #dbe8e8;
+  --sim: #8a5a00;
+  --sim-soft: #f3e6c9;
+  --bench: #2f5d2a;
+  --bench-soft: #dceada;
+
+  --display: "Bricolage Grotesque", "Avenir Next", "Segoe UI", system-ui, sans-serif;
+  --body: "Source Serif 4", Georgia, "Times New Roman", serif;
+  --mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+
+  --step--1: 0.8125rem;
+  --step-0: 1.0625rem;
+  --step-1: 1.25rem;
+  --step-2: 1.625rem;
+  --step-3: clamp(2.25rem, 1.6rem + 3vw, 3.5rem);
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #121716;
+    --sheet: #18201e;
+    --ink: #e4e8e4;
+    --muted: #9aa5a0;
+    --rule: #2c3734;
+    --accent: #7cc0cb;
+    --accent-soft: #1d3135;
+    --sim: #e3b45c;
+    --sim-soft: #3a2f19;
+    --bench: #9ccc8f;
+    --bench-soft: #1f3220;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #121716;
+  --sheet: #18201e;
+  --ink: #e4e8e4;
+  --muted: #9aa5a0;
+  --rule: #2c3734;
+  --accent: #7cc0cb;
+  --accent-soft: #1d3135;
+  --sim: #e3b45c;
+  --sim-soft: #3a2f19;
+  --bench: #9ccc8f;
+  --bench-soft: #1f3220;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--body);
+  font-size: var(--step-0);
+  line-height: 1.6;
+}
+.wrap {
+  max-width: 62rem;
+  margin: 0 auto;
+  padding-inline: max(16px, 4vw);
+  padding-block: 3.5rem 4rem;
+  display: grid;
+  gap: 4rem;
+}
+a { color: var(--accent); text-underline-offset: 0.18em; text-decoration-thickness: 1px; }
+a:hover { text-decoration-thickness: 2px; }
+a:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 2px; }
+h1, h2, h3 { font-family: var(--display); line-height: 1.1; text-wrap: balance; margin: 0; }
+p { margin: 0; max-width: 65ch; }
+
+.eyebrow {
+  font-family: var(--mono);
+  font-size: var(--step--1);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+/* Header */
+header { display: grid; gap: 1.25rem; }
+header h1 { font-size: var(--step-3); font-weight: 700; letter-spacing: -0.02em; }
+.thesis { font-size: var(--step-1); color: var(--ink); }
+.links { display: flex; flex-wrap: wrap; gap: 0.5rem 1.25rem; font-family: var(--mono); font-size: var(--step--1); }
+
+/* Provenance chips */
+.chip {
+  display: inline-block;
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  line-height: 1;
+  padding: 0.3rem 0.5rem;
+  border-radius: 3px;
+  white-space: nowrap;
+}
+.chip.sim { color: var(--sim); background: var(--sim-soft); }
+.chip.bench { color: var(--bench); background: var(--bench-soft); }
+
+/* Ledger */
+section { display: grid; gap: 1.25rem; }
+section > h2 { font-size: var(--step-2); font-weight: 700; }
+.ledger-scroll { overflow-x: auto; background: var(--sheet); border: 1px solid var(--rule); border-radius: 4px; }
+table { border-collapse: collapse; width: 100%; min-width: 38rem; }
+th, td { text-align: left; padding: 0.75rem 1rem; border-bottom: 1px solid var(--rule); vertical-align: top; }
+tr:last-child td { border-bottom: 0; }
+th { font-family: var(--mono); font-size: var(--step--1); font-weight: 500; color: var(--muted); letter-spacing: 0.04em; }
+td.num { font-family: var(--mono); font-variant-numeric: tabular-nums; font-size: 0.9375rem; }
+td.study { font-family: var(--display); font-weight: 500; width: 14rem; }
+.note { font-size: 0.9375rem; color: var(--muted); }
+
+/* Studies */
+.studies { display: grid; gap: 3rem; }
+article {
+  display: grid;
+  grid-template-columns: minmax(0, 11rem) minmax(0, 1fr);
+  gap: 1.5rem 2rem;
+  padding-top: 1.5rem;
+  border-top: 2px solid var(--ink);
+}
+article aside { display: grid; gap: 0.75rem; align-content: start; }
+article aside dl { margin: 0; display: grid; gap: 0.5rem; }
+article aside dt { font-family: var(--mono); font-size: 0.75rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; }
+article aside dd { margin: 0; font-family: var(--mono); font-size: 0.9375rem; font-variant-numeric: tabular-nums; }
+.body { display: grid; gap: 1rem; min-width: 0; }
+.body h3 { font-size: var(--step-2); font-weight: 700; letter-spacing: -0.01em; }
+.question { font-style: italic; font-size: var(--step-1); }
+.body ul { margin: 0; padding-left: 1.2rem; display: grid; gap: 0.35rem; max-width: 65ch; }
+.scope { font-size: 0.9375rem; color: var(--muted); border-left: 2px solid var(--rule); padding-left: 0.9rem; }
+.methods { font-family: var(--mono); font-size: var(--step--1); color: var(--muted); }
+.read { display: flex; flex-wrap: wrap; gap: 0.5rem 1.25rem; font-family: var(--mono); font-size: var(--step--1); }
+
+/* Skills + contact */
+.skills { display: grid; grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr)); gap: 1.5rem 2rem; }
+.skills h3 { font-size: var(--step-0); font-weight: 700; margin-bottom: 0.4rem; }
+.skills p { font-size: 0.9375rem; }
+footer { display: grid; gap: 0.75rem; padding-top: 1.5rem; border-top: 1px solid var(--rule); }
+
+@media (max-width: 40rem) {
+  .wrap { gap: 3rem; padding-block: 2.5rem 3rem; }
+  article { grid-template-columns: minmax(0, 1fr); }
+  article aside dl { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (prefers-reduced-motion: reduce) {
+  * { scroll-behavior: auto !important; transition: none !important; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <span class="eyebrow">Applied statistics · LLM evaluation · Applied ML</span>
+  <h1>Derek Lankeaux</h1>
+  <p class="thesis">Applied Statistics M.S. candidate at RIT. I design evaluations that separate how reliable the labels are from how good the model is, and I report uncertainty along with the headline metric.</p>
+  <nav class="links" aria-label="Profiles">
+    <a href="https://linkedin.com/in/derek-lankeaux">LinkedIn</a>
+    <a href="https://github.com/dl1413">GitHub</a>
+    <a href="https://github.com/dl1413/Machine-Learning-Research-Engineering-Project-Profile/blob/main/Resume_Derek_Lankeaux.md">Résumé</a>
+    <a href="https://github.com/dl1413/Machine-Learning-Research-Engineering-Project-Profile">Source repository</a>
+  </nav>
+</header>
+
+<section aria-labelledby="ledger-h">
+  <h2 id="ledger-h">Evidence ledger</h2>
+  <div class="ledger-scroll">
+    <table>
+      <thead>
+        <tr><th scope="col">Study</th><th scope="col">Data</th><th scope="col">Reported results</th><th scope="col">Size</th></tr>
+      </thead>
+      <tbody>
+        <tr><td class="study">AI Safety Red-Team Evaluation</td><td><span class="chip sim">simulated</span></td><td class="num">α = 0.81 · 96.8% accuracy</td><td class="num">12,500 response pairs</td></tr>
+        <tr><td class="study">Breast Cancer Classification</td><td><span class="chip bench">public benchmark</span></td><td class="num">99.12% accuracy · AUC 0.9987</td><td class="num">569 samples</td></tr>
+        <tr><td class="study">LLM Ensemble Bias Detection</td><td><span class="chip sim">simulated</span></td><td class="num">α = 0.84 · R̂ &lt; 1.01</td><td class="num">67,500 ratings</td></tr>
+        <tr><td class="study">RAG Production Pipeline</td><td><span class="chip sim">simulated</span></td><td class="num">96.3% Recall@10 · 94.2% citation precision</td><td class="num">2.1M-document corpus</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="note">Simulated studies demonstrate an evaluation design; they are not measurements of real models, publishers, or a deployed service. The breast cancer results use the public WDBC benchmark and are not clinical validation. Every figure is documented in the linked report.</p>
+</section>
+
+<section aria-labelledby="studies-h">
+  <h2 id="studies-h">Case studies</h2>
+  <div class="studies">
+
+    <article id="ai-safety">
+      <aside>
+        <span class="chip sim">simulated</span>
+        <dl>
+          <div><dt>Agreement</dt><dd>α = 0.81</dd></div>
+          <div><dt>Accuracy</dt><dd>96.8%</dd></div>
+          <div><dt>Harm categories</dt><dd>6</dd></div>
+          <div><dt>Report</dt><dd>v2.0.0</dd></div>
+        </dl>
+      </aside>
+      <div class="body">
+        <h3>AI Safety Red-Team Evaluation</h3>
+        <p class="question">How can safety evaluation scale beyond manual review?</p>
+        <ul>
+          <li>Two-stage design: an LLM ensemble labels 12,500 response pairs, then a supervised classifier learns those labels.</li>
+          <li>Reports annotation agreement separately from classifier accuracy, so a strong model cannot hide weak labels.</li>
+          <li>Bayesian hierarchical risk analysis and SHAP attribution support audit-oriented reporting.</li>
+        </ul>
+        <p class="scope">Accuracy is measured against the ensemble's labels, not human-verified ground truth. Not a substitute for expert red-teaming.</p>
+        <p class="methods">LLM evaluation · stacking · XGBoost · PyMC · SHAP · MLflow</p>
+        <div class="read">
+          <a href="https://github.com/dl1413/Machine-Learning-Research-Engineering-Project-Profile/blob/main/AI%20Safety%20Red-Team%20Evaluation_%20Technical%20Analysis%20Report.md">Read the report</a>
+          <a href="https://github.com/dl1413/Machine-Learning-Research-Engineering-Project-Profile/blob/main/AI_Safety_RedTeam_Evaluation_Publication.pdf">PDF</a>
+        </div>
+      </div>
+    </article>
+
+    <article id="breast-cancer">
+      <aside>
+        <span class="chip bench">public benchmark</span>
+        <dl>
+          <div><dt>Accuracy</dt><dd>99.12%</dd></div>
+          <div><dt>ROC-AUC</dt><dd>0.9987</dd></div>
+          <div><dt>Models compared</dt><dd>8</dd></div>
+          <div><dt>Report</dt><dd>v4.0.0</dd></div>
+        </dl>
+      </aside>
+      <div class="body">
+        <h3>Breast Cancer Classification Benchmark</h3>
+        <p class="question">Which ensemble methods perform well on WDBC diagnostic features?</p>
+        <ul>
+          <li>Benchmarks eight ensemble classifiers on the 569-sample Wisconsin Diagnostic Breast Cancer dataset.</li>
+          <li>Covers preprocessing, feature selection, 10-fold cross-validation, calibration, and threshold analysis.</li>
+          <li>Treats calibration and decision thresholds as part of the result, alongside headline accuracy.</li>
+        </ul>
+        <p class="scope">An educational benchmark. Not a clinical device, a patient-validation study, or medical advice.</p>
+        <p class="methods">scikit-learn · XGBoost · LightGBM · AdaBoost · Optuna · SMOTE · SHAP</p>
+        <div class="read">
+          <a href="https://github.com/dl1413/Machine-Learning-Research-Engineering-Project-Profile/blob/main/Breast_Cancer_Classification_Report.md">Read the report</a>
+          <a href="https://github.com/dl1413/Machine-Learning-Research-Engineering-Project-Profile/blob/main/Breast_Cancer_Classification_Publication.pdf">PDF</a>
+        </div>
+      </div>
+    </article>
+
+    <article id="bias-detection">
+      <aside>
+        <span class="chip sim">simulated</span>
+        <dl>
+          <div><dt>Agreement</dt><dd>α = 0.84</dd></div>
+          <div><dt>Ratings</dt><dd>67,500</dd></div>
+          <div><dt>Convergence</dt><dd>R̂ &lt; 1.01</dd></div>
+          <div><dt>Report</dt><dd>v4.0.0</dd></div>
+        </dl>
+      </aside>
+      <div class="body">
+        <h3>LLM Ensemble Textbook Bias Detection</h3>
+        <p class="question">Can multiple LLM judges support uncertainty-aware content review?</p>
+        <ul>
+          <li>Rubric-based ratings from an LLM ensemble across 4,500 passages, with agreement measured before any aggregation.</li>
+          <li>Bayesian partial pooling makes group-level uncertainty visible, with MCMC diagnostics reported.</li>
+          <li>Routes disagreement and high-uncertainty passages to expert review.</li>
+        </ul>
+        <p class="scope">Publishers are anonymized placeholders and no real textbooks were analyzed. Findings are not a claim about any real publisher.</p>
+        <p class="methods">LLM-as-judge · Krippendorff's α · PyMC · ArviZ · FastAPI · MLflow</p>
+        <div class="read">
+          <a href="https://github.com/dl1413/Machine-Learning-Research-Engineering-Project-Profile/blob/main/LLM_Ensemble_Bias_Detection_Report.md">Read the report</a>
+          <a href="https://github.com/dl1413/Machine-Learning-Research-Engineering-Project-Profile/blob/main/LLM_Bias_Detection_Publication.pdf">PDF</a>
+        </div>
+      </div>
+    </article>
+
+    <article id="rag">
+      <aside>
+        <span class="chip sim">simulated</span>
+        <dl>
+          <div><dt>Recall@10</dt><dd>96.3%</dd></div>
+          <div><dt>Citation precision</dt><dd>94.2%</dd></div>
+          <div><dt>Hallucination</dt><dd>2.4%</dd></div>
+          <div><dt>Report</dt><dd>v3.0.0</dd></div>
+        </dl>
+      </aside>
+      <div class="body">
+        <h3>RAG Production Pipeline</h3>
+        <p class="question">How can retrieval, grounding, and monitoring improve RAG system design?</p>
+        <ul>
+          <li>Hybrid retrieval combining dense vectors and BM25, followed by ColBERT re-ranking.</li>
+          <li>Evaluates retrieval separately from generation, then checks citation grounding and calibrates answer confidence.</li>
+          <li>Specifies the monitoring, drift detection, privacy safeguards, and rollback a production deployment would need.</li>
+        </ul>
+        <p class="scope">A systems-design case study. Metrics come from a simulated evaluation, not a live service.</p>
+        <p class="methods">Qdrant · BM25 · ColBERT · OpenAI · Kafka · Kubernetes · Prometheus · MLflow</p>
+        <div class="read">
+          <a href="https://github.com/dl1413/Machine-Learning-Research-Engineering-Project-Profile/blob/main/RAG_Project_Report.md">Read the report</a>
+          <a href="https://github.com/dl1413/Machine-Learning-Research-Engineering-Project-Profile/blob/main/RAG_Project_Publication.pdf">PDF</a>
+        </div>
+      </div>
+    </article>
+
+  </div>
+</section>
+
+<section aria-labelledby="skills-h">
+  <h2 id="skills-h">Toolkit</h2>
+  <div class="skills">
+    <div>
+      <h3>Data and statistics</h3>
+      <p>Python, R, SQL, pandas, Polars, SciPy, statsmodels. Experimental design, power analysis, bootstrap intervals, inter-rater reliability, Bayesian hierarchical models, MCMC diagnostics, calibration.</p>
+    </div>
+    <div>
+      <h3>Machine learning</h3>
+      <p>scikit-learn, XGBoost, LightGBM, Optuna, SHAP. Feature engineering, cross-validation, model selection, threshold analysis, explainability.</p>
+    </div>
+    <div>
+      <h3>LLM and systems</h3>
+      <p>OpenAI, Anthropic, Hugging Face, LangChain, FastAPI, MLflow, Qdrant, Docker, Kubernetes. LLM evaluation, retrieval quality, observability, cost and latency trade-offs.</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>Open to 2026 data science, applied ML, and LLM-evaluation roles. Remote or hybrid; authorized to work in the United States. The best way to reach me is <a href="https://linkedin.com/in/derek-lankeaux">LinkedIn</a>.</p>
+  <p class="note">Source notebooks are not distributed; the reports and PDFs are the public artifacts.</p>
+</footer>
+
+</div>
+</body>
+</html>

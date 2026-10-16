@@ -73,6 +73,19 @@ def validate_readme_inventory(errors: list[str]) -> None:
                 fail(f"README.md: missing link to {relative}", errors)
 
 
+def validate_site_inventory(errors: list[str]) -> None:
+    site = ROOT / "docs" / "index.html"
+    if not site.is_file():
+        fail("docs/index.html: missing GitHub Pages site", errors)
+        return
+    html = site.read_text(encoding="utf-8")
+    for name, report, publication in PROJECTS:
+        for relative in (report, publication):
+            encoded = relative.replace(" ", "%20")
+            if f"/blob/main/{encoded}" not in html:
+                fail(f"docs/index.html: missing link to {relative} for {name}", errors)
+
+
 def validate_local_links(errors: list[str]) -> None:
     # These are the repository's human-facing indexes. Report prose contains
     # code and example URLs, so it is intentionally not treated as an index.
@@ -102,6 +115,7 @@ def main() -> int:
     errors: list[str] = []
     validate_required_artifacts(errors)
     validate_readme_inventory(errors)
+    validate_site_inventory(errors)
     validate_local_links(errors)
 
     if errors:
