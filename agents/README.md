@@ -43,6 +43,39 @@ least-privilege choice prevents a research assistant from taking unintended
 actions. It does not replace peer review or domain-specific professional
 advice.
 
+## Saved heavy-metal documentation agent
+
+[`new_agent_session.sh`](./new_agent_session.sh) is a standalone, cURL-only
+launcher for the supplied saved agent, **New agent**. It starts a new Agents
+API session with `agent_id`
+`agent_fdf14800ea9547f1bdc8e8a1ee3e257b35b6b092975a48a3a1`, applies the
+provided model, instructions, reasoning, and text settings as **session-only**
+overrides, and preserves every saved setting that is not overridden. The
+launcher uses `environment.type: none`: this task needs the hosted web-search
+tool and a local function handler, not shell access or a sandbox runtime.
+
+It prints raw server-sent events for the initial request and any resumed work,
+including errors and completion events. If the agent requests
+`generate_tracklist_for_folders`, the script validates the pending action,
+generates a deterministic 10-song planning result locally, and sends an
+`agent.session.input.tool_result` event with the required turn and call IDs.
+
+### Setup and run
+
+Create an application key in OpenAI project `proj_GCS5STipQ3WPoOb0T1jXEmMr`
+with `api.agents.read`, `api.agents.write`, and `api.responses.write` scopes.
+Install `curl` and `jq`, then keep the key only in your shell environment:
+
+```bash
+export OPENAI_API_KEY="your_project_api_key"
+bash agents/new_agent_session.sh
+```
+
+The script never writes the key, session output, or generated documents into
+the repository. It prints the new `sess_...` ID to stderr so it can be used to
+continue or inspect the session with the Agents API. A project-level API key
+selects the project; it is intentionally not sent as a request field.
+
 ## Run the complete workflow
 
 1. Create and activate a virtual environment (recommended), then install the
